@@ -1,0 +1,31 @@
+{
+  "name": "my-library",
+  "version": "1.0.0",
+  "description": "Personal reading tracker for fanfiction and books",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --mac --dir"
+  },
+  "build": {
+    "appId": "com.mylibrary.app",
+    "productName": "My Library",
+    "mac": {
+      "category": "public.app-category.books"
+    },
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*",
+      "!dist/**"
+    ]
+  },
+  "dependencies": {
+    "exceljs": "^4.4.0"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.0.0"
+  }
+}
