@@ -10,6 +10,7 @@ let state = {
   filterSection: 'all',
   filterGenre: 'all',
   filterFavorite: false,
+  filterTag: 'all',
   sortBy: 'added',
   expandedId: null,
   modalOpen: false,
@@ -74,6 +75,15 @@ function getGenres() {
   return [...s].sort();
 }
 
+function getTagsForFandom() {
+  if (state.filterFandom === 'all') return [];
+  const s = new Set();
+  state.items
+    .filter(x => x.fandom === state.filterFandom && (x.tags || []).length > 0)
+    .forEach(x => (x.tags || []).forEach(t => s.add(t)));
+  return [...s].sort();
+}
+
 function getPeriodData(items, period) {
   const now = new Date();
   const DAY = 86400000;
@@ -124,6 +134,7 @@ function getFiltered() {
     } else if (state.filterType !== 'all' && item.type !== state.filterType) return false;
     if (state.filterStatus !== 'all' && item.status !== state.filterStatus) return false;
     if (state.filterFandom !== 'all' && item.fandom !== state.filterFandom) return false;
+    if (state.filterTag !== 'all' && !(item.tags || []).includes(state.filterTag)) return false;
     if (state.filterSection !== 'all' && item.section !== state.filterSection) return false;
     if (state.filterGenre !== 'all') {
       const top = (item.genre || '').split(' / ')[0].trim();
@@ -578,6 +589,21 @@ function render() {
       ${(state.filterType==='all'||state.filterType==='book') ? genrePills : ''}
     </div>
 
+    ${state.filterFandom !== 'all' ? (() => {
+      const fandomTags = getTagsForFandom();
+      if (!fandomTags.length) return '';
+      const opts = fandomTags.map(t =>
+        `<option value="${t}"${state.filterTag === t ? ' selected' : ''}>${t}</option>`
+      ).join('');
+      return `<div class="tag-filter-row">
+        <span class="tag-filter-label">Tag:</span>
+        <select class="filter-select" id="tag-filter-select">
+          <option value="all"${state.filterTag === 'all' ? ' selected' : ''}>All tags</option>
+          ${opts}
+        </select>
+      </div>`;
+    })() : ''}
+
     <div id="results-meta">${filtered.length} ${filtered.length===1?'entry':'entries'}${state.search ? ` matching "<b>${state.search}</b>"` : ''}</div>
 
     <div id="list">
@@ -679,6 +705,7 @@ function bindEvents() {
       state.filterFandom = 'all';
       state.filterSection = 'all';
       state.filterGenre = 'all';
+      state.filterTag = 'all';
       render();
     });
   });
@@ -686,9 +713,12 @@ function bindEvents() {
     el.addEventListener('click', () => {
       const f = el.dataset.fandom;
       state.filterFandom = state.filterFandom === f ? 'all' : f;
+      state.filterTag = 'all';
       render();
     });
   });
+  const tagFilterEl = document.getElementById('tag-filter-select');
+  if (tagFilterEl) tagFilterEl.addEventListener('change', e => { state.filterTag = e.target.value; render(); });
   document.querySelectorAll('[data-section]').forEach(el => {
     el.addEventListener('click', () => {
       const s = el.dataset.section;

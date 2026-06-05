@@ -34,9 +34,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 0
+    "_addedAt": 0,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_2",
@@ -51,9 +54,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 1
+    "_addedAt": 1,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_3",
@@ -68,9 +74,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 2
+    "_addedAt": 2,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_4",
@@ -102,9 +111,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Creature Harry"
+    ],
     "url": "",
-    "_addedAt": 4
+    "_addedAt": 4,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_6",
@@ -119,9 +131,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Creature Harry"
+    ],
     "url": "",
-    "_addedAt": 5
+    "_addedAt": 5,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_7",
@@ -136,9 +151,14 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Creature Harry",
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 6
+    "_addedAt": 6,
+    "favorite": true,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_8",
@@ -153,9 +173,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Creature Harry"
+    ],
     "url": "",
-    "_addedAt": 7
+    "_addedAt": 7,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_9",
@@ -170,9 +193,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 8
+    "_addedAt": 8,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_10",
@@ -187,9 +213,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 9
+    "_addedAt": 9,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_11",
@@ -204,9 +233,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 10
+    "_addedAt": 10,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_12",
@@ -221,9 +253,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 11
+    "_addedAt": 11,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_13",
@@ -252,12 +287,15 @@
     "hearts": 6408,
     "rating": "Mature",
     "pairing": "F/M, M/M",
-    "status": "Reading",
+    "status": "Finished",
     "userRating": 5,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 13
+    "_addedAt": 13,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_15",
@@ -272,9 +310,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 14
+    "_addedAt": 14,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_16",
@@ -289,9 +330,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 15
+    "_addedAt": 15,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_17",
@@ -306,9 +350,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 16
+    "_addedAt": 16,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_18",
@@ -320,12 +367,15 @@
     "hearts": 9069,
     "rating": "Mature",
     "pairing": "M/M",
-    "status": "Reading",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 17
+    "_addedAt": 17,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_19",
@@ -374,9 +424,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 20
+    "_addedAt": 20,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_22",
@@ -391,9 +444,15 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Powerful!Harry",
+      "Time/Dimension Travel HP",
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 21
+    "_addedAt": 21,
+    "favorite": true,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_23",
@@ -408,9 +467,14 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Powerful!Harry",
+      "Time/Dimension Travel HP",
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 22
+    "_addedAt": 22,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_24",
@@ -425,9 +489,14 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Powerful!Harry",
+      "Time/Dimension Travel HP",
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 23
+    "_addedAt": 23,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_25",
@@ -442,9 +511,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 24
+    "_addedAt": 24,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_26",
@@ -459,9 +531,13 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 25
+    "_addedAt": 25,
+    "favorite": true,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_27",
@@ -476,9 +552,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 26
+    "_addedAt": 26,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_28",
@@ -493,9 +572,13 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 27
+    "_addedAt": 27,
+    "favorite": true,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_29",
@@ -510,9 +593,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 28
+    "_addedAt": 28,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_30",
@@ -527,9 +613,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 29
+    "_addedAt": 29,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_31",
@@ -544,9 +633,13 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Mentor Severus",
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 30
+    "_addedAt": 30,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_32",
@@ -561,9 +654,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 31
+    "_addedAt": 31,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_33",
@@ -578,9 +674,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 32
+    "_addedAt": 32,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_34",
@@ -595,9 +694,13 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Powerful!Harry",
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 33
+    "_addedAt": 33,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_35",
@@ -612,9 +715,13 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry",
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 34
+    "_addedAt": 34,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_36",
@@ -629,9 +736,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 35
+    "_addedAt": 35,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_37",
@@ -646,9 +756,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 36
+    "_addedAt": 36,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_38",
@@ -663,9 +776,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 37
+    "_addedAt": 37,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_39",
@@ -731,9 +847,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry/Hermione"
+    ],
     "url": "",
-    "_addedAt": 41
+    "_addedAt": 41,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_43",
@@ -748,9 +867,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 42
+    "_addedAt": 42,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_44",
@@ -765,9 +887,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 43
+    "_addedAt": 43,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_45",
@@ -782,9 +907,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Creature Harry"
+    ],
     "url": "",
-    "_addedAt": 44
+    "_addedAt": 44,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_46",
@@ -816,9 +944,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Mentor Severus"
+    ],
     "url": "",
-    "_addedAt": 46
+    "_addedAt": 46,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_48",
@@ -830,12 +961,20 @@
     "hearts": 23568,
     "rating": "Explicit",
     "pairing": "F/M, M/M",
-    "status": "Reading",
+    "status": "finished",
     "userRating": 0,
-    "notes": "",
-    "tags": [],
+    "notes": "ongoing",
+    "tags": [
+      "Powerful!Harry",
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 47
+    "_addedAt": 47,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": null
   },
   {
     "id": "ff_49",
@@ -850,9 +989,13 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry in Slytherin",
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 48
+    "_addedAt": 48,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_50",
@@ -867,9 +1010,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 49
+    "_addedAt": 49,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_51",
@@ -884,9 +1030,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Creature Harry"
+    ],
     "url": "",
-    "_addedAt": 50
+    "_addedAt": 50,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_52",
@@ -900,10 +1049,17 @@
     "pairing": "",
     "status": "Finished",
     "userRating": 0,
-    "notes": "",
-    "tags": [],
+    "notes": "ongoing ch52",
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 51
+    "_addedAt": 51,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_53",
@@ -918,9 +1074,12 @@
     "status": "Finished",
     "userRating": 5,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 52
+    "_addedAt": 52,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_54",
@@ -937,7 +1096,9 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 53
+    "_addedAt": 53,
+    "favorite": true,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_55",
@@ -952,9 +1113,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 54
+    "_addedAt": 54,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_56",
@@ -969,9 +1133,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry/Ginny"
+    ],
     "url": "",
-    "_addedAt": 55
+    "_addedAt": 55,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_57",
@@ -986,9 +1153,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 56
+    "_addedAt": 56,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_58",
@@ -1003,9 +1173,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 57
+    "_addedAt": 57,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_59",
@@ -1020,9 +1193,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry/Hermione"
+    ],
     "url": "",
-    "_addedAt": 58
+    "_addedAt": 58,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_60",
@@ -1037,9 +1213,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 59
+    "_addedAt": 59,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_61",
@@ -1071,9 +1250,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 61
+    "_addedAt": 61,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_63",
@@ -1110,9 +1292,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 63
+    "_addedAt": 63,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_65",
@@ -1127,9 +1312,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 64
+    "_addedAt": 64,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_66",
@@ -1144,9 +1332,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 65
+    "_addedAt": 65,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_67",
@@ -1158,12 +1349,19 @@
     "hearts": 1582,
     "rating": "Mature",
     "pairing": "F/M, M/M",
-    "status": "Finished",
+    "status": "Dropped",
     "userRating": 0,
-    "notes": "",
-    "tags": [],
+    "notes": "up to Chapter 23: Chapter Twenty Three - I'll be home for . . . Yule",
+    "tags": [
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 66
+    "_addedAt": 66,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_68",
@@ -1178,9 +1376,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 67
+    "_addedAt": 67,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_69",
@@ -1197,7 +1398,9 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 68
+    "_addedAt": 68,
+    "favorite": true,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_70",
@@ -1212,9 +1415,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 69
+    "_addedAt": 69,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_71",
@@ -1226,12 +1432,19 @@
     "hearts": 1341,
     "rating": "Explicit",
     "pairing": "F/M, M/M",
-    "status": "Finished",
+    "status": "Dropped",
     "userRating": 0,
-    "notes": "",
-    "tags": [],
+    "notes": "Chapter 28: Twenty-Seven: The Transformations",
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 70
+    "_addedAt": 70,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_72",
@@ -1246,9 +1459,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 71
+    "_addedAt": 71,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_73",
@@ -1263,9 +1479,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 72
+    "_addedAt": 72,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_74",
@@ -1280,9 +1499,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Mentor Severus"
+    ],
     "url": "",
-    "_addedAt": 73
+    "_addedAt": 73,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_75",
@@ -1319,9 +1541,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 75
+    "_addedAt": 75,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_77",
@@ -1336,9 +1561,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 76
+    "_addedAt": 76,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_78",
@@ -1353,9 +1581,12 @@
     "status": "Finished",
     "userRating": 5,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 77
+    "_addedAt": 77,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_79",
@@ -1370,9 +1601,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry/Hermione"
+    ],
     "url": "",
-    "_addedAt": 78
+    "_addedAt": 78,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_80",
@@ -1387,9 +1621,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 79
+    "_addedAt": 79,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_81",
@@ -1404,9 +1641,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 80
+    "_addedAt": 80,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_82",
@@ -1455,9 +1695,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 83
+    "_addedAt": 83,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_85",
@@ -1472,9 +1715,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry/Hermione"
+    ],
     "url": "",
-    "_addedAt": 84
+    "_addedAt": 84,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_86",
@@ -1489,9 +1735,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Creature Harry"
+    ],
     "url": "",
-    "_addedAt": 85
+    "_addedAt": 85,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_87",
@@ -1540,9 +1789,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Creature Harry"
+    ],
     "url": "",
-    "_addedAt": 88
+    "_addedAt": 88,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_90",
@@ -1557,9 +1809,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Creature Harry"
+    ],
     "url": "",
-    "_addedAt": 89
+    "_addedAt": 89,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_91",
@@ -1574,9 +1829,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 90
+    "_addedAt": 90,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_92",
@@ -1591,9 +1849,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 91
+    "_addedAt": 91,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_93",
@@ -1608,9 +1869,13 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry in Slytherin",
+      "Mentor Severus"
+    ],
     "url": "",
-    "_addedAt": 92
+    "_addedAt": 92,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_94",
@@ -1659,9 +1924,14 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Mentor Severus",
+      "Powerful!Harry",
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 95
+    "_addedAt": 95,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_97",
@@ -1676,9 +1946,14 @@
     "status": "Finished",
     "userRating": 5,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Mentor Severus",
+      "Powerful!Harry",
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 96
+    "_addedAt": 96,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_98",
@@ -1710,9 +1985,14 @@
     "status": "Finished",
     "userRating": 5,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry",
+      "Mentor Severus",
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 98
+    "_addedAt": 98,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_100",
@@ -1727,9 +2007,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 99
+    "_addedAt": 99,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_101",
@@ -1744,9 +2027,12 @@
     "status": "Finished",
     "userRating": 4,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 100
+    "_addedAt": 100,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_102",
@@ -1759,11 +2045,16 @@
     "rating": "Teen+",
     "pairing": "Gen",
     "status": "Finished",
-    "userRating": 0,
-    "notes": "",
+    "userRating": 1,
+    "notes": "not that good",
     "tags": [],
     "url": "",
-    "_addedAt": 101
+    "_addedAt": 101,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-05T18:56:35.530Z"
   },
   {
     "id": "ff_103",
@@ -1778,9 +2069,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 102
+    "_addedAt": 102,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_104",
@@ -1811,10 +2105,17 @@
     "pairing": "M/M",
     "status": "Finished",
     "userRating": 0,
-    "notes": "",
-    "tags": [],
+    "notes": "Harry cat animagus very cute",
+    "tags": [
+      "Creature Harry"
+    ],
     "url": "",
-    "_addedAt": 104
+    "_addedAt": 104,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-05T18:56:10.631Z"
   },
   {
     "id": "ff_106",
@@ -1829,9 +2130,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 105
+    "_addedAt": 105,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_107",
@@ -1846,9 +2150,12 @@
     "status": "Finished",
     "userRating": 4,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 106
+    "_addedAt": 106,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_108",
@@ -1863,9 +2170,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 107
+    "_addedAt": 107,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_109",
@@ -1880,9 +2190,13 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP",
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 108
+    "_addedAt": 108,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_110",
@@ -1897,9 +2211,13 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP",
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 109
+    "_addedAt": 109,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_111",
@@ -1914,9 +2232,13 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Powerful!Harry",
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 110
+    "_addedAt": 110,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_112",
@@ -1931,9 +2253,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 111
+    "_addedAt": 111,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_113",
@@ -1965,9 +2290,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 113
+    "_addedAt": 113,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_115",
@@ -1982,9 +2310,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 114
+    "_addedAt": 114,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_116",
@@ -1996,12 +2327,15 @@
     "hearts": 13946,
     "rating": "Teen+",
     "pairing": "M/M",
-    "status": "Finished",
+    "status": "Dropped",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 115
+    "_addedAt": 115,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_117",
@@ -2016,9 +2350,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 116
+    "_addedAt": 116,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_118",
@@ -2030,12 +2367,19 @@
     "hearts": 13691,
     "rating": "Explicit",
     "pairing": "M/M",
-    "status": "Finished",
+    "status": "Dropped",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 117
+    "_addedAt": 117,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_119",
@@ -2050,9 +2394,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 118
+    "_addedAt": 118,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_120",
@@ -2069,7 +2416,9 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 119
+    "_addedAt": 119,
+    "favorite": true,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_121",
@@ -2084,9 +2433,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 120
+    "_addedAt": 120,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_122",
@@ -2101,9 +2453,12 @@
     "status": "Finished",
     "userRating": 5,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 121
+    "_addedAt": 121,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_123",
@@ -2118,9 +2473,13 @@
     "status": "Finished",
     "userRating": 5,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 122
+    "_addedAt": 122,
+    "favorite": true,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_124",
@@ -2135,9 +2494,12 @@
     "status": "Finished",
     "userRating": 5,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 123
+    "_addedAt": 123,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_125",
@@ -2152,9 +2514,14 @@
     "status": "Finished",
     "userRating": 5,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry",
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 124
+    "_addedAt": 124,
+    "favorite": true,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_126",
@@ -2169,9 +2536,12 @@
     "status": "Finished",
     "userRating": 5,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Mentor Severus"
+    ],
     "url": "",
-    "_addedAt": 125
+    "_addedAt": 125,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_127",
@@ -2186,9 +2556,12 @@
     "status": "Finished",
     "userRating": 5,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Creature Harry"
+    ],
     "url": "",
-    "_addedAt": 126
+    "_addedAt": 126,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_128",
@@ -2203,9 +2576,12 @@
     "status": "Finished",
     "userRating": 5,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 127
+    "_addedAt": 127,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_129",
@@ -2220,9 +2596,12 @@
     "status": "Finished",
     "userRating": 5,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 128
+    "_addedAt": 128,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_130",
@@ -2237,9 +2616,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 129
+    "_addedAt": 129,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_131",
@@ -2254,9 +2636,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 130
+    "_addedAt": 130,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_132",
@@ -2271,9 +2656,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Mentor Severus"
+    ],
     "url": "",
-    "_addedAt": 131
+    "_addedAt": 131,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_133",
@@ -2288,9 +2676,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 132
+    "_addedAt": 132,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_134",
@@ -2322,9 +2713,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 134
+    "_addedAt": 134,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_136",
@@ -2339,9 +2733,12 @@
     "status": "Finished",
     "userRating": 4,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 135
+    "_addedAt": 135,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_137",
@@ -2356,9 +2753,13 @@
     "status": "Finished",
     "userRating": 4,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 136
+    "_addedAt": 136,
+    "favorite": true,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_138",
@@ -2373,9 +2774,12 @@
     "status": "Finished",
     "userRating": 4,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 137
+    "_addedAt": 137,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_139",
@@ -2390,9 +2794,13 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry in Slytherin",
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 138
+    "_addedAt": 138,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_140",
@@ -2407,9 +2815,12 @@
     "status": "Dropped",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 139
+    "_addedAt": 139,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_141",
@@ -2424,9 +2835,16 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
-    "_addedAt": 140
+    "tags": [
+      "Time/Dimension Travel HP"
+    ],
+    "url": "https://archiveofourown.org/works/60352669",
+    "_addedAt": 140,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-05T18:54:36.063Z"
   },
   {
     "id": "ff_142",
@@ -2441,9 +2859,18 @@
     "status": "Finished",
     "userRating": 5,
     "notes": "",
-    "tags": [],
-    "url": "",
-    "_addedAt": 141
+    "tags": [
+      "Powerful!Harry",
+      "Time/Dimension Travel HP"
+    ],
+    "url": "https://archiveofourown.org/works/50430850",
+    "_addedAt": 141,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-05T18:54:18.818Z",
+    "favorite": true
   },
   {
     "id": "ff_143",
@@ -2458,9 +2885,18 @@
     "status": "Finished",
     "userRating": 5,
     "notes": "",
-    "tags": [],
-    "url": "",
-    "_addedAt": 142
+    "tags": [
+      "Drarry",
+      "Harry in Slytherin"
+    ],
+    "url": "https://archiveofourown.org/works/20049589",
+    "_addedAt": 142,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-05T18:53:51.614Z",
+    "favorite": true
   },
   {
     "id": "ff_144",
@@ -2491,10 +2927,17 @@
     "pairing": "M/M",
     "status": "Finished",
     "userRating": 0,
-    "notes": "",
-    "tags": [],
+    "notes": "Good Drarry",
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 144
+    "_addedAt": 144,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-05T18:52:42.734Z"
   },
   {
     "id": "ff_146",
@@ -2526,9 +2969,12 @@
     "status": "Finished",
     "userRating": 5,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 146
+    "_addedAt": 146,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_148",
@@ -2543,9 +2989,12 @@
     "status": "Finished",
     "userRating": 5,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 147
+    "_addedAt": 147,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_149",
@@ -2560,9 +3009,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 148
+    "_addedAt": 148,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_150",
@@ -2576,10 +3028,17 @@
     "pairing": "M/M",
     "status": "Finished",
     "userRating": 5,
-    "notes": "",
-    "tags": [],
+    "notes": "(Harry becomes younger - Drarry)",
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 149
+    "_addedAt": 149,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-05T18:52:20.399Z"
   },
   {
     "id": "ff_151",
@@ -2596,7 +3055,12 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 150
+    "_addedAt": 150,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-05T18:52:02.614Z"
   },
   {
     "id": "ff_152",
@@ -2611,9 +3075,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Mentor Severus"
+    ],
     "url": "",
-    "_addedAt": 151
+    "_addedAt": 151,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_153",
@@ -2662,9 +3129,12 @@
     "status": "Finished",
     "userRating": 5,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 154
+    "_addedAt": 154,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_156",
@@ -2679,9 +3149,13 @@
     "status": "Finished",
     "userRating": 4,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Creature Harry",
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 155
+    "_addedAt": 155,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_157",
@@ -2696,9 +3170,14 @@
     "status": "Finished",
     "userRating": 4,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Mentor Severus",
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 156
+    "_addedAt": 156,
+    "favorite": true,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_158",
@@ -2713,9 +3192,12 @@
     "status": "Finished",
     "userRating": 4,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 157
+    "_addedAt": 157,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_159",
@@ -2730,9 +3212,12 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 158
+    "_addedAt": 158,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_160",
@@ -2747,9 +3232,14 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry/Ginny",
+      "Powerful!Harry",
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 159
+    "_addedAt": 159,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_161",
@@ -2764,9 +3254,13 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry",
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 160
+    "_addedAt": 160,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_162",
@@ -2781,9 +3275,13 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry",
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 161
+    "_addedAt": 161,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_163",
@@ -2798,9 +3296,13 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry",
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 162
+    "_addedAt": 162,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_164",
@@ -2812,12 +3314,15 @@
     "hearts": 22264,
     "rating": "",
     "pairing": "",
-    "status": "Dropped",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 163
+    "_addedAt": 163,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_165",
@@ -2829,12 +3334,13 @@
     "hearts": 2487,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 164
+    "_addedAt": 164,
+    "finishedAt": "2026-06-05T21:34:38.653Z"
   },
   {
     "id": "ff_166",
@@ -2846,12 +3352,13 @@
     "hearts": 3472,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 165
+    "_addedAt": 165,
+    "finishedAt": "2026-06-05T21:34:37.437Z"
   },
   {
     "id": "ff_167",
@@ -2863,12 +3370,13 @@
     "hearts": 5499,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 166
+    "_addedAt": 166,
+    "finishedAt": "2026-06-05T21:34:35.489Z"
   },
   {
     "id": "ff_168",
@@ -2880,12 +3388,15 @@
     "hearts": 6933,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 167
+    "_addedAt": 167,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_169",
@@ -2897,12 +3408,15 @@
     "hearts": 2808,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 168
+    "_addedAt": 168,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_170",
@@ -2914,12 +3428,16 @@
     "hearts": 4992,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Powerful!Harry",
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 169
+    "_addedAt": 169,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_171",
@@ -2931,12 +3449,15 @@
     "hearts": 8837,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 170
+    "_addedAt": 170,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_172",
@@ -2948,12 +3469,16 @@
     "hearts": 3654,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry in Slytherin",
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 171
+    "_addedAt": 171,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_173",
@@ -2968,9 +3493,13 @@
     "status": "Finished",
     "userRating": 5,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry in Slytherin",
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 172
+    "_addedAt": 172,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_174",
@@ -2982,12 +3511,17 @@
     "hearts": 33,
     "rating": "",
     "pairing": "Harry/Pansy",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 173
+    "_addedAt": 173,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-05T18:51:26.284Z"
   },
   {
     "id": "ff_175",
@@ -2999,12 +3533,14 @@
     "hearts": 6580,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 174
+    "_addedAt": 174,
+    "favorite": true,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_176",
@@ -3016,12 +3552,15 @@
     "hearts": 10732,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 175
+    "_addedAt": 175,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_177",
@@ -3033,12 +3572,13 @@
     "hearts": 10169,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 176
+    "_addedAt": 176,
+    "finishedAt": "2026-06-05T21:34:32.003Z"
   },
   {
     "id": "ff_178",
@@ -3050,12 +3590,15 @@
     "hearts": 2245,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 177
+    "_addedAt": 177,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_179",
@@ -3067,12 +3610,15 @@
     "hearts": 7873,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 178
+    "_addedAt": 178,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_180",
@@ -3084,12 +3630,15 @@
     "hearts": 1667,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 179
+    "_addedAt": 179,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_181",
@@ -3101,12 +3650,13 @@
     "hearts": 2987,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 180
+    "_addedAt": 180,
+    "finishedAt": "2026-06-05T21:34:30.605Z"
   },
   {
     "id": "ff_182",
@@ -3118,12 +3668,16 @@
     "hearts": 4315,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry in Slytherin",
+      "Harry/Ginny"
+    ],
     "url": "",
-    "_addedAt": 181
+    "_addedAt": 181,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_183",
@@ -3135,12 +3689,15 @@
     "hearts": 9865,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 182
+    "_addedAt": 182,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_184",
@@ -3152,12 +3709,15 @@
     "hearts": 12680,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 183
+    "_addedAt": 183,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_185",
@@ -3169,12 +3729,16 @@
     "hearts": 39036,
     "rating": "Mature",
     "pairing": "Various",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP",
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 184
+    "_addedAt": 184,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_186",
@@ -3186,12 +3750,15 @@
     "hearts": 12536,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 185
+    "_addedAt": 185,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_187",
@@ -3203,12 +3770,16 @@
     "hearts": 25394,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP",
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 186
+    "_addedAt": 186,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_188",
@@ -3220,12 +3791,16 @@
     "hearts": 2156,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry in Slytherin",
+      "Harry/Ginny"
+    ],
     "url": "",
-    "_addedAt": 187
+    "_addedAt": 187,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_189",
@@ -3237,12 +3812,15 @@
     "hearts": 10290,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 188
+    "_addedAt": 188,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_190",
@@ -3254,12 +3832,15 @@
     "hearts": 21324,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 189
+    "_addedAt": 189,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_191",
@@ -3271,12 +3852,15 @@
     "hearts": 5611,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 190
+    "_addedAt": 190,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_192",
@@ -3288,12 +3872,15 @@
     "hearts": 3914,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 191
+    "_addedAt": 191,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_193",
@@ -3305,12 +3892,15 @@
     "hearts": 10327,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 192
+    "_addedAt": 192,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_194",
@@ -3322,12 +3912,16 @@
     "hearts": 2902,
     "rating": "Mature",
     "pairing": "F/M",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry/Hermione",
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 193
+    "_addedAt": 193,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_195",
@@ -3339,12 +3933,15 @@
     "hearts": 4624,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP"
+    ],
     "url": "",
-    "_addedAt": 194
+    "_addedAt": 194,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_196",
@@ -3356,12 +3953,15 @@
     "hearts": 843,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry/Ginny"
+    ],
     "url": "",
-    "_addedAt": 195
+    "_addedAt": 195,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_197",
@@ -3373,12 +3973,19 @@
     "hearts": 25281,
     "rating": "Mature",
     "pairing": "F/M, M/M",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
-    "_addedAt": 196
+    "tags": [
+      "Tomarry"
+    ],
+    "url": "https://archiveofourown.org/works/7040089/chapters/16011331",
+    "_addedAt": 196,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_198",
@@ -3390,12 +3997,15 @@
     "hearts": 3775,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 197
+    "_addedAt": 197,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_199",
@@ -3407,12 +4017,15 @@
     "hearts": 11028,
     "rating": "Teen+",
     "pairing": "M/M",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 198
+    "_addedAt": 198,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_200",
@@ -3424,12 +4037,15 @@
     "hearts": 15270,
     "rating": "Explicit",
     "pairing": "M/M",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
-    "_addedAt": 199
+    "_addedAt": 199,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_201",
@@ -3441,12 +4057,15 @@
     "hearts": 11073,
     "rating": "Mature",
     "pairing": "M/M",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 200
+    "_addedAt": 200,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_202",
@@ -3458,12 +4077,16 @@
     "hearts": 9192,
     "rating": "Not Rated",
     "pairing": "F/F, F/M",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 201
+    "_addedAt": 201,
+    "favorite": true,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_203",
@@ -3475,12 +4098,15 @@
     "hearts": 2873,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 202
+    "_addedAt": 202,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_204",
@@ -3492,12 +4118,15 @@
     "hearts": 17626,
     "rating": "Mature",
     "pairing": "F/M",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 203
+    "_addedAt": 203,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_205",
@@ -3509,12 +4138,15 @@
     "hearts": 3524,
     "rating": "Explicit",
     "pairing": "M/M",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 204
+    "_addedAt": 204,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_206",
@@ -3526,12 +4158,15 @@
     "hearts": 6272,
     "rating": "Explicit",
     "pairing": "M/M",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 205
+    "_addedAt": 205,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_207",
@@ -3543,12 +4178,15 @@
     "hearts": 5541,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 206
+    "_addedAt": 206,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_208",
@@ -3560,12 +4198,15 @@
     "hearts": 2887,
     "rating": "Mature",
     "pairing": "M/M",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 207
+    "_addedAt": 207,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_209",
@@ -3577,12 +4218,13 @@
     "hearts": 4151,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 208
+    "_addedAt": 208,
+    "finishedAt": "2026-06-05T21:34:29.088Z"
   },
   {
     "id": "ff_210",
@@ -3594,12 +4236,14 @@
     "hearts": 820,
     "rating": "Explicit",
     "pairing": "F/M",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 209
+    "_addedAt": 209,
+    "favorite": true,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_211",
@@ -3611,12 +4255,15 @@
     "hearts": 11721,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Creature Harry"
+    ],
     "url": "",
-    "_addedAt": 210
+    "_addedAt": 210,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_212",
@@ -3628,12 +4275,17 @@
     "hearts": 1470,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry/Ginny",
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 211
+    "_addedAt": 211,
+    "favorite": true,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_213",
@@ -3645,12 +4297,17 @@
     "hearts": 867,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry/Ginny",
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 212
+    "_addedAt": 212,
+    "favorite": true,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_214",
@@ -3662,12 +4319,17 @@
     "hearts": 4056,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry/Ginny",
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 213
+    "_addedAt": 213,
+    "favorite": true,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_215",
@@ -3679,12 +4341,17 @@
     "hearts": 603,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry/Ginny",
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 214
+    "_addedAt": 214,
+    "favorite": true,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_216",
@@ -3696,12 +4363,17 @@
     "hearts": 670,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry/Ginny",
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 215
+    "_addedAt": 215,
+    "favorite": true,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_217",
@@ -3713,12 +4385,17 @@
     "hearts": 3758,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry/Ginny",
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 216
+    "_addedAt": 216,
+    "favorite": true,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_218",
@@ -3730,12 +4407,17 @@
     "hearts": 3812,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry/Ginny",
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 217
+    "_addedAt": 217,
+    "favorite": true,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_219",
@@ -3747,29 +4429,39 @@
     "hearts": null,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry/Ginny",
+      "Powerful!Harry"
+    ],
     "url": "",
-    "_addedAt": 218
+    "_addedAt": 218,
+    "favorite": true,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_220",
     "type": "ff",
-    "title": "I suoi occhi di Eltanin Black",
-    "author": "-",
+    "title": "I suoi occhi",
+    "author": "Eltanin Black",
     "fandom": "Harry Potter",
     "words": null,
     "hearts": null,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 219
+    "_addedAt": 219,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-05T18:48:37.403Z"
   },
   {
     "id": "ff_221",
@@ -3781,12 +4473,13 @@
     "hearts": null,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 220
+    "_addedAt": 220,
+    "finishedAt": "2026-06-05T19:59:43.933Z"
   },
   {
     "id": "ff_222",
@@ -3798,12 +4491,13 @@
     "hearts": null,
     "rating": "https://www.fanfiction.net/s/1033104/1/Come-Together",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 221
+    "_addedAt": 221,
+    "finishedAt": "2026-06-05T19:59:46.133Z"
   },
   {
     "id": "ff_223",
@@ -3815,12 +4509,13 @@
     "hearts": null,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 222
+    "_addedAt": 222,
+    "finishedAt": "2026-06-05T21:34:25.471Z"
   },
   {
     "id": "ff_224",
@@ -3832,12 +4527,13 @@
     "hearts": null,
     "rating": "https://www.fanfiction.net/s/4403083/1/Royally-Tripping",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 223
+    "_addedAt": 223,
+    "finishedAt": "2026-06-05T19:59:54.866Z"
   },
   {
     "id": "ff_225",
@@ -3847,14 +4543,19 @@
     "fandom": "Harry Potter",
     "words": 136282,
     "hearts": null,
-    "rating": "https://archive.transformativeworks.org/works/46546192",
+    "rating": "",
     "pairing": "Harry/Cedric",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 224
+    "_addedAt": 224,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-05T11:00:00.000Z"
   },
   {
     "id": "ff_226",
@@ -3866,12 +4567,13 @@
     "hearts": null,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 225
+    "_addedAt": 225,
+    "finishedAt": "2026-06-05T21:34:24.188Z"
   },
   {
     "id": "ff_227",
@@ -3883,12 +4585,13 @@
     "hearts": null,
     "rating": "https://archive.transformativeworks.org/series/598429",
     "pairing": "Tomarry",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 226
+    "_addedAt": 226,
+    "finishedAt": "2026-06-05T20:00:03.183Z"
   },
   {
     "id": "ff_228",
@@ -3900,12 +4603,16 @@
     "hearts": null,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Time/Dimension Travel HP",
+      "Tomarry"
+    ],
     "url": "",
-    "_addedAt": 227
+    "_addedAt": 227,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_229",
@@ -3917,12 +4624,13 @@
     "hearts": null,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 228
+    "_addedAt": 228,
+    "finishedAt": "2026-06-05T21:34:22.371Z"
   },
   {
     "id": "ff_230",
@@ -3932,14 +4640,19 @@
     "fandom": "Harry Potter",
     "words": 29506,
     "hearts": null,
-    "rating": "https://archiveofourown.org/works/11796285",
+    "rating": "",
     "pairing": "Drarry",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 229
+    "_addedAt": 229,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-05T18:55:48.281Z"
   },
   {
     "id": "ff_231",
@@ -3951,12 +4664,13 @@
     "hearts": null,
     "rating": "http://insecure.archiveofourown.org/works/25663756/chapters/62304010",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 230
+    "_addedAt": 230,
+    "finishedAt": "2026-06-05T21:34:19.771Z"
   },
   {
     "id": "ff_232",
@@ -3968,12 +4682,13 @@
     "hearts": null,
     "rating": "https://archiveofourown.org/works/16729350/chapters/39240375",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 231
+    "_addedAt": 231,
+    "finishedAt": "2026-06-05T21:34:18.287Z"
   },
   {
     "id": "ff_233",
@@ -3985,12 +4700,13 @@
     "hearts": null,
     "rating": "https://www.fanfiction.net/s/11563093/1/What-I-d-Have-Done",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 232
+    "_addedAt": 232,
+    "finishedAt": "2026-06-05T21:34:15.954Z"
   },
   {
     "id": "ff_234",
@@ -4002,12 +4718,13 @@
     "hearts": null,
     "rating": "https://archiveofourown.org/works/8191642/chapters/18768382",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 233
+    "_addedAt": 233,
+    "finishedAt": "2026-06-05T21:34:05.820Z"
   },
   {
     "id": "ff_235",
@@ -4019,12 +4736,13 @@
     "hearts": null,
     "rating": "https://archiveofourown.org/works/33860941",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 234
+    "_addedAt": 234,
+    "finishedAt": "2026-06-05T21:34:02.887Z"
   },
   {
     "id": "ff_236",
@@ -4036,12 +4754,13 @@
     "hearts": null,
     "rating": "https://www.fanfiction.net/s/9606092/1/Another-s-Favor",
     "pairing": "Merlin/Mithian",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 235
+    "_addedAt": 235,
+    "finishedAt": "2026-06-05T21:34:00.771Z"
   },
   {
     "id": "ff_237",
@@ -4053,12 +4772,13 @@
     "hearts": null,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 236
+    "_addedAt": 236,
+    "finishedAt": "2026-06-05T21:33:58.654Z"
   },
   {
     "id": "ff_238",
@@ -4070,12 +4790,13 @@
     "hearts": null,
     "rating": "https://archiveofourown.org/works/42494340/chapters/106730463",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 237
+    "_addedAt": 237,
+    "finishedAt": "2026-06-05T21:33:56.554Z"
   },
   {
     "id": "ff_239",
@@ -4087,12 +4808,13 @@
     "hearts": null,
     "rating": "https://archiveofourown.org/works/28939431/chapters/71007483",
     "pairing": "",
-    "status": "TBR",
-    "userRating": 0,
+    "status": "Finished",
+    "userRating": 5,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 238
+    "_addedAt": 238,
+    "finishedAt": "2026-06-05T21:33:53.221Z"
   },
   {
     "id": "ff_240",
@@ -4104,7 +4826,7 @@
     "hearts": null,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Dropped",
     "userRating": 0,
     "notes": "",
     "tags": [],
@@ -4121,12 +4843,13 @@
     "hearts": null,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 240
+    "_addedAt": 240,
+    "finishedAt": "2026-06-05T21:33:42.588Z"
   },
   {
     "id": "ff_242",
@@ -4138,12 +4861,13 @@
     "hearts": null,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 241
+    "_addedAt": 241,
+    "finishedAt": "2026-06-05T21:33:40.688Z"
   },
   {
     "id": "ff_243",
@@ -4155,12 +4879,13 @@
     "hearts": null,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
-    "userRating": 0,
+    "status": "Finished",
+    "userRating": 5,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 242
+    "_addedAt": 242,
+    "finishedAt": "2026-06-05T21:33:37.388Z"
   },
   {
     "id": "ff_244",
@@ -4172,12 +4897,13 @@
     "hearts": null,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
-    "userRating": 0,
+    "status": "Finished",
+    "userRating": 5,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 243
+    "_addedAt": 243,
+    "finishedAt": "2026-06-05T21:33:32.455Z"
   },
   {
     "id": "ff_245",
@@ -4187,14 +4913,19 @@
     "fandom": "Merlin (BBC)",
     "words": 13411,
     "hearts": null,
-    "rating": "https://archiveofourown.org/works/38648622/chapters/96619968",
+    "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
-    "url": "",
-    "_addedAt": 244
+    "url": "https://archiveofourown.org/works/38648622/chapters/96619968",
+    "_addedAt": 244,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-05T21:33:25.155Z"
   },
   {
     "id": "ff_246",
@@ -4206,12 +4937,13 @@
     "hearts": null,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 245
+    "_addedAt": 245,
+    "finishedAt": "2026-06-05T21:32:43.838Z"
   },
   {
     "id": "ff_247",
@@ -4223,12 +4955,13 @@
     "hearts": null,
     "rating": "https://archiveofourown.gay/works/53584723",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 246
+    "_addedAt": 246,
+    "finishedAt": "2026-06-05T21:32:34.988Z"
   },
   {
     "id": "ff_248",
@@ -4240,12 +4973,13 @@
     "hearts": null,
     "rating": "https://archiveofourown.org/works/25015792/chapters/60575491",
     "pairing": "",
-    "status": "TBR",
-    "userRating": 0,
+    "status": "Finished",
+    "userRating": 4,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 247
+    "_addedAt": 247,
+    "finishedAt": "2026-06-05T21:32:31.804Z"
   },
   {
     "id": "ff_249",
@@ -4257,12 +4991,13 @@
     "hearts": null,
     "rating": "https://archiveofourown.org/works/26200348/chapters/63760795",
     "pairing": "",
-    "status": "TBR",
-    "userRating": 0,
+    "status": "Finished",
+    "userRating": 5,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 248
+    "_addedAt": 248,
+    "finishedAt": "2026-06-05T21:32:27.155Z"
   },
   {
     "id": "ff_250",
@@ -4274,12 +5009,13 @@
     "hearts": null,
     "rating": "https://archiveofourown.org/works/21981151/chapters/52452565",
     "pairing": "",
-    "status": "TBR",
-    "userRating": 0,
+    "status": "Finished",
+    "userRating": 5,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 249
+    "_addedAt": 249,
+    "finishedAt": "2026-06-05T21:32:23.756Z"
   },
   {
     "id": "ff_251",
@@ -4291,12 +5027,13 @@
     "hearts": null,
     "rating": "https://archive.transformativeworks.org/works/53427841",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 250
+    "_addedAt": 250,
+    "finishedAt": "2026-06-05T21:32:18.289Z"
   },
   {
     "id": "ff_252",
@@ -4308,12 +5045,13 @@
     "hearts": null,
     "rating": "https://archiveofourown.org/works/33475549/chapters/94685671",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 251
+    "_addedAt": 251,
+    "finishedAt": "2026-06-05T21:32:15.054Z"
   },
   {
     "id": "ff_253",
@@ -4325,12 +5063,13 @@
     "hearts": null,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 252
+    "_addedAt": 252,
+    "finishedAt": "2026-06-05T21:32:12.939Z"
   },
   {
     "id": "ff_254",
@@ -4342,12 +5081,13 @@
     "hearts": null,
     "rating": "https://archiveofourown.org/works/54860815#main",
     "pairing": "",
-    "status": "TBR",
+    "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 253
+    "_addedAt": 253,
+    "finishedAt": "2026-06-05T21:32:07.273Z"
   },
   {
     "id": "ff_255",
@@ -4359,12 +5099,13 @@
     "hearts": null,
     "rating": "",
     "pairing": "",
-    "status": "TBR",
-    "userRating": 0,
+    "status": "Finished",
+    "userRating": 5,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 254
+    "_addedAt": 254,
+    "finishedAt": "2026-06-05T21:31:25.925Z"
   },
   {
     "id": "book_2",
@@ -10074,99 +10815,117 @@
     "type": "ff",
     "title": "The Bonds of Blood",
     "author": "",
-    "fandom": "Harry Potter - J. K. Rowling",
+    "fandom": "Harry Potter",
     "pairing": "",
     "rating": "",
-    "status": "TBR",
+    "status": "Finished",
     "words": 191744,
     "hearts": null,
     "pages": null,
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry/Ginny"
+    ],
     "url": "https://www.fanfiction.net/s/5435295/1/The-Bonds-of-Blood",
     "oneshot": false,
-    "finishedAt": null,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00",
     "id": "1780683480264_sd6xeg",
-    "_addedAt": 612
+    "_addedAt": 612,
+    "genre": "",
+    "section": ""
   },
   {
     "type": "ff",
     "title": "Under Pressure",
     "author": "VivacissimoVoce",
-    "fandom": "Harry Potter - J. K. Rowling",
+    "fandom": "Harry Potter",
     "pairing": "",
     "rating": "",
-    "status": "TBR",
+    "status": "Finished",
     "words": 21654,
     "hearts": 250,
     "pages": null,
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
     "oneshot": false,
-    "finishedAt": null,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00",
     "id": "1780683480264_gwul29",
-    "_addedAt": 613
+    "_addedAt": 613,
+    "genre": "",
+    "section": ""
   },
   {
     "type": "ff",
     "title": "Equipoise",
     "author": "karamelised",
-    "fandom": "Harry Potter - J. K. Rowling",
+    "fandom": "Harry Potter",
     "pairing": "M/M",
-    "rating": "Teen And Up Audiences",
-    "status": "TBR",
+    "rating": "",
+    "status": "Finished",
     "words": 88244,
     "hearts": 249,
     "pages": null,
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Drarry"
+    ],
     "url": "",
     "oneshot": false,
-    "finishedAt": null,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00",
     "id": "1780683480264_m4avg2",
-    "_addedAt": 614
+    "_addedAt": 614,
+    "genre": "",
+    "section": ""
   },
   {
     "type": "ff",
     "title": "Namesake Necklace",
     "author": "WiCeBa",
-    "fandom": "Harry Potter - J. K. Rowling",
+    "fandom": "Harry Potter",
     "pairing": "",
     "rating": "",
-    "status": "TBR",
+    "status": "Finished",
     "words": 121354,
     "hearts": 307,
     "pages": null,
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Mentor Severus"
+    ],
     "url": "",
     "oneshot": false,
-    "finishedAt": null,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00",
     "id": "1780683480264_tr2ews",
-    "_addedAt": 615
+    "_addedAt": 615,
+    "genre": "",
+    "section": ""
   },
   {
     "type": "ff",
     "title": "Paradigm Shift",
     "author": "cassiopeia721, Quinntessentially",
-    "fandom": "Harry Potter - J. K. Rowling",
+    "fandom": "Harry Potter",
     "pairing": "",
     "rating": "",
-    "status": "TBR",
+    "status": "Finished",
     "words": 65771,
     "hearts": 6753,
     "pages": null,
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry/Hermione"
+    ],
     "url": "https://archiveofourown.org/works/28392219",
     "oneshot": false,
-    "finishedAt": null,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00",
     "id": "1780683480264_lv6rgr",
     "_addedAt": 616,
     "genre": "",
@@ -10176,40 +10935,48 @@
     "type": "ff",
     "title": "The Legacy",
     "author": "Keira Marcos",
-    "fandom": "Harry Potter - J. K. Rowling",
+    "fandom": "Harry Potter",
     "pairing": "",
     "rating": "",
-    "status": "TBR",
+    "status": "Finished",
     "words": 61067,
     "hearts": null,
     "pages": null,
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry/Hermione"
+    ],
     "url": "https://keiramarcos.com/category/fandom/harry-potter/",
     "oneshot": false,
-    "finishedAt": null,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00",
     "id": "1780683480264_8er07s",
-    "_addedAt": 617
+    "_addedAt": 617,
+    "genre": "",
+    "section": ""
   },
   {
     "type": "ff",
     "title": "Courting Hermione Granger",
     "author": "Keira Marcos",
-    "fandom": "Harry Potter - J. K. Rowling",
+    "fandom": "Harry Potter",
     "pairing": "F/M",
     "rating": "",
-    "status": "TBR",
+    "status": "Finished",
     "words": 90741,
     "hearts": null,
     "pages": null,
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry/Hermione"
+    ],
     "url": "https://keiramarcos.com/2016/05/courting-hermione-granger-chapters-11-20/",
     "oneshot": false,
-    "finishedAt": null,
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00",
     "id": "1780683480264_p8n8vc",
-    "_addedAt": 618
+    "_addedAt": 618,
+    "genre": "",
+    "section": ""
   }
 ]
