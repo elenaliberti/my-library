@@ -1,7 +1,37 @@
 const { app, BrowserWindow, ipcMain, dialog, shell, session } = require('electron')
 const path = require('path')
 const fs = require('fs')
+const https = require('https')
 const { execFile } = require('child_process')
+
+function nodeGet(urlStr, extraHeaders = {}) {
+  return new Promise((resolve, reject) => {
+    const u = new URL(urlStr)
+    const opts = {
+      hostname: u.hostname, path: u.pathname + u.search, port: 443,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,*/*;q=0.9',
+        'Accept-Language': 'en-US,en;q=0.5',
+        ...extraHeaders,
+      },
+    }
+    const req = https.get(opts, res => {
+      if ([301,302,303,307,308].includes(res.statusCode) && res.headers.location) {
+        const loc = res.headers.location.startsWith('http')
+          ? res.headers.location
+          : `https://${u.hostname}${res.headers.location}`
+        return nodeGet(loc, extraHeaders).then(resolve).catch(reject)
+      }
+      if (res.statusCode !== 200) return reject(new Error(`HTTP ${res.statusCode}`))
+      const chunks = []
+      res.on('data', c => chunks.push(c))
+      res.on('end', () => resolve(Buffer.concat(chunks).toString('utf-8')))
+    })
+    req.setTimeout(15000, () => { req.destroy(); reject(new Error('Request timed out')) })
+    req.on('error', reject)
+  })
+}
 
 const DATA_PATH = path.join(app.getPath('userData'), 'library-data.json')
 
@@ -63,15 +93,7 @@ ipcMain.handle('data:open-location', () => {
 // ── AO3 fetch ─────────────────────────────────────────────────────────────────
 ipcMain.handle('ao3:fetch', async (_, url) => {
   try {
-    const resp = await session.defaultSession.fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.5',
-      }
-    })
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`)
-    const html = await resp.text()
+    const html = await nodeGet(url)
 
     const stripTags = s => (s || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()
     const getSection = cls => { const m = html.match(new RegExp(`<dd[^>]*class="[^"]*${cls}[^"]*"[^>]*>([\\s\\S]*?)<\\/dd>`, 'i')); return m ? m[1] : null }
@@ -107,26 +129,20 @@ ipcMain.handle('shell:open-external', (_, url) => {
   shell.openExternal(url)
 })
 
-// ── Google Books fetch ────────────────────────────────────────────────────────
+// ── Open Library book fetch ───────────────────────────────────────────────────
 ipcMain.handle('books:fetch', async (_, query) => {
   try {
-    const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=3`
-    const resp = await session.defaultSession.fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'application/json',
-      }
-    })
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`)
-    const data = await resp.json()
-    if (!data.items || data.items.length === 0) return { error: 'Book not found' }
-    const info = data.items[0].volumeInfo
-    const rawGenre = (info.categories || [])[0] || null
-    const genre = rawGenre ? rawGenre.split(' / ')[0].split(' - ')[0].trim() : null
+    const url = `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=3&fields=title,author_name,number_of_pages_median,subject`
+    const raw = await nodeGet(url, { 'Accept': 'application/json' })
+    const data = JSON.parse(raw)
+    const doc = (data.docs || [])[0]
+    if (!doc) return { error: 'Book not found' }
+    const subjects = (doc.subject || []).filter(s => s.length < 35)
+    const genre = subjects[0] || null
     return {
-      title: info.title || null,
-      author: info.authors ? info.authors.slice(0, 2).join(', ') : null,
-      pages: info.pageCount || null,
+      title: doc.title || null,
+      author: (doc.author_name || []).slice(0, 2).join(', ') || null,
+      pages: doc.number_of_pages_median || null,
       genre: genre || null,
     }
   } catch(e) { return { error: e.message } }

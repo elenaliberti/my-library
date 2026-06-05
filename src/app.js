@@ -898,8 +898,15 @@ function bindEvents() {
   if (fetchBtn) {
     fetchBtn.addEventListener('click', async () => {
       const url = document.getElementById('m-url')?.value?.trim();
-      if (!url || !url.includes('archiveofourown')) return;
       const msgEl = document.getElementById('fetch-msg');
+      if (!url) {
+        if (msgEl) { msgEl.textContent = 'Paste an AO3 URL in the field above first.'; msgEl.className = 'fetch-msg err'; }
+        return;
+      }
+      if (!url.includes('archiveofourown')) {
+        if (msgEl) { msgEl.textContent = 'URL must be from archiveofourown.org'; msgEl.className = 'fetch-msg err'; }
+        return;
+      }
       if (msgEl) { msgEl.textContent = 'Fetching from AO3…'; msgEl.className='fetch-msg'; }
       fetchBtn.disabled = true; fetchBtn.textContent = '…';
       try {
