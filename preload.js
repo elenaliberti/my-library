@@ -5,6 +5,7 @@ contextBridge.exposeInMainWorld('api', {
   exportPath:     ()      => ipcRenderer.invoke('data:export-path'),
   openDataFolder: ()      => ipcRenderer.invoke('data:open-location'),
   fetchAO3:       (url)   => ipcRenderer.invoke('ao3:fetch', url),
+  openExternal:   (url)   => ipcRenderer.invoke('shell:open-external', url),
   gitStatus:      ()      => ipcRenderer.invoke('git:status'),
   gitBackup:      ()      => ipcRenderer.invoke('git:backup'),
 })

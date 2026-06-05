@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog, shell } = require('electron')
+const { app, BrowserWindow, ipcMain, dialog, shell, session } = require('electron')
 const path = require('path')
 const fs = require('fs')
 const { execFile } = require('child_process')
@@ -63,26 +63,48 @@ ipcMain.handle('data:open-location', () => {
 // ── AO3 fetch ─────────────────────────────────────────────────────────────────
 ipcMain.handle('ao3:fetch', async (_, url) => {
   try {
-    const resp = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; personal reading tracker)' } })
+    const resp = await session.defaultSession.fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.5',
+      }
+    })
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`)
     const html = await resp.text()
-    const get = (pat) => { const m = html.match(pat); return m ? m[1].trim() : null }
 
-    const title = get(/<h2[^>]*class="[^"]*title[^"]*"[^>]*>\s*(?:<[^>]+>)*\s*([^<\n]+)/i)
-      || get(/<title>([^|<]+)/i)?.replace(' - Archive of Our Own','').trim()
-    const author = get(/rel="author"[^>]*>([^<]+)</i)
-    const fandoms = []; const fr = /class="[^"]*fandom[^"]*tag[^"]*"[^>]*>([^<]+)</gi
-    let fm; while ((fm = fr.exec(html)) !== null) fandoms.push(fm[1].trim())
-    const words = get(/class="[^"]*words[^"]*"[^>]*>\s*([\d,]+)/i)?.replace(/,/g,'')
-      || get(/<dd[^>]*class="words"[^>]*>([\d,]+)/i)?.replace(/,/g,'')
-    const kudos = get(/class="[^"]*kudos[^"]*"[^>]*>\s*([\d,]+)/i)?.replace(/,/g,'')
-      || get(/<dd[^>]*class="kudos"[^>]*>([\d,]+)</i)?.replace(/,/g,'')
-    const rating = get(/class="[^"]*rating[^"]*"[^>]*title="([^"]+)"/i)
-    const tags = []; const tr2 = /class="[^"]*freeform[^"]*tag[^"]*"[^>]*>([^<]+)</gi
-    let tg; let c = 0; while ((tg = tr2.exec(html)) !== null && c < 6) { tags.push(tg[1].trim()); c++ }
-    const pairing = get(/class="[^"]*relationship[^"]*tag[^"]*"[^>]*>([^<]+)</i)
+    const stripTags = s => (s || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()
+    const getSection = cls => { const m = html.match(new RegExp(`<dd[^>]*class="[^"]*${cls}[^"]*"[^>]*>([\\s\\S]*?)<\\/dd>`, 'i')); return m ? m[1] : null }
+    const firstTag = s => { const m = (s||'').match(/<a[^>]*class="[^"]*tag[^"]*"[^>]*>([^<]+)<\/a>/i); return m ? m[1].trim() : null }
+    const allTags = s => { const tags = []; const r = /<a[^>]*class="[^"]*tag[^"]*"[^>]*>([^<]+)<\/a>/gi; let m; while ((m = r.exec(s||'')) !== null) tags.push(m[1].trim()); return tags }
 
-    return { title, author, fandom: fandoms[0]||null, words: words?parseInt(words):null, hearts: kudos?parseInt(kudos):null, rating, pairing, tags }
+    const titleBlock = html.match(/<h2[^>]*class="[^"]*title[^"]*"[^>]*>([\s\S]*?)<\/h2>/i)
+    const title = titleBlock
+      ? stripTags(titleBlock[1])
+      : html.match(/<title>([^|<]+)/i)?.[1]?.replace(/ - Archive of Our Own$/, '').trim() || null
+
+    const authorMatch = html.match(/<a[^>]*rel="author"[^>]*>([^<]+)<\/a>/i)
+    const author = authorMatch ? authorMatch[1].trim() : null
+
+    const fandomSection = getSection('fandom')
+    const fandoms = allTags(fandomSection)
+
+    const wordsText = stripTags(getSection('words') || '').replace(/,/g, '')
+    const words = wordsText ? parseInt(wordsText) || null : null
+
+    const kudosText = stripTags(getSection('kudos') || '').replace(/,/g, '')
+    const kudos = kudosText ? parseInt(kudosText) || null : null
+
+    const rating = firstTag(getSection('rating'))
+    const pairing = firstTag(getSection('relationship'))
+    const tags = allTags(getSection('freeform')).slice(0, 6)
+
+    return { title, author, fandom: fandoms[0] || null, words, hearts: kudos, rating, pairing, tags }
   } catch(e) { return { error: e.message } }
+})
+
+ipcMain.handle('shell:open-external', (_, url) => {
+  shell.openExternal(url)
 })
 
 // ── Git backup ────────────────────────────────────────────────────────────────

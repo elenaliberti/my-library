@@ -289,6 +289,7 @@ function modalHtml() {
 
 // ── Render ────────────────────────────────────────────────────────────────────
 function render() {
+  const scrollY = window.scrollY;
   const stats = getStats();
   const filtered = getFiltered();
   const fandoms = getFandoms();
@@ -379,6 +380,7 @@ function render() {
     ${state.modalOpen ? modalHtml() : ''}
   `;
 
+  window.scrollTo(0, scrollY);
   bindEvents();
 }
 
@@ -386,7 +388,13 @@ function render() {
 function bindEvents() {
   // Search
   const searchEl = document.getElementById('search-input');
-  if (searchEl) searchEl.addEventListener('input', e => { state.search = e.target.value; render(); });
+  if (searchEl) searchEl.addEventListener('input', e => {
+    const cursorPos = e.target.selectionStart;
+    state.search = e.target.value;
+    render();
+    const newEl = document.getElementById('search-input');
+    if (newEl) { newEl.focus(); newEl.setSelectionRange(cursorPos, cursorPos); }
+  });
 
   // Sort
   const sortEl = document.getElementById('sort-select');
@@ -474,7 +482,7 @@ function bindEvents() {
   document.querySelectorAll('[data-open-url]').forEach(el => {
     el.addEventListener('click', e => {
       e.stopPropagation();
-      require('electron').shell.openExternal(el.dataset.openUrl);
+      window.api.openExternal(el.dataset.openUrl);
     });
   });
 
@@ -603,8 +611,9 @@ function bindEvents() {
           tags: data.tags?.length ? data.tags : (state.editItem?.tags || []),
           url,
         };
-        if (msgEl) { msgEl.textContent = '✓ Details fetched!'; msgEl.className='fetch-msg ok'; }
         render();
+        const newMsgEl = document.getElementById('fetch-msg');
+        if (newMsgEl) { newMsgEl.textContent = '✓ Details fetched!'; newMsgEl.className = 'fetch-msg ok'; }
       } catch(e) {
         if (msgEl) { msgEl.textContent = 'Could not fetch — fill in manually.'; msgEl.className='fetch-msg err'; }
         fetchBtn.disabled = false; fetchBtn.textContent = 'Auto-fill ✦';
