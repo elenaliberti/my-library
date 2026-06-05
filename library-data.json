@@ -103,7 +103,7 @@
     "type": "ff",
     "title": "The Mate of a Dragon",
     "author": "Kit_Kat_Cat23EH",
-    "fandom": "Various",
+    "fandom": "Harry Potter",
     "words": 13284,
     "hearts": 7637,
     "rating": "Mature",
@@ -116,7 +116,11 @@
     ],
     "url": "",
     "_addedAt": 4,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_6",
@@ -165,7 +169,7 @@
     "type": "ff",
     "title": "Delayed Inheritance",
     "author": "Faithless_3105",
-    "fandom": "Multi",
+    "fandom": "Harry Potter",
     "words": 89724,
     "hearts": 1151,
     "rating": "Explicit",
@@ -178,7 +182,11 @@
     ],
     "url": "",
     "_addedAt": 7,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_9",
@@ -646,7 +654,7 @@
     "type": "ff",
     "title": "Another Mind Game",
     "author": "May_May_0_0",
-    "fandom": "Other",
+    "fandom": "Harry Potter",
     "words": 54012,
     "hearts": 43590,
     "rating": "Teen+",
@@ -659,14 +667,18 @@
     ],
     "url": "",
     "_addedAt": 31,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_33",
     "type": "ff",
     "title": "House of Caliban",
     "author": "MusicalSurge",
-    "fandom": "Various",
+    "fandom": "Harry Potter",
     "words": 65659,
     "hearts": 8484,
     "rating": "Explicit",
@@ -679,14 +691,18 @@
     ],
     "url": "",
     "_addedAt": 32,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_34",
     "type": "ff",
     "title": "The Necromancer",
     "author": "Maeglin_Yedi",
-    "fandom": "Various",
+    "fandom": "Harry Potter",
     "words": 256956,
     "hearts": 22126,
     "rating": "Mature",
@@ -700,7 +716,11 @@
     ],
     "url": "",
     "_addedAt": 33,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_35",
@@ -899,7 +919,7 @@
     "type": "ff",
     "title": "Dragon Singer",
     "author": "Nahiel",
-    "fandom": "Various",
+    "fandom": "Harry Potter",
     "words": 51296,
     "hearts": 10135,
     "rating": "Mature",
@@ -912,7 +932,11 @@
     ],
     "url": "",
     "_addedAt": 44,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_46",
@@ -1022,7 +1046,7 @@
     "type": "ff",
     "title": "When Merrows Scream",
     "author": "Laceylane89",
-    "fandom": "Various",
+    "fandom": "Harry Potter",
     "words": 71647,
     "hearts": 3430,
     "rating": "Not Rated",
@@ -1035,7 +1059,11 @@
     ],
     "url": "",
     "_addedAt": 50,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_52",
@@ -1047,7 +1075,7 @@
     "hearts": 1409,
     "rating": "",
     "pairing": "",
-    "status": "Finished",
+    "status": "Dropped",
     "userRating": 0,
     "notes": "ongoing ch52",
     "tags": [
@@ -1368,7 +1396,7 @@
     "type": "ff",
     "title": "The Untouchable",
     "author": "TreacleTeacups",
-    "fandom": "Various",
+    "fandom": "Harry Potter",
     "words": 74840,
     "hearts": 28004,
     "rating": "Mature",
@@ -1381,7 +1409,11 @@
     ],
     "url": "",
     "_addedAt": 67,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_69",
@@ -1593,7 +1625,7 @@
     "type": "ff",
     "title": "Shelter",
     "author": "Jiraffas",
-    "fandom": "Various",
+    "fandom": "Harry Potter",
     "words": 100002,
     "hearts": 1283,
     "rating": "Mature",
@@ -1606,14 +1638,18 @@
     ],
     "url": "",
     "_addedAt": 78,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_80",
     "type": "ff",
     "title": "Everything That Happens is From Now On",
     "author": "trishjames",
-    "fandom": "Various",
+    "fandom": "Harry Potter",
     "words": 42966,
     "hearts": 2662,
     "rating": "Explicit",
@@ -1626,7 +1662,11 @@
     ],
     "url": "",
     "_addedAt": 79,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_81",
@@ -1764,7 +1804,7 @@
     "type": "ff",
     "title": "Licurici",
     "author": "louisfake",
-    "fandom": "Multi",
+    "fandom": "Harry Potter",
     "words": 133092,
     "hearts": 6649,
     "rating": "Explicit",
@@ -1772,9 +1812,16 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry Potter/Draco Malfoy/Charlie Weasley"
+    ],
     "url": "",
-    "_addedAt": 87
+    "_addedAt": 87,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-05T11:00:00.000Z"
   },
   {
     "id": "ff_89",
@@ -1801,7 +1848,7 @@
     "type": "ff",
     "title": "Harry Potter and the Lives of Dragons",
     "author": "drarryweasley",
-    "fandom": "Multi",
+    "fandom": "Harry Potter",
     "words": 111974,
     "hearts": 2838,
     "rating": "Explicit",
@@ -1814,7 +1861,11 @@
     ],
     "url": "",
     "_addedAt": 89,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_91",
@@ -1841,7 +1892,7 @@
     "type": "ff",
     "title": "Wasting Away",
     "author": "snaxarba (orphan_account)",
-    "fandom": "Various",
+    "fandom": "Harry Potter",
     "words": 45046,
     "hearts": 1736,
     "rating": "Explicit",
@@ -1854,7 +1905,11 @@
     ],
     "url": "",
     "_addedAt": 91,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_93",
@@ -2142,7 +2197,7 @@
     "type": "ff",
     "title": "The Consort Tournament",
     "author": "Watermelonsmellinfellon",
-    "fandom": "Various",
+    "fandom": "Harry Potter",
     "words": 182594,
     "hearts": 8246,
     "rating": "Explicit",
@@ -2155,7 +2210,11 @@
     ],
     "url": "",
     "_addedAt": 106,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_108",
@@ -2182,7 +2241,7 @@
     "type": "ff",
     "title": "Argenti Vulpi",
     "author": "KaedeRavensdale",
-    "fandom": "Various",
+    "fandom": "Harry Potter",
     "words": 96761,
     "hearts": 2756,
     "rating": "Mature",
@@ -2196,14 +2255,18 @@
     ],
     "url": "",
     "_addedAt": 108,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_110",
     "type": "ff",
     "title": "Praeclarus Anguis",
     "author": "KaedeRavensdale",
-    "fandom": "Various",
+    "fandom": "Harry Potter",
     "words": 171641,
     "hearts": 8028,
     "rating": "Mature",
@@ -2217,7 +2280,11 @@
     ],
     "url": "",
     "_addedAt": 109,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_111",
@@ -2465,7 +2532,7 @@
     "type": "ff",
     "title": "The Second String",
     "author": "Eider_Down",
-    "fandom": "Various",
+    "fandom": "Harry Potter",
     "words": 409773,
     "hearts": 17573,
     "rating": "Mature",
@@ -2479,7 +2546,11 @@
     "url": "",
     "_addedAt": 122,
     "favorite": true,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_124",
@@ -2981,7 +3052,7 @@
     "type": "ff",
     "title": "Wear Me Like A Locket Around Your Throat",
     "author": "VivyPotter",
-    "fandom": "Multi",
+    "fandom": "Harry Potter",
     "words": 220150,
     "hearts": 25504,
     "rating": "Teen+",
@@ -2994,7 +3065,11 @@
     ],
     "url": "",
     "_addedAt": 147,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_149",
@@ -4072,13 +4147,13 @@
     "type": "ff",
     "title": "Diagnosis",
     "author": "MaidenMotherCrone",
-    "fandom": "Various",
+    "fandom": "Harry Potter",
     "words": 282456,
     "hearts": 9192,
     "rating": "Not Rated",
     "pairing": "F/F, F/M",
     "status": "Finished",
-    "userRating": 0,
+    "userRating": 5,
     "notes": "",
     "tags": [
       "Tomarry"
@@ -4086,7 +4161,11 @@
     "url": "",
     "_addedAt": 201,
     "favorite": true,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_203",
@@ -5125,7 +5204,8 @@
     "fandom": "",
     "pairing": "",
     "rating": "",
-    "hearts": null
+    "hearts": null,
+    "favorite": true
   },
   {
     "id": "book_3",
@@ -5141,7 +5221,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 256
+    "_addedAt": 256,
+    "favorite": true
   },
   {
     "id": "book_4",
@@ -5157,7 +5238,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 257
+    "_addedAt": 257,
+    "favorite": true
   },
   {
     "id": "book_5",
@@ -5173,7 +5255,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 258
+    "_addedAt": 258,
+    "favorite": true
   },
   {
     "id": "book_6",
@@ -5189,7 +5272,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 259
+    "_addedAt": 259,
+    "favorite": true
   },
   {
     "id": "book_7",
@@ -5205,7 +5289,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 260
+    "_addedAt": 260,
+    "favorite": true
   },
   {
     "id": "book_8",
@@ -5221,7 +5306,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 261
+    "_addedAt": 261,
+    "favorite": true
   },
   {
     "id": "book_9",
@@ -5253,7 +5339,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 263
+    "_addedAt": 263,
+    "favorite": true
   },
   {
     "id": "book_11",
@@ -5269,7 +5356,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 264
+    "_addedAt": 264,
+    "favorite": true
   },
   {
     "id": "book_12",
@@ -5285,7 +5373,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 265
+    "_addedAt": 265,
+    "favorite": true
   },
   {
     "id": "book_13",
@@ -5301,7 +5390,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 266
+    "_addedAt": 266,
+    "favorite": true
   },
   {
     "id": "book_14",
@@ -5317,7 +5407,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 267
+    "_addedAt": 267,
+    "favorite": true
   },
   {
     "id": "book_15",
@@ -5333,7 +5424,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 268
+    "_addedAt": 268,
+    "favorite": true
   },
   {
     "id": "book_16",
@@ -5365,7 +5457,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 270
+    "_addedAt": 270,
+    "favorite": true
   },
   {
     "id": "book_18",
@@ -5813,7 +5906,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 298
+    "_addedAt": 298,
+    "favorite": true
   },
   {
     "id": "book_46",
@@ -6261,7 +6355,8 @@
     "notes": "Very nice",
     "tags": [],
     "url": "",
-    "_addedAt": 326
+    "_addedAt": 326,
+    "favorite": true
   },
   {
     "id": "book_76",
@@ -6277,7 +6372,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 327
+    "_addedAt": 327,
+    "favorite": true
   },
   {
     "id": "book_78",
@@ -6293,7 +6389,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 328
+    "_addedAt": 328,
+    "favorite": true
   },
   {
     "id": "book_79",
@@ -6309,7 +6406,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 329
+    "_addedAt": 329,
+    "favorite": true
   },
   {
     "id": "book_80",
@@ -6409,7 +6507,8 @@
     "fandom": "",
     "pairing": "",
     "rating": "",
-    "hearts": null
+    "hearts": null,
+    "favorite": false
   },
   {
     "id": "book_86",
@@ -6569,7 +6668,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 345
+    "_addedAt": 345,
+    "favorite": true
   },
   {
     "id": "book_96",
@@ -7024,7 +7124,7 @@
     "type": "book",
     "title": "Dominata dai suoi amanti",
     "author": "Grace Goodwin",
-    "genre": "Romance / Fantascienza",
+    "genre": "Erotica",
     "section": "Fantasy",
     "pages": null,
     "words": null,
@@ -7033,7 +7133,12 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 374
+    "_addedAt": 374,
+    "fandom": "",
+    "pairing": "",
+    "rating": "",
+    "hearts": null,
+    "finishedAt": "2026-06-05T22:14:17.185Z"
   },
   {
     "id": "book_125",
@@ -7433,7 +7538,8 @@
     "notes": "Mi ha fatto piangere 24/11/2019",
     "tags": [],
     "url": "",
-    "_addedAt": 399
+    "_addedAt": 399,
+    "favorite": true
   },
   {
     "id": "book_150",
@@ -8185,7 +8291,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 446
+    "_addedAt": 446,
+    "favorite": true
   },
   {
     "id": "book_197",
@@ -8361,7 +8468,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 457
+    "_addedAt": 457,
+    "favorite": true
   },
   {
     "id": "book_208",
@@ -9017,7 +9125,8 @@
     "notes": "Un fottuto capolavoro… solo wow",
     "tags": [],
     "url": "",
-    "_addedAt": 498
+    "_addedAt": 498,
+    "favorite": true
   },
   {
     "id": "book_251",
@@ -9033,7 +9142,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 499
+    "_addedAt": 499,
+    "favorite": true
   },
   {
     "id": "book_253",
@@ -9097,7 +9207,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 503
+    "_addedAt": 503,
+    "favorite": true
   },
   {
     "id": "book_257",
@@ -9177,7 +9288,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 508
+    "_addedAt": 508,
+    "favorite": true
   },
   {
     "id": "book_262",
@@ -9305,7 +9417,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 516
+    "_addedAt": 516,
+    "favorite": true
   },
   {
     "id": "book_270",
@@ -9321,7 +9434,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 517
+    "_addedAt": 517,
+    "favorite": true
   },
   {
     "id": "book_271",
@@ -9561,7 +9675,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 532
+    "_addedAt": 532,
+    "favorite": true
   },
   {
     "id": "book_286",
@@ -10329,7 +10444,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 580
+    "_addedAt": 580,
+    "favorite": true
   },
   {
     "id": "book_336",
@@ -10585,7 +10701,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 596
+    "_addedAt": 596,
+    "favorite": true
   },
   {
     "id": "book_352",
@@ -10617,7 +10734,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 598
+    "_addedAt": 598,
+    "favorite": true
   },
   {
     "id": "book_354",
@@ -10745,7 +10863,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 606
+    "_addedAt": 606,
+    "favorite": true
   },
   {
     "id": "book_362",
@@ -10777,7 +10896,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 608
+    "_addedAt": 608,
+    "favorite": true
   },
   {
     "id": "book_364",
