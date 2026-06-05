@@ -1,5 +1,26 @@
 [
   {
+    "type": "book",
+    "id": "1780698043449_ccxe2hnw7d",
+    "title": "Project Hail Mary",
+    "author": "Andy Weir",
+    "fandom": "",
+    "genre": "hard science-fiction",
+    "section": "Sci-fi",
+    "pairing": "",
+    "rating": "",
+    "status": "Reading",
+    "words": null,
+    "hearts": null,
+    "pages": 496,
+    "userRating": 5,
+    "notes": "",
+    "tags": [],
+    "url": "",
+    "finishedAt": null,
+    "_addedAt": 619
+  },
+  {
     "title": "Ashes of a Stolen Destiny",
     "author": "LillyAil",
     "fandom": "Harry Potter",
