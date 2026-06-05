@@ -8,6 +8,7 @@ let state = {
   filterType: 'all',
   filterFandom: 'all',
   filterSection: 'all',
+  filterGenre: 'all',
   sortBy: 'added',
   expandedId: null,
   modalOpen: false,
@@ -46,12 +47,23 @@ function getSections() {
   return [...s];
 }
 
+function getGenres() {
+  const s = new Set();
+  state.items.filter(x => x.type === 'book' && x.genre)
+    .forEach(x => s.add(x.genre.split(' / ')[0].trim()));
+  return [...s].sort();
+}
+
 function getFiltered() {
   return state.items.filter(item => {
     if (state.filterType !== 'all' && item.type !== state.filterType) return false;
     if (state.filterStatus !== 'all' && item.status !== state.filterStatus) return false;
     if (state.filterFandom !== 'all' && item.fandom !== state.filterFandom) return false;
     if (state.filterSection !== 'all' && item.section !== state.filterSection) return false;
+    if (state.filterGenre !== 'all') {
+      const top = (item.genre || '').split(' / ')[0].trim();
+      if (top !== state.filterGenre) return false;
+    }
     if (state.search) {
       const q = state.search.toLowerCase();
       return (item.title||'').toLowerCase().includes(q)
@@ -311,6 +323,9 @@ function render() {
   const sectionPills = sections.map(s =>
     fpill(s, state.filterSection===s, `section="${s.replace(/"/g,'&quot;')}"`)
   ).join('');
+  const genrePills = getGenres().map(g =>
+    fpill(g, state.filterGenre===g, `genre="${g.replace(/"/g,'&quot;')}"`)
+  ).join('');
 
   document.getElementById('app').innerHTML = `
     <div id="titlebar">
@@ -365,7 +380,7 @@ function render() {
       ${fpill('📚 Books', state.filterType==='book', 'type="book"')}
       <span class="fpill divider">|</span>
       ${state.filterType !== 'book' ? fandomPills : ''}
-      ${state.filterType !== 'ff' ? sectionPills : ''}
+      ${state.filterType !== 'ff' ? genrePills : ''}
     </div>
 
     <div id="results-meta">${filtered.length} ${filtered.length===1?'entry':'entries'}${state.search ? ` matching "<b>${state.search}</b>"` : ''}</div>
@@ -433,6 +448,7 @@ function bindEvents() {
       state.filterType = el.dataset.type;
       state.filterFandom = 'all';
       state.filterSection = 'all';
+      state.filterGenre = 'all';
       render();
     });
   });
@@ -447,6 +463,13 @@ function bindEvents() {
     el.addEventListener('click', () => {
       const s = el.dataset.section;
       state.filterSection = state.filterSection === s ? 'all' : s;
+      render();
+    });
+  });
+  document.querySelectorAll('[data-genre]').forEach(el => {
+    el.addEventListener('click', () => {
+      const g = el.dataset.genre;
+      state.filterGenre = state.filterGenre === g ? 'all' : g;
       render();
     });
   });
