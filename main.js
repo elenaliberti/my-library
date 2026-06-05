@@ -107,6 +107,31 @@ ipcMain.handle('shell:open-external', (_, url) => {
   shell.openExternal(url)
 })
 
+// ── Google Books fetch ────────────────────────────────────────────────────────
+ipcMain.handle('books:fetch', async (_, query) => {
+  try {
+    const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=3`
+    const resp = await session.defaultSession.fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'application/json',
+      }
+    })
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`)
+    const data = await resp.json()
+    if (!data.items || data.items.length === 0) return { error: 'Book not found' }
+    const info = data.items[0].volumeInfo
+    const rawGenre = (info.categories || [])[0] || null
+    const genre = rawGenre ? rawGenre.split(' / ')[0].split(' - ')[0].trim() : null
+    return {
+      title: info.title || null,
+      author: info.authors ? info.authors.slice(0, 2).join(', ') : null,
+      pages: info.pageCount || null,
+      genre: genre || null,
+    }
+  } catch(e) { return { error: e.message } }
+})
+
 // ── Git backup ────────────────────────────────────────────────────────────────
 function run(cmd, args, cwd) {
   return new Promise((resolve, reject) => {

@@ -293,7 +293,14 @@ function modalHtml() {
         </div>` : ''}
 
         <label class="field-label">Title *</label>
-        <input type="text" id="m-title" value="${item.title||''}" placeholder="Title" />
+        ${!isFf ? `
+          <div class="fetch-row">
+            <input type="text" id="m-title" value="${item.title||''}" placeholder="Title, author or ISBN…" />
+            <button class="btn btn-primary btn-sm" id="btn-book-fetch">Auto-fill ✦</button>
+          </div>
+          <div class="fetch-msg" id="book-fetch-msg"></div>
+        ` : `<input type="text" id="m-title" value="${item.title||''}" placeholder="Title" />`}
+        <div class="dupe-warn" id="dupe-warning"></div>
 
         <label class="field-label">Author</label>
         <input type="text" id="m-author" value="${item.author||''}" placeholder="Author / username" />
@@ -848,6 +855,44 @@ function bindEvents() {
   tagInput?.addEventListener('keydown', e => e.key==='Enter' && addTag());
   document.getElementById('btn-add-tag')?.addEventListener('click', addTag);
 
+  // Duplicate title warning (live, on blur)
+  const titleEl = document.getElementById('m-title');
+  const dupeWarnEl = document.getElementById('dupe-warning');
+  if (titleEl && dupeWarnEl && !state.editItem?.id) {
+    titleEl.addEventListener('blur', () => {
+      const t = titleEl.value.trim().toLowerCase();
+      if (!t) { dupeWarnEl.textContent = ''; return; }
+      const dupe = state.items.find(x => x.title.toLowerCase().trim() === t);
+      dupeWarnEl.textContent = dupe
+        ? `⚠️ Already in library: "${dupe.title}" (${dupe.type === 'ff' ? 'FF' : 'Book'}, ${dupe.status})`
+        : '';
+    });
+  }
+
+  // Book auto-fill (Google Books)
+  const bookFetchBtn = document.getElementById('btn-book-fetch');
+  if (bookFetchBtn) {
+    bookFetchBtn.addEventListener('click', async () => {
+      const query = document.getElementById('m-title')?.value?.trim();
+      if (!query) return;
+      const msgEl = document.getElementById('book-fetch-msg');
+      if (msgEl) { msgEl.textContent = 'Searching…'; msgEl.className = 'fetch-msg'; }
+      bookFetchBtn.disabled = true; bookFetchBtn.textContent = '…';
+      try {
+        const data = await window.api.fetchBook(query);
+        if (data.error) throw new Error(data.error);
+        if (data.title)  { const el = document.getElementById('m-title');  if (el) el.value = data.title; }
+        if (data.author) { const el = document.getElementById('m-author'); if (el) el.value = data.author; }
+        if (data.pages)  { const el = document.getElementById('m-pages');  if (el) el.value = data.pages; }
+        if (data.genre)  { const el = document.getElementById('m-genre');  if (el) el.value = data.genre; }
+        if (msgEl) { msgEl.textContent = '✓ Details filled in — check and adjust!'; msgEl.className = 'fetch-msg ok'; }
+      } catch(e) {
+        if (msgEl) { msgEl.textContent = 'Not found — fill in manually.'; msgEl.className = 'fetch-msg err'; }
+      }
+      bookFetchBtn.disabled = false; bookFetchBtn.textContent = 'Auto-fill ✦';
+    });
+  }
+
   // AO3 fetch
   const fetchBtn = document.getElementById('btn-fetch');
   if (fetchBtn) {
@@ -886,6 +931,12 @@ function bindEvents() {
   document.getElementById('modal-submit')?.addEventListener('click', () => {
     const title = document.getElementById('m-title')?.value?.trim();
     if (!title) { alert('Title is required.'); return; }
+    if (!state.editItem?.id) {
+      const dupe = state.items.find(x => x.title.toLowerCase().trim() === title.toLowerCase().trim());
+      if (dupe) {
+        if (!confirm(`"${title}" is already in your library (${dupe.type === 'ff' ? 'fanfiction' : 'book'}, ${dupe.status}). Add it anyway?`)) return;
+      }
+    }
 
     const type = state.editItem?.type || 'ff';
     const isFf = type === 'ff';
