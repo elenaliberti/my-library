@@ -9,6 +9,7 @@ let state = {
   filterFandom: 'all',
   filterSection: 'all',
   filterGenre: 'all',
+  filterFavorite: false,
   sortBy: 'added',
   expandedId: null,
   modalOpen: false,
@@ -117,6 +118,7 @@ function getPeriodData(items, period) {
 
 function getFiltered() {
   return state.items.filter(item => {
+    if (state.filterFavorite && !item.favorite) return false;
     if (state.filterType === 'oneshot') {
       if (item.type !== 'ff' || !item.oneshot) return false;
     } else if (state.filterType !== 'all' && item.type !== state.filterType) return false;
@@ -237,6 +239,7 @@ function cardHtml(item) {
           </div>
         </div>
         <div class="card-actions">
+          <button class="icon-btn${item.favorite ? ' fav-active' : ''}" data-toggle-fav="${item.id}" title="${item.favorite ? 'Remove from favorites' : 'Add to favorites'}">⭐</button>
           ${item.url ? `<button class="icon-btn" data-open-url="${item.url}" title="Open link">🔗</button>` : ''}
           <button class="icon-btn" data-edit="${item.id}" title="Edit">✏️</button>
           <button class="icon-btn danger" data-delete="${item.id}" title="Delete">🗑</button>
@@ -358,7 +361,7 @@ function modalHtml() {
         <div class="tags-display" id="tags-display">${tags}</div>
 
         <label class="field-label">Date finished <span style="font-weight:400;text-transform:none;font-size:10px">(optional)</span></label>
-        <input type="date" id="m-finished" value="${item.finishedAt ? item.finishedAt.slice(0,10) : ''}" />
+        <input type="date" id="m-finished" value="${item.finishedAt ? item.finishedAt.slice(0,10) : (!isEdit && isFf ? new Date().toISOString().slice(0,10) : '')}" />
 
         <label class="field-label">Notes</label>
         <textarea id="m-notes" placeholder="Personal thoughts, read again?">${item.notes||''}</textarea>
@@ -557,6 +560,8 @@ function render() {
     </div>
 
     <div class="filter-pills">
+      <span class="fpill${state.filterFavorite ? ' active-fav' : ''}" data-fav-filter="true">⭐ Favorites</span>
+      <span class="fpill divider">|</span>
       ${fpill('All', state.filterType==='all', 'type="all"')}
       ${fpill('📖 Fanfiction', state.filterType==='ff', 'type="ff"')}
       ${fpill('📚 Books', state.filterType==='book', 'type="book"')}
@@ -642,6 +647,21 @@ function bindEvents() {
       const s = el.dataset.stat;
       state.filterStatus = state.filterStatus === s ? 'all' : s;
       render();
+    });
+  });
+
+  // Favorites filter pill
+  document.querySelectorAll('[data-fav-filter]').forEach(el => {
+    el.addEventListener('click', () => { state.filterFavorite = !state.filterFavorite; render(); });
+  });
+
+  // Favorite toggle on card
+  document.querySelectorAll('[data-toggle-fav]').forEach(el => {
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      const id = el.dataset.toggleFav;
+      state.items = state.items.map(x => x.id === id ? { ...x, favorite: !x.favorite } : x);
+      saveData(); render();
     });
   });
 

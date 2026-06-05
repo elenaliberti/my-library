@@ -177,6 +177,10 @@ textarea { min-height: 70px; resize: vertical; }
 /* ── One-shot badge ── */
 .badge-oneshot { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
 
+/* ── Favorites ── */
+.fpill.active-fav { background: #fffbeb; border-color: #fde68a; color: #92400e; }
+.icon-btn.fav-active { color: var(--amber); }
+
 /* ── Stats view ── */
 #stats-view { flex: 1; overflow-y: auto; padding: 16px 20px 48px; display: flex; flex-direction: column; gap: 16px; }
 
