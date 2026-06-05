@@ -1080,7 +1080,7 @@
     "type": "ff",
     "title": "Harry Potter And The Summer Of Change",
     "author": "lorddwar",
-    "fandom": "HP / HTTYD crossover",
+    "fandom": "Harry Potter",
     "words": 332503,
     "hearts": 11770,
     "rating": "",
@@ -1090,7 +1090,12 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 62
+    "_addedAt": 62,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-05T18:30:46.246Z"
   },
   {
     "id": "ff_64",
@@ -1284,7 +1289,7 @@
     "type": "ff",
     "title": "The Avalon Seven",
     "author": "sifshadowheart",
-    "fandom": "Merlin(BBC)",
+    "fandom": "Merlin (BBC)",
     "words": 237166,
     "hearts": 4129,
     "rating": "Teen+",
@@ -1297,7 +1302,9 @@
     "_addedAt": 74,
     "genre": "",
     "section": "",
-    "pages": null
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-05T18:31:15.293Z"
   },
   {
     "id": "ff_76",
@@ -10151,8 +10158,8 @@
     "pairing": "",
     "rating": "",
     "status": "TBR",
-    "words": null,
-    "hearts": null,
+    "words": 65771,
+    "hearts": 6753,
     "pages": null,
     "userRating": 0,
     "notes": "",
@@ -10161,7 +10168,9 @@
     "oneshot": false,
     "finishedAt": null,
     "id": "1780683480264_lv6rgr",
-    "_addedAt": 616
+    "_addedAt": 616,
+    "genre": "",
+    "section": ""
   },
   {
     "type": "ff",
