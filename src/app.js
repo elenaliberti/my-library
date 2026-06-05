@@ -290,6 +290,9 @@ function modalHtml() {
 // ── Render ────────────────────────────────────────────────────────────────────
 function render() {
   const scrollY = window.scrollY;
+  if (document.activeElement && document.activeElement !== document.body) {
+    document.activeElement.blur();
+  }
   const stats = getStats();
   const filtered = getFiltered();
   const fandoms = getFandoms();
@@ -381,6 +384,7 @@ function render() {
   `;
 
   window.scrollTo(0, scrollY);
+  requestAnimationFrame(() => window.scrollTo(0, scrollY));
   bindEvents();
 }
 
