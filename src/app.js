@@ -13,6 +13,10 @@ let state = {
   expandedId: null,
   modalOpen: false,
   editItem: null,
+  view: 'library',
+  statsCategory: 'all',
+  statsPeriod: 'year',
+  statsMetric: 'words',
 };
 
 const STATUS = ['TBR','Reading','Finished','Dropped'];
@@ -34,6 +38,21 @@ async function saveData() {
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function fmt(n) { return n ? Number(n).toLocaleString() : '—'; }
 function genId() { return Date.now() + '_' + Math.random().toString(36).slice(2); }
+function itemWords(x) { return x.words || (x.pages ? x.pages * 250 : 0); }
+function fmtTime(mins) {
+  if (!mins) return '0m';
+  const h = Math.floor(mins / 60);
+  if (h === 0) return `${Math.round(mins)}m`;
+  const d = Math.floor(h / 24);
+  const rh = h % 24;
+  if (d === 0) return `${h}h`;
+  return rh ? `${d}d ${rh}h` : `${d}d`;
+}
+function fmtNum(n) {
+  if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+  if (n >= 1000) return Math.round(n / 1000) + 'K';
+  return n.toLocaleString();
+}
 
 function getFandoms() {
   const s = new Set();
@@ -54,9 +73,53 @@ function getGenres() {
   return [...s].sort();
 }
 
+function getPeriodData(items, period) {
+  const now = new Date();
+  const DAY = 86400000;
+  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const dated = items.filter(x => x.finishedAt);
+
+  if (period === 'week') {
+    const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    return Array.from({length: 7}, (_, i) => {
+      const d = new Date(now - (6 - i) * DAY); d.setHours(0,0,0,0);
+      const end = new Date(d); end.setHours(23,59,59,999);
+      return { label: i === 6 ? 'Today' : days[d.getDay()],
+        items: dated.filter(x => { const t = new Date(x.finishedAt); return t >= d && t <= end; }) };
+    });
+  }
+  if (period === 'month') {
+    return Array.from({length: 4}, (_, i) => {
+      const end = new Date(now - (3 - i) * 7 * DAY); end.setHours(23,59,59,999);
+      const start = new Date(end - 6 * DAY); start.setHours(0,0,0,0);
+      return { label: `${MONTHS[start.getMonth()]} ${start.getDate()}`,
+        items: dated.filter(x => { const t = new Date(x.finishedAt); return t >= start && t <= end; }) };
+    });
+  }
+  if (period === 'year') {
+    return Array.from({length: 12}, (_, i) => {
+      const d = new Date(now.getFullYear(), now.getMonth() - (11 - i), 1);
+      const start = new Date(d.getFullYear(), d.getMonth(), 1);
+      const end = new Date(d.getFullYear(), d.getMonth() + 1, 0, 23, 59, 59, 999);
+      return { label: MONTHS[d.getMonth()],
+        items: dated.filter(x => { const t = new Date(x.finishedAt); return t >= start && t <= end; }) };
+    });
+  }
+  if (period === 'ever') {
+    if (dated.length === 0) return [{ label: String(now.getFullYear()), items: [] }];
+    const years = [...new Set(dated.map(x => new Date(x.finishedAt).getFullYear()))].sort();
+    if (!years.includes(now.getFullYear())) years.push(now.getFullYear());
+    return years.map(yr => ({ label: String(yr),
+      items: dated.filter(x => new Date(x.finishedAt).getFullYear() === yr) }));
+  }
+  return [];
+}
+
 function getFiltered() {
   return state.items.filter(item => {
-    if (state.filterType !== 'all' && item.type !== state.filterType) return false;
+    if (state.filterType === 'oneshot') {
+      if (item.type !== 'ff' || !item.oneshot) return false;
+    } else if (state.filterType !== 'all' && item.type !== state.filterType) return false;
     if (state.filterStatus !== 'all' && item.status !== state.filterStatus) return false;
     if (state.filterFandom !== 'all' && item.fandom !== state.filterFandom) return false;
     if (state.filterSection !== 'all' && item.section !== state.filterSection) return false;
@@ -165,6 +228,7 @@ function cardHtml(item) {
           <div class="card-title-row">
             <span class="card-title">${item.title}</span>
             ${badgeHtml(item.status)}
+            ${item.oneshot ? '<span class="badge badge-oneshot">One-shot</span>' : ''}
           </div>
           <div class="card-sub">${sub}</div>
           <div class="card-meta">
@@ -218,7 +282,12 @@ function modalHtml() {
           <input type="url" id="m-url" value="${item.url||''}" placeholder="https://archiveofourown.org/works/…" />
           <button class="btn btn-primary btn-sm" id="btn-fetch">Auto-fill ✦</button>
         </div>
-        <div class="fetch-msg" id="fetch-msg"></div>` : ''}
+        <div class="fetch-msg" id="fetch-msg"></div>
+        <label class="field-label">Format</label>
+        <div class="type-toggle">
+          <button class="type-btn${!item.oneshot ? ' active' : ''}" data-oneshot-btn="false">📖 Multi-chapter</button>
+          <button class="type-btn${item.oneshot ? ' active' : ''}" data-oneshot-btn="true">📄 One-shot</button>
+        </div>` : ''}
 
         <label class="field-label">Title *</label>
         <input type="text" id="m-title" value="${item.title||''}" placeholder="Title" />
@@ -288,6 +357,9 @@ function modalHtml() {
         </div>
         <div class="tags-display" id="tags-display">${tags}</div>
 
+        <label class="field-label">Date finished <span style="font-weight:400;text-transform:none;font-size:10px">(optional)</span></label>
+        <input type="date" id="m-finished" value="${item.finishedAt ? item.finishedAt.slice(0,10) : ''}" />
+
         <label class="field-label">Notes</label>
         <textarea id="m-notes" placeholder="Personal thoughts, read again?">${item.notes||''}</textarea>
 
@@ -299,11 +371,133 @@ function modalHtml() {
     </div>`;
 }
 
+// ── Stats View ────────────────────────────────────────────────────────────────
+function statsViewHtml() {
+  const SPEED = 250;
+  const fin = {
+    all:     state.items.filter(x => x.status === 'Finished'),
+    books:   state.items.filter(x => x.status === 'Finished' && x.type === 'book'),
+    ff:      state.items.filter(x => x.status === 'Finished' && x.type === 'ff' && !x.oneshot),
+    oneshot: state.items.filter(x => x.status === 'Finished' && x.type === 'ff' && x.oneshot),
+  };
+  const cat = state.statsCategory;
+  const items = fin[cat];
+  const totalCount = items.length;
+  const totalWords = items.reduce((s, x) => s + itemWords(x), 0);
+  const totalMins = totalWords / SPEED;
+
+  const tab = (id, lbl) =>
+    `<span class="stat-tab${cat === id ? ' active' : ''}" data-scat="${id}">${lbl}</span>`;
+
+  // Breakdown bar (all category only)
+  let breakdownHtml = '';
+  if (cat === 'all' && totalWords > 0) {
+    const parts = [
+      { key:'books',   lbl:'📚 Books',       cls:'green',  list: fin.books },
+      { key:'ff',      lbl:'📖 Fanfiction',  cls:'purple', list: fin.ff },
+      { key:'oneshot', lbl:'📄 One-shots',   cls:'amber',  list: fin.oneshot },
+    ].filter(p => p.list.length > 0);
+    const rows = parts.map(p => {
+      const w = p.list.reduce((s, x) => s + itemWords(x), 0);
+      const pct = Math.round(w / totalWords * 100);
+      return `<div class="bdrow">
+        <span class="bddot ${p.cls}"></span>
+        <span class="bdlabel">${p.lbl}</span>
+        <span class="bdstat">${p.list.length} · ${fmtNum(w)} words · ${fmtTime(w/SPEED)}</span>
+        <span class="bdpct">${pct}%</span>
+      </div>`;
+    }).join('');
+    const segs = parts.map(p => {
+      const w = p.list.reduce((s, x) => s + itemWords(x), 0);
+      return `<div class="bdseg ${p.cls}" style="width:${Math.round(w/totalWords*100)}%"></div>`;
+    }).join('');
+    breakdownHtml = `<div class="stats-breakdown">${rows}<div class="bdbar">${segs}</div></div>`;
+  }
+
+  // Chart
+  const groups = getPeriodData(items, state.statsPeriod);
+  const metricFn = state.statsMetric === 'words'
+    ? g => g.items.reduce((s, x) => s + itemWords(x), 0)
+    : g => g.items.length;
+  const values = groups.map(metricFn);
+  const maxVal = Math.max(...values, 1);
+  const bars = groups.map((g, i) => {
+    const val = values[i];
+    const pct = val > 0 ? Math.max(val / maxVal * 100, 4) : 0;
+    const lbl = state.statsMetric === 'words' ? fmtNum(val) : String(val);
+    return `<div class="chart-col">
+      <div class="chart-bar-wrap">
+        <div class="chart-bar${val === 0 ? ' empty' : ''}" style="height:${pct}%">
+          ${val > 0 ? `<span class="chart-bar-val">${lbl}</span>` : ''}
+        </div>
+      </div>
+      <div class="chart-bar-lbl">${g.label}</div>
+    </div>`;
+  }).join('');
+
+  const datedCount = items.filter(x => x.finishedAt).length;
+  const noteHtml = datedCount < totalCount
+    ? `<p class="stats-note">📅 ${totalCount - datedCount} of ${totalCount} items have no finish date — they count in the totals above but not in the chart. Edit items to add dates.</p>`
+    : '';
+
+  const pBtn = (id, lbl) =>
+    `<button class="speriod-btn${state.statsPeriod===id?' active':''}" data-speriod="${id}">${lbl}</button>`;
+  const mBtn = (id, lbl) =>
+    `<button class="smetric-btn${state.statsMetric===id?' active':''}" data-smetric="${id}">${lbl}</button>`;
+
+  return `<div id="stats-view">
+    <div class="stats-cats">
+      ${tab('all','All')}${tab('books','📚 Books')}${tab('ff','📖 Fanfiction')}${tab('oneshot','📄 One-shots')}
+    </div>
+    <div class="stats-summary">
+      <div class="scard"><div class="scard-num">${totalCount}</div><div class="scard-lbl">finished</div></div>
+      <div class="scard"><div class="scard-num">${fmtNum(totalWords)}</div><div class="scard-lbl">words read</div></div>
+      <div class="scard"><div class="scard-num">${fmtTime(totalMins)}</div><div class="scard-lbl">reading time*</div></div>
+    </div>
+    ${breakdownHtml}
+    <div class="stats-trend-hdr">
+      <span class="stats-section-ttl">Reading trend</span>
+      <div class="stats-ctrls">
+        <div class="speriod-group">${pBtn('week','Week')}${pBtn('month','Month')}${pBtn('year','Year')}${pBtn('ever','All time')}</div>
+        <div class="smetric-group">${mBtn('words','Words')}${mBtn('items','Items')}</div>
+      </div>
+    </div>
+    <div class="stats-chart">${bars}</div>
+    <div class="stats-chart-base"></div>
+    ${noteHtml}
+    <p class="stats-note" style="margin-top:6px">* estimated at 250 words/min; books without word count use 250 words/page</p>
+  </div>`;
+}
+
 // ── Render ────────────────────────────────────────────────────────────────────
 function render() {
-  const listEl = document.getElementById('list');
-  const scrollTop = listEl ? listEl.scrollTop : 0;
+  const scrollable = document.getElementById('list') || document.getElementById('stats-view');
+  const scrollTop = scrollable ? scrollable.scrollTop : 0;
   const stats = getStats();
+
+  const titlebarHtml = `
+    <div id="titlebar">
+      <div>
+        <div id="titlebar-title">My Library</div>
+        <div class="subtitle">${stats.ff} fics · ${stats.books} books · ${stats.totalWords.toLocaleString()} words read</div>
+      </div>
+      <div id="titlebar-actions">
+        <button class="btn btn-secondary btn-sm btn-icon" id="btn-export" title="Export to Excel">📊 Export</button>
+        <button class="btn btn-secondary btn-sm btn-icon" id="btn-data-folder" title="Open data folder">📁</button>
+        <button class="btn btn-backup btn-sm btn-icon" id="btn-backup" title="Back up to GitHub">☁️ Back up</button>
+        <button class="btn ${state.view==='stats'?'btn-primary':'btn-secondary'} btn-sm btn-icon" id="btn-stats">${state.view==='stats'?'📚 Library':'📈 Stats'}</button>
+        <button class="btn btn-primary btn-sm btn-icon" id="btn-add">＋ Add entry</button>
+      </div>
+    </div>`;
+
+  if (state.view === 'stats') {
+    document.getElementById('app').innerHTML = titlebarHtml + statsViewHtml() + (state.modalOpen ? modalHtml() : '');
+    const newScrollable = document.getElementById('stats-view');
+    if (newScrollable) newScrollable.scrollTop = scrollTop;
+    bindEvents();
+    return;
+  }
+
   const filtered = getFiltered();
   const fandoms = getFandoms();
   const sections = getSections();
@@ -327,19 +521,7 @@ function render() {
     fpill(g, state.filterGenre===g, `genre="${g.replace(/"/g,'&quot;')}"`)
   ).join('');
 
-  document.getElementById('app').innerHTML = `
-    <div id="titlebar">
-      <div>
-        <div id="titlebar-title">My Library</div>
-        <div class="subtitle">${stats.ff} fics · ${stats.books} books · ${stats.totalWords.toLocaleString()} words read</div>
-      </div>
-      <div id="titlebar-actions">
-        <button class="btn btn-secondary btn-sm btn-icon" id="btn-export" title="Export to Excel">📊 Export</button>
-        <button class="btn btn-secondary btn-sm btn-icon" id="btn-data-folder" title="Open data folder">📁</button>
-        <button class="btn btn-backup btn-sm btn-icon" id="btn-backup" title="Back up to GitHub">☁️ Back up</button>
-        <button class="btn btn-primary btn-sm btn-icon" id="btn-add">＋ Add entry</button>
-      </div>
-    </div>
+  document.getElementById('app').innerHTML = titlebarHtml + `
 
     <div class="stat-row">
       <div class="stat-pill ${statPillClass('TBR')}" data-stat="TBR">
@@ -378,9 +560,10 @@ function render() {
       ${fpill('All', state.filterType==='all', 'type="all"')}
       ${fpill('📖 Fanfiction', state.filterType==='ff', 'type="ff"')}
       ${fpill('📚 Books', state.filterType==='book', 'type="book"')}
+      ${fpill('📄 One-shots', state.filterType==='oneshot', 'type="oneshot"')}
       <span class="fpill divider">|</span>
-      ${state.filterType !== 'book' ? fandomPills : ''}
-      ${state.filterType !== 'ff' ? genrePills : ''}
+      ${(state.filterType==='all'||state.filterType==='ff'||state.filterType==='oneshot') ? fandomPills : ''}
+      ${(state.filterType==='all'||state.filterType==='book') ? genrePills : ''}
     </div>
 
     <div id="results-meta">${filtered.length} ${filtered.length===1?'entry':'entries'}${state.search ? ` matching "<b>${state.search}</b>"` : ''}</div>
@@ -401,6 +584,7 @@ function render() {
   bindEvents();
 }
 
+
 // ── Event binding ─────────────────────────────────────────────────────────────
 function bindEvents() {
   // Search
@@ -416,6 +600,25 @@ function bindEvents() {
   // Sort
   const sortEl = document.getElementById('sort-select');
   if (sortEl) sortEl.addEventListener('change', e => { state.sortBy = e.target.value; render(); });
+
+  // Stats toggle
+  const statsBtn = document.getElementById('btn-stats');
+  if (statsBtn) statsBtn.addEventListener('click', () => {
+    state.view = state.view === 'stats' ? 'library' : 'stats';
+    state.modalOpen = false; state.editItem = null;
+    render();
+  });
+
+  // Stats tabs / period / metric
+  document.querySelectorAll('[data-scat]').forEach(el => {
+    el.addEventListener('click', () => { state.statsCategory = el.dataset.scat; render(); });
+  });
+  document.querySelectorAll('[data-speriod]').forEach(el => {
+    el.addEventListener('click', () => { state.statsPeriod = el.dataset.speriod; render(); });
+  });
+  document.querySelectorAll('[data-smetric]').forEach(el => {
+    el.addEventListener('click', () => { state.statsMetric = el.dataset.smetric; render(); });
+  });
 
   // Add button
   const addBtn = document.getElementById('btn-add');
@@ -517,7 +720,12 @@ function bindEvents() {
       e.stopPropagation();
       const id = el.dataset.id;
       const status = el.dataset.setStatus;
-      state.items = state.items.map(x => x.id === id ? { ...x, status } : x);
+      state.items = state.items.map(x => {
+        if (x.id !== id) return x;
+        const update = { ...x, status };
+        if (status === 'Finished' && !x.finishedAt) update.finishedAt = new Date().toISOString();
+        return update;
+      });
       saveData(); render();
     });
   });
@@ -565,6 +773,14 @@ function bindEvents() {
   document.querySelectorAll('[data-type-btn]').forEach(btn => {
     btn.addEventListener('click', () => {
       state.editItem = { ...(state.editItem||{}), type: btn.dataset.typeBtn };
+      render();
+    });
+  });
+
+  // One-shot toggle
+  document.querySelectorAll('[data-oneshot-btn]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.editItem = { ...(state.editItem||{}), oneshot: btn.dataset.oneshotBtn === 'true' };
       render();
     });
   });
@@ -676,6 +892,14 @@ function bindEvents() {
       notes: document.getElementById('m-notes')?.value?.trim() || '',
       tags: state.editItem?.tags || [],
       url: document.getElementById('m-url')?.value?.trim() || state.editItem?.url || '',
+      oneshot: isFf ? (state.editItem?.oneshot || false) : undefined,
+      finishedAt: (() => {
+        const d = document.getElementById('m-finished')?.value;
+        const s = document.getElementById('m-status')?.value || 'TBR';
+        if (d) return new Date(d + 'T12:00:00').toISOString();
+        if (s === 'Finished' && !state.editItem?.finishedAt) return new Date().toISOString();
+        return state.editItem?.finishedAt || null;
+      })(),
       _addedAt: state.editItem?._addedAt ?? state.items.length,
     };
 
