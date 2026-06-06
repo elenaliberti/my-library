@@ -11,7 +11,8 @@
     "appId": "com.mylibrary.app",
     "productName": "My Library",
     "mac": {
-      "category": "public.app-category.books"
+      "category": "public.app-category.books",
+      "icon": "assets/icon.icns"
     },
     "directories": {
       "output": "dist"
