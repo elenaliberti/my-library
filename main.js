@@ -96,9 +96,34 @@ ipcMain.handle('data:open-location', () => {
 })
 
 // ── AO3 fetch ─────────────────────────────────────────────────────────────────
+function curlGet(url) {
+  // Normalise to work root URL (strip chapter fragments) and add view_adult=true
+  const workUrl = url.replace(/\/chapters\/[^?#]+/, '').replace(/#.*$/, '')
+  const fetchUrl = workUrl.includes('?') ? workUrl + '&view_adult=true' : workUrl + '?view_adult=true'
+
+  return new Promise((resolve, reject) => {
+    execFile('curl', [
+      '-s', '-L', '--max-time', '20',
+      '-H', 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+      '-H', 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      '-H', 'Accept-Language: en-US,en;q=0.9',
+      '-H', 'Accept-Encoding: identity',
+      '-H', 'Cache-Control: no-cache',
+      '-H', 'Sec-Fetch-Dest: document',
+      '-H', 'Sec-Fetch-Mode: navigate',
+      '-H', 'Sec-Fetch-Site: none',
+      '-H', 'Sec-Fetch-User: ?1',
+      fetchUrl,
+    ], { maxBuffer: 10 * 1024 * 1024 }, (err, stdout) => {
+      if (err) reject(new Error(err.message))
+      else resolve(stdout)
+    })
+  })
+}
+
 ipcMain.handle('ao3:fetch', async (_, url) => {
   try {
-    const html = await nodeGet(url)
+    const html = await curlGet(url)
 
     const stripTags = s => (s || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()
     const getSection = cls => { const m = html.match(new RegExp(`<dd[^>]*class="[^"]*${cls}[^"]*"[^>]*>([\\s\\S]*?)<\\/dd>`, 'i')); return m ? m[1] : null }
