@@ -18,6 +18,9 @@ let state = {
   view: 'library',
   viewMode: 'list',
   folderPath: [],
+  folderConfig: {},
+  editingFolder: null,
+  creatingFolderIn: null,
   statsCategory: 'all',
   statsPeriod: 'year',
   statsMetric: 'words',
@@ -541,13 +544,83 @@ function statsViewHtml() {
 }
 
 // ── Folder view ───────────────────────────────────────────────────────────────
-function folderCard(navPath, emoji, label, count) {
-  const nav = JSON.stringify(navPath).replace(/"/g, '&quot;');
-  return `<div class="folder-card" data-folder-nav="${nav}">
-    <div class="fc-icon">${emoji}</div>
-    <div class="fc-name">${esc(label)}</div>
-    <div class="fc-count">${count} ${count===1?'item':'items'}</div>
+const FOLDER_DEFAULTS = {
+  'ff|Harry Potter - J. K. Rowling':                         { displayName: 'Harry Potter', icon: '⚡' },
+  'ff|Harry Potter - J. K. Rowling|Drarry':                  { displayName: 'Draco/Harry', icon: '🐍' },
+  'ff|Harry Potter - J. K. Rowling|Tomarry':                 { displayName: 'Tom Riddle/Harry', icon: '🐍' },
+  'ff|Harry Potter - J. K. Rowling|Harry/Hermione':          { displayName: 'Harry & Hermione', icon: '📚' },
+  'ff|Harry Potter - J. K. Rowling|Harry/Ginny':             { displayName: 'Harry & Ginny', icon: '🔥' },
+  'ff|Harry Potter - J. K. Rowling|Mentor Severus':          { displayName: 'Mentor Severus', icon: '🧪' },
+  'ff|Harry Potter - J. K. Rowling|Powerful!Harry':          { displayName: 'Powerful Harry', icon: '💥' },
+  'ff|Harry Potter - J. K. Rowling|Time/Dimension Travel HP':{ displayName: 'Time Travel', icon: '⏳' },
+  'ff|Harry Potter - J. K. Rowling|Harry in Slytherin':      { displayName: 'Harry in Slytherin', icon: '🐍' },
+  'ff|Harry Potter - J. K. Rowling|Creature Harry':          { displayName: 'Creature Harry', icon: '🐺' },
+};
+
+const GRADIENTS = [
+  ['#6366f1','#4338ca'], ['#8b5cf6','#7c3aed'], ['#ec4899','#be185d'],
+  ['#f59e0b','#b45309'], ['#10b981','#047857'], ['#3b82f6','#1d4ed8'],
+  ['#ef4444','#b91c1c'], ['#06b6d4','#0e7490'], ['#f97316','#c2410c'],
+  ['#84cc16','#4d7c0f'],
+];
+
+function loadFolderConfig() {
+  try { return JSON.parse(localStorage.getItem('folderConfig') || '{}'); } catch { return {}; }
+}
+function saveFolderConfig() {
+  localStorage.setItem('folderConfig', JSON.stringify(state.folderConfig));
+}
+function getCfg(key) {
+  return { ...(FOLDER_DEFAULTS[key] || {}), ...(state.folderConfig[key] || {}) };
+}
+function folderGradient(key) {
+  let h = 5381;
+  for (let i = 0; i < key.length; i++) h = ((h << 5) + h) ^ key.charCodeAt(i);
+  return GRADIENTS[Math.abs(h) % GRADIENTS.length];
+}
+
+function folderCard(navPath, defaultEmoji, rawLabel, count) {
+  const key = navPath.join('|');
+  const cfg = getCfg(key);
+  const label = cfg.displayName || rawLabel;
+  const icon = cfg.icon || defaultEmoji;
+  const pinned = cfg.pinned || false;
+  const [c1, c2] = folderGradient(key);
+  const nav = JSON.stringify(navPath).replace(/"/g,'&quot;');
+  const editKey = key.replace(/"/g,'&quot;');
+  const isUrl = icon.startsWith('http');
+  const iconHtml = isUrl ? `<img class="fc-img" src="${esc(icon)}" />` : `<span class="fc-emoji">${icon}</span>`;
+  return `<div class="folder-card${pinned?' fc-pinned':''}" data-folder-nav="${nav}">
+    <div class="fc-thumb" style="--c1:${c1};--c2:${c2}">
+      ${iconHtml}
+      ${pinned ? '<span class="fc-pin">📌</span>' : ''}
+      <button class="fc-edit-btn" data-edit-folder="${editKey}">✏️ Edit</button>
+    </div>
+    <div class="fc-info">
+      <div class="fc-name">${esc(label)}</div>
+      <div class="fc-count">${count} ${count===1?'item':'items'}</div>
+    </div>
   </div>`;
+}
+
+function addFolderCard(parentPath) {
+  const ap = JSON.stringify(parentPath).replace(/"/g,'&quot;');
+  return `<div class="folder-card folder-card-add" data-add-folder="${ap}">
+    <div class="fc-thumb fc-thumb-add"><span style="font-size:28px;opacity:0.35">＋</span></div>
+    <div class="fc-info">
+      <div class="fc-name" style="color:#9ca3af">New folder</div>
+      <div class="fc-count" style="color:#d1d5db">Customise</div>
+    </div>
+  </div>`;
+}
+
+function sortedCards(items) {
+  return items.slice().sort((a, b) => {
+    const ap = getCfg(a[0].join('|')).pinned || false;
+    const bp = getCfg(b[0].join('|')).pinned || false;
+    if (ap !== bp) return ap ? -1 : 1;
+    return b[3] - a[3];
+  });
 }
 
 function folderCrumbs(crumbs) {
@@ -569,10 +642,77 @@ function folderItemList(items) {
     }</div>`;
 }
 
+function folderEditModalHtml() {
+  if (!state.editingFolder) return '';
+  const key = state.editingFolder;
+  const cfg = getCfg(key);
+  const parts = key.split('|');
+  const tail = parts[parts.length-1];
+  const rawLabel = tail.startsWith('custom_') ? '' : (tail==='__none__'?'Other':(tail==='__all__'?'All':(tail==='__untagged__'?'Untagged':tail)));
+  const label = cfg.displayName || rawLabel;
+  const icon = cfg.icon || '';
+  const pinned = cfg.pinned || false;
+  const isUrl = icon.startsWith('http');
+  const preview = isUrl
+    ? `<img src="${esc(icon)}" style="width:100%;height:100%;object-fit:cover;border-radius:12px" />`
+    : `<span style="font-size:42px;line-height:1">${icon || '📁'}</span>`;
+  return `<div class="folder-edit-backdrop" id="folder-edit-backdrop">
+    <div class="folder-edit-modal">
+      <div class="fem-header">
+        <span class="fem-title">Edit folder</span>
+        <button class="fem-close" id="fem-close">×</button>
+      </div>
+      <div class="fem-preview-row"><div class="fem-preview-icon" id="fem-preview-icon">${preview}</div></div>
+      <div class="fem-body">
+        <label class="field-label">Name</label>
+        <input type="text" id="fem-name" value="${esc(label)}" placeholder="Folder name…" />
+        <label class="field-label" style="margin-top:12px">Icon <span class="fem-hint">(emoji or image URL — paste from anywhere)</span></label>
+        <input type="text" id="fem-icon" value="${esc(icon)}" placeholder="⚡  or  https://…" />
+        <label class="fem-pin-row">
+          <input type="checkbox" id="fem-pin" ${pinned?'checked':''} />
+          <span>Pin to top</span>
+        </label>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="fem-cancel">Cancel</button>
+        <button class="btn btn-primary" id="fem-save">Save</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function folderCreateModalHtml() {
+  if (!state.creatingFolderIn) return '';
+  const path = state.creatingFolderIn;
+  const needsTag = path[0]==='ff' && path.length===2;
+  const base = needsTag ? state.items.filter(x=>x.type==='ff'&&(path[1]==='__none__'?!x.fandom:x.fandom===path[1])) : [];
+  const tagOpts = needsTag ? [...new Set(base.flatMap(x=>x.tags||[]))].sort().map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join('') : '';
+  return `<div class="folder-edit-backdrop" id="folder-create-backdrop">
+    <div class="folder-edit-modal">
+      <div class="fem-header">
+        <span class="fem-title">New folder</span>
+        <button class="fem-close" id="fcm-close">×</button>
+      </div>
+      <div class="fem-body">
+        <label class="field-label">Name</label>
+        <input type="text" id="fcm-name" placeholder="Folder name…" />
+        <label class="field-label" style="margin-top:12px">Icon <span class="fem-hint">(emoji or image URL)</span></label>
+        <input type="text" id="fcm-icon" placeholder="⚡  or  https://…" />
+        ${needsTag ? `<label class="field-label" style="margin-top:12px">Filter by tag</label>
+        <select id="fcm-tag" class="filter-select" style="width:100%;margin-top:4px"><option value="">— choose tag —</option>${tagOpts}</select>` : ''}
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="fcm-cancel">Cancel</button>
+        <button class="btn btn-primary" id="fcm-save">Create</button>
+      </div>
+    </div>
+  </div>`;
+}
+
 function folderViewHtml() {
   const [type, sub, tag] = state.folderPath;
 
-  // Root
+  // Root — two big tiles
   if (!type) {
     const ffN = state.items.filter(x=>x.type==='ff').length;
     const bkN = state.items.filter(x=>x.type==='book').length;
@@ -586,12 +726,22 @@ function folderViewHtml() {
 
   // FF → fandom list
   if (type==='ff' && !sub) {
-    const cards = getFandoms().map(f => {
+    const raw = getFandoms().map(f => {
       const n = state.items.filter(x=>x.type==='ff'&&x.fandom===f).length;
-      return folderCard(['ff',f], fandomEmoji(f), f, n);
+      return [['ff',f], fandomEmoji(f), f, n];
     });
     const none = state.items.filter(x=>x.type==='ff'&&!x.fandom);
-    if (none.length) cards.push(folderCard(['ff','__none__'],'📄','Other',none.length));
+    if (none.length) raw.push([['ff','__none__'],'📄','Other',none.length]);
+    const customKeys = Object.keys(state.folderConfig).filter(k=>state.folderConfig[k].isCustom && k.split('|').length===2 && k.startsWith('ff|'));
+    customKeys.forEach(k => {
+      const cfg = state.folderConfig[k];
+      const id = k.split('|')[1];
+      const filterTag = cfg.filterTag;
+      const n = filterTag ? state.items.filter(x=>x.type==='ff'&&(x.tags||[]).includes(filterTag)).length : 0;
+      raw.push([[...k.split('|')], cfg.icon||'📁', cfg.displayName||'Custom', n]);
+    });
+    const cards = sortedCards(raw).map(([p,e,l,c]) => folderCard(p,e,l,c));
+    cards.push(addFolderCard(['ff']));
     return `<div id="folder-view">
       ${folderCrumbs([{label:'Fanfiction',path:['ff']}])}
       <div class="folder-grid">${cards.join('')}</div>
@@ -602,26 +752,44 @@ function folderViewHtml() {
   if (type==='ff' && sub && !tag) {
     const base = state.items.filter(x=>x.type==='ff'&&(sub==='__none__'?!x.fandom:x.fandom===sub));
     const tagSet = [...new Set(base.flatMap(x=>x.tags||[]))].sort();
-    const allCard = folderCard(['ff',sub,'__all__'],'📋','All',base.length);
-    const tagCards = tagSet.map(t => {
+    const allEntry = [['ff',sub,'__all__'],'📋','All',base.length];
+    const tagEntries = tagSet.map(t => {
       const n = base.filter(x=>(x.tags||[]).includes(t)).length;
-      return folderCard(['ff',sub,t],'🏷️',t,n);
+      return [['ff',sub,t],'🏷️',t,n];
     });
     const untagged = base.filter(x=>!(x.tags||[]).length);
-    if (untagged.length) tagCards.push(folderCard(['ff',sub,'__untagged__'],'📄','Untagged',untagged.length));
-    const subLbl = sub==='__none__'?'Other':sub;
+    if (untagged.length) tagEntries.push([['ff',sub,'__untagged__'],'📄','Untagged',untagged.length]);
+    const customKeys = Object.keys(state.folderConfig).filter(k=>{
+      const p = k.split('|');
+      return state.folderConfig[k].isCustom && p.length===3 && p[0]==='ff' && p[1]===sub;
+    });
+    customKeys.forEach(k => {
+      const cfg = state.folderConfig[k];
+      const filterTag = cfg.filterTag;
+      const n = filterTag ? base.filter(x=>(x.tags||[]).includes(filterTag)).length : 0;
+      tagEntries.push([[...k.split('|')], cfg.icon||'📁', cfg.displayName||'Custom', n]);
+    });
+    const sorted = [allEntry, ...sortedCards(tagEntries)];
+    const subLbl = getCfg(`ff|${sub}`).displayName || (sub==='__none__'?'Other':sub);
+    const cards = sorted.map(([p,e,l,c]) => folderCard(p,e,l,c));
+    cards.push(addFolderCard(['ff',sub]));
     return `<div id="folder-view">
       ${folderCrumbs([{label:'Fanfiction',path:['ff']},{label:subLbl,path:['ff',sub]}])}
-      <div class="folder-grid">${[allCard,...tagCards].join('')}</div>
+      <div class="folder-grid">${cards.join('')}</div>
     </div>`;
   }
 
   // FF → fandom → tag → items
   if (type==='ff' && sub && tag) {
     const base = state.items.filter(x=>x.type==='ff'&&(sub==='__none__'?!x.fandom:x.fandom===sub));
-    const items = tag==='__all__'?base : tag==='__untagged__'?base.filter(x=>!(x.tags||[]).length) : base.filter(x=>(x.tags||[]).includes(tag));
-    const subLbl = sub==='__none__'?'Other':sub;
-    const tagLbl = tag==='__all__'?'All' : tag==='__untagged__'?'Untagged' : tag;
+    const customCfg = state.folderConfig[`ff|${sub}|${tag}`];
+    let items;
+    if (tag==='__all__') items = base;
+    else if (tag==='__untagged__') items = base.filter(x=>!(x.tags||[]).length);
+    else if (customCfg?.isCustom && customCfg.filterTag) items = base.filter(x=>(x.tags||[]).includes(customCfg.filterTag));
+    else items = base.filter(x=>(x.tags||[]).includes(tag));
+    const subLbl = getCfg(`ff|${sub}`).displayName || (sub==='__none__'?'Other':sub);
+    const tagLbl = getCfg(`ff|${sub}|${tag}`).displayName || (tag==='__all__'?'All':tag==='__untagged__'?'Untagged':tag);
     return `<div id="folder-view">
       ${folderCrumbs([{label:'Fanfiction',path:['ff']},{label:subLbl,path:['ff',sub]},{label:tagLbl,path:['ff',sub,tag]}])}
       ${folderItemList(items)}
@@ -630,12 +798,13 @@ function folderViewHtml() {
 
   // Books → genre list
   if (type==='book' && !sub) {
-    const cards = getGenres().map(g => {
+    const raw = getGenres().map(g => {
       const n = state.items.filter(x=>x.type==='book'&&(x.genre||'').split(' / ')[0].trim()===g).length;
-      return folderCard(['book',g], genreEmoji(g), g, n);
+      return [['book',g], genreEmoji(g), g, n];
     });
     const none = state.items.filter(x=>x.type==='book'&&!x.genre);
-    if (none.length) cards.push(folderCard(['book','__none__'],'📖','Other',none.length));
+    if (none.length) raw.push([['book','__none__'],'📖','Other',none.length]);
+    const cards = sortedCards(raw).map(([p,e,l,c]) => folderCard(p,e,l,c));
     return `<div id="folder-view">
       ${folderCrumbs([{label:'Books',path:['book']}])}
       <div class="folder-grid">${cards.join('')}</div>
@@ -647,7 +816,7 @@ function folderViewHtml() {
     const items = sub==='__none__'
       ? state.items.filter(x=>x.type==='book'&&!x.genre)
       : state.items.filter(x=>x.type==='book'&&(x.genre||'').split(' / ')[0].trim()===sub);
-    const subLbl = sub==='__none__'?'Other':sub;
+    const subLbl = getCfg(`book|${sub}`).displayName || (sub==='__none__'?'Other':sub);
     return `<div id="folder-view">
       ${folderCrumbs([{label:'Books',path:['book']},{label:subLbl,path:['book',sub]}])}
       ${folderItemList(items)}
@@ -691,7 +860,7 @@ function render() {
   }
 
   if (state.viewMode === 'folder') {
-    document.getElementById('app').innerHTML = titlebarHtml + folderViewHtml() + (state.modalOpen ? modalHtml() : '');
+    document.getElementById('app').innerHTML = titlebarHtml + folderViewHtml() + folderEditModalHtml() + folderCreateModalHtml() + (state.modalOpen ? modalHtml() : '');
     bindEvents();
     return;
   }
@@ -845,6 +1014,92 @@ function bindEvents() {
       render();
     });
   });
+
+  // Folder edit button
+  document.querySelectorAll('.fc-edit-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      state.editingFolder = btn.dataset.editFolder;
+      render();
+    });
+  });
+
+  // Folder edit modal
+  const febClose = document.getElementById('fem-close');
+  const febCancel = document.getElementById('fem-cancel');
+  const febSave = document.getElementById('fem-save');
+  const febBackdrop = document.getElementById('folder-edit-backdrop');
+  if (febClose) febClose.addEventListener('click', () => { state.editingFolder = null; render(); });
+  if (febCancel) febCancel.addEventListener('click', () => { state.editingFolder = null; render(); });
+  if (febBackdrop) febBackdrop.addEventListener('click', e => { if (e.target === febBackdrop) { state.editingFolder = null; render(); } });
+  const femIcon = document.getElementById('fem-icon');
+  if (femIcon) {
+    femIcon.addEventListener('input', e => {
+      const val = e.target.value.trim();
+      const preview = document.getElementById('fem-preview-icon');
+      if (!preview) return;
+      const isUrl = val.startsWith('http');
+      preview.innerHTML = isUrl
+        ? `<img src="${val}" style="width:100%;height:100%;object-fit:cover;border-radius:12px" />`
+        : `<span style="font-size:42px;line-height:1">${val || '📁'}</span>`;
+    });
+  }
+  if (febSave) {
+    febSave.addEventListener('click', () => {
+      const key = state.editingFolder;
+      if (!key) return;
+      const name = document.getElementById('fem-name')?.value.trim();
+      const icon = document.getElementById('fem-icon')?.value.trim();
+      const pinned = document.getElementById('fem-pin')?.checked || false;
+      const existing = state.folderConfig[key] || {};
+      state.folderConfig[key] = { ...existing };
+      if (name) state.folderConfig[key].displayName = name;
+      else delete state.folderConfig[key].displayName;
+      if (icon) state.folderConfig[key].icon = icon;
+      else delete state.folderConfig[key].icon;
+      state.folderConfig[key].pinned = pinned;
+      if (!name && !icon && !pinned && !existing.isCustom && !existing.filterTag) delete state.folderConfig[key];
+      saveFolderConfig();
+      state.editingFolder = null;
+      render();
+    });
+  }
+
+  // Add folder card
+  document.querySelectorAll('[data-add-folder]').forEach(el => {
+    el.addEventListener('click', () => {
+      state.creatingFolderIn = JSON.parse(el.dataset.addFolder);
+      render();
+    });
+  });
+
+  // Create folder modal
+  const fcmClose = document.getElementById('fcm-close');
+  const fcmCancel = document.getElementById('fcm-cancel');
+  const fcmSave = document.getElementById('fcm-save');
+  const fcmBackdrop = document.getElementById('folder-create-backdrop');
+  if (fcmClose) fcmClose.addEventListener('click', () => { state.creatingFolderIn = null; render(); });
+  if (fcmCancel) fcmCancel.addEventListener('click', () => { state.creatingFolderIn = null; render(); });
+  if (fcmBackdrop) fcmBackdrop.addEventListener('click', e => { if (e.target === fcmBackdrop) { state.creatingFolderIn = null; render(); } });
+  if (fcmSave) {
+    fcmSave.addEventListener('click', () => {
+      const parentPath = state.creatingFolderIn;
+      if (!parentPath) return;
+      const name = document.getElementById('fcm-name')?.value.trim();
+      const icon = document.getElementById('fcm-icon')?.value.trim();
+      const filterTag = document.getElementById('fcm-tag')?.value?.trim() || null;
+      if (!name) return;
+      const id = 'custom_' + Date.now();
+      const newPath = [...parentPath, id];
+      const key = newPath.join('|');
+      state.folderConfig[key] = { displayName: name, isCustom: true };
+      if (icon) state.folderConfig[key].icon = icon;
+      if (filterTag) state.folderConfig[key].filterTag = filterTag;
+      saveFolderConfig();
+      state.creatingFolderIn = null;
+      render();
+    });
+  }
 
   // Stats tabs / period / metric
   document.querySelectorAll('[data-scat]').forEach(el => {
@@ -1327,6 +1582,8 @@ async function exportToExcel() {
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 window.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && state.editingFolder) { state.editingFolder = null; render(); return; }
+  if (e.key === 'Escape' && state.creatingFolderIn) { state.creatingFolderIn = null; render(); return; }
   if (e.key === 'Escape' && state.modalOpen) { state.modalOpen = false; state.editItem = null; render(); }
   if ((e.metaKey || e.ctrlKey) && e.key === 'f') {
     e.preventDefault();
@@ -1336,5 +1593,6 @@ window.addEventListener('keydown', e => {
 
 (async () => {
   state.items = await loadData();
+  state.folderConfig = loadFolderConfig();
   render();
 })();
