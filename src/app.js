@@ -16,6 +16,8 @@ let state = {
   modalOpen: false,
   editItem: null,
   view: 'library',
+  viewMode: 'list',
+  folderPath: [],
   statsCategory: 'all',
   statsPeriod: 'year',
   statsMetric: 'words',
@@ -73,6 +75,54 @@ function getGenres() {
   state.items.filter(x => x.type === 'book' && x.genre)
     .forEach(x => s.add(x.genre.split(' / ')[0].trim()));
   return [...s].sort();
+}
+
+function esc(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function fandomEmoji(f) {
+  const k = (f||'').toLowerCase();
+  if (k.includes('harry potter')) return '⚡';
+  if (k.includes('percy jackson') || k.includes('pjo') || k.includes('olympus')) return '🔱';
+  if (k.includes('marvel') || k.includes('avengers')) return '🦸';
+  if (k.includes('star wars')) return '⭐';
+  if (k.includes('lord of the rings') || k.includes('tolkien') || k.includes('hobbit')) return '💍';
+  if (k.includes('game of thrones') || k.includes('asoiaf') || k.includes('fire and blood')) return '🐉';
+  if (k.includes('doctor who')) return '🌀';
+  if (k.includes('sherlock')) return '🔍';
+  if (k.includes('naruto')) return '🍥';
+  if (k.includes('one piece')) return '🏴‍☠️';
+  if (k.includes('my hero academia') || k.includes('bnha') || k.includes('boku no hero')) return '💥';
+  if (k.includes('attack on titan') || k.includes('shingeki')) return '⚔️';
+  if (k.includes('teen wolf')) return '🐺';
+  if (k.includes('twilight')) return '🌙';
+  if (k.includes('hunger games')) return '🏹';
+  if (k.includes('supernatural')) return '🌑';
+  if (k.includes('the witcher')) return '⚔️';
+  if (k.includes('merlin')) return '🔮';
+  if (k.includes('criminal minds')) return '🕵️';
+  if (k.includes('band of brothers') || k.includes('generation kill')) return '🎖️';
+  return '📁';
+}
+
+function genreEmoji(g) {
+  const k = (g||'').toLowerCase();
+  if (k.includes('romantasy') || k.includes('fantasy')) return '🐉';
+  if (k.includes('romance')) return '💕';
+  if (k.includes('mystery') || k.includes('detective')) return '🔍';
+  if (k.includes('thriller') || k.includes('suspense')) return '🔪';
+  if (k.includes('sci') || k.includes('science fiction')) return '🚀';
+  if (k.includes('horror')) return '👻';
+  if (k.includes('historical')) return '🏛️';
+  if (k.includes('contemporary')) return '🌆';
+  if (k.includes('ya') || k.includes('young adult')) return '✨';
+  if (k.includes('non-fiction') || k.includes('nonfiction')) return '📰';
+  if (k.includes('biograph') || k.includes('memoir')) return '👤';
+  if (k.includes('classic')) return '📜';
+  if (k.includes('crime')) return '🕵️';
+  if (k.includes('adventure')) return '🗺️';
+  return '📚';
 }
 
 function getTagsForFandom() {
@@ -490,6 +540,123 @@ function statsViewHtml() {
   </div>`;
 }
 
+// ── Folder view ───────────────────────────────────────────────────────────────
+function folderCard(navPath, emoji, label, count) {
+  const nav = JSON.stringify(navPath).replace(/"/g, '&quot;');
+  return `<div class="folder-card" data-folder-nav="${nav}">
+    <div class="fc-icon">${emoji}</div>
+    <div class="fc-name">${esc(label)}</div>
+    <div class="fc-count">${count} ${count===1?'item':'items'}</div>
+  </div>`;
+}
+
+function folderCrumbs(crumbs) {
+  return `<div class="folder-breadcrumb">
+    <span class="fcrumb" data-folder-go="[]">Home</span>
+    ${crumbs.map((c,i) => {
+      const go = JSON.stringify(c.path).replace(/"/g,'&quot;');
+      const last = i === crumbs.length-1;
+      return `<span class="fcrumb-sep">›</span><span class="fcrumb${last?' fcrumb-active':''}" data-folder-go="${go}">${esc(c.label)}</span>`;
+    }).join('')}
+  </div>`;
+}
+
+function folderItemList(items) {
+  return `<div class="folder-item-meta">${items.length} ${items.length===1?'entry':'entries'}</div>
+    <div id="list">${items.length
+      ? items.map(cardHtml).join('')
+      : '<div class="empty"><div class="empty-icon">📭</div><p>Nothing here yet.</p></div>'
+    }</div>`;
+}
+
+function folderViewHtml() {
+  const [type, sub, tag] = state.folderPath;
+
+  // Root
+  if (!type) {
+    const ffN = state.items.filter(x=>x.type==='ff').length;
+    const bkN = state.items.filter(x=>x.type==='book').length;
+    return `<div id="folder-view">
+      <div class="folder-grid folder-grid-root">
+        ${folderCard(['ff'],'📖','Fanfiction',ffN)}
+        ${folderCard(['book'],'📚','Books',bkN)}
+      </div>
+    </div>`;
+  }
+
+  // FF → fandom list
+  if (type==='ff' && !sub) {
+    const cards = getFandoms().map(f => {
+      const n = state.items.filter(x=>x.type==='ff'&&x.fandom===f).length;
+      return folderCard(['ff',f], fandomEmoji(f), f, n);
+    });
+    const none = state.items.filter(x=>x.type==='ff'&&!x.fandom);
+    if (none.length) cards.push(folderCard(['ff','__none__'],'📄','Other',none.length));
+    return `<div id="folder-view">
+      ${folderCrumbs([{label:'Fanfiction',path:['ff']}])}
+      <div class="folder-grid">${cards.join('')}</div>
+    </div>`;
+  }
+
+  // FF → fandom → tag list
+  if (type==='ff' && sub && !tag) {
+    const base = state.items.filter(x=>x.type==='ff'&&(sub==='__none__'?!x.fandom:x.fandom===sub));
+    const tagSet = [...new Set(base.flatMap(x=>x.tags||[]))].sort();
+    const allCard = folderCard(['ff',sub,'__all__'],'📋','All',base.length);
+    const tagCards = tagSet.map(t => {
+      const n = base.filter(x=>(x.tags||[]).includes(t)).length;
+      return folderCard(['ff',sub,t],'🏷️',t,n);
+    });
+    const untagged = base.filter(x=>!(x.tags||[]).length);
+    if (untagged.length) tagCards.push(folderCard(['ff',sub,'__untagged__'],'📄','Untagged',untagged.length));
+    const subLbl = sub==='__none__'?'Other':sub;
+    return `<div id="folder-view">
+      ${folderCrumbs([{label:'Fanfiction',path:['ff']},{label:subLbl,path:['ff',sub]}])}
+      <div class="folder-grid">${[allCard,...tagCards].join('')}</div>
+    </div>`;
+  }
+
+  // FF → fandom → tag → items
+  if (type==='ff' && sub && tag) {
+    const base = state.items.filter(x=>x.type==='ff'&&(sub==='__none__'?!x.fandom:x.fandom===sub));
+    const items = tag==='__all__'?base : tag==='__untagged__'?base.filter(x=>!(x.tags||[]).length) : base.filter(x=>(x.tags||[]).includes(tag));
+    const subLbl = sub==='__none__'?'Other':sub;
+    const tagLbl = tag==='__all__'?'All' : tag==='__untagged__'?'Untagged' : tag;
+    return `<div id="folder-view">
+      ${folderCrumbs([{label:'Fanfiction',path:['ff']},{label:subLbl,path:['ff',sub]},{label:tagLbl,path:['ff',sub,tag]}])}
+      ${folderItemList(items)}
+    </div>`;
+  }
+
+  // Books → genre list
+  if (type==='book' && !sub) {
+    const cards = getGenres().map(g => {
+      const n = state.items.filter(x=>x.type==='book'&&(x.genre||'').split(' / ')[0].trim()===g).length;
+      return folderCard(['book',g], genreEmoji(g), g, n);
+    });
+    const none = state.items.filter(x=>x.type==='book'&&!x.genre);
+    if (none.length) cards.push(folderCard(['book','__none__'],'📖','Other',none.length));
+    return `<div id="folder-view">
+      ${folderCrumbs([{label:'Books',path:['book']}])}
+      <div class="folder-grid">${cards.join('')}</div>
+    </div>`;
+  }
+
+  // Books → genre → items
+  if (type==='book' && sub) {
+    const items = sub==='__none__'
+      ? state.items.filter(x=>x.type==='book'&&!x.genre)
+      : state.items.filter(x=>x.type==='book'&&(x.genre||'').split(' / ')[0].trim()===sub);
+    const subLbl = sub==='__none__'?'Other':sub;
+    return `<div id="folder-view">
+      ${folderCrumbs([{label:'Books',path:['book']},{label:subLbl,path:['book',sub]}])}
+      ${folderItemList(items)}
+    </div>`;
+  }
+
+  return `<div id="folder-view"></div>`;
+}
+
 // ── Render ────────────────────────────────────────────────────────────────────
 function render() {
   const scrollable = document.getElementById('list') || document.getElementById('stats-view');
@@ -507,6 +674,10 @@ function render() {
         <button class="btn btn-secondary btn-sm btn-icon" id="btn-data-folder" title="Open data folder">📁</button>
         <button class="btn btn-backup btn-sm btn-icon" id="btn-backup" title="Back up to GitHub">☁️ Back up</button>
         <button class="btn ${state.view==='stats'?'btn-primary':'btn-secondary'} btn-sm btn-icon" id="btn-stats">${state.view==='stats'?'📚 Library':'📈 Stats'}</button>
+        <div class="view-seg">
+          <button class="vseg-btn${state.viewMode==='list'?' active':''}" id="btn-view-list" title="List view">☰</button>
+          <button class="vseg-btn${state.viewMode==='folder'?' active':''}" id="btn-view-folder" title="Folder view">⊞</button>
+        </div>
         <button class="btn btn-primary btn-sm btn-icon" id="btn-add">＋ Add entry</button>
       </div>
     </div>`;
@@ -515,6 +686,12 @@ function render() {
     document.getElementById('app').innerHTML = titlebarHtml + statsViewHtml() + (state.modalOpen ? modalHtml() : '');
     const newScrollable = document.getElementById('stats-view');
     if (newScrollable) newScrollable.scrollTop = scrollTop;
+    bindEvents();
+    return;
+  }
+
+  if (state.viewMode === 'folder') {
+    document.getElementById('app').innerHTML = titlebarHtml + folderViewHtml() + (state.modalOpen ? modalHtml() : '');
     bindEvents();
     return;
   }
@@ -645,6 +822,28 @@ function bindEvents() {
     state.view = state.view === 'stats' ? 'library' : 'stats';
     state.modalOpen = false; state.editItem = null;
     render();
+  });
+
+  // View mode toggle (list / folder)
+  document.getElementById('btn-view-list')?.addEventListener('click', () => {
+    state.viewMode = 'list'; render();
+  });
+  document.getElementById('btn-view-folder')?.addEventListener('click', () => {
+    state.viewMode = 'folder'; render();
+  });
+
+  // Folder navigation
+  document.querySelectorAll('[data-folder-nav]').forEach(el => {
+    el.addEventListener('click', () => {
+      state.folderPath = JSON.parse(el.dataset.folderNav);
+      render();
+    });
+  });
+  document.querySelectorAll('[data-folder-go]').forEach(el => {
+    el.addEventListener('click', () => {
+      state.folderPath = JSON.parse(el.dataset.folderGo);
+      render();
+    });
   });
 
   // Stats tabs / period / metric
