@@ -103,7 +103,7 @@ function curlGet(url) {
 
   return new Promise((resolve, reject) => {
     execFile('curl', [
-      '-s', '-L', '--max-time', '20',
+      '-s', '-L', '--max-time', '30',
       '-H', 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
       '-H', 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
       '-H', 'Accept-Language: en-US,en;q=0.9',
@@ -121,9 +121,28 @@ function curlGet(url) {
   })
 }
 
+function isRealWorkPage(html) {
+  // Cloudflare challenge pages are small and lack AO3 work content markers
+  return html.length > 20000 && (
+    html.includes('class="work meta') ||
+    html.includes('rel="author"') ||
+    html.includes('class="title heading"')
+  )
+}
+
 ipcMain.handle('ao3:fetch', async (_, url) => {
   try {
-    const html = await curlGet(url)
+    let html = await curlGet(url)
+
+    // If we got a Cloudflare challenge page, wait 3s and retry once
+    if (!isRealWorkPage(html)) {
+      await new Promise(r => setTimeout(r, 3000))
+      html = await curlGet(url)
+    }
+
+    if (!isRealWorkPage(html)) {
+      return { error: 'AO3 is busy right now — please try again in a few seconds.' }
+    }
 
     const stripTags = s => (s || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()
     const getSection = cls => { const m = html.match(new RegExp(`<dd[^>]*class="[^"]*${cls}[^"]*"[^>]*>([\\s\\S]*?)<\\/dd>`, 'i')); return m ? m[1] : null }
