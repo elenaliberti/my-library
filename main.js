@@ -1,37 +1,7 @@
 const { app, BrowserWindow, ipcMain, dialog, shell, session, nativeImage } = require('electron')
 const path = require('path')
 const fs = require('fs')
-const https = require('https')
 const { execFile } = require('child_process')
-
-function nodeGet(urlStr, extraHeaders = {}) {
-  return new Promise((resolve, reject) => {
-    const u = new URL(urlStr)
-    const opts = {
-      hostname: u.hostname, path: u.pathname + u.search, port: 443,
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,*/*;q=0.9',
-        'Accept-Language': 'en-US,en;q=0.5',
-        ...extraHeaders,
-      },
-    }
-    const req = https.get(opts, res => {
-      if ([301,302,303,307,308].includes(res.statusCode) && res.headers.location) {
-        const loc = res.headers.location.startsWith('http')
-          ? res.headers.location
-          : `https://${u.hostname}${res.headers.location}`
-        return nodeGet(loc, extraHeaders).then(resolve).catch(reject)
-      }
-      if (res.statusCode !== 200) return reject(new Error(`HTTP ${res.statusCode}`))
-      const chunks = []
-      res.on('data', c => chunks.push(c))
-      res.on('end', () => resolve(Buffer.concat(chunks).toString('utf-8')))
-    })
-    req.setTimeout(15000, () => { req.destroy(); reject(new Error('Request timed out')) })
-    req.on('error', reject)
-  })
-}
 
 const DATA_PATH = path.join(app.getPath('userData'), 'library-data.json')
 const ICON_PATH = path.join(__dirname, 'assets', 'icon.png')
@@ -95,34 +65,35 @@ ipcMain.handle('data:open-location', () => {
   shell.showItemInFolder(DATA_PATH)
 })
 
-// ── AO3 fetch ─────────────────────────────────────────────────────────────────
-function curlGet(url) {
-  // Normalise to work root URL (strip chapter fragments) and add view_adult=true
-  const workUrl = url.replace(/\/chapters\/[^?#]+/, '').replace(/#.*$/, '')
-  const fetchUrl = workUrl.includes('?') ? workUrl + '&view_adult=true' : workUrl + '?view_adult=true'
+// ── Electron-native fetch (uses Chromium TLS — bypasses Cloudflare JA3 checks) ─
+let _fetchSession = null
+function getFetchSession() {
+  if (!_fetchSession) _fetchSession = session.fromPartition('persist:fetch')
+  return _fetchSession
+}
 
-  return new Promise((resolve, reject) => {
-    execFile('curl', [
-      '-s', '-L', '--max-time', '30',
-      '-H', 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-      '-H', 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-      '-H', 'Accept-Language: en-US,en;q=0.9',
-      '-H', 'Accept-Encoding: identity',
-      '-H', 'Cache-Control: no-cache',
-      '-H', 'Sec-Fetch-Dest: document',
-      '-H', 'Sec-Fetch-Mode: navigate',
-      '-H', 'Sec-Fetch-Site: none',
-      '-H', 'Sec-Fetch-User: ?1',
-      fetchUrl,
-    ], { maxBuffer: 10 * 1024 * 1024 }, (err, stdout) => {
-      if (err) reject(new Error(err.message))
-      else resolve(stdout)
-    })
+async function electronFetch(url, preCookies = []) {
+  const s = getFetchSession()
+  for (const c of preCookies) await s.cookies.set(c)
+  const resp = await s.fetch(url, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+      'Accept-Language': 'en-US,en;q=0.9',
+      'Cache-Control': 'no-cache',
+      'Pragma': 'no-cache',
+      'Sec-Fetch-Dest': 'document',
+      'Sec-Fetch-Mode': 'navigate',
+      'Sec-Fetch-Site': 'none',
+      'Sec-Fetch-User': '?1',
+      'Upgrade-Insecure-Requests': '1',
+    }
   })
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}`)
+  return await resp.text()
 }
 
 function isRealWorkPage(html) {
-  // Cloudflare challenge pages are small and lack AO3 work content markers
   return html.length > 20000 && (
     html.includes('class="work meta') ||
     html.includes('rel="author"') ||
@@ -130,14 +101,24 @@ function isRealWorkPage(html) {
   )
 }
 
+// ── AO3 fetch ─────────────────────────────────────────────────────────────────
 ipcMain.handle('ao3:fetch', async (_, url) => {
   try {
-    let html = await curlGet(url)
+    const workUrl = url.replace(/\/chapters\/[^?#]+/, '').replace(/#.*$/, '')
+    const fetchUrl = workUrl.includes('?') ? workUrl + '&view_adult=true' : workUrl + '?view_adult=true'
 
-    // If we got a Cloudflare challenge page, wait 3s and retry once
+    // Pre-set age verification cookie so AO3 doesn't redirect to warning page
+    const ao3Cookies = [
+      { url: 'https://archiveofourown.org', name: 'age_verified', value: '1' },
+      { url: 'https://archiveofourown.org', name: 'view_adult', value: 'true' },
+    ]
+
+    let html = await electronFetch(fetchUrl, ao3Cookies)
+
+    // If we got a challenge/interstitial page, wait 2s and retry once
     if (!isRealWorkPage(html)) {
-      await new Promise(r => setTimeout(r, 3000))
-      html = await curlGet(url)
+      await new Promise(r => setTimeout(r, 2000))
+      html = await electronFetch(fetchUrl, ao3Cookies)
     }
 
     if (!isRealWorkPage(html)) {
@@ -186,30 +167,43 @@ ipcMain.handle('ffnet:fetch', async (_, url) => {
     const storyId = storyMatch[1]
     const fetchUrl = `https://www.fanfiction.net/s/${storyId}/`
 
-    const html = await curlGet(fetchUrl)
+    const html = await electronFetch(fetchUrl)
+    const stripTags = s => (s || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()
 
-    // Title — first <b class='xcontrast_txt'> in page
-    const titleMatch = html.match(/<b[^>]*class=['"][^'"]*xcontrast_txt[^'"]*['"][^>]*>([^<]+)<\/b>/)
-    const title = titleMatch ? titleMatch[1].trim() : null
-
-    // Author — <a> linking to /u/ID/
-    const authorMatch = html.match(/<a[^>]*href=['"]\/u\/\d+\/[^'"]*['"][^>]*>([^<]+)<\/a>/)
-    const author = authorMatch ? authorMatch[1].trim() : null
-
-    // Fandom — last <a> in pre_story_links breadcrumb
-    const preLinksMatch = html.match(/id=['"]pre_story_links['"][^>]*>([\s\S]*?)<\/div>/)
-    let fandom = null
-    if (preLinksMatch) {
-      const aLinks = [...preLinksMatch[1].matchAll(/<a[^>]+>([^<]+)<\/a>/g)]
-      if (aLinks.length) fandom = aLinks[aLinks.length - 1][1].trim()
+    // ── Title + Fandom from <title> tag (most reliable source) ──────────────
+    // FF.net format: "Story Title, a Fandom fanfic | FanFiction"
+    // or:            "Story Title, a Fandom + Fandom2 Crossover fanfic | FanFiction"
+    let title = null, fandom = null
+    const pageTitleRaw = html.match(/<title>([^<]+)<\/title>/i)?.[1] || ''
+    const pageTitleClean = pageTitleRaw.replace(/\s*\|\s*FanFiction\s*$/i, '').trim()
+    const fanficTitleMatch = pageTitleClean.match(/^(.+?),\s+a\s+(.+?)\s+(?:Crossover\s+)?fanfic$/i)
+    if (fanficTitleMatch) {
+      title = fanficTitleMatch[1].trim()
+      fandom = fanficTitleMatch[2].trim()
+    } else {
+      title = pageTitleClean.replace(/,.*$/, '').trim() || null
     }
 
-    // Words and Favs from metadata text
-    const wordsMatch = html.match(/Words:\s*([\d,]+)/i)
-    const words = wordsMatch ? parseInt(wordsMatch[1].replace(/,/g,'')) : null
-    const favsMatch = html.match(/Favs:\s*([\d,]+)/i)
-    const hearts = favsMatch ? parseInt(favsMatch[1].replace(/,/g,'')) : null
+    // ── Author from <a href='/u/ID/name'> ───────────────────────────────────
+    const authorMatch = html.match(/<a[^>]+href=['"]\/u\/\d+\/[^'"]+['"][^>]*>([^<]+)<\/a>/i)
+    const author = authorMatch ? authorMatch[1].trim() : null
 
+    // ── Words + Favs from inline metadata text ───────────────────────────────
+    const wordsMatch = html.match(/Words:\s*([\d,]+)/i)
+    const words = wordsMatch ? parseInt(wordsMatch[1].replace(/,/g, '')) : null
+    const favsMatch = html.match(/Favs:\s*([\d,]+)/i)
+    const hearts = favsMatch ? parseInt(favsMatch[1].replace(/,/g, '')) : null
+
+    // ── Fandom fallback from breadcrumb ──────────────────────────────────────
+    if (!fandom) {
+      const breadcrumb = html.match(/id=['"]pre_story_links['"][^>]*>([\s\S]{0,600}?)(?=<div|<script)/i)
+      if (breadcrumb) {
+        const links = [...breadcrumb[1].matchAll(/<a[^>]+>([^<]+)<\/a>/g)]
+        if (links.length) fandom = links[links.length - 1][1].trim()
+      }
+    }
+
+    if (!title) return { error: 'Could not read this story — FF.net may be blocking the request. Try again in a moment.' }
     return { title, author, fandom, words, hearts, rating: null, pairing: null, tags: [] }
   } catch(e) { return { error: e.message } }
 })
@@ -218,7 +212,7 @@ ipcMain.handle('ffnet:fetch', async (_, url) => {
 ipcMain.handle('books:fetch', async (_, query) => {
   try {
     const url = `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=3&fields=title,author_name,number_of_pages_median,subject`
-    const raw = await nodeGet(url, { 'Accept': 'application/json' })
+    const raw = await electronFetch(url)
     const data = JSON.parse(raw)
     const doc = (data.docs || [])[0]
     if (!doc) return { error: 'Book not found' }
