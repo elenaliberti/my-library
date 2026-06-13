@@ -128,6 +128,16 @@ select.filter-select:focus { border-color: var(--purple); }
 .folder-grid-root .fc-count { font-size: 13px; }
 .folder-item-meta { padding: 8px 22px; font-size: 12px; color: var(--gray-400); flex-shrink: 0; }
 
+/* Folder search/sort bar */
+.folder-search-row { display: flex; align-items: center; gap: 10px; padding: 9px 18px; background: #fff; border-bottom: 1px solid var(--gray-200); flex-shrink: 0; }
+.folder-search-input { flex: 1; height: 30px; border: 1.5px solid var(--gray-200); border-radius: 20px; padding: 0 14px; font-size: 12.5px; color: var(--gray-900); outline: none; font-family: inherit; background: var(--gray-100); }
+.folder-search-input:focus { border-color: #a5b4fc; background: #fff; }
+.folder-sort-select { font-size: 12px; padding: 4px 10px; border-radius: 20px; border: 1.5px solid var(--gray-200); background: #fff; color: var(--gray-700); cursor: pointer; flex-shrink: 0; }
+
+/* Pairing / trope section headers */
+.fv-section-hdr { font-size: 11px; font-weight: 700; color: var(--gray-400); letter-spacing: 0.07em; text-transform: uppercase; padding: 8px 4px 2px; }
+.fv-section-full { grid-column: 1 / -1; padding-top: 10px; }
+
 /* ── Folder edit / create modals ── */
 .folder-edit-backdrop { position: fixed; inset: 0; background: rgba(15,15,30,0.45); z-index: 9000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
 .folder-edit-modal { background: #fff; border-radius: 20px; width: 380px; max-width: 94vw; box-shadow: 0 24px 64px rgba(0,0,0,0.22); overflow: hidden; }
@@ -163,6 +173,13 @@ select.filter-select:focus { border-color: var(--purple); }
 .card-meta { display: flex; gap: 12px; margin-top: 6px; font-size: 12px; color: var(--gray-400); flex-wrap: wrap; align-items: center; }
 .card-actions { display: flex; gap: 4px; flex-shrink: 0; margin-top: 2px; }
 .icon-btn { background: none; border: none; cursor: pointer; font-size: 16px; padding: 4px 6px; border-radius: 6px; color: var(--gray-400); transition: background 0.12s, color 0.12s; line-height: 1; }
+
+/* Cover thumbnail */
+.card-cover { flex-shrink: 0; width: 46px; height: 62px; border-radius: 8px; background: linear-gradient(135deg, var(--c1) 0%, var(--c2) 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; cursor: pointer; }
+.card-cover:hover .cover-edit-btn { opacity: 1; }
+.card-cover-emoji { font-size: 22px; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.3)); line-height: 1; }
+.card-cover-img { width: 100%; height: 100%; object-fit: cover; }
+.cover-edit-btn { position: absolute; inset: 0; background: rgba(0,0,0,0.5); color: #fff; border: none; font-size: 14px; cursor: pointer; opacity: 0; transition: opacity 0.15s; display: flex; align-items: center; justify-content: center; -webkit-app-region: no-drag; }
 .icon-btn:hover { background: var(--gray-100); color: var(--gray-700); }
 .icon-btn.danger:hover { background: var(--red-light); color: var(--red); }
 

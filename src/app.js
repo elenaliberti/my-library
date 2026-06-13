@@ -21,6 +21,9 @@ let state = {
   folderConfig: {},
   editingFolder: null,
   creatingFolderIn: null,
+  folderSearch: '',
+  folderSortBy: 'count',
+  editingItemIcon: null,
   statsCategory: 'all',
   statsPeriod: 'year',
   statsMetric: 'words',
@@ -287,9 +290,20 @@ function cardHtml(item) {
     ? `by <b>${item.author||'—'}</b>${item.fandom ? ' · '+item.fandom : ''}`
     : `by <b>${item.author||'—'}</b>${item.genre ? ' · '+item.genre : ''}`;
 
+  const [cc1, cc2] = folderGradient(item.id);
+  const coverIcon = item.coverIcon || '';
+  const coverIsUrl = coverIcon.startsWith('http');
+  const coverInner = coverIsUrl
+    ? `<img class="card-cover-img" src="${esc(coverIcon)}" />`
+    : `<span class="card-cover-emoji">${coverIcon || (isFf ? '✍️' : '📚')}</span>`;
+
   return `
     <div class="card" data-id="${item.id}">
       <div class="card-top">
+        <div class="card-cover" data-expand="${item.id}" style="--c1:${cc1};--c2:${cc2}">
+          ${coverInner}
+          <button class="cover-edit-btn" data-edit-item-icon="${item.id}" title="Change cover icon">✏️</button>
+        </div>
         <div class="card-main" data-expand="${item.id}">
           <div class="card-title-row">
             <span class="card-title">${item.title}</span>
@@ -344,9 +358,9 @@ function modalHtml() {
         </div>` : ''}
 
         ${isFf ? `
-        <label class="field-label">AO3 / Fic URL</label>
+        <label class="field-label">Fic URL <span style="font-size:10px;font-weight:400;color:#9ca3af">(AO3 or FF.net)</span></label>
         <div class="fetch-row">
-          <input type="url" id="m-url" value="${item.url||''}" placeholder="https://archiveofourown.org/works/…" />
+          <input type="url" id="m-url" value="${item.url||''}" placeholder="https://archiveofourown.org/… or https://www.fanfiction.net/…" />
           <button class="btn btn-primary btn-sm" id="btn-fetch">Auto-fill ✦</button>
         </div>
         <div class="fetch-msg" id="fetch-msg"></div>
@@ -619,8 +633,27 @@ function sortedCards(items) {
     const ap = getCfg(a[0].join('|')).pinned || false;
     const bp = getCfg(b[0].join('|')).pinned || false;
     if (ap !== bp) return ap ? -1 : 1;
+    if (state.folderSortBy === 'alpha') {
+      const al = (getCfg(a[0].join('|')).displayName || a[2] || '').toLowerCase();
+      const bl = (getCfg(b[0].join('|')).displayName || b[2] || '').toLowerCase();
+      return al.localeCompare(bl);
+    }
     return b[3] - a[3];
   });
+}
+
+function filterCards(items) {
+  if (!state.folderSearch) return items;
+  const q = state.folderSearch.toLowerCase();
+  return items.filter(([p,e,l,c]) => {
+    const display = getCfg(p.join('|')).displayName || l || '';
+    return display.toLowerCase().includes(q);
+  });
+}
+
+function isPairingTag(rawLabel, navPath) {
+  const display = getCfg(navPath.join('|')).displayName || rawLabel;
+  return rawLabel.includes('/') || display.includes('/') || display.includes(' & ');
 }
 
 function folderCrumbs(crumbs) {
@@ -635,10 +668,16 @@ function folderCrumbs(crumbs) {
 }
 
 function folderItemList(items) {
-  return `<div class="folder-item-meta">${items.length} ${items.length===1?'entry':'entries'}</div>
-    <div id="list">${items.length
-      ? items.map(cardHtml).join('')
-      : '<div class="empty"><div class="empty-icon">📭</div><p>Nothing here yet.</p></div>'
+  const filtered = state.folderSearch
+    ? items.filter(x => {
+        const q = state.folderSearch.toLowerCase();
+        return (x.title||'').toLowerCase().includes(q) || (x.author||'').toLowerCase().includes(q);
+      })
+    : items;
+  return `<div class="folder-item-meta">${filtered.length} ${filtered.length===1?'entry':'entries'}${state.folderSearch&&filtered.length!==items.length?' found':''}</div>
+    <div id="list">${filtered.length
+      ? filtered.map(cardHtml).join('')
+      : `<div class="empty"><div class="empty-icon">${state.folderSearch?'🔍':'📭'}</div><p>${state.folderSearch?'No items match your search.':'Nothing here yet.'}</p></div>`
     }</div>`;
 }
 
@@ -709,6 +748,50 @@ function folderCreateModalHtml() {
   </div>`;
 }
 
+function itemIconModalHtml() {
+  if (!state.editingItemIcon) return '';
+  const item = state.items.find(x => x.id === state.editingItemIcon);
+  if (!item) return '';
+  const isFf = item.type === 'ff';
+  const icon = item.coverIcon || '';
+  const isUrl = icon.startsWith('http');
+  const [c1, c2] = folderGradient(item.id);
+  const preview = isUrl
+    ? `<img src="${esc(icon)}" style="width:100%;height:100%;object-fit:cover;border-radius:10px" />`
+    : `<span style="font-size:42px;line-height:1">${icon || (isFf?'✍️':'📚')}</span>`;
+  return `<div class="folder-edit-backdrop" id="item-icon-backdrop">
+    <div class="folder-edit-modal">
+      <div class="fem-header">
+        <span class="fem-title">Cover icon</span>
+        <button class="fem-close" id="iim-close">×</button>
+      </div>
+      <div class="fem-preview-row">
+        <div class="fem-preview-icon" id="iim-preview-icon" style="--c1:${c1};--c2:${c2};background:linear-gradient(135deg,var(--c1),var(--c2))">${preview}</div>
+      </div>
+      <div class="fem-body">
+        <label class="field-label">Icon <span class="fem-hint">(emoji or image URL — paste from anywhere)</span></label>
+        <input type="text" id="iim-icon" value="${esc(icon)}" placeholder="📚  or  https://…" />
+        ${icon ? `<button class="btn btn-secondary btn-sm" id="iim-clear" style="margin-top:8px;width:100%">Reset to default</button>` : ''}
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="iim-cancel">Cancel</button>
+        <button class="btn btn-primary" id="iim-save">Save</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function folderControlBar(isItemList) {
+  const sortBar = !isItemList ? `<select class="folder-sort-select" id="folder-sort">
+    <option value="count"${state.folderSortBy==='count'?' selected':''}>Most items</option>
+    <option value="alpha"${state.folderSortBy==='alpha'?' selected':''}>A → Z</option>
+  </select>` : '';
+  return `<div class="folder-search-row">
+    <input type="text" class="folder-search-input" id="folder-search" placeholder="${isItemList?'Search items…':'Search folders…'}" value="${esc(state.folderSearch)}" />
+    ${sortBar}
+  </div>`;
+}
+
 function folderViewHtml() {
   const [type, sub, tag] = state.folderPath;
 
@@ -732,23 +815,21 @@ function folderViewHtml() {
     });
     const none = state.items.filter(x=>x.type==='ff'&&!x.fandom);
     if (none.length) raw.push([['ff','__none__'],'📄','Other',none.length]);
-    const customKeys = Object.keys(state.folderConfig).filter(k=>state.folderConfig[k].isCustom && k.split('|').length===2 && k.startsWith('ff|'));
-    customKeys.forEach(k => {
+    Object.keys(state.folderConfig).filter(k=>state.folderConfig[k].isCustom && k.split('|').length===2 && k.startsWith('ff|')).forEach(k => {
       const cfg = state.folderConfig[k];
-      const id = k.split('|')[1];
-      const filterTag = cfg.filterTag;
-      const n = filterTag ? state.items.filter(x=>x.type==='ff'&&(x.tags||[]).includes(filterTag)).length : 0;
+      const n = cfg.filterTag ? state.items.filter(x=>x.type==='ff'&&(x.tags||[]).includes(cfg.filterTag)).length : 0;
       raw.push([[...k.split('|')], cfg.icon||'📁', cfg.displayName||'Custom', n]);
     });
-    const cards = sortedCards(raw).map(([p,e,l,c]) => folderCard(p,e,l,c));
+    const cards = sortedCards(filterCards(raw)).map(([p,e,l,c]) => folderCard(p,e,l,c));
     cards.push(addFolderCard(['ff']));
     return `<div id="folder-view">
       ${folderCrumbs([{label:'Fanfiction',path:['ff']}])}
+      ${folderControlBar(false)}
       <div class="folder-grid">${cards.join('')}</div>
     </div>`;
   }
 
-  // FF → fandom → tag list
+  // FF → fandom → tag list (with pairing/trope split)
   if (type==='ff' && sub && !tag) {
     const base = state.items.filter(x=>x.type==='ff'&&(sub==='__none__'?!x.fandom:x.fandom===sub));
     const tagSet = [...new Set(base.flatMap(x=>x.tags||[]))].sort();
@@ -759,23 +840,30 @@ function folderViewHtml() {
     });
     const untagged = base.filter(x=>!(x.tags||[]).length);
     if (untagged.length) tagEntries.push([['ff',sub,'__untagged__'],'📄','Untagged',untagged.length]);
-    const customKeys = Object.keys(state.folderConfig).filter(k=>{
+    Object.keys(state.folderConfig).filter(k=>{
       const p = k.split('|');
       return state.folderConfig[k].isCustom && p.length===3 && p[0]==='ff' && p[1]===sub;
-    });
-    customKeys.forEach(k => {
+    }).forEach(k => {
       const cfg = state.folderConfig[k];
-      const filterTag = cfg.filterTag;
-      const n = filterTag ? base.filter(x=>(x.tags||[]).includes(filterTag)).length : 0;
+      const n = cfg.filterTag ? base.filter(x=>(x.tags||[]).includes(cfg.filterTag)).length : 0;
       tagEntries.push([[...k.split('|')], cfg.icon||'📁', cfg.displayName||'Custom', n]);
     });
-    const sorted = [allEntry, ...sortedCards(tagEntries)];
+    const filtered = filterCards(tagEntries);
+    const pairings = sortedCards(filtered.filter(([p,e,l,c]) => isPairingTag(l,p)));
+    const tropes   = sortedCards(filtered.filter(([p,e,l,c]) => !isPairingTag(l,p)));
     const subLbl = getCfg(`ff|${sub}`).displayName || (sub==='__none__'?'Other':sub);
-    const cards = sorted.map(([p,e,l,c]) => folderCard(p,e,l,c));
-    cards.push(addFolderCard(['ff',sub]));
+    let gridContent = folderCard(allEntry[0], allEntry[1], allEntry[2], allEntry[3]);
+    if (pairings.length) {
+      gridContent += `<div class="fv-section-hdr fv-section-full">🚢 Pairings</div>` + pairings.map(([p,e,l,c])=>folderCard(p,e,l,c)).join('');
+    }
+    if (tropes.length) {
+      gridContent += `<div class="fv-section-hdr fv-section-full">⚡ Tropes & AUs</div>` + tropes.map(([p,e,l,c])=>folderCard(p,e,l,c)).join('');
+    }
+    gridContent += addFolderCard(['ff',sub]);
     return `<div id="folder-view">
       ${folderCrumbs([{label:'Fanfiction',path:['ff']},{label:subLbl,path:['ff',sub]}])}
-      <div class="folder-grid">${cards.join('')}</div>
+      ${folderControlBar(false)}
+      <div class="folder-grid">${gridContent}</div>
     </div>`;
   }
 
@@ -792,6 +880,7 @@ function folderViewHtml() {
     const tagLbl = getCfg(`ff|${sub}|${tag}`).displayName || (tag==='__all__'?'All':tag==='__untagged__'?'Untagged':tag);
     return `<div id="folder-view">
       ${folderCrumbs([{label:'Fanfiction',path:['ff']},{label:subLbl,path:['ff',sub]},{label:tagLbl,path:['ff',sub,tag]}])}
+      ${folderControlBar(true)}
       ${folderItemList(items)}
     </div>`;
   }
@@ -804,9 +893,10 @@ function folderViewHtml() {
     });
     const none = state.items.filter(x=>x.type==='book'&&!x.genre);
     if (none.length) raw.push([['book','__none__'],'📖','Other',none.length]);
-    const cards = sortedCards(raw).map(([p,e,l,c]) => folderCard(p,e,l,c));
+    const cards = sortedCards(filterCards(raw)).map(([p,e,l,c]) => folderCard(p,e,l,c));
     return `<div id="folder-view">
       ${folderCrumbs([{label:'Books',path:['book']}])}
+      ${folderControlBar(false)}
       <div class="folder-grid">${cards.join('')}</div>
     </div>`;
   }
@@ -819,6 +909,7 @@ function folderViewHtml() {
     const subLbl = getCfg(`book|${sub}`).displayName || (sub==='__none__'?'Other':sub);
     return `<div id="folder-view">
       ${folderCrumbs([{label:'Books',path:['book']},{label:subLbl,path:['book',sub]}])}
+      ${folderControlBar(true)}
       ${folderItemList(items)}
     </div>`;
   }
@@ -830,6 +921,8 @@ function folderViewHtml() {
 function render() {
   const scrollable = document.getElementById('list') || document.getElementById('stats-view');
   const scrollTop = scrollable ? scrollable.scrollTop : 0;
+  const folderViewEl = document.getElementById('folder-view');
+  const folderScrollTop = folderViewEl ? folderViewEl.scrollTop : 0;
   const stats = getStats();
 
   const titlebarHtml = `
@@ -860,7 +953,9 @@ function render() {
   }
 
   if (state.viewMode === 'folder') {
-    document.getElementById('app').innerHTML = titlebarHtml + folderViewHtml() + folderEditModalHtml() + folderCreateModalHtml() + (state.modalOpen ? modalHtml() : '');
+    document.getElementById('app').innerHTML = titlebarHtml + folderViewHtml() + folderEditModalHtml() + folderCreateModalHtml() + itemIconModalHtml() + (state.modalOpen ? modalHtml() : '');
+    const newFolderView = document.getElementById('folder-view');
+    if (newFolderView) newFolderView.scrollTop = folderScrollTop;
     bindEvents();
     return;
   }
@@ -961,6 +1056,7 @@ function render() {
     </div>
 
     ${state.modalOpen ? modalHtml() : ''}
+    ${itemIconModalHtml()}
   `;
 
   const newListEl = document.getElementById('list');
@@ -1001,16 +1097,31 @@ function bindEvents() {
     state.viewMode = 'folder'; render();
   });
 
-  // Folder navigation
+  // Folder search & sort
+  const folderSearchEl = document.getElementById('folder-search');
+  if (folderSearchEl) {
+    folderSearchEl.addEventListener('input', e => {
+      state.folderSearch = e.target.value;
+      render();
+      const newEl = document.getElementById('folder-search');
+      if (newEl) { newEl.focus(); newEl.setSelectionRange(e.target.selectionStart, e.target.selectionStart); }
+    });
+  }
+  const folderSortEl = document.getElementById('folder-sort');
+  if (folderSortEl) folderSortEl.addEventListener('change', e => { state.folderSortBy = e.target.value; render(); });
+
+  // Folder navigation (reset search on navigate)
   document.querySelectorAll('[data-folder-nav]').forEach(el => {
     el.addEventListener('click', () => {
       state.folderPath = JSON.parse(el.dataset.folderNav);
+      state.folderSearch = '';
       render();
     });
   });
   document.querySelectorAll('[data-folder-go]').forEach(el => {
     el.addEventListener('click', () => {
       state.folderPath = JSON.parse(el.dataset.folderGo);
+      state.folderSearch = '';
       render();
     });
   });
@@ -1098,6 +1209,54 @@ function bindEvents() {
       saveFolderConfig();
       state.creatingFolderIn = null;
       render();
+    });
+  }
+
+  // Item icon (cover) edit
+  document.querySelectorAll('.cover-edit-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      state.editingItemIcon = btn.dataset.editItemIcon;
+      render();
+    });
+  });
+  const iimClose = document.getElementById('iim-close');
+  const iimCancel = document.getElementById('iim-cancel');
+  const iimSave = document.getElementById('iim-save');
+  const iimClear = document.getElementById('iim-clear');
+  const iimBackdrop = document.getElementById('item-icon-backdrop');
+  if (iimClose) iimClose.addEventListener('click', () => { state.editingItemIcon = null; render(); });
+  if (iimCancel) iimCancel.addEventListener('click', () => { state.editingItemIcon = null; render(); });
+  if (iimBackdrop) iimBackdrop.addEventListener('click', e => { if (e.target === iimBackdrop) { state.editingItemIcon = null; render(); } });
+  const iimIconEl = document.getElementById('iim-icon');
+  if (iimIconEl) {
+    iimIconEl.addEventListener('input', e => {
+      const val = e.target.value.trim();
+      const preview = document.getElementById('iim-preview-icon');
+      if (!preview) return;
+      const isUrl = val.startsWith('http');
+      const item = state.items.find(x => x.id === state.editingItemIcon);
+      const isFf = item?.type === 'ff';
+      preview.innerHTML = isUrl
+        ? `<img src="${val}" style="width:100%;height:100%;object-fit:cover;border-radius:10px" />`
+        : `<span style="font-size:42px;line-height:1">${val || (isFf?'✍️':'📚')}</span>`;
+    });
+  }
+  if (iimClear) {
+    iimClear.addEventListener('click', () => {
+      const id = state.editingItemIcon;
+      if (!id) return;
+      state.items = state.items.map(x => x.id === id ? { ...x, coverIcon: undefined } : x);
+      saveData(); state.editingItemIcon = null; render();
+    });
+  }
+  if (iimSave) {
+    iimSave.addEventListener('click', () => {
+      const id = state.editingItemIcon;
+      if (!id) return;
+      const icon = document.getElementById('iim-icon')?.value.trim();
+      state.items = state.items.map(x => x.id === id ? { ...x, coverIcon: icon || undefined } : x);
+      saveData(); state.editingItemIcon = null; render();
     });
   }
 
@@ -1377,24 +1536,26 @@ function bindEvents() {
     });
   }
 
-  // AO3 fetch
+  // AO3 / FF.net fetch
   const fetchBtn = document.getElementById('btn-fetch');
   if (fetchBtn) {
     fetchBtn.addEventListener('click', async () => {
       const url = document.getElementById('m-url')?.value?.trim();
       const msgEl = document.getElementById('fetch-msg');
       if (!url) {
-        if (msgEl) { msgEl.textContent = 'Paste an AO3 URL in the field above first.'; msgEl.className = 'fetch-msg err'; }
+        if (msgEl) { msgEl.textContent = 'Paste a fic URL in the field above first.'; msgEl.className = 'fetch-msg err'; }
         return;
       }
-      if (!url.includes('archiveofourown')) {
-        if (msgEl) { msgEl.textContent = 'URL must be from archiveofourown.org'; msgEl.className = 'fetch-msg err'; }
+      const isAO3 = url.includes('archiveofourown');
+      const isFFNet = url.includes('fanfiction.net');
+      if (!isAO3 && !isFFNet) {
+        if (msgEl) { msgEl.textContent = 'URL must be from archiveofourown.org or fanfiction.net'; msgEl.className = 'fetch-msg err'; }
         return;
       }
-      if (msgEl) { msgEl.textContent = 'Fetching from AO3…'; msgEl.className='fetch-msg'; }
+      if (msgEl) { msgEl.textContent = `Fetching from ${isAO3 ? 'AO3' : 'FF.net'}…`; msgEl.className='fetch-msg'; }
       fetchBtn.disabled = true; fetchBtn.textContent = '…';
       try {
-        const data = await window.api.fetchAO3(url);
+        const data = isAO3 ? await window.api.fetchAO3(url) : await window.api.fetchFFNet(url);
         if (data.error) throw new Error(data.error);
         state.editItem = {
           ...(state.editItem||{}),
@@ -1584,6 +1745,7 @@ async function exportToExcel() {
 window.addEventListener('keydown', e => {
   if (e.key === 'Escape' && state.editingFolder) { state.editingFolder = null; render(); return; }
   if (e.key === 'Escape' && state.creatingFolderIn) { state.creatingFolderIn = null; render(); return; }
+  if (e.key === 'Escape' && state.editingItemIcon) { state.editingItemIcon = null; render(); return; }
   if (e.key === 'Escape' && state.modalOpen) { state.modalOpen = false; state.editItem = null; render(); }
   if ((e.metaKey || e.ctrlKey) && e.key === 'f') {
     e.preventDefault();

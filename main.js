@@ -178,6 +178,42 @@ ipcMain.handle('shell:open-external', (_, url) => {
   shell.openExternal(url)
 })
 
+// ── FF.net fetch ──────────────────────────────────────────────────────────────
+ipcMain.handle('ffnet:fetch', async (_, url) => {
+  try {
+    const storyMatch = url.match(/fanfiction\.net\/s\/(\d+)/)
+    if (!storyMatch) return { error: 'Not a valid fanfiction.net story URL' }
+    const storyId = storyMatch[1]
+    const fetchUrl = `https://www.fanfiction.net/s/${storyId}/`
+
+    const html = await curlGet(fetchUrl)
+
+    // Title — first <b class='xcontrast_txt'> in page
+    const titleMatch = html.match(/<b[^>]*class=['"][^'"]*xcontrast_txt[^'"]*['"][^>]*>([^<]+)<\/b>/)
+    const title = titleMatch ? titleMatch[1].trim() : null
+
+    // Author — <a> linking to /u/ID/
+    const authorMatch = html.match(/<a[^>]*href=['"]\/u\/\d+\/[^'"]*['"][^>]*>([^<]+)<\/a>/)
+    const author = authorMatch ? authorMatch[1].trim() : null
+
+    // Fandom — last <a> in pre_story_links breadcrumb
+    const preLinksMatch = html.match(/id=['"]pre_story_links['"][^>]*>([\s\S]*?)<\/div>/)
+    let fandom = null
+    if (preLinksMatch) {
+      const aLinks = [...preLinksMatch[1].matchAll(/<a[^>]+>([^<]+)<\/a>/g)]
+      if (aLinks.length) fandom = aLinks[aLinks.length - 1][1].trim()
+    }
+
+    // Words and Favs from metadata text
+    const wordsMatch = html.match(/Words:\s*([\d,]+)/i)
+    const words = wordsMatch ? parseInt(wordsMatch[1].replace(/,/g,'')) : null
+    const favsMatch = html.match(/Favs:\s*([\d,]+)/i)
+    const hearts = favsMatch ? parseInt(favsMatch[1].replace(/,/g,'')) : null
+
+    return { title, author, fandom, words, hearts, rating: null, pairing: null, tags: [] }
+  } catch(e) { return { error: e.message } }
+})
+
 // ── Open Library book fetch ───────────────────────────────────────────────────
 ipcMain.handle('books:fetch', async (_, query) => {
   try {
