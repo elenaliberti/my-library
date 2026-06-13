@@ -652,7 +652,11 @@ function filterCards(items) {
 }
 
 function isPairingTag(rawLabel, navPath) {
-  const display = getCfg(navPath.join('|')).displayName || rawLabel;
+  const key = navPath.join('|');
+  const cfg = getCfg(key);
+  if (cfg.section === 'trope')   return false;
+  if (cfg.section === 'pairing') return true;
+  const display = cfg.displayName || rawLabel;
   return rawLabel.includes('/') || display.includes('/') || display.includes(' & ');
 }
 
@@ -707,6 +711,13 @@ function folderEditModalHtml() {
         <input type="text" id="fem-name" value="${esc(label)}" placeholder="Folder name…" />
         <label class="field-label" style="margin-top:12px">Icon <span class="fem-hint">(emoji or image URL — paste from anywhere)</span></label>
         <input type="text" id="fem-icon" value="${esc(icon)}" placeholder="⚡  or  https://…" />
+        ${parts.length === 3 && parts[0] === 'ff' ? `
+        <label class="field-label" style="margin-top:12px">Section</label>
+        <select id="fem-section" class="filter-select" style="width:100%;margin-top:4px">
+          <option value=""${!cfg.section?' selected':''}>Auto-detect</option>
+          <option value="pairing"${cfg.section==='pairing'?' selected':''}>🚢 Pairings</option>
+          <option value="trope"${cfg.section==='trope'?' selected':''}>⚡ Tropes &amp; AUs</option>
+        </select>` : ''}
         <label class="fem-pin-row">
           <input type="checkbox" id="fem-pin" ${pinned?'checked':''} />
           <span>Pin to top</span>
@@ -1169,7 +1180,10 @@ function bindEvents() {
       if (icon) state.folderConfig[key].icon = icon;
       else delete state.folderConfig[key].icon;
       state.folderConfig[key].pinned = pinned;
-      if (!name && !icon && !pinned && !existing.isCustom && !existing.filterTag) delete state.folderConfig[key];
+      const sectionVal = document.getElementById('fem-section')?.value || '';
+      if (sectionVal) state.folderConfig[key].section = sectionVal;
+      else delete state.folderConfig[key].section;
+      if (!name && !icon && !pinned && !sectionVal && !existing.isCustom && !existing.filterTag) delete state.folderConfig[key];
       saveFolderConfig();
       state.editingFolder = null;
       render();
