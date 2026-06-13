@@ -8,13 +8,8 @@
     "rating": "Explicit",
     "pairing": "Harry Potter/Tom Riddle | Voldemort",
     "tags": [
-      "Harry Potter Epilogue What Epilogue | EWE",
-      "Fuck Or Die",
-      "Past Attempted Rape/Non-Con",
-      "Azkaban",
-      "Slavery",
-      "Horcruxes",
-      "Tomarry"
+      "Tomarry",
+      "HarryMort"
     ],
     "url": "https://archiveofourown.org/works/22685356/chapters/78683974#workskin",
     "id": "1780952366899_h85r553a4tm",
@@ -52,7 +47,10 @@
     "_addedAt": 623
   },
   {
-    "tags": [],
+    "tags": [
+      "Tomarry",
+      "Alpha/Beta/Omega Dynamics"
+    ],
     "id": "1780926230581_wr5g2xocrvg",
     "type": "ff",
     "title": "Like My Very Own Blood [ABANDONED]",
@@ -84,10 +82,7 @@
     "tags": [
       "Master of Death Harry Potter",
       "Do-Over",
-      "Time Travel",
-      "Time Travel Fix-It",
-      "Defence Against The Dark Arts Professor James Potter",
-      "History of Magic Professor Lily Evans Potter"
+      "Time Travel Fix-It"
     ],
     "url": "https://archiveofourown.org/works/61879516/chapters/158422057#workskin",
     "id": "1780910637920_6j38cjjfpsl",
@@ -111,12 +106,8 @@
     "rating": "",
     "pairing": "Hermione Granger & Harry Potter & Ron Weasley",
     "tags": [
-      "Time Travel",
-      "Dimension Travel",
-      "Fix-It",
-      "Maybe - Freeform",
       "BAMF Harry Potter",
-      "Smart Hermione Granger"
+      "Time Travel Fix-It"
     ],
     "url": "https://archiveofourown.org/works/34662160/chapters/103981602#workskin",
     "id": "1780910522855_vz1rqs1s3kg",
@@ -161,7 +152,7 @@
     "rating": "Mature",
     "pairing": "",
     "tags": [
-      "Harry Potter/Tom Riddle"
+      "Tomarry"
     ],
     "url": "https://archiveofourown.org/works/79878656/chapters/226690741#workskin",
     "id": "1780653039126_22v0d7qj6pm",
@@ -172,7 +163,9 @@
     "pages": null,
     "userRating": 0,
     "notes": "",
-    "_addedAt": 611
+    "_addedAt": 611,
+    "oneshot": false,
+    "finishedAt": null
   },
   {
     "id": "ff_1",
@@ -434,9 +427,16 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Cedric Diggory/Harry Potter"
+    ],
     "url": "",
-    "_addedAt": 12
+    "_addedAt": 12,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-13T20:34:01.650Z"
   },
   {
     "id": "ff_14",
@@ -551,9 +551,17 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry",
+      "Dimension Travel"
+    ],
     "url": "",
-    "_addedAt": 18
+    "_addedAt": 18,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-13T20:35:12.033Z"
   },
   {
     "id": "ff_20",
@@ -568,9 +576,17 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
-    "_addedAt": 19
+    "tags": [
+      "Tomarry",
+      "Time Travel"
+    ],
+    "url": "https://archiveofourown.org/works/35109247/chapters/87462256",
+    "_addedAt": 19,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-13T20:36:50.849Z"
   },
   {
     "id": "ff_21",
@@ -961,7 +977,7 @@
     "type": "ff",
     "title": "The Unintended",
     "author": "Monkey_Madness123",
-    "fandom": "Harry Potter",
+    "fandom": "Percy Jackson",
     "words": 89618,
     "hearts": 2106,
     "rating": "Mature",
@@ -969,9 +985,16 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
-    "_addedAt": 38
+    "tags": [
+      "Apollo/Percy Jackson"
+    ],
+    "url": "https://archiveofourown.org/works/77528496/chapters/203032866",
+    "_addedAt": 38,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-13T21:00:12.490Z"
   },
   {
     "id": "ff_40",
@@ -1104,9 +1127,16 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
-    "_addedAt": 45
+    "tags": [
+      "Vincent Crabbe/Harry Potter"
+    ],
+    "url": "https://archiveofourown.org/works/1224820",
+    "_addedAt": 45,
+    "oneshot": true,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "finishedAt": "2026-06-13T21:02:21.239Z"
   },
   {
     "id": "ff_47",
@@ -1271,15 +1301,21 @@
     "words": 285204,
     "hearts": 6962,
     "rating": "",
-    "pairing": "",
+    "pairing": "M/F",
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
+    "tags": [
+      "Harry/Muggle"
+    ],
+    "url": "https://www.fanfiction.net/s/11111990/1/Grow-Young-with-Me",
     "_addedAt": 53,
     "favorite": true,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_55",
@@ -1414,9 +1450,16 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
-    "_addedAt": 60
+    "tags": [
+      "Harry Potter/Blaise Zabini"
+    ],
+    "url": "https://www.fanfiction.net/s/5666147/20/Brave-New-World",
+    "_addedAt": 60,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-13T21:06:05.438Z"
   },
   {
     "id": "ff_62",
@@ -1447,18 +1490,20 @@
     "words": 332503,
     "hearts": 11770,
     "rating": "",
-    "pairing": "M/M",
+    "pairing": "M/F",
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
+    "tags": [
+      "Harry/Tonks"
+    ],
+    "url": "https://www.fanfiction.net/s/2567419/1/Harry-Potter-And-The-Summer-Of-Change",
     "_addedAt": 62,
     "genre": "",
     "section": "",
     "pages": null,
     "oneshot": false,
-    "finishedAt": "2026-06-05T18:30:46.246Z"
+    "finishedAt": "2026-06-05T11:00:00.000Z"
   },
   {
     "id": "ff_64",
@@ -1579,13 +1624,19 @@
     "rating": "Teen+",
     "pairing": "M/M",
     "status": "Finished",
-    "userRating": 0,
-    "notes": "",
-    "tags": [],
-    "url": "",
+    "userRating": 5,
+    "notes": "Mycroft Holmes/Harry Potter",
+    "tags": [
+      "HP-Sherlock Crossover"
+    ],
+    "url": "https://archiveofourown.org/works/1134255/chapters/2292768",
     "_addedAt": 68,
     "favorite": true,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_70",
@@ -1856,7 +1907,12 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 81
+    "_addedAt": 81,
+    "oneshot": true,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "finishedAt": "2026-06-13T21:09:36.020Z"
   },
   {
     "id": "ff_83",
@@ -1873,27 +1929,41 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 82
+    "_addedAt": 82,
+    "oneshot": true,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "finishedAt": "2026-06-13T21:10:15.936Z"
   },
   {
     "id": "ff_84",
     "type": "ff",
     "title": "Full circle",
     "author": "tetsurashian",
-    "fandom": "Harry Potter",
+    "fandom": "Harry Potter - J. K. Rowling",
     "words": 73621,
-    "hearts": 51047,
+    "hearts": 51236,
     "rating": "Not Rated",
-    "pairing": "M/M",
+    "pairing": "Harry Potter/Tom Riddle | Voldemort",
     "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [
-      "Tomarry"
+      "Alternate Universe",
+      "A different kind of soulmate",
+      "Master of Death Harry Potter",
+      "Reincarnation",
+      "Tomarry",
+      "HarryMort"
     ],
-    "url": "",
+    "url": "https://archiveofourown.org/works/6614155/chapters/15133504",
     "_addedAt": 83,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_85",
@@ -1948,9 +2018,16 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
-    "_addedAt": 86
+    "tags": [
+      "Harry Potter/Charlie Weasley"
+    ],
+    "url": "https://archiveofourown.org/works/37475038/chapters/93522769",
+    "_addedAt": 86,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-13T21:11:49.469Z"
   },
   {
     "id": "ff_88",
@@ -2098,9 +2175,17 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
-    "_addedAt": 93
+    "tags": [
+      "Harry/Multi",
+      "Harry is not the BWL"
+    ],
+    "url": "https://www.fanfiction.net/s/14246924/1/The-Art-of-the-Impossible",
+    "_addedAt": 93,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-13T21:13:23.269Z"
   },
   {
     "id": "ff_95",
@@ -2115,9 +2200,16 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
-    "_addedAt": 94
+    "tags": [
+      "Harry/Multi"
+    ],
+    "url": "https://www.fanfiction.net/s/13650670/1/Covet",
+    "_addedAt": 94,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-13T21:13:57.953Z"
   },
   {
     "id": "ff_96",
@@ -2176,9 +2268,17 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
-    "_addedAt": 97
+    "tags": [
+      "HP-Twilight Crossover",
+      "Jasper Hale/Harry Potter"
+    ],
+    "url": "https://archive.transformativeworks.org/works/50099878/chapters/126517018",
+    "_addedAt": 97,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-13T11:00:00.000Z"
   },
   {
     "id": "ff_99",
@@ -2255,14 +2355,17 @@
     "status": "Finished",
     "userRating": 1,
     "notes": "not that good",
-    "tags": [],
-    "url": "",
+    "tags": [
+      "Do Over",
+      "Time Travel"
+    ],
+    "url": "https://archiveofourown.org/works/49334527/chapters/124492744",
     "_addedAt": 101,
     "genre": "",
     "section": "",
     "pages": null,
     "oneshot": false,
-    "finishedAt": "2026-06-05T18:56:35.530Z"
+    "finishedAt": "2026-06-05T11:00:00.000Z"
   },
   {
     "id": "ff_103",
@@ -2297,9 +2400,16 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
-    "_addedAt": 103
+    "tags": [
+      "Harry Potter/Terry Boot"
+    ],
+    "url": "https://archiveofourown.org/works/54855859",
+    "_addedAt": 103,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-13T21:17:25.349Z"
   },
   {
     "id": "ff_105",
@@ -2493,9 +2603,16 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry/Peter Parker"
+    ],
     "url": "",
-    "_addedAt": 112
+    "_addedAt": 112,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-13T21:19:22.382Z"
   },
   {
     "id": "ff_114",
@@ -2547,15 +2664,19 @@
     "hearts": 13946,
     "rating": "Teen+",
     "pairing": "M/M",
-    "status": "Dropped",
+    "status": "Finished",
     "userRating": 0,
-    "notes": "",
+    "notes": "ABANDONED",
     "tags": [
       "Tomarry"
     ],
-    "url": "",
+    "url": "https://archiveofourown.org/works/7034761/chapters/16005613",
     "_addedAt": 115,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_117",
@@ -2634,11 +2755,17 @@
     "status": "Finished",
     "userRating": 5,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry/Blaise"
+    ],
     "url": "",
     "_addedAt": 119,
     "favorite": true,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_121",
@@ -2920,9 +3047,16 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
-    "_addedAt": 133
+    "tags": [
+      "Professor!Harry AU"
+    ],
+    "url": "https://archiveofourown.org/works/8125531",
+    "_addedAt": 133,
+    "oneshot": true,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "finishedAt": "2026-06-13T21:20:23.832Z"
   },
   {
     "id": "ff_135",
@@ -3135,9 +3269,18 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
-    "_addedAt": 143
+    "tags": [
+      "Mentor Severus",
+      "Time Travel Fix-It",
+      "Do Over"
+    ],
+    "url": "https://www.fanfiction.net/s/6413108/1/To-Shape-and-Change",
+    "_addedAt": 143,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-13T21:21:30.081Z"
   },
   {
     "id": "ff_145",
@@ -3176,9 +3319,17 @@
     "status": "Finished",
     "userRating": 5,
     "notes": "",
-    "tags": [],
-    "url": "",
-    "_addedAt": 145
+    "tags": [
+      "Daphne Greengrass/Harry Potter",
+      "Harry Potter Epilogue What Epilogue | EWE"
+    ],
+    "url": "https://archiveofourown.org/works/15537897/chapters/36069699",
+    "_addedAt": 145,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-13T21:22:42.031Z"
   },
   {
     "id": "ff_147",
@@ -3281,14 +3432,16 @@
     "status": "Finished",
     "userRating": 4,
     "notes": "",
-    "tags": [],
-    "url": "",
+    "tags": [
+      "Daphne Greengrass/Harry Potter"
+    ],
+    "url": "https://www.fanfiction.net/s/11697407/1/Contractual-Invalidation",
     "_addedAt": 150,
     "genre": "",
     "section": "",
     "pages": null,
     "oneshot": false,
-    "finishedAt": "2026-06-05T18:52:02.614Z"
+    "finishedAt": "2026-06-05T11:00:00.000Z"
   },
   {
     "id": "ff_152",
@@ -3323,9 +3476,16 @@
     "status": "Finished",
     "userRating": 4,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Daphne Greengrass/Harry Potter"
+    ],
     "url": "",
-    "_addedAt": 152
+    "_addedAt": 152,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-13T21:23:45.115Z"
   },
   {
     "id": "ff_154",
@@ -3340,9 +3500,16 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Daphne Greengrass/Harry Potter"
+    ],
     "url": "",
-    "_addedAt": 153
+    "_addedAt": 153,
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "finishedAt": "2026-06-13T11:00:00.000Z"
   },
   {
     "id": "ff_155",
@@ -3565,10 +3732,16 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
+    "tags": [
+      "HP/PJ Crossover"
+    ],
+    "url": "https://www.fanfiction.net/s/10492307/1/Remembrance-of-the-Grim-Wolf",
     "_addedAt": 164,
-    "finishedAt": "2026-06-05T21:34:38.653Z"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_166",
@@ -3583,10 +3756,16 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
+    "tags": [
+      "HP/PJ Crossover"
+    ],
+    "url": "https://www.fanfiction.net/s/8327423/1/Return-of-the-Speaker-s-Heir",
     "_addedAt": 165,
-    "finishedAt": "2026-06-05T21:34:37.437Z"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_167",
@@ -3601,10 +3780,16 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
+    "tags": [
+      "HP/PJ Crossover"
+    ],
+    "url": "https://www.fanfiction.net/s/8182529/25/Prince-of-Death",
     "_addedAt": 166,
-    "finishedAt": "2026-06-05T21:34:35.489Z"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_168",
@@ -3742,14 +3927,16 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
+    "tags": [
+      "Harry/Pansy"
+    ],
+    "url": "https://www.fanfiction.net/s/14335112/1/White-Knight-Grey-Queen",
     "_addedAt": 173,
     "genre": "",
     "section": "",
     "pages": null,
     "oneshot": false,
-    "finishedAt": "2026-06-05T18:51:26.284Z"
+    "finishedAt": "2026-06-05T11:00:00.000Z"
   },
   {
     "id": "ff_175",
@@ -3762,13 +3949,19 @@
     "rating": "",
     "pairing": "",
     "status": "Finished",
-    "userRating": 0,
+    "userRating": 5,
     "notes": "",
-    "tags": [],
-    "url": "",
+    "tags": [
+      "BAMF Harry Potter"
+    ],
+    "url": "https://www.fanfiction.net/s/2889350/1/Bungle-in-the-Jungle-A-Harry-Potter-Adventure",
     "_addedAt": 174,
     "favorite": true,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_176",
@@ -3798,15 +3991,24 @@
     "fandom": "Harry Potter",
     "words": 433623,
     "hearts": 10169,
-    "rating": "",
-    "pairing": "",
+    "rating": "Explicit",
+    "pairing": "Multi",
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
+    "tags": [
+      "Dramione",
+      "Blaise/Ginny",
+      "Ron/Pansy",
+      "Harry/Tracey"
+    ],
+    "url": "https://www.fanfiction.net/s/6200937/1/Eros-Psyche",
     "_addedAt": 176,
-    "finishedAt": "2026-06-05T21:34:32.003Z"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_178",
@@ -3882,9 +4084,13 @@
     "userRating": 0,
     "notes": "",
     "tags": [],
-    "url": "",
+    "url": "https://www.fanfiction.net/s/7583506/1/Letters",
     "_addedAt": 180,
-    "finishedAt": "2026-06-05T21:34:30.605Z"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_182",
@@ -4453,10 +4659,17 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
+    "tags": [
+      "Powerful!Harry Potter",
+      "BAMF Harry Potter"
+    ],
+    "url": "https://www.fanfiction.net/s/2428341/1/Mastermind-Hunting",
     "_addedAt": 208,
-    "finishedAt": "2026-06-05T21:34:29.088Z"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_210",
@@ -4471,11 +4684,17 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Dramione"
+    ],
     "url": "",
     "_addedAt": 209,
     "favorite": true,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_211",
@@ -4684,16 +4903,18 @@
     "rating": "",
     "pairing": "",
     "status": "Finished",
-    "userRating": 0,
+    "userRating": 5,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Mentor Severus"
+    ],
     "url": "",
     "_addedAt": 219,
     "genre": "",
     "section": "",
     "pages": null,
     "oneshot": false,
-    "finishedAt": "2026-06-05T18:48:37.403Z"
+    "finishedAt": "2026-06-05T11:00:00.000Z"
   },
   {
     "id": "ff_221",
@@ -4708,10 +4929,18 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "BAMF Harry Potter",
+      "Powerful!Harry Potter",
+      "Daphne Greengrass/Harry Potter"
+    ],
     "url": "",
     "_addedAt": 220,
-    "finishedAt": "2026-06-05T19:59:43.933Z"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_222",
@@ -4721,15 +4950,21 @@
     "fandom": "Harry Potter",
     "words": 47605,
     "hearts": null,
-    "rating": "https://www.fanfiction.net/s/1033104/1/Come-Together",
+    "rating": "",
     "pairing": "",
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
+    "tags": [
+      "Harry/Hermione"
+    ],
+    "url": "https://www.fanfiction.net/s/1033104/1/Come-Together",
     "_addedAt": 221,
-    "finishedAt": "2026-06-05T19:59:46.133Z"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_223",
@@ -4744,10 +4979,16 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
+    "tags": [
+      "Harry/Hermione"
+    ],
+    "url": "https://www.fanfiction.net/s/2061745/1/The-Reason",
     "_addedAt": 222,
-    "finishedAt": "2026-06-05T21:34:25.471Z"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_224",
@@ -4757,15 +4998,21 @@
     "fandom": "Harry Potter",
     "words": 18079,
     "hearts": null,
-    "rating": "https://www.fanfiction.net/s/4403083/1/Royally-Tripping",
+    "rating": "",
     "pairing": "",
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Harry Potter/Bill Weasley"
+    ],
     "url": "",
     "_addedAt": 223,
-    "finishedAt": "2026-06-05T19:59:54.866Z"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_225",
@@ -4780,8 +5027,10 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
+    "tags": [
+      "Cedric Diggory/Harry Potter"
+    ],
+    "url": "https://archive.transformativeworks.org/works/46546192/chapters/117209659",
     "_addedAt": 224,
     "genre": "",
     "section": "",
@@ -4815,15 +5064,21 @@
     "fandom": "Harry Potter",
     "words": 171641,
     "hearts": null,
-    "rating": "https://archive.transformativeworks.org/series/598429",
+    "rating": "",
     "pairing": "Tomarry",
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
     "_addedAt": 226,
-    "finishedAt": "2026-06-05T20:00:03.183Z"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_228",
@@ -4859,10 +5114,16 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Tomarry"
+    ],
     "url": "",
     "_addedAt": 228,
-    "finishedAt": "2026-06-05T21:34:22.371Z"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_230",
@@ -4877,14 +5138,16 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
+    "tags": [
+      "Drarry"
+    ],
+    "url": "https://archiveofourown.org/works/11796285",
     "_addedAt": 229,
     "genre": "",
     "section": "",
     "pages": null,
     "oneshot": false,
-    "finishedAt": "2026-06-05T18:55:48.281Z"
+    "finishedAt": "2026-06-05T11:00:00.000Z"
   },
   {
     "id": "ff_231",
@@ -5132,10 +5395,17 @@
     "status": "Finished",
     "userRating": 5,
     "notes": "",
-    "tags": [],
-    "url": "",
+    "tags": [
+      "Harry in Slytherin",
+      "WBWL"
+    ],
+    "url": "https://www.fanfiction.net/s/11191235/1/Harry-Potter-and-the-Prince-of-Slytherin",
     "_addedAt": 243,
-    "finishedAt": "2026-06-05T21:33:32.455Z"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_245",
@@ -5185,15 +5455,22 @@
     "fandom": "Harry Potter",
     "words": 99540,
     "hearts": null,
-    "rating": "https://archiveofourown.gay/works/53584723",
+    "rating": "",
     "pairing": "",
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
-    "url": "",
+    "tags": [
+      "Time Travel",
+      "Tomarry"
+    ],
+    "url": "https://archiveofourown.gay/works/53584723",
     "_addedAt": 246,
-    "finishedAt": "2026-06-05T21:32:34.988Z"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false
   },
   {
     "id": "ff_248",
