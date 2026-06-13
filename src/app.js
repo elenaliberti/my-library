@@ -1077,6 +1077,26 @@ function render() {
 
 
 // ── Event binding ─────────────────────────────────────────────────────────────
+function snapshotModalForm() {
+  if (!state.modalOpen || !state.editItem) return;
+  const v = id => document.getElementById(id)?.value ?? null;
+  const patch = {};
+  const url     = v('m-url');     if (url     !== null) patch.url     = url.trim();
+  const title   = v('m-title');   if (title   !== null) patch.title   = title.trim();
+  const author  = v('m-author');  if (author  !== null) patch.author  = author.trim();
+  const fandom  = v('m-fandom');  if (fandom  !== null) patch.fandom  = fandom.trim();
+  const genre   = v('m-genre');   if (genre   !== null) patch.genre   = genre.trim();
+  const section = v('m-section'); if (section !== null) patch.section = section.trim();
+  const pairing = v('m-pairing'); if (pairing !== null) patch.pairing = pairing.trim();
+  const notes   = v('m-notes');   if (notes   !== null) patch.notes   = notes.trim();
+  const status  = v('m-status');  if (status  !== null) patch.status  = status;
+  const rating  = v('m-rating');  if (rating  !== null) patch.rating  = rating;
+  const ws = v('m-words');  if (ws && ws.trim())  patch.words  = parseInt(ws)  || state.editItem.words;
+  const hs = v('m-hearts'); if (hs && hs.trim())  patch.hearts = parseInt(hs)  || state.editItem.hearts;
+  const ps = v('m-pages');  if (ps && ps.trim())  patch.pages  = parseInt(ps)  || state.editItem.pages;
+  state.editItem = { ...state.editItem, ...patch };
+}
+
 function bindEvents() {
   // Search
   const searchEl = document.getElementById('search-input');
@@ -1456,6 +1476,7 @@ function bindEvents() {
   // Type toggle
   document.querySelectorAll('[data-type-btn]').forEach(btn => {
     btn.addEventListener('click', () => {
+      snapshotModalForm();
       state.editItem = { ...(state.editItem||{}), type: btn.dataset.typeBtn };
       render();
     });
@@ -1464,6 +1485,7 @@ function bindEvents() {
   // One-shot toggle
   document.querySelectorAll('[data-oneshot-btn]').forEach(btn => {
     btn.addEventListener('click', () => {
+      snapshotModalForm();
       state.editItem = { ...(state.editItem||{}), oneshot: btn.dataset.oneshotBtn === 'true' };
       render();
     });
@@ -1493,6 +1515,7 @@ function bindEvents() {
   document.querySelectorAll('#tags-display .tag-remove').forEach(btn => {
     btn.addEventListener('click', () => {
       const tag = btn.dataset.tag;
+      snapshotModalForm();
       state.editItem = { ...(state.editItem||{}), tags: (state.editItem?.tags||[]).filter(t=>t!==tag) };
       render();
     });
@@ -1505,6 +1528,7 @@ function bindEvents() {
     if (!t) return;
     const existing = state.editItem?.tags || [];
     if (!existing.includes(t)) {
+      snapshotModalForm();
       state.editItem = { ...(state.editItem||{}), tags: [...existing, t] };
       render();
     } else { if(tagInput) tagInput.value = ''; }
