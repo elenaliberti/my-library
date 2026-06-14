@@ -6306,7 +6306,7 @@
     "tags": [],
     "url": "",
     "_addedAt": 283,
-    "coverIcon": "https://covers.openlibrary.org/b/id/206108-L.jpg"
+    "coverIcon": "https://www.libraccio.it/images/9788854168800_0_500_0_75.jpg"
   },
   {
     "id": "book_31",
@@ -6322,7 +6322,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 284
+    "_addedAt": 284,
+    "coverIcon": "https://www.libraccio.it/images/9788854168800_0_500_0_75.jpg"
   },
   {
     "id": "book_32",
@@ -6339,7 +6340,7 @@
     "tags": [],
     "url": "",
     "_addedAt": 285,
-    "coverIcon": "https://covers.openlibrary.org/b/id/6286410-L.jpg"
+    "coverIcon": "https://www.libraccio.it/images/9788854168800_0_500_0_75.jpg"
   },
   {
     "id": "book_33",
@@ -6474,7 +6475,7 @@
     "tags": [],
     "url": "",
     "_addedAt": 293,
-    "coverIcon": "https://covers.openlibrary.org/b/id/13000105-L.jpg"
+    "coverIcon": "https://m.media-amazon.com/images/I/71zSeiukzwL._AC_UF894,1000_QL80_.jpg"
   },
   {
     "id": "book_41",
@@ -6643,7 +6644,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 303
+    "_addedAt": 303,
+    "coverIcon": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ9XCpO6xwSiEmbLhDRMrQB72upq31dkRb6a2shlpxkeK03hulHMiZHfi6qEA&usqp=CAc"
   },
   {
     "id": "book_51",
@@ -6659,7 +6661,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 304
+    "_addedAt": 304,
+    "coverIcon": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSTGmoLwLxfKbkWkJxv9h3PNe9ocXobDAHMo-u9w8EakrKPVVguoBoE7qHc9A&usqp=CAc"
   },
   {
     "id": "book_52",
@@ -6818,13 +6821,14 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 313
+    "_addedAt": 313,
+    "coverIcon": "https://m.media-amazon.com/images/I/61j2gnrOzRL.jpg"
   },
   {
     "id": "book_62",
     "type": "book",
     "title": "Non è ancora finita",
-    "author": "",
+    "author": "S. Marty",
     "genre": "Trash Fantasy",
     "section": "Fantasy",
     "pages": null,
@@ -6834,13 +6838,19 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 314
+    "_addedAt": 314,
+    "coverIcon": "https://images-eu.ssl-images-amazon.com/images/I/817cnSb5iFL._AC_UL600_SR600,600_.jpg",
+    "fandom": "",
+    "pairing": "",
+    "rating": "",
+    "hearts": null,
+    "finishedAt": "2026-06-14T02:29:30.472Z"
   },
   {
     "id": "book_63",
     "type": "book",
     "title": "Questa sono io",
-    "author": "",
+    "author": "S. Marty",
     "genre": "Trash Fantasy",
     "section": "Fantasy",
     "pages": null,
@@ -6850,13 +6860,19 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 315
+    "_addedAt": 315,
+    "coverIcon": "https://images-eu.ssl-images-amazon.com/images/I/81NdfKwBFeL._AC_UL600_SR600,600_.jpg",
+    "fandom": "",
+    "pairing": "",
+    "rating": "",
+    "hearts": null,
+    "finishedAt": "2026-06-14T02:29:37.409Z"
   },
   {
     "id": "book_64",
     "type": "book",
     "title": "Zane",
-    "author": "",
+    "author": "S. Marty",
     "genre": "Trash Fantasy",
     "section": "Fantasy",
     "pages": null,
@@ -6866,13 +6882,19 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 316
+    "_addedAt": 316,
+    "coverIcon": "https://images-eu.ssl-images-amazon.com/images/I/71BkJ0QT+DL._AC_UL600_SR600,600_.jpg",
+    "fandom": "",
+    "pairing": "",
+    "rating": "",
+    "hearts": null,
+    "finishedAt": "2026-06-14T02:29:41.671Z"
   },
   {
     "id": "book_65",
     "type": "book",
     "title": "Scambio di coppia",
-    "author": "",
+    "author": "S. Marty",
     "genre": "Trash Fantasy",
     "section": "Fantasy",
     "pages": null,
@@ -6882,13 +6904,19 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 317
+    "_addedAt": 317,
+    "fandom": "",
+    "pairing": "",
+    "rating": "",
+    "hearts": null,
+    "finishedAt": "2026-06-14T02:29:51.821Z",
+    "coverIcon": "https://m.media-amazon.com/images/I/71wb-fYT-ML._AC_UF894,1000_QL80_.jpg"
   },
   {
     "id": "book_66",
     "type": "book",
     "title": "Nuovo Partner",
-    "author": "",
+    "author": "S. Marty",
     "genre": "Trash Fantasy",
     "section": "Fantasy",
     "pages": null,
@@ -6898,13 +6926,19 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 318
+    "_addedAt": 318,
+    "fandom": "",
+    "pairing": "",
+    "rating": "",
+    "hearts": null,
+    "finishedAt": "2026-06-14T02:30:16.088Z",
+    "coverIcon": "https://m.media-amazon.com/images/I/418iocF-glL.null_SY250_.jpg"
   },
   {
     "id": "book_67",
     "type": "book",
     "title": "Sarai di nuovo mio",
-    "author": "",
+    "author": "S. Marty",
     "genre": "Trash Fantasy",
     "section": "Fantasy",
     "pages": null,
@@ -6914,13 +6948,19 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 319
+    "_addedAt": 319,
+    "coverIcon": "https://m.media-amazon.com/images/I/81CRw9cXPrL._UF1000,1000_QL80_.jpg",
+    "fandom": "",
+    "pairing": "",
+    "rating": "",
+    "hearts": null,
+    "finishedAt": "2026-06-14T02:31:54.721Z"
   },
   {
     "id": "book_68",
     "type": "book",
     "title": "Devi Lasciare la SAO",
-    "author": "",
+    "author": "S. Marty",
     "genre": "Trash Fantasy",
     "section": "Fantasy",
     "pages": null,
@@ -6930,23 +6970,35 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 320
+    "_addedAt": 320,
+    "coverIcon": "https://m.media-amazon.com/images/I/71Ysl6LPXjL._UF1000,1000_QL80_.jpg",
+    "fandom": "",
+    "pairing": "",
+    "rating": "",
+    "hearts": null,
+    "finishedAt": "2026-06-14T02:32:01.073Z"
   },
   {
     "id": "book_69",
     "type": "book",
     "title": "Pack Origin",
-    "author": "",
+    "author": "Kate King, Jessa Wilder",
     "genre": "Trash Fantasy / Paranormal",
     "section": "Fantasy",
-    "pages": null,
+    "pages": 136,
     "words": null,
     "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 321
+    "_addedAt": 321,
+    "coverIcon": "https://m.media-amazon.com/images/I/714QSbbojKL._UF1000,1000_QL80_.jpg",
+    "fandom": "",
+    "pairing": "",
+    "rating": "",
+    "hearts": null,
+    "finishedAt": "2026-06-14T02:33:31.003Z"
   },
   {
     "id": "book_70",
@@ -6968,7 +7020,7 @@
     "id": "book_71",
     "type": "book",
     "title": "The Dragel Song",
-    "author": "",
+    "author": "Chera Carmichael",
     "genre": "Trash Fantasy",
     "section": "Fantasy",
     "pages": null,
@@ -6978,7 +7030,13 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 323
+    "_addedAt": 323,
+    "coverIcon": "https://images-eu.ssl-images-amazon.com/images/I/81DRxp7X9wL._AC_UL600_SR600,600_.jpg",
+    "fandom": "",
+    "pairing": "",
+    "rating": "",
+    "hearts": null,
+    "finishedAt": "2026-06-14T02:35:00.735Z"
   },
   {
     "id": "book_73",
@@ -7001,17 +7059,23 @@
     "id": "book_74",
     "type": "book",
     "title": "Once Bitten",
-    "author": "",
+    "author": "Heather Guerre",
     "genre": "Romantasy / Paranormal",
     "section": "Fantasy",
-    "pages": null,
+    "pages": 400,
     "words": null,
     "status": "Finished",
     "userRating": 0,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 325
+    "_addedAt": 325,
+    "coverIcon": "https://m.media-amazon.com/images/I/71Wn0OS5paL.jpg",
+    "fandom": "",
+    "pairing": "",
+    "rating": "",
+    "hearts": null,
+    "finishedAt": "2026-06-14T02:35:58.875Z"
   },
   {
     "id": "book_75",
@@ -7041,12 +7105,13 @@
     "pages": null,
     "words": null,
     "status": "Finished",
-    "userRating": 0,
+    "userRating": 3,
     "notes": "",
     "tags": [],
     "url": "",
     "_addedAt": 327,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1735779710i/222287410.jpg"
   },
   {
     "id": "book_78",
@@ -7058,12 +7123,13 @@
     "pages": null,
     "words": null,
     "status": "Finished",
-    "userRating": 0,
+    "userRating": 4,
     "notes": "",
     "tags": [],
     "url": "",
     "_addedAt": 328,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://m.media-amazon.com/images/I/51GnH7BA+8L._AC_UF894,1000_QL80_.jpg"
   },
   {
     "id": "book_79",
@@ -7071,16 +7137,22 @@
     "title": "Linea 97",
     "author": "Chiara Venturelli",
     "genre": "Romance",
-    "section": "Fantasy",
+    "section": "Romance",
     "pages": null,
     "words": null,
     "status": "Finished",
-    "userRating": 0,
+    "userRating": 4,
     "notes": "",
     "tags": [],
     "url": "",
     "_addedAt": 329,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://ikigai.altervista.org/wp-content/uploads/2018/07/linea-97.jpg",
+    "fandom": "",
+    "pairing": "",
+    "rating": "",
+    "hearts": null,
+    "finishedAt": "2026-06-14T02:37:30.718Z"
   },
   {
     "id": "book_80",
@@ -7096,7 +7168,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 330
+    "_addedAt": 330,
+    "coverIcon": "https://m.media-amazon.com/images/I/71MQolbXO1L._UF1000,1000_QL80_.jpg"
   },
   {
     "id": "book_81",
@@ -7113,7 +7186,7 @@
     "tags": [],
     "url": "",
     "_addedAt": 331,
-    "coverIcon": "https://covers.openlibrary.org/b/id/5731773-L.jpg"
+    "coverIcon": "https://m.media-amazon.com/images/I/81xXvkMyEgL._AC_UF894,1000_QL80_.jpg"
   },
   {
     "id": "book_82",
@@ -7162,7 +7235,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 334
+    "_addedAt": 334,
+    "coverIcon": "https://m.media-amazon.com/images/I/61jYdEB5NQL._AC_UF1000,1000_QL80_.jpg"
   },
   {
     "id": "book_85",
@@ -7183,7 +7257,8 @@
     "pairing": "",
     "rating": "",
     "hearts": null,
-    "favorite": false
+    "favorite": false,
+    "coverIcon": "https://m.media-amazon.com/images/I/71cDaYjMF4L._AC_UF894,1000_QL80_.jpg"
   },
   {
     "id": "book_86",
@@ -7199,7 +7274,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 336
+    "_addedAt": 336,
+    "coverIcon": "https://m.media-amazon.com/images/I/617ERVPuYvL._AC_UF1000,1000_QL80_.jpg"
   },
   {
     "id": "book_87",
@@ -7215,7 +7291,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 337
+    "_addedAt": 337,
+    "coverIcon": "https://m.media-amazon.com/images/I/71Vf+kc+ojL._AC_UF1000,1000_QL80_.jpg"
   },
   {
     "id": "book_88",
@@ -7231,7 +7308,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 338
+    "_addedAt": 338,
+    "coverIcon": "https://www.mondadori.it/content/uploads/2017/06/978880467694HIG-310x480.jpg?x91957"
   },
   {
     "id": "book_89",
@@ -7247,7 +7325,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 339
+    "_addedAt": 339,
+    "coverIcon": "https://img2.libreriauniversitaria.it/BIT/500/701/9788804677017.jpg"
   },
   {
     "id": "book_90",
@@ -7263,7 +7342,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 340
+    "_addedAt": 340,
+    "coverIcon": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg70GKcfJNeYcQDyin51CbYtK6tjBVqwmOXecJukB3IuhBdZvGtrsFL1Ot7_KIUxHuBuWX55U28B3wA-POmHWOcdsewafWTz4Gtf_KCn_hyXaBIwOtAsf4Bv3pBKkgxE_4j9sCQsuqnaZlw/s1600/COVER.jpg"
   },
   {
     "id": "book_91",
@@ -7348,7 +7428,8 @@
     "tags": [],
     "url": "",
     "_addedAt": 345,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://m.media-amazon.com/images/I/61whefI+L8L._AC_UF1000,1000_QL80_.jpg"
   },
   {
     "id": "book_96",
@@ -7364,7 +7445,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 346
+    "_addedAt": 346,
+    "coverIcon": "https://m.media-amazon.com/images/I/810GEmwFnrL._UF1000,1000_QL80_.jpg"
   },
   {
     "id": "book_97",
@@ -7380,7 +7462,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 347
+    "_addedAt": 347,
+    "coverIcon": "https://m.media-amazon.com/images/I/81S8rR7+BbL._UF1000,1000_QL80_.jpg"
   },
   {
     "id": "book_98",
@@ -7396,7 +7479,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 348
+    "_addedAt": 348,
+    "coverIcon": "https://m.media-amazon.com/images/I/81XjpE3bK1L._UF1000,1000_QL80_.jpg"
   },
   {
     "id": "book_99",
@@ -7408,7 +7492,7 @@
     "pages": null,
     "words": null,
     "status": "Finished",
-    "userRating": 0,
+    "userRating": 4,
     "notes": "",
     "tags": [],
     "url": "",
@@ -7425,11 +7509,12 @@
     "pages": null,
     "words": null,
     "status": "Finished",
-    "userRating": 0,
+    "userRating": 5,
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 350
+    "_addedAt": 350,
+    "coverIcon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtljpOmDMQREw57ll1KHnO0zomhWsRa-lKIKcX-sbwFX1ug_Jwe4LYTA8&s=10"
   },
   {
     "id": "book_101",
@@ -7445,7 +7530,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 351
+    "_addedAt": 351,
+    "coverIcon": "https://m.media-amazon.com/images/I/81JTCpyXJvL._UF1000,1000_QL80_.jpg"
   },
   {
     "id": "book_102",
