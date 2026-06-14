@@ -5798,7 +5798,8 @@
     "pairing": "",
     "rating": "",
     "hearts": null,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://preview.redd.it/the-italian-cover-of-the-philosophers-stone-its-a-v0-hv6vzf3peqaa1.jpg?width=1080&crop=smart&auto=webp&s=d4a9e38798e588402d83390ec6d05fb56fb7c62e"
   },
   {
     "id": "book_3",
@@ -5815,7 +5816,8 @@
     "tags": [],
     "url": "",
     "_addedAt": 256,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://m.media-amazon.com/images/I/5158VD0qjCL._AC_UF1000,1000_QL80_.jpg"
   },
   {
     "id": "book_4",
@@ -5832,7 +5834,8 @@
     "tags": [],
     "url": "",
     "_addedAt": 257,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://m.media-amazon.com/images/I/815+uRmsOsL._AC_UF1000,1000_QL80_.jpg"
   },
   {
     "id": "book_5",
@@ -5849,7 +5852,8 @@
     "tags": [],
     "url": "",
     "_addedAt": 258,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://m.media-amazon.com/images/I/81L07Gl7kwL._AC_UF1000,1000_QL80_.jpg"
   },
   {
     "id": "book_6",
@@ -5866,7 +5870,8 @@
     "tags": [],
     "url": "",
     "_addedAt": 259,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTPhDWjs4mPfC9AzfxI7LVOMjPXN7MqwvhBU-l_Vv5SBqeSKVo4DoyL7w&s=10"
   },
   {
     "id": "book_7",
@@ -5883,7 +5888,8 @@
     "tags": [],
     "url": "",
     "_addedAt": 260,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrc-hgHPdi20kNlrqGF7tPShxkE_4ST_Caf_Re9-XnzKANSdXjH8zvzqRw&s=10"
   },
   {
     "id": "book_8",
@@ -5900,7 +5906,8 @@
     "tags": [],
     "url": "",
     "_addedAt": 261,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSv-gt9urukJHLu85AO_4P_h2ZtFewoAKchAbFzifx5fD8uGdVOViJ_7XA&s=10"
   },
   {
     "id": "book_9",
@@ -5916,7 +5923,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 262
+    "_addedAt": 262,
+    "coverIcon": "https://www.salani.it/libri/le-fiabe-di-beda-il-bardo-9788862560368/image_preview"
   },
   {
     "id": "book_10",
@@ -5933,7 +5941,8 @@
     "tags": [],
     "url": "",
     "_addedAt": 263,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSlP6ECVtrOODb7kHRbr9woGvbnOlV_PDYBif6Ms1TMyyB4p3Azl1m9yo_t77E&usqp=CAc"
   },
   {
     "id": "book_11",
@@ -5950,7 +5959,8 @@
     "tags": [],
     "url": "",
     "_addedAt": 264,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://m.media-amazon.com/images/I/81XuIXUZJoL._AC_UF894,1000_QL80_.jpg"
   },
   {
     "id": "book_12",
@@ -5967,7 +5977,8 @@
     "tags": [],
     "url": "",
     "_addedAt": 265,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://m.media-amazon.com/images/I/81cWXwrr2NL._AC_UF1000,1000_QL80_.jpg"
   },
   {
     "id": "book_13",
