@@ -7,7 +7,7 @@
     "fandom": "Harry Potter",
     "pairing": "",
     "notes": "",
-    "status": "Finished",
+    "status": "TBR",
     "rating": "",
     "tags": [
       "Tomarry"
@@ -20,9 +20,8 @@
     "hearts": null,
     "pages": null,
     "userRating": 0,
-    "finishedAt": "2026-06-14T12:26:59.187Z",
-    "_addedAt": 631,
-    "readCount": 1
+    "finishedAt": null,
+    "_addedAt": 631
   },
   {
     "title": "Glory Be",
@@ -396,8 +395,7 @@
     "rating": "Mature",
     "pairing": "",
     "tags": [
-      "Tomarry",
-      "Dark Jily"
+      "Tomarry"
     ],
     "url": "https://archiveofourown.org/works/79878656/chapters/226690741#workskin",
     "id": "1780653039126_22v0d7qj6pm",
@@ -410,9 +408,7 @@
     "notes": "",
     "_addedAt": 611,
     "oneshot": false,
-    "finishedAt": null,
-    "favorite": false,
-    "readCount": 0
+    "finishedAt": null
   },
   {
     "id": "ff_1",
@@ -428,11 +424,17 @@
     "userRating": 0,
     "notes": "",
     "tags": [
-      "Tomarry"
+      "Tomarry",
+      "Dimension Travel"
     ],
-    "url": "",
+    "url": "https://www.fanfiction.net/s/13989271/1/Living-Well",
     "_addedAt": 0,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "coverIcon": "https://i.pinimg.com/736x/a1/90/7e/a1907e5dbd6c515130edd0d369725b1b.jpg"
   },
   {
     "id": "ff_2",
@@ -448,11 +450,18 @@
     "userRating": 0,
     "notes": "",
     "tags": [
-      "Tomarry"
+      "Tomarry",
+      "Dimension Travel",
+      "Prostitute Harry"
     ],
-    "url": "",
+    "url": "https://archive.transformativeworks.org/works/42289248/chapters/106186908",
     "_addedAt": 1,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "genre": "",
+    "section": "",
+    "pages": null,
+    "oneshot": false,
+    "coverIcon": "https://i.pinimg.com/webp87/736x/f7/e9/37/f7e9375156aa4101e1d8c7bde8b925ea.webp"
   },
   {
     "id": "ff_3",
@@ -546,7 +555,7 @@
   {
     "id": "ff_7",
     "type": "ff",
-    "title": "SynkardiÃÂ¡s",
+    "title": "Synkardiás",
     "author": "00Q_Magnus, ArielSakura",
     "fandom": "Harry Potter",
     "words": 90949,
@@ -969,8 +978,7 @@
     "url": "",
     "_addedAt": 25,
     "favorite": true,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00",
-    "readCount": 2
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_27",
@@ -5084,9 +5092,7 @@
     "url": "",
     "_addedAt": 211,
     "favorite": true,
-    "finishedAt": "2026-06-05T11:00:00.000Z",
-    "readCount": 2,
-    "oneshot": false
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_213",
@@ -5131,7 +5137,7 @@
     "_addedAt": 213,
     "favorite": true,
     "finishedAt": "2026-06-05T19:11:54.641336+00:00",
-    "readCount": 2
+    "coverIcon": "https://i.pinimg.com/736x/c0/fe/92/c0fe92908f29d54f7d6a049b1fabe7dd.jpg"
   },
   {
     "id": "ff_215",
@@ -5175,9 +5181,7 @@
     "url": "",
     "_addedAt": 215,
     "favorite": true,
-    "finishedAt": "2026-06-05T11:00:00.000Z",
-    "readCount": 2,
-    "oneshot": false
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_217",
@@ -5199,9 +5203,7 @@
     "url": "",
     "_addedAt": 216,
     "favorite": true,
-    "finishedAt": "2026-06-05T11:00:00.000Z",
-    "readCount": 2,
-    "oneshot": false
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_218",
@@ -5223,9 +5225,7 @@
     "url": "",
     "_addedAt": 217,
     "favorite": true,
-    "finishedAt": "2026-06-05T11:00:00.000Z",
-    "readCount": 2,
-    "oneshot": false
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
   },
   {
     "id": "ff_219",
@@ -5247,9 +5247,8 @@
     "url": "",
     "_addedAt": 218,
     "favorite": true,
-    "finishedAt": "2026-06-05T11:00:00.000Z",
-    "readCount": 2,
-    "oneshot": false
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00",
+    "coverIcon": "https://i.pinimg.com/736x/93/6d/54/936d5482e475128eadd750e1d7d142b9.jpg"
   },
   {
     "id": "ff_220",
@@ -6537,7 +6536,7 @@
   {
     "id": "book_25",
     "type": "book",
-    "title": "Shadowhunters: CittÃÂ  di ossa",
+    "title": "Shadowhunters: Città di ossa",
     "author": "Cassandra Clare",
     "genre": "Fantasy / Urban Fantasy",
     "section": "Fantasy",
@@ -6554,7 +6553,7 @@
   {
     "id": "book_26",
     "type": "book",
-    "title": "Shadowhunters: CittÃÂ  di cenere",
+    "title": "Shadowhunters: Città di cenere",
     "author": "Cassandra Clare",
     "genre": "Fantasy / Urban Fantasy",
     "section": "Fantasy",
@@ -7153,7 +7152,7 @@
   {
     "id": "book_62",
     "type": "book",
-    "title": "Non ÃÂ¨ ancora finita",
+    "title": "Non è ancora finita",
     "author": "S. Marty",
     "genre": "Trash Fantasy",
     "section": "Fantasy",
@@ -7500,7 +7499,7 @@
   {
     "id": "book_81",
     "type": "book",
-    "title": "CittÃÂ  di carta",
+    "title": "Città di carta",
     "author": "John Green",
     "genre": "YA / Romance",
     "section": "Fantasy",
@@ -7742,7 +7741,7 @@
   {
     "id": "book_95",
     "type": "book",
-    "title": "Il ragazzo che entrÃÂ² dalla finestra e si infilÃÂ² nel mio letto",
+    "title": "Il ragazzo che entrò dalla finestra e si infilò nel mio letto",
     "author": "Kirsty Moseley",
     "genre": "Romance",
     "section": "Fantasy",
@@ -7928,7 +7927,7 @@
   {
     "id": "book_106",
     "type": "book",
-    "title": "Un disastro ÃÂ¨ per sempre",
+    "title": "Un disastro è per sempre",
     "author": "Jamie McGuire",
     "genre": "Romance / New Adult",
     "section": "Fantasy",
@@ -7992,7 +7991,7 @@
   {
     "id": "book_110",
     "type": "book",
-    "title": "L'assistente del capo: Chi ÃÂ¨ ora il boss?",
+    "title": "L'assistente del capo: Chi è ora il boss?",
     "author": "Lexy Timms",
     "genre": "Romance",
     "section": "Fantasy",
@@ -8185,7 +8184,7 @@
   {
     "id": "book_122",
     "type": "book",
-    "title": "Siamo amici solo il mercoledÃÂ¬",
+    "title": "Siamo amici solo il mercoledì",
     "author": "Tania Paxia",
     "genre": "Romance",
     "section": "Fantasy",
@@ -8464,7 +8463,7 @@
   {
     "id": "book_139",
     "type": "book",
-    "title": "ViciniÃ¢ÂÂ¦ anche troppo",
+    "title": "Vicini… anche troppo",
     "author": "Scarlett Reese",
     "genre": "Romance",
     "section": "Fantasy",
@@ -10244,7 +10243,7 @@
     "words": 112000,
     "status": "Finished",
     "userRating": 0,
-    "notes": "Un fottuto capolavoroÃ¢ÂÂ¦ solo wow",
+    "notes": "Un fottuto capolavoro… solo wow",
     "tags": [],
     "url": "",
     "_addedAt": 498,
@@ -10339,7 +10338,7 @@
   {
     "id": "book_257",
     "type": "book",
-    "title": "Sposa a metÃÂ ",
+    "title": "Sposa a metà",
     "author": "Mary Balogh",
     "genre": "Romanzo Storico / Romance",
     "section": "Fantasy",
@@ -11691,7 +11690,7 @@
   {
     "id": "book_342",
     "type": "book",
-    "title": "Verso la maturitÃÂ ",
+    "title": "Verso la maturità",
     "author": "",
     "genre": "Wattpad / YA",
     "section": "Fantasy",
@@ -11989,7 +11988,7 @@
     "words": null,
     "status": "Finished",
     "userRating": 0,
-    "notes": "BellissimoÃ¢ÂÂ¦ mi ha fatta piangere",
+    "notes": "Bellissimo… mi ha fatta piangere",
     "tags": [],
     "url": "",
     "_addedAt": 605
