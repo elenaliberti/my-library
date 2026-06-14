@@ -5083,7 +5083,8 @@
     "url": "",
     "_addedAt": 211,
     "favorite": true,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00",
+    "readCount": 2
   },
   {
     "id": "ff_213",
@@ -5172,8 +5173,9 @@
     "url": "",
     "_addedAt": 215,
     "favorite": true,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00",
-    "readCount": 2
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "readCount": 2,
+    "oneshot": false
   },
   {
     "id": "ff_217",
