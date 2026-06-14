@@ -41,15 +41,19 @@ ipcMain.handle('data:load', () => {
     if (fs.existsSync(DATA_PATH)) {
       const raw = fs.readFileSync(DATA_PATH, 'utf-8')
       const parsed = JSON.parse(raw)
-      if (parsed && parsed.length > 0) return parsed
+      if (Array.isArray(parsed)) return { items: parsed, folderConfig: {} }
+      if (parsed && parsed.items) return { items: parsed.items, folderConfig: parsed.folderConfig || {} }
     }
     return null
   } catch { return null }
 })
 
-ipcMain.handle('data:save', (_, items) => {
-  try { fs.writeFileSync(DATA_PATH, JSON.stringify(items, null, 2), 'utf-8'); return true }
-  catch { return false }
+ipcMain.handle('data:save', (_, data) => {
+  try {
+    const toSave = Array.isArray(data) ? { items: data, folderConfig: {} } : data
+    fs.writeFileSync(DATA_PATH, JSON.stringify(toSave, null, 2), 'utf-8')
+    return true
+  } catch { return false }
 })
 
 ipcMain.handle('data:export-path', async () => {

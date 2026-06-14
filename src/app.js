@@ -35,14 +35,21 @@ const STATUS_COLOR = { TBR:'purple', Reading:'amber', Finished:'green', Dropped:
 // ── Persistence ───────────────────────────────────────────────────────────────
 async function loadData() {
   try {
-    const saved = await window.api.loadData();
-    if (saved && saved.length) return saved;
+    const result = await window.api.loadData();
+    if (result) {
+      const items = Array.isArray(result) ? result : (result.items || []);
+      if (!Array.isArray(result) && result.folderConfig) {
+        state.folderConfig = { ...result.folderConfig, ...state.folderConfig };
+        saveFolderConfig();
+      }
+      if (items.length) return items;
+    }
   } catch(e) {}
   return INITIAL_DATA.map((item, i) => ({ ...item, _addedAt: i }));
 }
 
 async function saveData() {
-  try { await window.api.saveData(state.items); } catch(e) {}
+  try { await window.api.saveData({ items: state.items, folderConfig: state.folderConfig }); } catch(e) {}
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
