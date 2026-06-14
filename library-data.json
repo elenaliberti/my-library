@@ -21,7 +21,8 @@
     "pages": null,
     "userRating": 0,
     "finishedAt": null,
-    "_addedAt": 631
+    "_addedAt": 631,
+    "readCount": 1
   },
   {
     "title": "Glory Be",
@@ -542,7 +543,7 @@
   {
     "id": "ff_7",
     "type": "ff",
-    "title": "Synkardiás",
+    "title": "SynkardiÃ¡s",
     "author": "00Q_Magnus, ArielSakura",
     "fandom": "Harry Potter",
     "words": 90949,
@@ -6521,7 +6522,7 @@
   {
     "id": "book_25",
     "type": "book",
-    "title": "Shadowhunters: Città di ossa",
+    "title": "Shadowhunters: CittÃ  di ossa",
     "author": "Cassandra Clare",
     "genre": "Fantasy / Urban Fantasy",
     "section": "Fantasy",
@@ -6538,7 +6539,7 @@
   {
     "id": "book_26",
     "type": "book",
-    "title": "Shadowhunters: Città di cenere",
+    "title": "Shadowhunters: CittÃ  di cenere",
     "author": "Cassandra Clare",
     "genre": "Fantasy / Urban Fantasy",
     "section": "Fantasy",
@@ -7137,7 +7138,7 @@
   {
     "id": "book_62",
     "type": "book",
-    "title": "Non è ancora finita",
+    "title": "Non Ã¨ ancora finita",
     "author": "S. Marty",
     "genre": "Trash Fantasy",
     "section": "Fantasy",
@@ -7484,7 +7485,7 @@
   {
     "id": "book_81",
     "type": "book",
-    "title": "Città di carta",
+    "title": "CittÃ  di carta",
     "author": "John Green",
     "genre": "YA / Romance",
     "section": "Fantasy",
@@ -7726,7 +7727,7 @@
   {
     "id": "book_95",
     "type": "book",
-    "title": "Il ragazzo che entrò dalla finestra e si infilò nel mio letto",
+    "title": "Il ragazzo che entrÃ² dalla finestra e si infilÃ² nel mio letto",
     "author": "Kirsty Moseley",
     "genre": "Romance",
     "section": "Fantasy",
@@ -7912,7 +7913,7 @@
   {
     "id": "book_106",
     "type": "book",
-    "title": "Un disastro è per sempre",
+    "title": "Un disastro Ã¨ per sempre",
     "author": "Jamie McGuire",
     "genre": "Romance / New Adult",
     "section": "Fantasy",
@@ -7976,7 +7977,7 @@
   {
     "id": "book_110",
     "type": "book",
-    "title": "L'assistente del capo: Chi è ora il boss?",
+    "title": "L'assistente del capo: Chi Ã¨ ora il boss?",
     "author": "Lexy Timms",
     "genre": "Romance",
     "section": "Fantasy",
@@ -8169,7 +8170,7 @@
   {
     "id": "book_122",
     "type": "book",
-    "title": "Siamo amici solo il mercoledì",
+    "title": "Siamo amici solo il mercoledÃ¬",
     "author": "Tania Paxia",
     "genre": "Romance",
     "section": "Fantasy",
@@ -8448,7 +8449,7 @@
   {
     "id": "book_139",
     "type": "book",
-    "title": "Vicini… anche troppo",
+    "title": "Viciniâ¦ anche troppo",
     "author": "Scarlett Reese",
     "genre": "Romance",
     "section": "Fantasy",
@@ -10228,7 +10229,7 @@
     "words": 112000,
     "status": "Finished",
     "userRating": 0,
-    "notes": "Un fottuto capolavoro… solo wow",
+    "notes": "Un fottuto capolavoroâ¦ solo wow",
     "tags": [],
     "url": "",
     "_addedAt": 498,
@@ -10323,7 +10324,7 @@
   {
     "id": "book_257",
     "type": "book",
-    "title": "Sposa a metà",
+    "title": "Sposa a metÃ ",
     "author": "Mary Balogh",
     "genre": "Romanzo Storico / Romance",
     "section": "Fantasy",
@@ -11675,7 +11676,7 @@
   {
     "id": "book_342",
     "type": "book",
-    "title": "Verso la maturità",
+    "title": "Verso la maturitÃ ",
     "author": "",
     "genre": "Wattpad / YA",
     "section": "Fantasy",
@@ -11973,7 +11974,7 @@
     "words": null,
     "status": "Finished",
     "userRating": 0,
-    "notes": "Bellissimo… mi ha fatta piangere",
+    "notes": "Bellissimoâ¦ mi ha fatta piangere",
     "tags": [],
     "url": "",
     "_addedAt": 605
