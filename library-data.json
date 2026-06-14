@@ -6706,9 +6706,16 @@
     "status": "Finished",
     "userRating": 0,
     "notes": "",
-    "tags": [],
+    "tags": [
+      "Romantasy"
+    ],
     "url": "",
-    "_addedAt": 311
+    "_addedAt": 311,
+    "fandom": "",
+    "pairing": "",
+    "rating": "",
+    "hearts": null,
+    "finishedAt": "2026-06-14T01:01:43.526Z"
   },
   {
     "id": "book_59",
