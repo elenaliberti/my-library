@@ -166,7 +166,8 @@
     "tags": [],
     "url": "",
     "finishedAt": null,
-    "_addedAt": 619
+    "_addedAt": 619,
+    "coverIcon": "https://covers.openlibrary.org/b/id/11200092-L.jpg"
   },
   {
     "title": "Ashes of a Stolen Destiny",
@@ -6017,7 +6018,8 @@
     "tags": [],
     "url": "",
     "_addedAt": 266,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://covers.openlibrary.org/b/id/6274739-L.jpg"
   },
   {
     "id": "book_14",
@@ -6034,7 +6036,8 @@
     "tags": [],
     "url": "",
     "_addedAt": 267,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://covers.openlibrary.org/b/id/6624107-L.jpg"
   },
   {
     "id": "book_15",
@@ -6051,7 +6054,8 @@
     "tags": [],
     "url": "",
     "_addedAt": 268,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://covers.openlibrary.org/b/id/7396660-L.jpg"
   },
   {
     "id": "book_16",
@@ -6067,7 +6071,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 269
+    "_addedAt": 269,
+    "coverIcon": "https://covers.openlibrary.org/b/id/12848687-L.jpg"
   },
   {
     "id": "book_17",
@@ -6084,7 +6089,8 @@
     "tags": [],
     "url": "",
     "_addedAt": 270,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://covers.openlibrary.org/b/id/13012024-L.jpg"
   },
   {
     "id": "book_18",
@@ -6100,7 +6106,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 271
+    "_addedAt": 271,
+    "coverIcon": "https://covers.openlibrary.org/b/id/12848680-L.jpg"
   },
   {
     "id": "book_19",
@@ -6116,7 +6123,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 272
+    "_addedAt": 272,
+    "coverIcon": "https://covers.openlibrary.org/b/id/8057334-L.jpg"
   },
   {
     "id": "book_20",
@@ -6132,7 +6140,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 273
+    "_addedAt": 273,
+    "coverIcon": "https://covers.openlibrary.org/b/id/11272966-L.jpg"
   },
   {
     "id": "book_21",
@@ -6148,7 +6157,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 274
+    "_addedAt": 274,
+    "coverIcon": "https://covers.openlibrary.org/b/id/6934834-L.jpg"
   },
   {
     "id": "book_22",
@@ -6212,7 +6222,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 278
+    "_addedAt": 278,
+    "coverIcon": "https://covers.openlibrary.org/b/id/10121449-L.jpg"
   },
   {
     "id": "book_26",
@@ -6228,7 +6239,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 279
+    "_addedAt": 279,
+    "coverIcon": "https://covers.openlibrary.org/b/id/1787130-L.jpg"
   },
   {
     "id": "book_27",
@@ -6244,7 +6256,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 280
+    "_addedAt": 280,
+    "coverIcon": "https://covers.openlibrary.org/b/id/7879561-L.jpg"
   },
   {
     "id": "book_28",
@@ -6292,7 +6305,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 283
+    "_addedAt": 283,
+    "coverIcon": "https://covers.openlibrary.org/b/id/206108-L.jpg"
   },
   {
     "id": "book_31",
@@ -6324,7 +6338,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 285
+    "_addedAt": 285,
+    "coverIcon": "https://covers.openlibrary.org/b/id/6286410-L.jpg"
   },
   {
     "id": "book_33",
@@ -6356,7 +6371,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 287
+    "_addedAt": 287,
+    "coverIcon": "https://covers.openlibrary.org/b/id/13198814-L.jpg"
   },
   {
     "id": "book_35",
@@ -6372,7 +6388,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 288
+    "_addedAt": 288,
+    "coverIcon": "https://covers.openlibrary.org/b/id/6597605-L.jpg"
   },
   {
     "id": "book_36",
@@ -6388,7 +6405,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 289
+    "_addedAt": 289,
+    "coverIcon": "https://covers.openlibrary.org/b/id/12641977-L.jpg"
   },
   {
     "id": "book_37",
@@ -6404,7 +6422,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 290
+    "_addedAt": 290,
+    "coverIcon": "https://covers.openlibrary.org/b/id/12643406-L.jpg"
   },
   {
     "id": "book_38",
@@ -6420,7 +6439,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 291
+    "_addedAt": 291,
+    "coverIcon": "https://covers.openlibrary.org/b/id/12643410-L.jpg"
   },
   {
     "id": "book_39",
@@ -6436,7 +6456,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 292
+    "_addedAt": 292,
+    "coverIcon": "https://covers.openlibrary.org/b/id/12643419-L.jpg"
   },
   {
     "id": "book_40",
@@ -6452,7 +6473,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 293
+    "_addedAt": 293,
+    "coverIcon": "https://covers.openlibrary.org/b/id/13000105-L.jpg"
   },
   {
     "id": "book_41",
@@ -6468,7 +6490,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 294
+    "_addedAt": 294,
+    "coverIcon": "https://covers.openlibrary.org/b/id/6636110-L.jpg"
   },
   {
     "id": "book_42",
@@ -6484,7 +6507,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 295
+    "_addedAt": 295,
+    "coverIcon": "https://covers.openlibrary.org/b/id/13274634-L.jpg"
   },
   {
     "id": "book_43",
@@ -6500,7 +6524,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 296
+    "_addedAt": 296,
+    "coverIcon": "https://covers.openlibrary.org/b/id/7083755-L.jpg"
   },
   {
     "id": "book_44",
@@ -6516,7 +6541,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 297
+    "_addedAt": 297,
+    "coverIcon": "https://covers.openlibrary.org/b/id/8539161-L.jpg"
   },
   {
     "id": "book_45",
@@ -6533,7 +6559,8 @@
     "tags": [],
     "url": "",
     "_addedAt": 298,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://covers.openlibrary.org/b/id/13936659-L.jpg"
   },
   {
     "id": "book_46",
@@ -6549,7 +6576,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 299
+    "_addedAt": 299,
+    "coverIcon": "https://covers.openlibrary.org/b/id/7434883-L.jpg"
   },
   {
     "id": "book_47",
@@ -6565,7 +6593,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 300
+    "_addedAt": 300,
+    "coverIcon": "https://covers.openlibrary.org/b/id/11219081-L.jpg"
   },
   {
     "id": "book_48",
@@ -6581,7 +6610,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 301
+    "_addedAt": 301,
+    "coverIcon": "https://covers.openlibrary.org/b/id/8443732-L.jpg"
   },
   {
     "id": "book_49",
@@ -6645,7 +6675,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 305
+    "_addedAt": 305,
+    "coverIcon": "https://covers.openlibrary.org/b/id/12989260-L.jpg"
   },
   {
     "id": "book_53",
@@ -6661,7 +6692,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 306
+    "_addedAt": 306,
+    "coverIcon": "https://covers.openlibrary.org/b/id/10138062-L.jpg"
   },
   {
     "id": "book_54",
@@ -6677,7 +6709,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 307
+    "_addedAt": 307,
+    "coverIcon": "https://covers.openlibrary.org/b/id/15159374-L.jpg"
   },
   {
     "id": "book_55",
@@ -6693,7 +6726,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 308
+    "_addedAt": 308,
+    "coverIcon": "https://covers.openlibrary.org/b/id/14315081-L.jpg"
   },
   {
     "id": "book_56",
@@ -6709,7 +6743,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 309
+    "_addedAt": 309,
+    "coverIcon": "https://covers.openlibrary.org/b/id/8506724-L.jpg"
   },
   {
     "id": "book_57",
@@ -6725,7 +6760,8 @@
     "notes": "Novella",
     "tags": [],
     "url": "",
-    "_addedAt": 310
+    "_addedAt": 310,
+    "coverIcon": "https://covers.openlibrary.org/b/id/8569939-L.jpg"
   },
   {
     "id": "book_58",
@@ -6748,7 +6784,8 @@
     "pairing": "",
     "rating": "",
     "hearts": null,
-    "finishedAt": "2026-06-14T01:01:43.526Z"
+    "finishedAt": "2026-06-14T01:01:43.526Z",
+    "coverIcon": "https://covers.openlibrary.org/b/id/14407898-L.jpg"
   },
   {
     "id": "book_59",
@@ -6764,7 +6801,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 312
+    "_addedAt": 312,
+    "coverIcon": "https://covers.openlibrary.org/b/id/14405746-L.jpg"
   },
   {
     "id": "book_61",
@@ -6956,7 +6994,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 324
+    "_addedAt": 324,
+    "coverIcon": "https://covers.openlibrary.org/b/id/10483619-L.jpg"
   },
   {
     "id": "book_74",
@@ -6989,7 +7028,8 @@
     "tags": [],
     "url": "",
     "_addedAt": 326,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://covers.openlibrary.org/b/id/15179226-L.jpg"
   },
   {
     "id": "book_76",
@@ -7072,7 +7112,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 331
+    "_addedAt": 331,
+    "coverIcon": "https://covers.openlibrary.org/b/id/5731773-L.jpg"
   },
   {
     "id": "book_82",
@@ -7088,7 +7129,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 332
+    "_addedAt": 332,
+    "coverIcon": "https://covers.openlibrary.org/b/id/7418786-L.jpg"
   },
   {
     "id": "book_83",
@@ -7237,7 +7279,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 341
+    "_addedAt": 341,
+    "coverIcon": "https://covers.openlibrary.org/b/id/7284881-L.jpg"
   },
   {
     "id": "book_92",
@@ -7253,7 +7296,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 342
+    "_addedAt": 342,
+    "coverIcon": "https://covers.openlibrary.org/b/id/7284838-L.jpg"
   },
   {
     "id": "book_93",
@@ -7269,7 +7313,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 343
+    "_addedAt": 343,
+    "coverIcon": "https://covers.openlibrary.org/b/id/7284881-L.jpg"
   },
   {
     "id": "book_94",
@@ -7285,7 +7330,8 @@
     "notes": "Novella",
     "tags": [],
     "url": "",
-    "_addedAt": 344
+    "_addedAt": 344,
+    "coverIcon": "https://covers.openlibrary.org/b/id/13319742-L.jpg"
   },
   {
     "id": "book_95",
@@ -7366,7 +7412,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 349
+    "_addedAt": 349,
+    "coverIcon": "https://covers.openlibrary.org/b/id/11978170-L.jpg"
   },
   {
     "id": "book_100",
@@ -7446,7 +7493,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 354
+    "_addedAt": 354,
+    "coverIcon": "https://covers.openlibrary.org/b/id/7241922-L.jpg"
   },
   {
     "id": "book_105",
@@ -7462,7 +7510,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 355
+    "_addedAt": 355,
+    "coverIcon": "https://covers.openlibrary.org/b/id/10820897-L.jpg"
   },
   {
     "id": "book_106",
@@ -7718,7 +7767,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 371
+    "_addedAt": 371,
+    "coverIcon": "https://covers.openlibrary.org/b/id/13618714-L.jpg"
   },
   {
     "id": "book_122",
@@ -7771,7 +7821,8 @@
     "pairing": "",
     "rating": "",
     "hearts": null,
-    "finishedAt": "2026-06-05T11:00:00.000Z"
+    "finishedAt": "2026-06-05T11:00:00.000Z",
+    "coverIcon": "https://covers.openlibrary.org/b/id/11762076-L.jpg"
   },
   {
     "id": "book_125",
@@ -7979,7 +8030,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 387
+    "_addedAt": 387,
+    "coverIcon": "https://covers.openlibrary.org/b/id/12566495-L.jpg"
   },
   {
     "id": "book_138",
@@ -8011,7 +8063,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 389
+    "_addedAt": 389,
+    "coverIcon": "https://covers.openlibrary.org/b/id/14174181-L.jpg"
   },
   {
     "id": "book_140",
@@ -8524,7 +8577,8 @@
     "notes": "Mafia Chronicles #1",
     "tags": [],
     "url": "",
-    "_addedAt": 421
+    "_addedAt": 421,
+    "coverIcon": "https://covers.openlibrary.org/b/id/10558598-L.jpg"
   },
   {
     "id": "book_172",
@@ -8556,7 +8610,8 @@
     "notes": "Mafia Chronicles #0.5",
     "tags": [],
     "url": "",
-    "_addedAt": 423
+    "_addedAt": 423,
+    "coverIcon": "https://covers.openlibrary.org/b/id/10873049-L.jpg"
   },
   {
     "id": "book_174",
@@ -8572,7 +8627,8 @@
     "notes": "Mafia Chronicles 4",
     "tags": [],
     "url": "",
-    "_addedAt": 424
+    "_addedAt": 424,
+    "coverIcon": "https://covers.openlibrary.org/b/id/12756251-L.jpg"
   },
   {
     "id": "book_175",
@@ -8588,7 +8644,8 @@
     "notes": "Interessante ma troppo lento, mhe",
     "tags": [],
     "url": "",
-    "_addedAt": 425
+    "_addedAt": 425,
+    "coverIcon": "https://covers.openlibrary.org/b/id/13758174-L.jpg"
   },
   {
     "id": "book_176",
@@ -8828,7 +8885,8 @@
     "notes": "The Campus 1",
     "tags": [],
     "url": "",
-    "_addedAt": 440
+    "_addedAt": 440,
+    "coverIcon": "https://covers.openlibrary.org/b/id/14790256-L.jpg"
   },
   {
     "id": "book_191",
@@ -8844,7 +8902,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 441
+    "_addedAt": 441,
+    "coverIcon": "https://covers.openlibrary.org/b/id/10201732-L.jpg"
   },
   {
     "id": "book_192",
@@ -8860,7 +8919,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 442
+    "_addedAt": 442,
+    "coverIcon": "https://covers.openlibrary.org/b/id/10471481-L.jpg"
   },
   {
     "id": "book_193",
@@ -8876,7 +8936,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 443
+    "_addedAt": 443,
+    "coverIcon": "https://covers.openlibrary.org/b/id/10471879-L.jpg"
   },
   {
     "id": "book_194",
@@ -8925,7 +8986,8 @@
     "tags": [],
     "url": "",
     "_addedAt": 446,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://covers.openlibrary.org/b/id/10601402-L.jpg"
   },
   {
     "id": "book_197",
@@ -9005,7 +9067,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 451
+    "_addedAt": 451,
+    "coverIcon": "https://covers.openlibrary.org/b/id/10473609-L.jpg"
   },
   {
     "id": "book_202",
@@ -9053,7 +9116,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 454
+    "_addedAt": 454,
+    "coverIcon": "https://covers.openlibrary.org/b/id/8106417-L.jpg"
   },
   {
     "id": "book_205",
@@ -9102,7 +9166,8 @@
     "tags": [],
     "url": "",
     "_addedAt": 457,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://covers.openlibrary.org/b/id/13818883-L.jpg"
   },
   {
     "id": "book_208",
@@ -9214,7 +9279,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 464
+    "_addedAt": 464,
+    "coverIcon": "https://covers.openlibrary.org/b/id/12389641-L.jpg"
   },
   {
     "id": "book_216",
@@ -9246,7 +9312,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 466
+    "_addedAt": 466,
+    "coverIcon": "https://covers.openlibrary.org/b/id/12446279-L.jpg"
   },
   {
     "id": "book_218",
@@ -9294,7 +9361,8 @@
     "notes": "Cute ma scritto male",
     "tags": [],
     "url": "",
-    "_addedAt": 469
+    "_addedAt": 469,
+    "coverIcon": "https://covers.openlibrary.org/b/id/11152228-L.jpg"
   },
   {
     "id": "book_221",
@@ -9326,7 +9394,8 @@
     "notes": "Mid",
     "tags": [],
     "url": "",
-    "_addedAt": 471
+    "_addedAt": 471,
+    "coverIcon": "https://covers.openlibrary.org/b/id/12539377-L.jpg"
   },
   {
     "id": "book_223",
@@ -9374,7 +9443,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 474
+    "_addedAt": 474,
+    "coverIcon": "https://covers.openlibrary.org/b/id/12922535-L.jpg"
   },
   {
     "id": "book_226",
@@ -9438,7 +9508,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 478
+    "_addedAt": 478,
+    "coverIcon": "https://covers.openlibrary.org/b/id/12713597-L.jpg"
   },
   {
     "id": "book_230",
@@ -9454,7 +9525,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 479
+    "_addedAt": 479,
+    "coverIcon": "https://covers.openlibrary.org/b/id/13125307-L.jpg"
   },
   {
     "id": "book_231",
@@ -9582,7 +9654,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 487
+    "_addedAt": 487,
+    "coverIcon": "https://covers.openlibrary.org/b/id/12055492-L.jpg"
   },
   {
     "id": "book_239",
@@ -9598,7 +9671,8 @@
     "notes": "Chosen series",
     "tags": [],
     "url": "",
-    "_addedAt": 488
+    "_addedAt": 488,
+    "coverIcon": "https://covers.openlibrary.org/b/id/13700739-L.jpg"
   },
   {
     "id": "book_240",
@@ -9694,7 +9768,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 494
+    "_addedAt": 494,
+    "coverIcon": "https://covers.openlibrary.org/b/id/6974992-L.jpg"
   },
   {
     "id": "book_247",
@@ -9710,7 +9785,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 495
+    "_addedAt": 495,
+    "coverIcon": "https://covers.openlibrary.org/b/id/12727567-L.jpg"
   },
   {
     "id": "book_248",
@@ -9726,7 +9802,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 496
+    "_addedAt": 496,
+    "coverIcon": "https://covers.openlibrary.org/b/id/8352502-L.jpg"
   },
   {
     "id": "book_249",
@@ -9759,7 +9836,8 @@
     "tags": [],
     "url": "",
     "_addedAt": 498,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://covers.openlibrary.org/b/id/8184999-L.jpg"
   },
   {
     "id": "book_251",
@@ -9776,7 +9854,8 @@
     "tags": [],
     "url": "",
     "_addedAt": 499,
-    "favorite": true
+    "favorite": true,
+    "coverIcon": "https://covers.openlibrary.org/b/id/10507582-L.jpg"
   },
   {
     "id": "book_253",
@@ -9808,7 +9887,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 501
+    "_addedAt": 501,
+    "coverIcon": "https://covers.openlibrary.org/b/id/1957584-L.jpg"
   },
   {
     "id": "book_255",
@@ -9824,7 +9904,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 502
+    "_addedAt": 502,
+    "coverIcon": "https://covers.openlibrary.org/b/id/11443514-L.jpg"
   },
   {
     "id": "book_256",
@@ -10034,7 +10115,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 515
+    "_addedAt": 515,
+    "coverIcon": "https://covers.openlibrary.org/b/id/408021-L.jpg"
   },
   {
     "id": "book_269",
@@ -10501,7 +10583,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 544
+    "_addedAt": 544,
+    "coverIcon": "https://covers.openlibrary.org/b/id/403266-L.jpg"
   },
   {
     "id": "book_298",
@@ -10709,7 +10792,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 557
+    "_addedAt": 557,
+    "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg"
   },
   {
     "id": "book_312",
@@ -10725,7 +10809,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 558
+    "_addedAt": 558,
+    "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg"
   },
   {
     "id": "book_313",
@@ -10741,7 +10826,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 559
+    "_addedAt": 559,
+    "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg"
   },
   {
     "id": "book_314",
@@ -10757,7 +10843,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 560
+    "_addedAt": 560,
+    "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg"
   },
   {
     "id": "book_315",
@@ -10773,7 +10860,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 561
+    "_addedAt": 561,
+    "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg"
   },
   {
     "id": "book_316",
@@ -10789,7 +10877,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 562
+    "_addedAt": 562,
+    "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg"
   },
   {
     "id": "book_317",
@@ -10805,7 +10894,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 563
+    "_addedAt": 563,
+    "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg"
   },
   {
     "id": "book_318",
@@ -10821,7 +10911,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 564
+    "_addedAt": 564,
+    "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg"
   },
   {
     "id": "book_319",
@@ -10853,7 +10944,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 566
+    "_addedAt": 566,
+    "coverIcon": "https://covers.openlibrary.org/b/id/7272569-L.jpg"
   },
   {
     "id": "book_321",
@@ -10869,7 +10961,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 567
+    "_addedAt": 567,
+    "coverIcon": "https://covers.openlibrary.org/b/id/11686549-L.jpg"
   },
   {
     "id": "book_322",
@@ -10901,7 +10994,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 569
+    "_addedAt": 569,
+    "coverIcon": "https://covers.openlibrary.org/b/id/6392893-L.jpg"
   },
   {
     "id": "book_324",
@@ -10933,7 +11027,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 571
+    "_addedAt": 571,
+    "coverIcon": "https://covers.openlibrary.org/b/id/14418899-L.jpg"
   },
   {
     "id": "book_326",
@@ -10965,7 +11060,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 573
+    "_addedAt": 573,
+    "coverIcon": "https://covers.openlibrary.org/b/id/8444194-L.jpg"
   },
   {
     "id": "book_328",
@@ -10981,7 +11077,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 574
+    "_addedAt": 574,
+    "coverIcon": "https://covers.openlibrary.org/b/id/7253810-L.jpg"
   },
   {
     "id": "book_329",
@@ -10997,7 +11094,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 575
+    "_addedAt": 575,
+    "coverIcon": "https://covers.openlibrary.org/b/id/10181104-L.jpg"
   },
   {
     "id": "book_330",
@@ -11013,7 +11111,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 576
+    "_addedAt": 576,
+    "coverIcon": "https://covers.openlibrary.org/b/id/12344360-L.jpg"
   },
   {
     "id": "book_331",
@@ -11045,7 +11144,8 @@
     "notes": "",
     "tags": [],
     "url": "",
-    "_addedAt": 578
+    "_addedAt": 578,
+    "coverIcon": "https://covers.openlibrary.org/b/id/6392888-L.jpg"
   },
   {
     "id": "book_333",

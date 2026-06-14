@@ -315,20 +315,20 @@ ipcMain.handle('git:backup', async () => {
 
     const now = new Date().toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })
     await run(git, ['commit', '-m', `Library backup — ${now}`], repoDir)
-    await run(git, ['push', 'origin', 'main'], repoDir)
+    let pushed = false
+    // Try main, then master
+    for (const branch of ['main', 'master']) {
+      try { await run(git, ['push', 'origin', branch], repoDir); pushed = true; break } catch {}
+    }
+    if (!pushed) {
+      return { ok: true, message: `Saved locally at ${now} ✓ (GitHub push failed — add a token to the remote URL to fix)` }
+    }
 
     return { ok: true, message: `Backed up to GitHub at ${now} ✓` }
   } catch(e) {
-    // push might fail if branch is 'master' not 'main'
-    if (e.message.includes('main')) {
-      try {
-        const git = await findGit()
-        const repoDir = path.join(app.getPath('home'), 'Downloads', 'library-app')
-        await run(git, ['push', 'origin', 'master'], repoDir)
-        return { ok: true, message: 'Backed up to GitHub ✓' }
-      } catch(e2) {
-        return { ok: false, error: e2.message }
-      }
+    const isCredErr = e.message.includes('Username') || e.message.includes('could not read') || e.message.includes('Authentication')
+    if (isCredErr) {
+      return { ok: false, error: 'GitHub auth failed. In Terminal run:\ngit remote set-url origin https://elenaliberti:YOUR_TOKEN@github.com/elenaliberti/my-library.git\n(get a token at github.com → Settings → Developer settings → PAT)' }
     }
     return { ok: false, error: e.message }
   }
