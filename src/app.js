@@ -253,6 +253,7 @@ function tagHtml(t, removable=false, itemId='') {
 function cardHtml(item) {
   const isFf = item.type === 'ff';
   const expanded = state.expandedId === item.id;
+  const readCount = item.readCount ?? (item.status === 'Finished' ? 1 : 0);
   const metaParts = [];
   if (item.words) metaParts.push(`📝 ${fmt(item.words)} words`);
   if (isFf && item.hearts) metaParts.push(`♥ ${fmt(item.hearts)}`);
@@ -280,6 +281,10 @@ function cardHtml(item) {
         <div style="margin:8px 0 4px;display:flex;gap:4px;align-items:center">
           <span style="font-size:12px;color:#9ca3af;margin-right:4px">Your rating:</span>
           ${starsHtml(item.userRating, item.id)}
+        </div>
+        <div class="reread-row">
+          <span class="reread-label">📖 Read ${readCount} time${readCount === 1 ? '' : 's'}</span>
+          <button class="reread-btn" data-add-reread="${item.id}">＋ Read again</button>
         </div>
         ${notesHtml}${extraHtml}
         ${item.url ? `<p class="card-extra"><a href="${item.url}" style="color:#6366f1">Open link ↗</a></p>` : ''}
@@ -309,6 +314,7 @@ function cardHtml(item) {
             <span class="card-title">${item.title}</span>
             ${badgeHtml(item.status)}
             ${item.oneshot ? '<span class="badge badge-oneshot">One-shot</span>' : ''}
+            ${readCount > 1 ? `<span class="badge badge-reread" title="Read ${readCount} times">↻${readCount}</span>` : ''}
           </div>
           <div class="card-sub">${sub}</div>
           <div class="card-meta">
@@ -444,6 +450,9 @@ function modalHtml() {
           <button class="btn btn-secondary btn-sm" id="btn-add-tag">+</button>
         </div>
         <div class="tags-display" id="tags-display">${tags}</div>
+
+        <label class="field-label">Times read</label>
+        <input type="number" id="m-readcount" min="0" value="${item.readCount ?? (item.status === 'Finished' ? 1 : 0)}" style="width:100px" />
 
         <label class="field-label">Date finished <span style="font-weight:400;text-transform:none;font-size:10px">(optional)</span></label>
         <input type="date" id="m-finished" value="${item.finishedAt ? item.finishedAt.slice(0,10) : (!isEdit && isFf ? new Date().toISOString().slice(0,10) : '')}" />
@@ -1091,9 +1100,10 @@ function snapshotModalForm() {
   const notes   = v('m-notes');   if (notes   !== null) patch.notes   = notes.trim();
   const status  = v('m-status');  if (status  !== null) patch.status  = status;
   const rating  = v('m-rating');  if (rating  !== null) patch.rating  = rating;
-  const ws = v('m-words');  if (ws && ws.trim())  patch.words  = parseInt(ws)  || state.editItem.words;
-  const hs = v('m-hearts'); if (hs && hs.trim())  patch.hearts = parseInt(hs)  || state.editItem.hearts;
-  const ps = v('m-pages');  if (ps && ps.trim())  patch.pages  = parseInt(ps)  || state.editItem.pages;
+  const ws = v('m-words');     if (ws && ws.trim())  patch.words     = parseInt(ws)  || state.editItem.words;
+  const hs = v('m-hearts');    if (hs && hs.trim())  patch.hearts    = parseInt(hs)  || state.editItem.hearts;
+  const ps = v('m-pages');     if (ps && ps.trim())  patch.pages     = parseInt(ps)  || state.editItem.pages;
+  const rc = v('m-readcount'); if (rc !== null)       patch.readCount = parseInt(rc) || 0;
   state.editItem = { ...state.editItem, ...patch };
 }
 
@@ -1428,7 +1438,22 @@ function bindEvents() {
         if (x.id !== id) return x;
         const update = { ...x, status };
         if (status === 'Finished' && !x.finishedAt) update.finishedAt = new Date().toISOString();
+        if (status === 'Finished' && !(x.readCount > 0)) update.readCount = 1;
         return update;
+      });
+      saveData(); render();
+    });
+  });
+
+  // Re-read count
+  document.querySelectorAll('[data-add-reread]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const id = btn.dataset.addReread;
+      state.items = state.items.map(x => {
+        if (x.id !== id) return x;
+        const current = x.readCount ?? (x.status === 'Finished' ? 1 : 0);
+        return { ...x, readCount: current + 1 };
       });
       saveData(); render();
     });
@@ -1660,6 +1685,13 @@ function bindEvents() {
         if (d) return new Date(d + 'T12:00:00').toISOString();
         if (s === 'Finished' && !state.editItem?.finishedAt) return new Date().toISOString();
         return state.editItem?.finishedAt || null;
+      })(),
+      readCount: (() => {
+        const rc = document.getElementById('m-readcount')?.value;
+        if (rc !== null && rc !== undefined && rc !== '') return parseInt(rc) || 0;
+        const s = document.getElementById('m-status')?.value || 'TBR';
+        if (s === 'Finished' && !state.editItem?.readCount) return 1;
+        return state.editItem?.readCount || 0;
       })(),
       _addedAt: state.editItem?._addedAt ?? state.items.length,
     };

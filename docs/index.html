@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0f0f23">
+<title>My Library</title>
+<link rel="manifest" href="manifest.json">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0f0f23;--card:#1a1a2e;--card2:#16213e;
+  --border:rgba(99,102,241,0.18);--text:#e2e8f0;--muted:#9ca3af;
+  --accent:#6366f1;--accent2:#818cf8;
+  --safe-top:env(safe-area-inset-top);--safe-bottom:env(safe-area-inset-bottom);
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;overflow:hidden}
+
+/* ── Setup ── */
+#setup{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:32px;background:linear-gradient(135deg,#0a0a1a,#1a1a2e);z-index:1000;gap:14px;text-align:center}
+#setup.hidden{display:none}
+.s-icon{font-size:64px}
+.s-title{font-size:30px;font-weight:800;background:linear-gradient(135deg,#818cf8,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.s-sub{color:var(--muted);font-size:13px;line-height:1.6;max-width:300px}
+.s-input{width:100%;padding:14px 16px;background:rgba(255,255,255,0.07);border:1.5px solid var(--border);border-radius:14px;color:var(--text);font-size:13px;font-family:monospace;text-align:center;outline:none;letter-spacing:0.5px}
+.s-input:focus{border-color:var(--accent)}
+.s-btn{width:100%;padding:16px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer;letter-spacing:0.3px}
+.s-note{font-size:11px;color:var(--muted);line-height:1.6}
+.s-link{color:var(--accent2);text-decoration:none}
+#setup-err{color:#f87171;font-size:13px;display:none;min-height:16px}
+
+/* ── App ── */
+#app{position:fixed;inset:0;display:flex;flex-direction:column;overflow:hidden}
+#app.hidden{display:none}
+
+/* Header */
+#hdr{padding:calc(var(--safe-top) + 14px) 16px 14px;background:rgba(15,15,35,0.96);backdrop-filter:blur(12px);display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);flex-shrink:0;-webkit-backdrop-filter:blur(12px)}
+.hdr-title{font-size:20px;font-weight:800;flex:1}
+.hdr-title em{font-style:normal;color:var(--accent2)}
+.ico-btn{width:36px;height:36px;background:rgba(255,255,255,0.07);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;flex-shrink:0}
+.ico-btn:active{opacity:.6}
+
+/* Search */
+#search-wrap{padding:10px 16px 6px;background:var(--bg);flex-shrink:0}
+.search-in{width:100%;padding:10px 14px;background:rgba(255,255,255,0.06);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:14px;outline:none;-webkit-appearance:none}
+.search-in:focus{border-color:var(--accent)}
+
+/* Filter chips */
+#chips{display:flex;gap:6px;padding:0 16px 10px;overflow-x:auto;flex-shrink:0;scrollbar-width:none}
+#chips::-webkit-scrollbar{display:none}
+.chip{padding:5px 13px;background:rgba(255,255,255,0.06);border:1.5px solid var(--border);border-radius:20px;font-size:12px;font-weight:600;white-space:nowrap;cursor:pointer;flex-shrink:0;transition:all .15s}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip:active{opacity:.7}
+
+/* List */
+#list{flex:1;overflow-y:auto;padding:0 16px calc(var(--safe-bottom) + 90px);-webkit-overflow-scrolling:touch}
+#list::-webkit-scrollbar{display:none}
+.list-count{font-size:12px;color:var(--muted);padding:10px 0 6px;font-weight:600}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;margin-bottom:10px;display:flex;gap:12px;padding:12px;cursor:pointer;transition:transform .1s;overflow:hidden}
+.card:active{transform:scale(.98)}
+.c-cover{width:50px;height:70px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:24px;overflow:hidden}
+.c-cover img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+.c-body{flex:1;min-width:0}
+.c-title{font-size:14px;font-weight:700;line-height:1.3;margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.c-sub{font-size:12px;color:var(--muted);margin-bottom:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.c-badges{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+.c-meta{font-size:11px;color:var(--muted);margin-top:4px}
+.bdg{padding:2px 7px;border-radius:6px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+.b-tbr{background:rgba(148,163,184,.15);color:#94a3b8}
+.b-reading{background:rgba(59,130,246,.2);color:#60a5fa}
+.b-finished{background:rgba(16,185,129,.2);color:#34d399}
+.b-dnf{background:rgba(239,68,68,.2);color:#f87171}
+.b-paused{background:rgba(245,158,11,.2);color:#fbbf24}
+.b-ff{background:rgba(168,85,247,.15);color:#c084fc;font-size:9px}
+.b-book{background:rgba(251,191,36,.15);color:#fbbf24;font-size:9px}
+.b-reread{background:rgba(99,102,241,.2);color:#818cf8}
+
+/* FAB */
+#fab{position:fixed;bottom:calc(var(--safe-bottom) + 22px);right:20px;width:58px;height:58px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;border-radius:18px;font-size:30px;color:#fff;cursor:pointer;box-shadow:0 8px 28px rgba(99,102,241,.45);display:flex;align-items:center;justify-content:center;z-index:100;transition:transform .15s}
+#fab:active{transform:scale(.9)}
+
+/* Sheet */
+#shade{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;opacity:0;pointer-events:none;transition:opacity .25s}
+#shade.on{opacity:1;pointer-events:all}
+#sheet{position:fixed;left:0;right:0;bottom:0;background:var(--card2);border-radius:24px 24px 0 0;z-index:201;max-height:92vh;overflow-y:auto;transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1);padding-bottom:calc(var(--safe-bottom) + 20px);-webkit-overflow-scrolling:touch}
+#sheet::-webkit-scrollbar{display:none}
+#sheet.on{transform:translateY(0)}
+.sh-handle{width:40px;height:4px;background:rgba(255,255,255,.18);border-radius:2px;margin:12px auto 0}
+.sh-top{display:flex;gap:14px;padding:16px 20px;align-items:flex-start}
+.sh-cover{width:84px;height:118px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:38px;overflow:hidden}
+.sh-cover img{width:100%;height:100%;object-fit:cover;border-radius:12px}
+.sh-info{flex:1;min-width:0;padding-top:4px}
+.sh-title{font-size:19px;font-weight:800;line-height:1.3;margin-bottom:4px}
+.sh-sub{font-size:13px;color:var(--muted);margin-bottom:8px}
+.sh-sec{padding:12px 20px;border-top:1px solid var(--border)}
+.sh-lbl{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px}
+.st-row{display:flex;gap:6px;flex-wrap:wrap}
+.st-chip{padding:7px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid transparent;background:rgba(255,255,255,.06);transition:all .15s}
+.st-chip:active{opacity:.7}
+.st-chip.a-TBR{background:rgba(148,163,184,.2);border-color:#94a3b8;color:#94a3b8}
+.st-chip.a-Reading{background:rgba(59,130,246,.2);border-color:#60a5fa;color:#60a5fa}
+.st-chip.a-Finished{background:rgba(16,185,129,.2);border-color:#34d399;color:#34d399}
+.st-chip.a-DNF{background:rgba(239,68,68,.2);border-color:#f87171;color:#f87171}
+.st-chip.a-Paused{background:rgba(245,158,11,.2);border-color:#fbbf24;color:#fbbf24}
+.stars-row{display:flex;gap:8px;font-size:26px}
+.s-star{opacity:.25;cursor:pointer;transition:opacity .1s,transform .1s}
+.s-star.on{opacity:1}
+.s-star:active{transform:scale(1.3)}
+.rr-row{display:flex;align-items:center;justify-content:space-between;background:rgba(99,102,241,.12);border:1px solid rgba(99,102,241,.25);border-radius:10px;padding:12px 14px}
+.rr-label{font-size:14px;color:var(--accent2);font-weight:600}
+.rr-btn{background:var(--accent);border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:700;padding:7px 16px;cursor:pointer}
+.rr-btn:active{opacity:.8}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.info-tile{background:rgba(255,255,255,.04);border-radius:10px;padding:8px 10px}
+.info-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px}
+.info-val{font-size:14px;font-weight:700;margin-top:2px}
+.sh-tags{display:flex;flex-wrap:wrap;gap:6px}
+.sh-tag{background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.3);border-radius:6px;padding:3px 8px;font-size:12px;color:var(--accent2)}
+.sh-notes{font-size:13px;color:var(--muted);background:rgba(255,255,255,.04);border-radius:10px;padding:10px 12px;font-style:italic;line-height:1.6}
+.sh-actions{display:flex;gap:8px;padding:14px 20px;border-top:1px solid var(--border)}
+.btn{flex:1;padding:12px;border:1.5px solid var(--border);border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;background:rgba(255,255,255,.06);color:var(--text);display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-p{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-d{border-color:rgba(239,68,68,.4);color:#f87171;background:rgba(239,68,68,.1)}
+.btn:active{opacity:.75}
+
+/* Modal */
+#mshade{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;opacity:0;pointer-events:none;transition:opacity .2s}
+#mshade.on{opacity:1;pointer-events:all}
+#modal{position:fixed;left:0;right:0;bottom:0;background:var(--card2);border-radius:24px 24px 0 0;z-index:301;max-height:96vh;overflow-y:auto;transform:translateY(100%);transition:transform .3s cubic-bezier(.32,.72,0,1);padding-bottom:calc(var(--safe-bottom) + 70px);-webkit-overflow-scrolling:touch}
+#modal::-webkit-scrollbar{display:none}
+#modal.on{transform:translateY(0)}
+.m-hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--card2);z-index:1}
+.m-title{font-size:17px;font-weight:800}
+.m-x{width:32px;height:32px;background:rgba(255,255,255,.08);border:none;border-radius:50%;font-size:18px;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.m-body{padding:16px 20px 0}
+.m-lbl{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px;display:block;margin-top:16px}
+.m-lbl:first-child{margin-top:0}
+.m-in{width:100%;padding:12px 14px;background:rgba(255,255,255,.06);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:15px;outline:none;-webkit-appearance:none;font-family:inherit}
+.m-in:focus{border-color:var(--accent)}
+.m-sel{width:100%;padding:12px 14px;background:rgba(255,255,255,.06);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:15px;outline:none;-webkit-appearance:none;cursor:pointer}
+.m-sel option{background:#1a1a2e}
+.m-ta{width:100%;padding:12px 14px;background:rgba(255,255,255,.06);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:15px;outline:none;resize:none;min-height:80px;font-family:inherit}
+.type-row{display:flex;gap:8px}
+.type-btn{flex:1;padding:10px;background:rgba(255,255,255,.06);border:1.5px solid var(--border);border-radius:12px;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;text-align:center}
+.type-btn.on{background:rgba(99,102,241,.2);border-color:var(--accent);color:var(--accent2)}
+.f-row{display:flex;gap:10px}
+.f-row>div{flex:1}
+.tag-add-row{display:flex;gap:8px}
+.tag-add-row .m-in{flex:1}
+.tag-add-btn{padding:12px 16px;background:rgba(99,102,241,.2);border:1.5px solid rgba(99,102,241,.4);border-radius:12px;color:var(--accent2);font-size:20px;font-weight:700;cursor:pointer}
+.tags-area{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;min-height:10px}
+.m-tag{background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.3);border-radius:6px;padding:3px 8px;font-size:12px;color:var(--accent2);display:flex;align-items:center;gap:4px}
+.m-tag-x{cursor:pointer;color:var(--muted);font-size:14px;line-height:1}
+.m-tag-x:active{color:#f87171}
+.m-stars{display:flex;gap:8px;font-size:28px;margin-top:6px}
+.m-star{opacity:.2;cursor:pointer;transition:opacity .15s}
+.m-star.on{opacity:1}
+.m-footer{position:sticky;bottom:0;background:var(--card2);border-top:1px solid var(--border);padding:12px 20px;display:flex;gap:10px;z-index:1}
+
+/* Misc */
+.empty{text-align:center;padding:60px 20px;color:var(--muted)}
+.empty-ico{font-size:56px;margin-bottom:14px}
+.empty-txt{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
+.empty-sub{font-size:14px}
+.loading{text-align:center;padding:48px 20px;color:var(--muted);font-size:14px}
+#toast{position:fixed;top:calc(var(--safe-top) + 64px);left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:24px;font-size:13px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.35);z-index:500;white-space:nowrap;display:flex;align-items:center;gap:8px;animation:tin .2s ease;pointer-events:none}
+@keyframes tin{from{opacity:0;transform:translateX(-50%) translateY(-8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+</style>
+</head>
+<body>
+
+<!-- Setup -->
+<div id="setup">
+  <div class="s-icon">📚</div>
+  <div class="s-title">My Library</div>
+  <div class="s-sub">Connect your GitHub repository to sync across all your devices.</div>
+  <input class="s-input" id="pat-in" type="password" placeholder="Paste your GitHub token" autocomplete="off" />
+  <button class="s-btn" id="s-btn">Connect Library →</button>
+  <div class="s-note">
+    Token needs <strong>Contents: Read &amp; write</strong> on your <em>my-library</em> repo.<br>
+    Get one at <a class="s-link" href="https://github.com/settings/tokens" target="_blank">github.com/settings/tokens</a>
+  </div>
+  <div id="setup-err"></div>
+</div>
+
+<!-- App -->
+<div id="app" class="hidden">
+  <div id="hdr">
+    <span class="hdr-title">My <em>Library</em></span>
+    <div class="ico-btn" id="btn-sync">↻</div>
+    <div class="ico-btn" id="btn-settings">⚙️</div>
+  </div>
+  <div id="search-wrap">
+    <input class="search-in" id="search-in" type="search" placeholder="Search title, author, fandom, tag…" />
+  </div>
+  <div id="chips">
+    <span class="chip on" data-f="all">All</span>
+    <span class="chip" data-f="TBR">TBR</span>
+    <span class="chip" data-f="Reading">Reading</span>
+    <span class="chip" data-f="Finished">Finished</span>
+    <span class="chip" data-f="Paused">Paused</span>
+    <span class="chip" data-f="DNF">DNF</span>
+    <span class="chip" data-f="ff">✍️ FF</span>
+    <span class="chip" data-f="book">📚 Books</span>
+  </div>
+  <div id="list"><div class="loading">Loading your library…</div></div>
+  <button id="fab">＋</button>
+</div>
+
+<!-- Sheet -->
+<div id="shade"></div>
+<div id="sheet"><div class="sh-handle"></div><div id="sh-body"></div></div>
+
+<!-- Modal -->
+<div id="mshade"></div>
+<div id="modal">
+  <div class="m-hdr">
+    <span class="m-title" id="m-title-txt">Add entry</span>
+    <button class="m-x" id="m-x">×</button>
+  </div>
+  <div class="m-body" id="m-body"></div>
+  <div class="m-footer">
+    <button class="btn" id="m-cancel">Cancel</button>
+    <button class="btn btn-p" id="m-save">Save</button>
+  </div>
+</div>
+
+<script>
+// ── Config ────────────────────────────────────────────────────────────────────
+const REPO = 'elenaliberti/my-library';
+const FILE = 'library-data.json';
+const API  = 'https://api.github.com';
+const STATUS = ['TBR','Reading','Finished','Paused','DNF'];
+
+// ── State ─────────────────────────────────────────────────────────────────────
+const S = {
+  items:[], sha:null, loading:false,
+  search:'', filter:'all',
+  selId:null, editing:null, mRating:0, mTags:[],
+};
+
+// ── Utils ─────────────────────────────────────────────────────────────────────
+const genId = () => `${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
+const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const fmt = n => !n?'':(n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(0)+'K':String(n));
+function djb2(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h)^s.charCodeAt(i);return h>>>0}
+const GR=[['#7c3aed','#2563eb'],['#db2777','#9333ea'],['#059669','#0284c7'],['#dc2626','#ea580c'],
+  ['#0891b2','#0d9488'],['#7c3aed','#ec4899'],['#1d4ed8','#4f46e5'],['#d97706','#dc2626'],
+  ['#0f766e','#0891b2'],['#9333ea','#0ea5e9']];
+const grad = k => GR[djb2(k)%GR.length];
+
+function badgeClass(s){
+  return {TBR:'b-tbr',Reading:'b-reading',Finished:'b-finished',DNF:'b-dnf',Paused:'b-paused'}[s]||'b-tbr';
+}
+
+// ── GitHub API ─────────────────────────────────────────────────────────────────
+const tok = () => localStorage.getItem('gh_token');
+const ghH = () => ({'Authorization':`Bearer ${tok()}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'});
+
+async function ghLoad() {
+  const r = await fetch(`${API}/repos/${REPO}/contents/${FILE}`,{headers:ghH()});
+  if(r.status===401) throw new Error('invalid_token');
+  if(!r.ok) throw new Error(`GitHub ${r.status}`);
+  const d = await r.json();
+  return {items:JSON.parse(atob(d.content.replace(/\n/g,''))), sha:d.sha};
+}
+
+async function ghSave(items, sha) {
+  const content = btoa(unescape(encodeURIComponent(JSON.stringify(items,null,2))));
+  const now = new Date().toLocaleString('en-GB',{dateStyle:'medium',timeStyle:'short'});
+  const r = await fetch(`${API}/repos/${REPO}/contents/${FILE}`,{
+    method:'PUT', headers:ghH(),
+    body:JSON.stringify({message:`Mobile update — ${now}`,content,sha})
+  });
+  if(r.status===409) throw new Error('conflict');
+  if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.message||`GitHub ${r.status}`)}
+  return (await r.json()).content.sha;
+}
+
+// ── Render list ───────────────────────────────────────────────────────────────
+function filtered() {
+  let items = [...S.items];
+  if(S.search){
+    const q=S.search.toLowerCase();
+    items=items.filter(x=>(x.title||'').toLowerCase().includes(q)||(x.author||'').toLowerCase().includes(q)||(x.fandom||'').toLowerCase().includes(q)||(x.tags||[]).some(t=>t.toLowerCase().includes(q)));
+  }
+  if(S.filter==='ff'||S.filter==='book') items=items.filter(x=>x.type===S.filter);
+  else if(S.filter!=='all') items=items.filter(x=>x.status===S.filter);
+  return items;
+}
+
+function cover(item, w, h, r) {
+  const [c1,c2]=grad(item.id||'');
+  const ic=item.coverIcon||'';
+  const inner=ic.startsWith('http')
+    ?`<img src="${esc(ic)}" style="width:100%;height:100%;object-fit:cover;border-radius:${r}px">`
+    :`<span style="font-size:${w<60?24:38}px">${ic||(item.type==='ff'?'✍️':'📚')}</span>`;
+  return `<div style="width:${w}px;height:${h}px;border-radius:${r}px;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(135deg,${c1},${c2})">${inner}</div>`;
+}
+
+function renderList() {
+  const el = document.getElementById('list');
+  if(S.loading){el.innerHTML='<div class="loading">Loading your library…</div>';return}
+  const items=filtered();
+  if(!items.length){
+    el.innerHTML=`<div class="empty"><div class="empty-ico">${S.search?'🔍':'📖'}</div><div class="empty-txt">${S.search?'No results':'Nothing here yet'}</div><div class="empty-sub">${S.search?'Try a different search':'Tap ＋ to add your first entry'}</div></div>`;
+    return;
+  }
+  const rows=[`<div class="list-count">${items.length} item${items.length!==1?'s':''}</div>`];
+  for(const x of items){
+    const sub=x.type==='ff'
+      ?`${x.author||'—'}${x.fandom?' · '+x.fandom:''}`
+      :`${x.author||'—'}${x.genre?' · '+x.genre:''}`;
+    const rc=x.readCount||(x.status==='Finished'?1:0);
+    const meta=[];
+    if(x.words) meta.push(`${fmt(x.words)}w`);
+    if(x.type!=='ff'&&x.pages) meta.push(`${x.pages}p`);
+    if(rc>1) meta.push(`↻${rc}`);
+    if(x.favorite) meta.push('⭐');
+    rows.push(`<div class="card" data-id="${esc(x.id)}">${cover(x,50,70,8)}<div class="c-body"><div class="c-title">${esc(x.title||'Untitled')}</div><div class="c-sub">${esc(sub)}</div><div class="c-badges"><span class="bdg ${badgeClass(x.status)}">${esc(x.status||'TBR')}</span>${x.type==='ff'?'<span class="bdg b-ff">FF</span>':'<span class="bdg b-book">BOOK</span>'}${rc>1?`<span class="bdg b-reread">↻${rc}</span>`:''}</div>${meta.length?`<div class="c-meta">${meta.join(' · ')}</div>`:''}</div></div>`);
+  }
+  el.innerHTML=rows.join('');
+  el.querySelectorAll('.card').forEach(c=>c.addEventListener('click',()=>openSheet(c.dataset.id)));
+}
+
+// ── Sheet ─────────────────────────────────────────────────────────────────────
+function openSheet(id) {
+  const x=S.items.find(i=>i.id===id);
+  if(!x) return;
+  S.selId=id;
+  const isFf=x.type==='ff';
+  const rc=x.readCount||(x.status==='Finished'?1:0);
+  const sub=isFf?`${x.author||'—'}${x.fandom?' · '+x.fandom:''}`:`${x.author||'—'}${x.genre?' · '+x.genre:''}`;
+  const chips=STATUS.map(s=>`<span class="st-chip${x.status===s?' a-'+s:''}" data-s="${esc(s)}">${s}</span>`).join('');
+  const stars=[1,2,3,4,5].map(i=>`<span class="s-star${i<=(x.userRating||0)?' on':''}" data-v="${i}">★</span>`).join('');
+  const info=[];
+  if(x.words) info.push({l:'Words',v:fmt(x.words)});
+  if(isFf&&x.hearts) info.push({l:'Kudos',v:fmt(x.hearts)});
+  if(!isFf&&x.pages) info.push({l:'Pages',v:String(x.pages)});
+  if(isFf&&x.pairing) info.push({l:'Pairing',v:x.pairing});
+  if(isFf&&x.rating) info.push({l:'Rating',v:x.rating});
+  if(x.finishedAt) info.push({l:'Finished',v:new Date(x.finishedAt).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})});
+  const tags=(x.tags||[]).map(t=>`<span class="sh-tag">${esc(t)}</span>`).join('');
+
+  document.getElementById('sh-body').innerHTML=`
+    <div class="sh-top">${cover(x,84,118,12)}<div class="sh-info"><div class="sh-title">${esc(x.title||'Untitled')}</div><div class="sh-sub">${esc(sub)}</div><div class="c-badges"><span class="bdg ${badgeClass(x.status)}">${esc(x.status||'TBR')}</span>${isFf?'<span class="bdg b-ff">FF</span>':'<span class="bdg b-book">BOOK</span>'}${x.oneshot?'<span class="bdg" style="background:rgba(168,85,247,.15);color:#c084fc">One-shot</span>':''}${x.favorite?'<span style="font-size:14px;margin-left:2px">⭐</span>':''}</div></div></div>
+    <div class="sh-sec"><div class="sh-lbl">Status</div><div class="st-row">${chips}</div></div>
+    <div class="sh-sec"><div class="sh-lbl">Your rating</div><div class="stars-row">${stars}</div></div>
+    <div class="sh-sec"><div class="sh-lbl">Re-reads</div><div class="rr-row"><span class="rr-label">📖 Read ${rc} time${rc===1?'':'s'}</span><button class="rr-btn" id="rr-btn">＋ Read again</button></div></div>
+    ${info.length?`<div class="sh-sec"><div class="sh-lbl">Details</div><div class="info-grid">${info.map(p=>`<div class="info-tile"><div class="info-lbl">${esc(p.l)}</div><div class="info-val">${esc(p.v)}</div></div>`).join('')}</div></div>`:''}
+    ${tags?`<div class="sh-sec"><div class="sh-lbl">Tags</div><div class="sh-tags">${tags}</div></div>`:''}
+    ${x.notes?`<div class="sh-sec"><div class="sh-lbl">Notes</div><div class="sh-notes">"${esc(x.notes)}"</div></div>`:''}
+    <div class="sh-actions">${x.url?`<button class="btn" id="sh-open">🔗 Open</button>`:''}<button class="btn btn-p" id="sh-edit">✏️ Edit</button><button class="btn btn-d" id="sh-del">🗑</button></div>`;
+
+  document.querySelectorAll('.st-chip').forEach(c=>c.addEventListener('click',async()=>{
+    const ns=c.dataset.s;
+    const it=S.items.find(i=>i.id===S.selId);
+    if(!it||it.status===ns) return;
+    const up={...it,status:ns,
+      finishedAt:ns==='Finished'&&!it.finishedAt?new Date().toISOString():it.finishedAt,
+      readCount:ns==='Finished'&&!(it.readCount>0)?1:(it.readCount||0)};
+    await qSave(up);
+  }));
+
+  document.querySelectorAll('.s-star').forEach(s=>s.addEventListener('click',async()=>{
+    const v=parseInt(s.dataset.v);
+    const it=S.items.find(i=>i.id===S.selId);
+    if(!it) return;
+    await qSave({...it,userRating:it.userRating===v?0:v});
+  }));
+
+  document.getElementById('rr-btn')?.addEventListener('click',async()=>{
+    const it=S.items.find(i=>i.id===S.selId);
+    if(!it) return;
+    const rc=(it.readCount||(it.status==='Finished'?1:0))+1;
+    await qSave({...it,readCount:rc});
+  });
+
+  document.getElementById('sh-edit')?.addEventListener('click',()=>{
+    const it=S.items.find(i=>i.id===S.selId);
+    if(it) openModal(it);
+  });
+  document.getElementById('sh-open')?.addEventListener('click',()=>{
+    const it=S.items.find(i=>i.id===S.selId);
+    if(it?.url) window.open(it.url,'_blank');
+  });
+  document.getElementById('sh-del')?.addEventListener('click',async()=>{
+    if(!confirm('Delete this entry?')) return;
+    S.items=S.items.filter(i=>i.id!==S.selId);
+    closeSheet();
+    renderList();
+    await doSave();
+  });
+
+  document.getElementById('shade').classList.add('on');
+  document.getElementById('sheet').classList.add('on');
+}
+
+function closeSheet(){
+  document.getElementById('shade').classList.remove('on');
+  document.getElementById('sheet').classList.remove('on');
+  S.selId=null;
+}
+
+async function qSave(up) {
+  const idx=S.items.findIndex(i=>i.id===up.id);
+  if(idx<0) return;
+  S.items[idx]=up;
+  renderList();
+  openSheet(up.id);
+  await doSave();
+}
+
+// ── Modal ─────────────────────────────────────────────────────────────────────
+function openModal(item) {
+  S.editing=item?{...item}:{type:'ff',status:'TBR'};
+  S.mRating=item?.userRating||0;
+  S.mTags=[...(item?.tags||[])];
+  document.getElementById('m-title-txt').textContent=item?.id?'Edit entry':'Add entry';
+  renderModalBody();
+  document.getElementById('mshade').classList.add('on');
+  document.getElementById('modal').classList.add('on');
+  closeSheet();
+}
+function closeModal(){
+  document.getElementById('mshade').classList.remove('on');
+  document.getElementById('modal').classList.remove('on');
+  S.editing=null;
+}
+
+function renderModalBody() {
+  const x=S.editing||{};
+  const isFf=x.type==='ff';
+  const isNew=!x.id;
+  const rc=x.readCount??(x.status==='Finished'?1:0);
+  const sOpts=STATUS.map(s=>`<option value="${s}"${(x.status||'TBR')===s?' selected':''}>${s}</option>`).join('');
+  const tagsHtml=S.mTags.map(t=>`<span class="m-tag">${esc(t)}<span class="m-tag-x" data-t="${esc(t)}">×</span></span>`).join('');
+  const mStars=[1,2,3,4,5].map(i=>`<span class="m-star${i<=S.mRating?' on':''}" data-v="${i}">★</span>`).join('');
+
+  document.getElementById('m-body').innerHTML=`
+    ${isNew?`<label class="m-lbl" style="margin-top:0">Type</label><div class="type-row"><button class="type-btn${isFf?' on':''}" data-tp="ff">📖 Fanfiction</button><button class="type-btn${!isFf?' on':''}" data-tp="book">📚 Book</button></div>`:''}
+    <label class="m-lbl">Title *</label>
+    <input class="m-in" id="f-title" value="${esc(x.title||'')}" placeholder="Title" />
+    <label class="m-lbl">Author</label>
+    <input class="m-in" id="f-author" value="${esc(x.author||'')}" placeholder="Author / username" />
+    ${isFf?`
+    <label class="m-lbl">Fic URL</label>
+    <input class="m-in" id="f-url" type="url" value="${esc(x.url||'')}" placeholder="https://archiveofourown.org/…" />
+    <div class="f-row"><div><label class="m-lbl">Fandom</label><input class="m-in" id="f-fandom" value="${esc(x.fandom||'')}" placeholder="Harry Potter" /></div><div><label class="m-lbl">Pairing</label><input class="m-in" id="f-pairing" value="${esc(x.pairing||'')}" placeholder="M/M" /></div></div>
+    <div class="f-row"><div><label class="m-lbl">Words</label><input class="m-in" id="f-words" type="number" value="${x.words||''}" /></div><div><label class="m-lbl">Kudos</label><input class="m-in" id="f-hearts" type="number" value="${x.hearts||''}" /></div></div>
+    <div class="f-row"><div><label class="m-lbl">Format</label><select class="m-sel" id="f-oneshot"><option value="false"${!x.oneshot?' selected':''}>Multi-chapter</option><option value="true"${x.oneshot?' selected':''}>One-shot</option></select></div><div><label class="m-lbl">AO3 Rating</label><select class="m-sel" id="f-rating">${['','General','Teen+','Mature','Explicit','Not Rated'].map(r=>`<option value="${r}"${x.rating===r?' selected':''}>${r||'—'}</option>`).join('')}</select></div></div>`:`
+    <div class="f-row"><div><label class="m-lbl">Genre</label><input class="m-in" id="f-genre" value="${esc(x.genre||'')}" placeholder="Romantasy" /></div><div><label class="m-lbl">Pages</label><input class="m-in" id="f-pages" type="number" value="${x.pages||''}" /></div></div>
+    <div class="f-row"><div><label class="m-lbl">Words</label><input class="m-in" id="f-words" type="number" value="${x.words||''}" /></div><div><label class="m-lbl">Section</label><input class="m-in" id="f-section" value="${esc(x.section||'')}" /></div></div>`}
+    <label class="m-lbl">Status</label><select class="m-sel" id="f-status">${sOpts}</select>
+    <label class="m-lbl">Times read</label>
+    <input class="m-in" id="f-readcount" type="number" min="0" value="${rc}" style="max-width:120px" />
+    <label class="m-lbl">Date finished</label>
+    <input class="m-in" id="f-finished" type="date" value="${x.finishedAt?x.finishedAt.slice(0,10):''}" />
+    <label class="m-lbl">Your rating</label><div class="m-stars">${mStars}</div>
+    <label class="m-lbl">Tags</label>
+    <div class="tag-add-row"><input class="m-in" id="f-tag-in" placeholder="Add tag + Enter" /><button class="tag-add-btn" id="f-tag-btn">＋</button></div>
+    <div class="tags-area" id="f-tags">${tagsHtml}</div>
+    <label class="m-lbl">Notes</label>
+    <textarea class="m-ta" id="f-notes">${esc(x.notes||'')}</textarea>
+    <label class="m-lbl">Favorite</label>
+    <select class="m-sel" id="f-fav"><option value="false"${!x.favorite?' selected':''}>No</option><option value="true"${x.favorite?' selected':''}>⭐ Yes</option></select>
+  `;
+
+  document.querySelectorAll('[data-tp]').forEach(b=>b.addEventListener('click',()=>{
+    snapEdit();
+    S.editing={...S.editing,type:b.dataset.tp};
+    renderModalBody();
+  }));
+
+  document.querySelectorAll('.m-star').forEach(s=>{
+    s.addEventListener('click',()=>{
+      const v=parseInt(s.dataset.v);
+      S.mRating=S.mRating===v?0:v;
+      document.querySelectorAll('.m-star').forEach((st,i)=>st.classList.toggle('on',i<S.mRating));
+    });
+    s.addEventListener('mouseenter',()=>{
+      const v=parseInt(s.dataset.v);
+      document.querySelectorAll('.m-star').forEach((st,i)=>st.classList.toggle('on',i<v));
+    });
+    s.addEventListener('mouseleave',()=>{
+      document.querySelectorAll('.m-star').forEach((st,i)=>st.classList.toggle('on',i<S.mRating));
+    });
+  });
+
+  const bindTags=()=>{
+    const area=document.getElementById('f-tags');
+    if(!area) return;
+    area.innerHTML=S.mTags.map(t=>`<span class="m-tag">${esc(t)}<span class="m-tag-x" data-t="${esc(t)}">×</span></span>`).join('');
+    area.querySelectorAll('.m-tag-x').forEach(x=>x.addEventListener('click',()=>{
+      S.mTags=S.mTags.filter(t=>t!==x.dataset.t); bindTags();
+    }));
+  };
+  bindTags();
+
+  const tagIn=document.getElementById('f-tag-in');
+  const addTag=()=>{
+    const t=tagIn?.value.trim();
+    if(!t||S.mTags.includes(t)){if(tagIn)tagIn.value='';return}
+    S.mTags.push(t); tagIn.value=''; bindTags();
+  };
+  tagIn?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addTag()}});
+  document.getElementById('f-tag-btn')?.addEventListener('click',addTag);
+
+  document.querySelectorAll('.m-tag-x').forEach(x=>x.addEventListener('click',()=>{
+    S.mTags=S.mTags.filter(t=>t!==x.dataset.t); bindTags();
+  }));
+}
+
+function snapEdit() {
+  const g=id=>document.getElementById(id)?.value??null;
+  const p={};
+  [['f-title','title'],['f-author','author'],['f-url','url'],['f-fandom','fandom'],['f-pairing','pairing'],
+   ['f-genre','genre'],['f-section','section'],['f-notes','notes'],['f-status','status'],['f-rating','rating']
+  ].forEach(([id,k])=>{const v=g(id);if(v!==null)p[k]=typeof v==='string'?v.trim():v});
+  const w=g('f-words');if(w)p.words=parseInt(w)||null;
+  const h=g('f-hearts');if(h)p.hearts=parseInt(h)||null;
+  const pg=g('f-pages');if(pg)p.pages=parseInt(pg)||null;
+  const rc=g('f-readcount');if(rc!==null)p.readCount=parseInt(rc)||0;
+  S.editing={...S.editing,...p};
+}
+
+async function saveModal() {
+  const title=document.getElementById('f-title')?.value.trim();
+  if(!title){document.getElementById('f-title')?.focus();toast('Title is required','err');return}
+  const g=id=>document.getElementById(id)?.value||'';
+  const gN=id=>{const v=g(id);return v?parseInt(v)||null:null};
+  const isFf=S.editing?.type==='ff';
+  const st=g('f-status')||'TBR';
+  const rc=g('f-readcount');
+  const finV=g('f-finished');
+  const item={
+    ...(S.editing||{}),
+    id:S.editing?.id||genId(),
+    type:S.editing?.type||'ff',
+    title, author:g('f-author').trim(),
+    status:st, words:gN('f-words'), notes:g('f-notes').trim(),
+    tags:[...S.mTags], userRating:S.mRating,
+    favorite:g('f-fav')==='true',
+    readCount:rc?parseInt(rc)||0:(S.editing?.readCount??(st==='Finished'?1:0)),
+    finishedAt:finV?new Date(finV+'T12:00:00').toISOString():(st==='Finished'&&!S.editing?.finishedAt?new Date().toISOString():S.editing?.finishedAt||null),
+    _addedAt:S.editing?._addedAt??S.items.length,
+  };
+  if(isFf){item.url=g('f-url').trim();item.fandom=g('f-fandom').trim();item.pairing=g('f-pairing').trim();item.hearts=gN('f-hearts');item.rating=g('f-rating');item.oneshot=g('f-oneshot')==='true'}
+  else{item.genre=g('f-genre').trim();item.section=g('f-section').trim();item.pages=gN('f-pages')}
+  const idx=S.items.findIndex(i=>i.id===item.id);
+  if(idx>=0) S.items[idx]=item; else S.items.unshift(item);
+  closeModal(); renderList(); await doSave();
+}
+
+// ── Save to GitHub ─────────────────────────────────────────────────────────────
+let saving=false;
+async function doSave() {
+  if(saving) return;
+  saving=true;
+  const syncBtn=document.getElementById('btn-sync');
+  if(syncBtn) syncBtn.textContent='⏳';
+  try {
+    let sha=S.sha;
+    if(!sha){const f=await ghLoad();sha=f.sha}
+    S.sha=await ghSave(S.items,sha);
+    toast('Saved ✓','ok');
+  } catch(e) {
+    if(e.message==='conflict'){
+      try{const f=await ghLoad();S.sha=await ghSave(S.items,f.sha);toast('Saved ✓','ok')}
+      catch(e2){toast('Save failed: '+e2.message,'err')}
+    } else if(e.message==='invalid_token'){
+      toast('Token invalid — tap ⚙️ to reset','err');
+    } else {
+      toast('Offline? Changes held locally','err');
+    }
+  } finally {
+    saving=false;
+    if(syncBtn) syncBtn.textContent='↻';
+  }
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+let tTimer=null;
+function toast(msg,type='info'){
+  document.getElementById('toast')?.remove();
+  clearTimeout(tTimer);
+  const bg={ok:'#065f46',err:'#7f1d1d',info:'#1e1e3c'}[type]||'#1e1e3c';
+  const ico={ok:'✅',err:'❌',info:'ℹ️'}[type]||'ℹ️';
+  const el=document.createElement('div');
+  el.id='toast';el.innerHTML=`${ico} ${msg}`;
+  Object.assign(el.style,{position:'fixed',top:`calc(env(safe-area-inset-top) + 64px)`,left:'50%',transform:'translateX(-50%)',background:bg,color:'#fff',padding:'10px 20px',borderRadius:'24px',fontSize:'13px',fontWeight:'600',boxShadow:'0 8px 24px rgba(0,0,0,.35)',zIndex:'500',whiteSpace:'nowrap',animation:'tin .2s ease',pointerEvents:'none'});
+  document.body.appendChild(el);
+  tTimer=setTimeout(()=>el.remove(),3000);
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+async function init() {
+  if(!tok()){showSetup();return}
+  showApp();
+  S.loading=true; renderList();
+  try{
+    const r=await ghLoad();S.items=r.items;S.sha=r.sha;
+    S.loading=false;renderList();
+  }catch(e){
+    S.loading=false;
+    if(e.message==='invalid_token'){toast('Token invalid','err');setTimeout(showSetup,1200)}
+    else{document.getElementById('list').innerHTML=`<div class="empty"><div class="empty-ico">⚠️</div><div class="empty-txt">Couldn't load</div><div class="empty-sub">${esc(e.message)}</div></div>`}
+  }
+}
+
+function showSetup(){document.getElementById('setup').classList.remove('hidden');document.getElementById('app').classList.add('hidden')}
+function showApp(){document.getElementById('setup').classList.add('hidden');document.getElementById('app').classList.remove('hidden')}
+
+// ── Events ─────────────────────────────────────────────────────────────────────
+document.getElementById('s-btn').addEventListener('click',async()=>{
+  const t=document.getElementById('pat-in').value.trim();
+  if(!t) return;
+  const errEl=document.getElementById('setup-err');
+  errEl.textContent='';
+  document.getElementById('s-btn').textContent='Connecting…';
+  try{
+    localStorage.setItem('gh_token',t);
+    const r=await ghLoad();S.items=r.items;S.sha=r.sha;
+    showApp();renderList();
+  }catch(e){
+    localStorage.removeItem('gh_token');
+    errEl.textContent=e.message==='invalid_token'?'❌ Token invalid or missing repo access':'❌ '+e.message;
+    document.getElementById('s-btn').textContent='Connect Library →';
+  }
+});
+document.getElementById('pat-in').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('s-btn').click()});
+
+document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
+  document.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));
+  c.classList.add('on');S.filter=c.dataset.f;renderList();
+}));
+
+document.getElementById('search-in').addEventListener('input',e=>{S.search=e.target.value;renderList()});
+
+document.getElementById('fab').addEventListener('click',()=>openModal(null));
+document.getElementById('shade').addEventListener('click',closeSheet);
+document.getElementById('mshade').addEventListener('click',closeModal);
+document.getElementById('m-x').addEventListener('click',closeModal);
+document.getElementById('m-cancel').addEventListener('click',closeModal);
+document.getElementById('m-save').addEventListener('click',saveModal);
+
+document.getElementById('btn-sync').addEventListener('click',async()=>{
+  document.getElementById('btn-sync').textContent='⏳';
+  try{const r=await ghLoad();S.items=r.items;S.sha=r.sha;renderList();toast('Synced ✓','ok')}
+  catch(e){toast('Sync failed','err')}
+  finally{document.getElementById('btn-sync').textContent='↻'}
+});
+
+document.getElementById('btn-settings').addEventListener('click',()=>{
+  const t=tok()||'';
+  const masked=t?t.slice(0,8)+'…'+t.slice(-4):'not set';
+  if(confirm(`Current token: ${masked}\n\nTap OK to change it.`)){
+    localStorage.removeItem('gh_token');showSetup();
+  }
+});
+
+init();
+</script>
+</body>
+</html>
