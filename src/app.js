@@ -294,7 +294,10 @@ function cardHtml(item) {
         </div>
         <div class="reread-row">
           <span class="reread-label">📖 Read ${readCount} time${readCount === 1 ? '' : 's'}</span>
-          <button class="reread-btn" data-add-reread="${item.id}">＋ Read again</button>
+          <div class="reread-stepper">
+            <button class="reread-step" data-reread-delta="-1" data-reread-id="${item.id}" title="Read one fewer time"${readCount <= 0 ? ' disabled' : ''}>－</button>
+            <button class="reread-step" data-reread-delta="1" data-reread-id="${item.id}" title="Read again">＋</button>
+          </div>
         </div>
         ${notesHtml}${extraHtml}
         ${item.url ? `<p class="card-extra"><a href="${item.url}" style="color:#6366f1">Open link ↗</a></p>` : ''}
@@ -1456,15 +1459,16 @@ function bindEvents() {
     });
   });
 
-  // Re-read count
-  document.querySelectorAll('[data-add-reread]').forEach(btn => {
+  // Re-read count stepper (＋ / －)
+  document.querySelectorAll('[data-reread-delta]').forEach(btn => {
     btn.addEventListener('click', e => {
       e.stopPropagation();
-      const id = btn.dataset.addReread;
+      const id = btn.dataset.rereadId;
+      const delta = parseInt(btn.dataset.rereadDelta, 10);
       state.items = state.items.map(x => {
         if (x.id !== id) return x;
         const current = x.readCount ?? (x.status === 'Finished' ? 1 : 0);
-        return { ...x, readCount: current + 1 };
+        return { ...x, readCount: Math.max(0, current + delta) };
       });
       saveData(); render();
     });

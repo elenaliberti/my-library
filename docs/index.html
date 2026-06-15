@@ -220,6 +220,10 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .rr-label{font-size:14px;color:var(--accent2);font-weight:700}
 .rr-btn{background:var(--accent);border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:700;padding:8px 16px;cursor:pointer}
 .rr-btn:active{opacity:.8}
+.rr-stepper{display:flex;gap:8px;align-items:center}
+.rr-step{width:36px;height:36px;background:var(--accent);border:none;border-radius:10px;color:#fff;font-size:20px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;-webkit-tap-highlight-color:transparent}
+.rr-step:active{opacity:.8}
+.rr-step:disabled{background:#c7d2fe}
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .info-tile{background:var(--surface);border-radius:10px;padding:10px 12px}
 .info-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;font-weight:700}
@@ -879,7 +883,7 @@ function openSheet(id){
     </div>
     <div class="sh-sec"><div class="sh-lbl">Status</div><div class="st-row">${chips}</div></div>
     <div class="sh-sec"><div class="sh-lbl">Your rating</div><div class="stars-row">${stars}</div></div>
-    <div class="sh-sec"><div class="sh-lbl">Re-reads</div><div class="rr-row"><span class="rr-label">📖 Read ${rc} time${rc===1?'':'s'}</span><button class="rr-btn" id="rr-btn">＋ Read again</button></div></div>
+    <div class="sh-sec"><div class="sh-lbl">Re-reads</div><div class="rr-row"><span class="rr-label">📖 Read ${rc} time${rc===1?'':'s'}</span><div class="rr-stepper"><button class="rr-step" id="rr-minus"${rc<=0?' disabled':''}>－</button><button class="rr-step" id="rr-plus">＋</button></div></div></div>
     ${info.length?`<div class="sh-sec"><div class="sh-lbl">Details</div><div class="info-grid">${info.map(p=>`<div class="info-tile"><div class="info-lbl">${esc(p.l)}</div><div class="info-val">${esc(p.v)}</div></div>`).join('')}</div></div>`:''}
     ${(x.tags||[]).length?`<div class="sh-sec"><div class="sh-lbl">Tags</div><div class="sh-tags">${(x.tags||[]).map(t=>`<span class="sh-tag">${esc(t)}</span>`).join('')}</div></div>`:''}
     ${x.notes?`<div class="sh-sec"><div class="sh-lbl">Notes</div><div class="sh-notes">"${esc(x.notes)}"</div></div>`:''}
@@ -902,10 +906,15 @@ function openSheet(id){
     const v=parseInt(s.dataset.v);const it=S.items.find(i=>i.id===S.selId);if(!it)return;
     await qSave({...it,userRating:it.userRating===v?0:v});
   }));
-  document.getElementById('rr-btn')?.addEventListener('click',async()=>{
+  document.getElementById('rr-plus')?.addEventListener('click',async()=>{
     const it=S.items.find(i=>i.id===S.selId);if(!it)return;
-    const rc2=(it.readCount||(it.status==='Finished'?1:0))+1;
-    await qSave({...it,readCount:rc2});
+    const cur=it.readCount||(it.status==='Finished'?1:0);
+    await qSave({...it,readCount:cur+1});
+  });
+  document.getElementById('rr-minus')?.addEventListener('click',async()=>{
+    const it=S.items.find(i=>i.id===S.selId);if(!it)return;
+    const cur=it.readCount||(it.status==='Finished'?1:0);
+    await qSave({...it,readCount:Math.max(0,cur-1)});
   });
   document.getElementById('sh-edit')?.addEventListener('click',()=>{const it=S.items.find(i=>i.id===S.selId);if(it)openModal(it)});
   document.getElementById('sh-open')?.addEventListener('click',()=>{const it=S.items.find(i=>i.id===S.selId);if(it?.url)window.open(it.url,'_blank')});
