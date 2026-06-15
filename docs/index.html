@@ -433,6 +433,20 @@ if('serviceWorker' in navigator){
     });
   }).catch(()=>{});
 }
+// ── TEMP DIAGNOSTIC: show real viewport numbers from this device (tap to dismiss) ──
+window.addEventListener('load',()=>{setTimeout(()=>{
+  try{
+    const probeB=document.createElement('div');probeB.style.cssText='position:fixed;bottom:0;left:0;width:1px;height:env(safe-area-inset-bottom)';document.body.appendChild(probeB);
+    const sab=probeB.offsetHeight;probeB.remove();
+    const nav=document.getElementById('bottom-nav').getBoundingClientRect();
+    const vv=window.visualViewport;
+    const d=document.createElement('div');
+    d.style.cssText='position:fixed;top:50px;left:8px;right:8px;z-index:99999;background:#111;color:#0f0;font:12px/1.5 monospace;padding:10px;border-radius:8px;white-space:pre-line;box-shadow:0 4px 20px rgba(0,0,0,.5)';
+    d.textContent=`DIAGNOSTIC (tap to close)\nbuild=v8-fixedinset\nstandalone=${navigator.standalone}\ninnerH=${window.innerHeight}  screenH=${screen.height}\nvisualVP.h=${vv?Math.round(vv.height):'n/a'}\nsafeBottomInset=${sab}px\nnav.top=${Math.round(nav.top)}  nav.bottom=${Math.round(nav.bottom)}\nGAP below nav=${Math.round(window.innerHeight-nav.bottom)}px`;
+    d.onclick=()=>d.remove();
+    document.body.appendChild(d);
+  }catch(e){}
+},600);});
 // ── Config ────────────────────────────────────────────────────────────────────
 const REPO='elenaliberti/my-library';
 const FILE='library-data.json';
