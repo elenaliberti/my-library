@@ -23,6 +23,8 @@
   --nav-h:54px;
 }
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif;overflow:hidden}
+/* the bottom nav is white; make anything showing behind/below it white too so no gap is visible */
+html{background:#fff}
 
 /* ── Setup ── */
 #setup{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:32px;background:linear-gradient(160deg,#ede9fe 0%,#fff 55%,#fdf4ff 100%);z-index:1000;gap:14px;text-align:center}
@@ -443,7 +445,7 @@ window.addEventListener('load',()=>{
       const sab=p.offsetHeight;p.remove();
       const nav=document.getElementById('bottom-nav').getBoundingClientRect();
       const vv=window.visualViewport;
-      d.textContent=`DIAGNOSTIC v9-fixednav (tap to close)\nstandalone=${navigator.standalone}\ninnerH=${window.innerHeight} screenH=${screen.height}\nvisualVP=${vv?Math.round(vv.height):'n/a'}\nsafeBottom=${sab}px\nnav.bottom=${Math.round(nav.bottom)}\nGAP below nav=${Math.round(window.innerHeight-nav.bottom)}px`;
+      d.textContent=`DIAGNOSTIC v10 (tap to close)\nstandalone=${navigator.standalone}\ninnerH=${window.innerHeight} screenH=${screen.height}\nhtmlH=${document.documentElement.clientHeight} bodyH=${document.body.offsetHeight}\nvisualVP=${vv?Math.round(vv.height):'n/a'}\nsafeBottom=${sab}px\nnav.bottom=${Math.round(nav.bottom)}\nGAP below nav=${Math.round(window.innerHeight-nav.bottom)}px`;
     }catch(e){}
   }
   measure();
