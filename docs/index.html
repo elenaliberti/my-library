@@ -449,6 +449,8 @@ const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>
 const fmt=n=>!n?'':(n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(0)+'K':String(n));
 const fmtN=n=>!n?'—':(n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?Math.round(n/1e3)+'K':n.toLocaleString());
 const itemWords=x=>x.words||(x.pages?x.pages*250:0);
+// Re-read multiplier: counts every item at least once, +1× for each re-read beyond the first.
+const readMult=x=>Math.max(1,x.readCount??(x.status==='Finished'?1:0));
 function fmtTime(m){if(!m)return'0m';const h=Math.floor(m/60);if(!h)return Math.round(m)+'m';const d=Math.floor(h/24);const rh=h%24;if(!d)return h+'h';return rh?`${d}d ${rh}h`:`${d}d`}
 function djb2(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h)^s.charCodeAt(i);return h>>>0}
 const GR=[['#7c3aed','#2563eb'],['#db2777','#9333ea'],['#059669','#0284c7'],['#dc2626','#ea580c'],['#0891b2','#0d9488'],['#7c3aed','#ec4899'],['#1d4ed8','#4f46e5'],['#d97706','#dc2626'],['#0f766e','#0891b2'],['#9333ea','#0ea5e9']];
@@ -575,7 +577,7 @@ function cover(item,w,h,r){
 function renderStatRow(){
   const el=document.getElementById('stat-row');if(!el)return;
   const counts={};STATUS.forEach(s=>counts[s]=S.items.filter(x=>x.status===s).length);
-  const totalWords=S.items.reduce((s,x)=>s+(x.words||0),0);
+  const totalWords=S.items.reduce((s,x)=>s+(x.words||0)*readMult(x),0);
   el.innerHTML=STATUS.map(s=>`<div class="spill${S.statFilter===s?' on-'+s:''}" data-spill="${s}"><span class="spill-num">${counts[s]}</span><span class="spill-lbl">${s}</span></div>`).join('')+
     `<span class="spill-words">📝 ${fmtN(totalWords)}</span>`;
   el.querySelectorAll('[data-spill]').forEach(el=>el.addEventListener('click',()=>{
@@ -804,14 +806,14 @@ function renderStats(){
   };
   const cat=S.statsCat;const items=fin[cat];
   const totalCount=items.length;
-  const totalWords=items.reduce((s,x)=>s+itemWords(x),0);
+  const totalWords=items.reduce((s,x)=>s+itemWords(x)*readMult(x),0);
   const totalMins=totalWords/SPEED;
   const summary=`<div class="ssum"><div class="stile"><div class="stile-n">${totalCount}</div><div class="stile-l">Finished</div></div><div class="stile"><div class="stile-n">${fmtN(totalWords)}</div><div class="stile-l">Words</div></div><div class="stile"><div class="stile-n">${fmtTime(totalMins)}</div><div class="stile-l">Time*</div></div></div>`;
   let breakdown='';
   if(cat==='all'&&totalWords>0){
     const parts=[{lbl:'📚 Books',cls:'green',list:fin.books},{lbl:'📖 Fanfic',cls:'purple',list:fin.ff},{lbl:'📄 One-shots',cls:'amber',list:fin.oneshot}].filter(p=>p.list.length>0);
-    const rows=parts.map(p=>{const w=p.list.reduce((s,x)=>s+itemWords(x),0);const pct=Math.round(w/totalWords*100);return`<div class="sbrow"><span class="sbdot ${p.cls}"></span><span class="sblbl">${p.lbl}</span><span class="sbstat">${p.list.length} · ${fmtN(w)}w</span><span class="sbpct">${pct}%</span></div>`}).join('');
-    const segs=parts.map(p=>{const w=p.list.reduce((s,x)=>s+itemWords(x),0);return`<div class="sbseg ${p.cls}" style="width:${Math.round(w/totalWords*100)}%"></div>`}).join('');
+    const rows=parts.map(p=>{const w=p.list.reduce((s,x)=>s+itemWords(x)*readMult(x),0);const pct=Math.round(w/totalWords*100);return`<div class="sbrow"><span class="sbdot ${p.cls}"></span><span class="sblbl">${p.lbl}</span><span class="sbstat">${p.list.length} · ${fmtN(w)}w</span><span class="sbpct">${pct}%</span></div>`}).join('');
+    const segs=parts.map(p=>{const w=p.list.reduce((s,x)=>s+itemWords(x)*readMult(x),0);return`<div class="sbseg ${p.cls}" style="width:${Math.round(w/totalWords*100)}%"></div>`}).join('');
     breakdown=`<div class="sbreak">${rows}<div class="sbbar">${segs}</div></div>`;
   }
   function getPeriodData(items2,period){
@@ -827,7 +829,7 @@ function renderStats(){
     return years.map(yr=>({label:String(yr),items:dated.filter(x=>new Date(x.finishedAt).getFullYear()===yr)}));
   }
   const groups=getPeriodData(items,S.statsPeriod);
-  const metricFn=S.statsMetric==='words'?g=>g.items.reduce((s,x)=>s+itemWords(x),0):g=>g.items.length;
+  const metricFn=S.statsMetric==='words'?g=>g.items.reduce((s,x)=>s+itemWords(x)*readMult(x),0):g=>g.items.length;
   const values=groups.map(metricFn);const maxVal=Math.max(...values,1);
   const bars=groups.map((g,i)=>{
     const val=values[i];const pct=val>0?Math.max(val/maxVal*100,4):0;const lbl=S.statsMetric==='words'?fmtN(val):String(val);

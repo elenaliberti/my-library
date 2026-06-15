@@ -59,6 +59,8 @@ async function saveData() {
 function fmt(n) { return n ? Number(n).toLocaleString() : '—'; }
 function genId() { return Date.now() + '_' + Math.random().toString(36).slice(2); }
 function itemWords(x) { return x.words || (x.pages ? x.pages * 250 : 0); }
+// Re-read multiplier: counts every item at least once, +1× for each re-read beyond the first.
+function readMult(x) { return Math.max(1, x.readCount ?? (x.status === 'Finished' ? 1 : 0)); }
 function fmtTime(mins) {
   if (!mins) return '0m';
   const h = Math.floor(mins / 60);
@@ -236,7 +238,7 @@ function getStats() {
     reading: items.filter(x => x.status === 'Reading').length,
     finished: items.filter(x => x.status === 'Finished').length,
     dropped: items.filter(x => x.status === 'Dropped').length,
-    totalWords: items.reduce((s,x) => s + (x.words||0), 0),
+    totalWords: items.reduce((s,x) => s + (x.words||0) * readMult(x), 0),
   };
 }
 
@@ -493,7 +495,7 @@ function statsViewHtml() {
   const cat = state.statsCategory;
   const items = fin[cat];
   const totalCount = items.length;
-  const totalWords = items.reduce((s, x) => s + itemWords(x), 0);
+  const totalWords = items.reduce((s, x) => s + itemWords(x) * readMult(x), 0);
   const totalMins = totalWords / SPEED;
 
   const tab = (id, lbl) =>
@@ -508,7 +510,7 @@ function statsViewHtml() {
       { key:'oneshot', lbl:'📄 One-shots',   cls:'amber',  list: fin.oneshot },
     ].filter(p => p.list.length > 0);
     const rows = parts.map(p => {
-      const w = p.list.reduce((s, x) => s + itemWords(x), 0);
+      const w = p.list.reduce((s, x) => s + itemWords(x) * readMult(x), 0);
       const pct = Math.round(w / totalWords * 100);
       return `<div class="bdrow">
         <span class="bddot ${p.cls}"></span>
@@ -518,7 +520,7 @@ function statsViewHtml() {
       </div>`;
     }).join('');
     const segs = parts.map(p => {
-      const w = p.list.reduce((s, x) => s + itemWords(x), 0);
+      const w = p.list.reduce((s, x) => s + itemWords(x) * readMult(x), 0);
       return `<div class="bdseg ${p.cls}" style="width:${Math.round(w/totalWords*100)}%"></div>`;
     }).join('');
     breakdownHtml = `<div class="stats-breakdown">${rows}<div class="bdbar">${segs}</div></div>`;
@@ -527,7 +529,7 @@ function statsViewHtml() {
   // Chart
   const groups = getPeriodData(items, state.statsPeriod);
   const metricFn = state.statsMetric === 'words'
-    ? g => g.items.reduce((s, x) => s + itemWords(x), 0)
+    ? g => g.items.reduce((s, x) => s + itemWords(x) * readMult(x), 0)
     : g => g.items.length;
   const values = groups.map(metricFn);
   const maxVal = Math.max(...values, 1);
