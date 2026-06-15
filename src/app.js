@@ -34,15 +34,18 @@ const STATUS_COLOR = { TBR:'purple', Reading:'amber', Finished:'green', Dropped:
 
 // ── Persistence ───────────────────────────────────────────────────────────────
 async function loadData() {
+  state._loadedFromFile = false;
+  state._jsonHadFolderConfig = false;
   try {
     const result = await window.api.loadData();
     if (result) {
       const items = Array.isArray(result) ? result : (result.items || []);
-      if (!Array.isArray(result) && result.folderConfig) {
+      if (!Array.isArray(result) && result.folderConfig && Object.keys(result.folderConfig).length) {
+        state._jsonHadFolderConfig = true;
         state.folderConfig = { ...result.folderConfig, ...state.folderConfig };
         localStorage.setItem('folderConfig', JSON.stringify(state.folderConfig)); // init only — skip saveData
       }
-      if (items.length) return items;
+      if (items.length) { state._loadedFromFile = true; return items; }
     }
   } catch(e) {}
   return INITIAL_DATA.map((item, i) => ({ ...item, _addedAt: i }));
@@ -1834,5 +1837,10 @@ window.addEventListener('keydown', e => {
 (async () => {
   state.items = await loadData();
   state.folderConfig = loadFolderConfig();
+  // One-time migration: older data files stored folder icons only in localStorage.
+  // Write them into the JSON file so cloud backup syncs folder covers to mobile.
+  if (state._loadedFromFile && !state._jsonHadFolderConfig && Object.keys(state.folderConfig).length) {
+    saveData();
+  }
   render();
 })();
