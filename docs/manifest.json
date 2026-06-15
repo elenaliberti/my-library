@@ -4,8 +4,8 @@
   "description": "Your personal book and fanfiction tracker",
   "start_url": "/my-library/",
   "display": "standalone",
-  "background_color": "#0f0f23",
-  "theme_color": "#0f0f23",
+  "background_color": "#f8f7ff",
+  "theme_color": "#f8f7ff",
   "orientation": "portrait",
   "icons": [
     {
