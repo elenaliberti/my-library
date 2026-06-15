@@ -48,7 +48,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .ico-btn:active{opacity:.6}
 
 /* ── Status pills ── */
-#stat-row{display:flex;gap:6px;padding:10px 16px 6px;flex-shrink:0;overflow-x:auto;scrollbar-width:none}
+#stat-row{display:flex;gap:6px;padding:8px 16px 4px;flex-shrink:0;overflow-x:auto;scrollbar-width:none}
 #stat-row::-webkit-scrollbar{display:none}
 .spill{display:flex;flex-direction:column;align-items:center;background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:7px 10px;cursor:pointer;flex-shrink:0;min-width:54px;transition:all .15s;box-shadow:var(--shadow)}
 .spill:active{opacity:.7;transform:scale(.97)}
@@ -70,7 +70,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .sort-sel option{background:#fff;color:var(--text)}
 
 /* ── Filter chips ── */
-#chips{display:flex;gap:6px;padding:2px 16px 10px;overflow-x:auto;flex-shrink:0;scrollbar-width:none}
+#chips{display:flex;gap:6px;padding:2px 16px 6px;overflow-x:auto;flex-shrink:0;scrollbar-width:none}
 #chips::-webkit-scrollbar{display:none}
 .chip{padding:7px 14px;background:#fff;border:1.5px solid var(--border);border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap;cursor:pointer;flex-shrink:0;transition:all .15s;color:var(--text2);box-shadow:0 1px 4px rgba(0,0,0,.04)}
 .chip.on{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 4px 12px rgba(99,102,241,.3)}
@@ -184,9 +184,11 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 #sheet.on{transform:translateY(0)}
 
 /* Sheet sticky topbar — ALWAYS VISIBLE */
-.sh-topbar{position:sticky;top:0;z-index:10;background:#fff;padding:10px 16px 10px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--border);flex-shrink:0}
-.sh-drag-bar{width:40px;height:4px;background:var(--border);border-radius:2px}
-.sh-close-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:32px;height:32px;background:var(--surface);border:none;border-radius:50%;font-size:17px;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700}
+.sh-topbar{position:sticky;top:0;z-index:10;background:#fff;padding:10px 12px;display:flex;align-items:center;border-bottom:1px solid var(--border);flex-shrink:0}
+.sh-topbar-spacer{flex:1}
+.sh-drag-bar{width:40px;height:4px;background:var(--border);border-radius:2px;flex-shrink:0}
+.sh-topbar-end{flex:1;display:flex;justify-content:flex-end}
+.sh-close-btn{width:32px;height:32px;background:var(--surface);border:none;border-radius:50%;font-size:17px;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700}
 .sh-close-btn:active{background:var(--border);opacity:.7}
 
 .sh-top{display:flex;gap:14px;padding:16px 20px;align-items:flex-start}
@@ -365,8 +367,11 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 <div id="shade"></div>
 <div id="sheet">
   <div class="sh-topbar">
+    <div class="sh-topbar-spacer"></div>
     <div class="sh-drag-bar"></div>
-    <button class="sh-close-btn" id="sh-close-btn">✕</button>
+    <div class="sh-topbar-end">
+      <button class="sh-close-btn" id="sh-close-btn">✕</button>
+    </div>
   </div>
   <div id="sh-body"></div>
 </div>

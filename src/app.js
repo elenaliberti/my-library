@@ -40,7 +40,7 @@ async function loadData() {
       const items = Array.isArray(result) ? result : (result.items || []);
       if (!Array.isArray(result) && result.folderConfig) {
         state.folderConfig = { ...result.folderConfig, ...state.folderConfig };
-        saveFolderConfig();
+        localStorage.setItem('folderConfig', JSON.stringify(state.folderConfig)); // init only — skip saveData
       }
       if (items.length) return items;
     }
@@ -599,6 +599,7 @@ function loadFolderConfig() {
 }
 function saveFolderConfig() {
   localStorage.setItem('folderConfig', JSON.stringify(state.folderConfig));
+  saveData(); // also persist to JSON file so git backup pushes it to GitHub
 }
 function getCfg(key) {
   return { ...(FOLDER_DEFAULTS[key] || {}), ...(state.folderConfig[key] || {}) };
