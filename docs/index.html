@@ -18,7 +18,9 @@
   --shadow:0 1px 6px rgba(0,0,0,.05),0 3px 14px rgba(99,102,241,.07);
   --safe-top:env(safe-area-inset-top);
   --safe-bottom:env(safe-area-inset-bottom);
-  --nav-h:58px;
+  /* nav only needs ~home-indicator clearance, not the full inset — trim it to cut bottom whitespace */
+  --nav-inset:max(calc(env(safe-area-inset-bottom) - 16px), 2px);
+  --nav-h:54px;
 }
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif;overflow:hidden}
 
@@ -37,7 +39,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 #setup-err{color:#b91c1c;font-size:13px;font-weight:600;display:none;background:#fef2f2;padding:9px 14px;border-radius:10px;width:100%;text-align:center}
 
 /* ── App shell ── */
-#app{position:fixed;top:0;left:0;right:0;bottom:calc(var(--nav-h) + var(--safe-bottom));display:flex;flex-direction:column;overflow:hidden}
+#app{position:fixed;top:0;left:0;right:0;bottom:calc(var(--nav-h) + var(--nav-inset));display:flex;flex-direction:column;overflow:hidden}
 #app.hidden{display:none}
 
 /* ── Header ── */
@@ -167,8 +169,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .snote{font-size:11px;color:var(--muted);padding:6px 16px 20px;line-height:1.6}
 
 /* ── Bottom nav ── */
-#bottom-nav{position:fixed;left:0;right:0;bottom:0;height:calc(var(--nav-h) + var(--safe-bottom));background:#fff;border-top:1px solid var(--border);display:flex;align-items:stretch;z-index:190;box-shadow:0 -4px 20px rgba(99,102,241,.08)}
-.bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:var(--safe-bottom);cursor:pointer;transition:opacity .1s;gap:3px;-webkit-tap-highlight-color:transparent}
+#bottom-nav{position:fixed;left:0;right:0;bottom:0;height:calc(var(--nav-h) + var(--nav-inset));background:#fff;border-top:1px solid var(--border);display:flex;align-items:stretch;z-index:190;box-shadow:0 -4px 20px rgba(99,102,241,.08)}
+.bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:var(--nav-inset);cursor:pointer;transition:opacity .1s;gap:3px;-webkit-tap-highlight-color:transparent}
 .bnav-item:active{opacity:.6}
 .bnav-ico{font-size:22px;line-height:1;transition:transform .15s}
 .bnav-lbl{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.2px;transition:color .15s}
@@ -176,7 +178,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .bnav-item.on .bnav-ico{transform:scale(1.12)}
 
 /* ── FAB ── */
-#fab{position:fixed;bottom:calc(var(--nav-h) + var(--safe-bottom) + 18px);right:20px;width:56px;height:56px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;border-radius:17px;font-size:28px;color:#fff;cursor:pointer;box-shadow:0 8px 24px rgba(99,102,241,.42);display:flex;align-items:center;justify-content:center;z-index:100;transition:transform .15s}
+#fab{position:fixed;bottom:calc(var(--nav-h) + var(--nav-inset) + 18px);right:20px;width:56px;height:56px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;border-radius:17px;font-size:28px;color:#fff;cursor:pointer;box-shadow:0 8px 24px rgba(99,102,241,.42);display:flex;align-items:center;justify-content:center;z-index:100;transition:transform .15s}
 #fab:active{transform:scale(.9)}
 #fab.hidden{display:none}
 
