@@ -419,6 +419,18 @@ body{height:100dvh;display:flex;flex-direction:column}
 <div id="toast-wrap"></div>
 
 <script>
+// ── Auto-update: register a network-first service worker so new code loads on launch ──
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').then(reg=>{
+    reg.addEventListener('updatefound',()=>{
+      const w=reg.installing;
+      w&&w.addEventListener('statechange',()=>{
+        // a newer version activated while the app was open — reload to apply it
+        if(w.state==='activated'&&navigator.serviceWorker.controller) location.reload();
+      });
+    });
+  }).catch(()=>{});
+}
 // ── Config ────────────────────────────────────────────────────────────────────
 const REPO='elenaliberti/my-library';
 const FILE='library-data.json';
