@@ -465,6 +465,21 @@ const ensureReadDates=x=>Array.isArray(x.readDates)?x.readDates.slice():Array.fr
 const lastReadAt=x=>{const d=ensureReadDates(x).filter(Boolean);return d.length?d[d.length-1]:null};
 // Flatten items into individual read events, each dated when that read happened.
 const readEvents=items=>{const ev=[];items.forEach(x=>{const w=itemWords(x);ensureReadDates(x).forEach(d=>{if(d)ev.push({date:d,words:w})})});return ev};
+// ── Merge (so phone ↔ desktop saves never clobber each other) ──
+function pickItem(a,b){
+  const score=x=>{let t=0;if(Array.isArray(x.readDates)&&x.readDates.length){const d=Date.parse(x.readDates[x.readDates.length-1]);if(d)t=Math.max(t,d)}if(x.finishedAt){const d=Date.parse(x.finishedAt);if(d)t=Math.max(t,d)}return t};
+  const sa=score(a),sb=score(b);if(sa!==sb)return sa>sb?a:b;
+  const ra=Array.isArray(a.readDates)?a.readDates.length:(a.readCount||0),rb=Array.isArray(b.readDates)?b.readDates.length:(b.readCount||0);
+  return rb>ra?b:a;
+}
+function mergeLibrary(localItems,localFC,remoteItems,remoteFC){
+  const byId=new Map();
+  (remoteItems||[]).forEach(x=>{if(x&&x.id!=null)byId.set(x.id,x)});
+  (localItems||[]).forEach(x=>{if(!x||x.id==null)return;const r=byId.get(x.id);byId.set(x.id,r?pickItem(x,r):x)});
+  const fc={...(remoteFC||{})};
+  for(const [k,v] of Object.entries(localFC||{})){const m={...(fc[k]||{})};for(const [kk,vv] of Object.entries(v||{}))if(vv!=null&&vv!=='')m[kk]=vv;fc[k]=m}
+  return{items:[...byId.values()],folderConfig:fc};
+}
 function fmtTime(m){if(!m)return'0m';const h=Math.floor(m/60);if(!h)return Math.round(m)+'m';const d=Math.floor(h/24);const rh=h%24;if(!d)return h+'h';return rh?`${d}d ${rh}h`:`${d}d`}
 function djb2(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h)^s.charCodeAt(i);return h>>>0}
 const GR=[['#7c3aed','#2563eb'],['#db2777','#9333ea'],['#059669','#0284c7'],['#dc2626','#ea580c'],['#0891b2','#0d9488'],['#7c3aed','#ec4899'],['#1d4ed8','#4f46e5'],['#d97706','#dc2626'],['#0f766e','#0891b2'],['#9333ea','#0ea5e9']];
@@ -1158,7 +1173,14 @@ async function doSave(){
     S.sha=await ghSave(S.items,S.folderConfig,sha);toast('Saved ✓','ok');
   }catch(e){
     if(e.message==='conflict'){
-      try{const f=await ghLoad();S.sha=await ghSave(S.items,S.folderConfig,f.sha);toast('Saved ✓','ok')}
+      try{
+        const f=await ghLoad();                                  // someone else (desktop) saved — merge, don't clobber
+        const m=mergeLibrary(S.items,S.folderConfig,f.items,f.folderConfig);
+        S.items=m.items;S.folderConfig=m.folderConfig;
+        S.sha=await ghSave(S.items,S.folderConfig,f.sha);
+        renderLibrary();renderStatRow();if(S.view==='grid')renderGrid();
+        toast('Synced + saved ✓','ok');
+      }
       catch(e2){toast('Save failed: '+e2.message,'err')}
     }else if(e.message==='invalid_token'){toast('Token invalid — tap ⚙️ to reset','err')}
     else{toast('Offline? Changes not saved','err')}

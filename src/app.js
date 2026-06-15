@@ -55,6 +55,53 @@ async function saveData() {
   try { await window.api.saveData({ items: state.items, folderConfig: state.folderConfig }); } catch(e) {}
 }
 
+// ── Cloud sync (merge with GitHub copy so phone ↔ desktop changes don't clobber) ──
+function pickItem(a, b) {
+  const score = x => {
+    let t = 0;
+    if (Array.isArray(x.readDates) && x.readDates.length) { const d = Date.parse(x.readDates[x.readDates.length-1]); if (d) t = Math.max(t, d); }
+    if (x.finishedAt) { const d = Date.parse(x.finishedAt); if (d) t = Math.max(t, d); }
+    return t;
+  };
+  const sa = score(a), sb = score(b);
+  if (sa !== sb) return sa > sb ? a : b;
+  const ra = Array.isArray(a.readDates) ? a.readDates.length : (a.readCount||0);
+  const rb = Array.isArray(b.readDates) ? b.readDates.length : (b.readCount||0);
+  return rb > ra ? b : a;
+}
+function mergeLibrary(localItems, localFC, remoteItems, remoteFC) {
+  const byId = new Map();
+  (remoteItems||[]).forEach(x => { if (x && x.id != null) byId.set(x.id, x); });
+  (localItems||[]).forEach(x => {
+    if (!x || x.id == null) return;
+    const r = byId.get(x.id);
+    byId.set(x.id, r ? pickItem(x, r) : x);
+  });
+  const fc = { ...(remoteFC||{}) };
+  for (const [k, v] of Object.entries(localFC||{})) {
+    const m = { ...(fc[k]||{}) };
+    for (const [kk, vv] of Object.entries(v||{})) if (vv != null && vv !== '') m[kk] = vv;
+    fc[k] = m;
+  }
+  return { items: [...byId.values()], folderConfig: fc };
+}
+// Pull the latest data from GitHub and merge it in (additive — never drops records).
+async function syncFromCloud() {
+  try {
+    if (!window.api.pullData) return false;
+    const res = await window.api.pullData();
+    if (!res || !res.ok || !res.data) return false;
+    const remoteN = (res.data.items||[]).length, localN = state.items.length;
+    const merged = mergeLibrary(state.items, state.folderConfig, res.data.items, res.data.folderConfig);
+    if (merged.items.length < Math.max(localN, remoteN)) return false; // safety: never shrink
+    state.items = merged.items;
+    state.folderConfig = merged.folderConfig;
+    localStorage.setItem('folderConfig', JSON.stringify(state.folderConfig));
+    await saveData();
+    return true;
+  } catch(e) { return false; }
+}
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function fmt(n) { return n ? Number(n).toLocaleString() : '—'; }
 function genId() { return Date.now() + '_' + Math.random().toString(36).slice(2); }
@@ -1807,6 +1854,8 @@ async function handleBackup() {
   showToast('Saving to GitHub…', 'loading');
 
   try {
+    await syncFromCloud();  // merge in any phone changes first so backup never overwrites them
+    render();
     const result = await window.api.gitBackup();
     document.getElementById('toast')?.remove();
     if (result.ok) {
@@ -1887,4 +1936,6 @@ window.addEventListener('keydown', e => {
     saveData();
   }
   render();
+  // Pull any changes made on the phone (or elsewhere) and merge them in, then re-render.
+  if (await syncFromCloud()) render();
 })();

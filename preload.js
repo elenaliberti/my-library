@@ -9,5 +9,6 @@ contextBridge.exposeInMainWorld('api', {
   openExternal:   (url)   => ipcRenderer.invoke('shell:open-external', url),
   gitStatus:      ()      => ipcRenderer.invoke('git:status'),
   gitBackup:      ()      => ipcRenderer.invoke('git:backup'),
+  pullData:       ()      => ipcRenderer.invoke('git:pull-data'),
   fetchBook:      (q)     => ipcRenderer.invoke('books:fetch', q),
 })

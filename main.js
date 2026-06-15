@@ -322,7 +322,15 @@ ipcMain.handle('git:backup', async () => {
     let pushed = false
     // Try main, then master
     for (const branch of ['main', 'master']) {
-      try { await run(git, ['push', 'origin', branch], repoDir); pushed = true; break } catch {}
+      try { await run(git, ['push', 'origin', branch], repoDir); pushed = true; break }
+      catch {
+        // Remote is ahead (e.g. the phone saved). The data file was already merged at the
+        // record level before this backup, so keep our version on any conflict, then retry.
+        try {
+          await run(git, ['pull', '--no-rebase', '--no-edit', '-X', 'ours', 'origin', branch], repoDir)
+          await run(git, ['push', 'origin', branch], repoDir); pushed = true; break
+        } catch {}
+      }
     }
     if (!pushed) {
       return { ok: true, message: `Saved locally at ${now} ✓ (GitHub push failed — add a token to the remote URL to fix)` }
@@ -336,4 +344,36 @@ ipcMain.handle('git:backup', async () => {
     }
     return { ok: false, error: e.message }
   }
+})
+
+// Read the latest data file from GitHub WITHOUT touching the working tree (safe, no merge conflicts).
+ipcMain.handle('git:pull-data', async () => {
+  try {
+    const git = await findGit()
+    const candidates = [
+      path.join(app.getPath('home'), 'Downloads', 'library-app'),
+      path.join(__dirname),
+      process.cwd(),
+    ]
+    let repoDir = null
+    for (const c of candidates) {
+      try {
+        const resolved = path.resolve(c)
+        if (fs.existsSync(path.join(resolved, '.git'))) { repoDir = resolved; break }
+      } catch {}
+    }
+    if (!repoDir) return { ok: false, error: 'Git repo not found.' }
+
+    await run(git, ['fetch', 'origin'], repoDir)
+    let raw = null
+    for (const branch of ['main', 'master']) {
+      try { raw = await run(git, ['show', `origin/${branch}:library-data.json`], repoDir); break } catch {}
+    }
+    if (raw == null) return { ok: true, data: null }
+    const parsed = JSON.parse(raw)
+    const data = Array.isArray(parsed)
+      ? { items: parsed, folderConfig: {} }
+      : { items: parsed.items || [], folderConfig: parsed.folderConfig || {} }
+    return { ok: true, data }
+  } catch(e) { return { ok: false, error: e.message } }
 })
