@@ -59,8 +59,24 @@ async function saveData() {
 function fmt(n) { return n ? Number(n).toLocaleString() : '—'; }
 function genId() { return Date.now() + '_' + Math.random().toString(36).slice(2); }
 function itemWords(x) { return x.words || (x.pages ? x.pages * 250 : 0); }
+// Times read: prefer the per-read timestamp list, fall back to the legacy count.
+function timesRead(x) { return Array.isArray(x.readDates) ? x.readDates.length : (x.readCount ?? (x.status === 'Finished' ? 1 : 0)); }
 // Re-read multiplier: counts every item at least once, +1× for each re-read beyond the first.
-function readMult(x) { return Math.max(1, x.readCount ?? (x.status === 'Finished' ? 1 : 0)); }
+function readMult(x) { return Math.max(1, timesRead(x)); }
+// Per-read timestamps, migrating legacy reads to the finish date (best-known date for old reads).
+function ensureReadDates(x) {
+  if (Array.isArray(x.readDates)) return x.readDates.slice();
+  const n = x.readCount ?? (x.status === 'Finished' ? 1 : 0);
+  return Array.from({ length: n }, () => x.finishedAt || null);
+}
+// Most recent read timestamp, or null.
+function lastReadAt(x) { const d = ensureReadDates(x).filter(Boolean); return d.length ? d[d.length - 1] : null; }
+// Flatten items into individual read events, each dated when that read happened.
+function readEvents(items) {
+  const ev = [];
+  items.forEach(x => { const w = itemWords(x); ensureReadDates(x).forEach(d => { if (d) ev.push({ date: d, words: w }); }); });
+  return ev;
+}
 function fmtTime(mins) {
   if (!mins) return '0m';
   const h = Math.floor(mins / 60);
@@ -156,7 +172,7 @@ function getPeriodData(items, period) {
   const now = new Date();
   const DAY = 86400000;
   const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const dated = items.filter(x => x.finishedAt);
+  const dated = readEvents(items);
 
   if (period === 'week') {
     const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -164,7 +180,7 @@ function getPeriodData(items, period) {
       const d = new Date(now - (6 - i) * DAY); d.setHours(0,0,0,0);
       const end = new Date(d); end.setHours(23,59,59,999);
       return { label: i === 6 ? 'Today' : days[d.getDay()],
-        items: dated.filter(x => { const t = new Date(x.finishedAt); return t >= d && t <= end; }) };
+        events: dated.filter(e => { const t = new Date(e.date); return t >= d && t <= end; }) };
     });
   }
   if (period === 'month') {
@@ -172,7 +188,7 @@ function getPeriodData(items, period) {
       const end = new Date(now - (3 - i) * 7 * DAY); end.setHours(23,59,59,999);
       const start = new Date(end - 6 * DAY); start.setHours(0,0,0,0);
       return { label: `${MONTHS[start.getMonth()]} ${start.getDate()}`,
-        items: dated.filter(x => { const t = new Date(x.finishedAt); return t >= start && t <= end; }) };
+        events: dated.filter(e => { const t = new Date(e.date); return t >= start && t <= end; }) };
     });
   }
   if (period === 'year') {
@@ -181,15 +197,15 @@ function getPeriodData(items, period) {
       const start = new Date(d.getFullYear(), d.getMonth(), 1);
       const end = new Date(d.getFullYear(), d.getMonth() + 1, 0, 23, 59, 59, 999);
       return { label: MONTHS[d.getMonth()],
-        items: dated.filter(x => { const t = new Date(x.finishedAt); return t >= start && t <= end; }) };
+        events: dated.filter(e => { const t = new Date(e.date); return t >= start && t <= end; }) };
     });
   }
   if (period === 'ever') {
-    if (dated.length === 0) return [{ label: String(now.getFullYear()), items: [] }];
-    const years = [...new Set(dated.map(x => new Date(x.finishedAt).getFullYear()))].sort();
+    if (dated.length === 0) return [{ label: String(now.getFullYear()), events: [] }];
+    const years = [...new Set(dated.map(e => new Date(e.date).getFullYear()))].sort();
     if (!years.includes(now.getFullYear())) years.push(now.getFullYear());
     return years.map(yr => ({ label: String(yr),
-      items: dated.filter(x => new Date(x.finishedAt).getFullYear() === yr) }));
+      events: dated.filter(e => new Date(e.date).getFullYear() === yr) }));
   }
   return [];
 }
@@ -265,7 +281,9 @@ function tagHtml(t, removable=false, itemId='') {
 function cardHtml(item) {
   const isFf = item.type === 'ff';
   const expanded = state.expandedId === item.id;
-  const readCount = item.readCount ?? (item.status === 'Finished' ? 1 : 0);
+  const readCount = timesRead(item);
+  const _lastRead = lastReadAt(item);
+  const lastReadHtml = _lastRead ? `<span class="reread-sub">Last read ${new Date(_lastRead).toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'})}</span>` : '';
   const metaParts = [];
   if (item.words) metaParts.push(`📝 ${fmt(item.words)} words`);
   if (isFf && item.hearts) metaParts.push(`♥ ${fmt(item.hearts)}`);
@@ -295,10 +313,13 @@ function cardHtml(item) {
           ${starsHtml(item.userRating, item.id)}
         </div>
         <div class="reread-row">
-          <span class="reread-label">📖 Read ${readCount} time${readCount === 1 ? '' : 's'}</span>
+          <div class="reread-info">
+            <span class="reread-label">📖 Read ${readCount} time${readCount === 1 ? '' : 's'}</span>
+            ${lastReadHtml}
+          </div>
           <div class="reread-stepper">
-            <button class="reread-step" data-reread-delta="-1" data-reread-id="${item.id}" title="Read one fewer time"${readCount <= 0 ? ' disabled' : ''}>－</button>
-            <button class="reread-step" data-reread-delta="1" data-reread-id="${item.id}" title="Read again">＋</button>
+            <button class="reread-step" data-reread-delta="-1" data-reread-id="${item.id}" title="Remove the latest re-read"${readCount <= 0 ? ' disabled' : ''}>－</button>
+            <button class="reread-step" data-reread-delta="1" data-reread-id="${item.id}" title="I re-read this today">＋</button>
           </div>
         </div>
         ${notesHtml}${extraHtml}
@@ -529,8 +550,8 @@ function statsViewHtml() {
   // Chart
   const groups = getPeriodData(items, state.statsPeriod);
   const metricFn = state.statsMetric === 'words'
-    ? g => g.items.reduce((s, x) => s + itemWords(x) * readMult(x), 0)
-    : g => g.items.length;
+    ? g => g.events.reduce((s, e) => s + e.words, 0)
+    : g => g.events.length;
   const values = groups.map(metricFn);
   const maxVal = Math.max(...values, 1);
   const bars = groups.map((g, i) => {
@@ -1119,7 +1140,15 @@ function snapshotModalForm() {
   const ws = v('m-words');     if (ws && ws.trim())  patch.words     = parseInt(ws)  || state.editItem.words;
   const hs = v('m-hearts');    if (hs && hs.trim())  patch.hearts    = parseInt(hs)  || state.editItem.hearts;
   const ps = v('m-pages');     if (ps && ps.trim())  patch.pages     = parseInt(ps)  || state.editItem.pages;
-  const rc = v('m-readcount'); if (rc !== null)       patch.readCount = parseInt(rc) || 0;
+  const rc = v('m-readcount');
+  if (rc !== null) {
+    const n = Math.max(0, parseInt(rc) || 0);
+    const dates = ensureReadDates(state.editItem);
+    if (n > dates.length) { const fill = state.editItem.finishedAt || null; while (dates.length < n) dates.push(fill); }
+    else dates.length = n;
+    patch.readDates = dates;
+    patch.readCount = n;
+  }
   state.editItem = { ...state.editItem, ...patch };
 }
 
@@ -1469,8 +1498,10 @@ function bindEvents() {
       const delta = parseInt(btn.dataset.rereadDelta, 10);
       state.items = state.items.map(x => {
         if (x.id !== id) return x;
-        const current = x.readCount ?? (x.status === 'Finished' ? 1 : 0);
-        return { ...x, readCount: Math.max(0, current + delta) };
+        const dates = ensureReadDates(x);
+        if (delta > 0) dates.push(new Date().toISOString());  // record "I re-read this" with today's date
+        else dates.pop();                                     // remove the most recent read
+        return { ...x, readDates: dates, readCount: dates.length };
       });
       saveData(); render();
     });

@@ -220,6 +220,8 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .rr-label{font-size:14px;color:var(--accent2);font-weight:700}
 .rr-btn{background:var(--accent);border:none;border-radius:8px;color:#fff;font-size:13px;font-weight:700;padding:8px 16px;cursor:pointer}
 .rr-btn:active{opacity:.8}
+.rr-info{display:flex;flex-direction:column;gap:2px}
+.rr-sub{font-size:11px;color:var(--accent);opacity:.8}
 .rr-stepper{display:flex;gap:8px;align-items:center}
 .rr-step{width:36px;height:36px;background:var(--accent);border:none;border-radius:10px;color:#fff;font-size:20px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;-webkit-tap-highlight-color:transparent}
 .rr-step:active{opacity:.8}
@@ -449,8 +451,16 @@ const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>
 const fmt=n=>!n?'':(n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(0)+'K':String(n));
 const fmtN=n=>!n?'—':(n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?Math.round(n/1e3)+'K':n.toLocaleString());
 const itemWords=x=>x.words||(x.pages?x.pages*250:0);
+// Times read: prefer the per-read timestamp list, fall back to the legacy count.
+const timesRead=x=>Array.isArray(x.readDates)?x.readDates.length:(x.readCount??(x.status==='Finished'?1:0));
 // Re-read multiplier: counts every item at least once, +1× for each re-read beyond the first.
-const readMult=x=>Math.max(1,x.readCount??(x.status==='Finished'?1:0));
+const readMult=x=>Math.max(1,timesRead(x));
+// Per-read timestamps, migrating legacy reads to the finish date (best-known date for old reads).
+const ensureReadDates=x=>Array.isArray(x.readDates)?x.readDates.slice():Array.from({length:x.readCount??(x.status==='Finished'?1:0)},()=>x.finishedAt||null);
+// Most recent read timestamp, or null.
+const lastReadAt=x=>{const d=ensureReadDates(x).filter(Boolean);return d.length?d[d.length-1]:null};
+// Flatten items into individual read events, each dated when that read happened.
+const readEvents=items=>{const ev=[];items.forEach(x=>{const w=itemWords(x);ensureReadDates(x).forEach(d=>{if(d)ev.push({date:d,words:w})})});return ev};
 function fmtTime(m){if(!m)return'0m';const h=Math.floor(m/60);if(!h)return Math.round(m)+'m';const d=Math.floor(h/24);const rh=h%24;if(!d)return h+'h';return rh?`${d}d ${rh}h`:`${d}d`}
 function djb2(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h)^s.charCodeAt(i);return h>>>0}
 const GR=[['#7c3aed','#2563eb'],['#db2777','#9333ea'],['#059669','#0284c7'],['#dc2626','#ea580c'],['#0891b2','#0d9488'],['#7c3aed','#ec4899'],['#1d4ed8','#4f46e5'],['#d97706','#dc2626'],['#0f766e','#0891b2'],['#9333ea','#0ea5e9']];
@@ -598,7 +608,7 @@ function renderLibrary(){
   const rows=[`<div class="lcount">${items.length} item${items.length!==1?'s':''}</div>`];
   for(const x of items){
     const sub=x.type==='ff'?`${x.author||'—'}${x.fandom?' · '+x.fandom:''}`:`${x.author||'—'}${x.genre?' · '+x.genre:''}`;
-    const rc=x.readCount||(x.status==='Finished'?1:0);
+    const rc=timesRead(x);
     const meta=[];
     if(x.words)meta.push(`${fmt(x.words)}w`);
     if(x.type!=='ff'&&x.pages)meta.push(`${x.pages}p`);
@@ -662,7 +672,7 @@ function renderGrid(){
     if(!items.length)return`<div class="empty"><div class="empty-ico">📭</div><div class="empty-txt">Nothing here</div></div>`;
     return`<div class="lcount" style="padding-top:12px">${items.length} item${items.length!==1?'s':''}</div>`+
       items.map(x=>{
-        const rc=x.readCount||(x.status==='Finished'?1:0);
+        const rc=timesRead(x);
         const meta=[];if(x.words)meta.push(`${fmt(x.words)}w`);if(x.pages&&x.type!=='ff')meta.push(`${x.pages}p`);if(rc>1)meta.push(`↻${rc}`);if(x.favorite)meta.push('⭐');
         return`<div class="card" data-id="${esc(x.id)}">${cover(x,50,70,8)}<div class="c-body"><div class="c-title">${esc(x.title||'Untitled')}</div><div class="c-sub">${esc(x.author||'—')}</div><div class="c-badges"><span class="bdg ${badgeClass(x.status)}">${esc(x.status||'TBR')}</span></div>${meta.length?`<div class="c-meta">${meta.join(' · ')}</div>`:''}</div></div>`;
       }).join('');
@@ -819,17 +829,17 @@ function renderStats(){
   function getPeriodData(items2,period){
     const now=new Date();const DAY=86400000;
     const MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    const dated=items2.filter(x=>x.finishedAt);
-    if(period==='week')return Array.from({length:7},(_,i)=>{const d=new Date(now-(6-i)*DAY);d.setHours(0,0,0,0);const e=new Date(d);e.setHours(23,59,59,999);return{label:i===6?'Today':['Su','Mo','Tu','We','Th','Fr','Sa'][d.getDay()],items:dated.filter(x=>{const t=new Date(x.finishedAt);return t>=d&&t<=e})}});
-    if(period==='month')return Array.from({length:4},(_,i)=>{const e=new Date(now-(3-i)*7*DAY);e.setHours(23,59,59,999);const s=new Date(e-6*DAY);s.setHours(0,0,0,0);return{label:`${MO[s.getMonth()]} ${s.getDate()}`,items:dated.filter(x=>{const t=new Date(x.finishedAt);return t>=s&&t<=e})}});
-    if(period==='year')return Array.from({length:12},(_,i)=>{const d=new Date(now.getFullYear(),now.getMonth()-(11-i),1);const s=new Date(d.getFullYear(),d.getMonth(),1);const e=new Date(d.getFullYear(),d.getMonth()+1,0,23,59,59,999);return{label:MO[d.getMonth()],items:dated.filter(x=>{const t=new Date(x.finishedAt);return t>=s&&t<=e})}});
-    if(!dated.length)return[{label:String(now.getFullYear()),items:[]}];
-    const years=[...new Set(dated.map(x=>new Date(x.finishedAt).getFullYear()))].sort();
+    const dated=readEvents(items2);
+    if(period==='week')return Array.from({length:7},(_,i)=>{const d=new Date(now-(6-i)*DAY);d.setHours(0,0,0,0);const e=new Date(d);e.setHours(23,59,59,999);return{label:i===6?'Today':['Su','Mo','Tu','We','Th','Fr','Sa'][d.getDay()],events:dated.filter(ev=>{const t=new Date(ev.date);return t>=d&&t<=e})}});
+    if(period==='month')return Array.from({length:4},(_,i)=>{const e=new Date(now-(3-i)*7*DAY);e.setHours(23,59,59,999);const s=new Date(e-6*DAY);s.setHours(0,0,0,0);return{label:`${MO[s.getMonth()]} ${s.getDate()}`,events:dated.filter(ev=>{const t=new Date(ev.date);return t>=s&&t<=e})}});
+    if(period==='year')return Array.from({length:12},(_,i)=>{const d=new Date(now.getFullYear(),now.getMonth()-(11-i),1);const s=new Date(d.getFullYear(),d.getMonth(),1);const e=new Date(d.getFullYear(),d.getMonth()+1,0,23,59,59,999);return{label:MO[d.getMonth()],events:dated.filter(ev=>{const t=new Date(ev.date);return t>=s&&t<=e})}});
+    if(!dated.length)return[{label:String(now.getFullYear()),events:[]}];
+    const years=[...new Set(dated.map(ev=>new Date(ev.date).getFullYear()))].sort();
     if(!years.includes(now.getFullYear()))years.push(now.getFullYear());
-    return years.map(yr=>({label:String(yr),items:dated.filter(x=>new Date(x.finishedAt).getFullYear()===yr)}));
+    return years.map(yr=>({label:String(yr),events:dated.filter(ev=>new Date(ev.date).getFullYear()===yr)}));
   }
   const groups=getPeriodData(items,S.statsPeriod);
-  const metricFn=S.statsMetric==='words'?g=>g.items.reduce((s,x)=>s+itemWords(x)*readMult(x),0):g=>g.items.length;
+  const metricFn=S.statsMetric==='words'?g=>g.events.reduce((s,ev)=>s+ev.words,0):g=>g.events.length;
   const values=groups.map(metricFn);const maxVal=Math.max(...values,1);
   const bars=groups.map((g,i)=>{
     const val=values[i];const pct=val>0?Math.max(val/maxVal*100,4):0;const lbl=S.statsMetric==='words'?fmtN(val):String(val);
@@ -849,7 +859,7 @@ function openSheet(id){
   const x=S.items.find(i=>i.id===id);if(!x)return;
   S.selId=id;
   const isFf=x.type==='ff';
-  const rc=x.readCount||(x.status==='Finished'?1:0);
+  const rc=timesRead(x);
   const sub=isFf?`${x.author||'—'}${x.fandom?' · '+x.fandom:''}`:`${x.author||'—'}${x.genre?' · '+x.genre:''}`;
   const chips=STATUS.map(s=>`<span class="st-chip${x.status===s?' a-'+s:''}" data-s="${esc(s)}">${s}</span>`).join('');
   const stars=[1,2,3,4,5].map(i=>`<span class="s-star${i<=(x.userRating||0)?' on':''}" data-v="${i}">★</span>`).join('');
@@ -885,7 +895,7 @@ function openSheet(id){
     </div>
     <div class="sh-sec"><div class="sh-lbl">Status</div><div class="st-row">${chips}</div></div>
     <div class="sh-sec"><div class="sh-lbl">Your rating</div><div class="stars-row">${stars}</div></div>
-    <div class="sh-sec"><div class="sh-lbl">Re-reads</div><div class="rr-row"><span class="rr-label">📖 Read ${rc} time${rc===1?'':'s'}</span><div class="rr-stepper"><button class="rr-step" id="rr-minus"${rc<=0?' disabled':''}>－</button><button class="rr-step" id="rr-plus">＋</button></div></div></div>
+    <div class="sh-sec"><div class="sh-lbl">Re-reads</div><div class="rr-row"><div class="rr-info"><span class="rr-label">📖 Read ${rc} time${rc===1?'':'s'}</span>${lastReadAt(x)?`<span class="rr-sub">Last read ${new Date(lastReadAt(x)).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</span>`:''}</div><div class="rr-stepper"><button class="rr-step" id="rr-minus"${rc<=0?' disabled':''}>－</button><button class="rr-step" id="rr-plus">＋</button></div></div></div>
     ${info.length?`<div class="sh-sec"><div class="sh-lbl">Details</div><div class="info-grid">${info.map(p=>`<div class="info-tile"><div class="info-lbl">${esc(p.l)}</div><div class="info-val">${esc(p.v)}</div></div>`).join('')}</div></div>`:''}
     ${(x.tags||[]).length?`<div class="sh-sec"><div class="sh-lbl">Tags</div><div class="sh-tags">${(x.tags||[]).map(t=>`<span class="sh-tag">${esc(t)}</span>`).join('')}</div></div>`:''}
     ${x.notes?`<div class="sh-sec"><div class="sh-lbl">Notes</div><div class="sh-notes">"${esc(x.notes)}"</div></div>`:''}
@@ -910,13 +920,13 @@ function openSheet(id){
   }));
   document.getElementById('rr-plus')?.addEventListener('click',async()=>{
     const it=S.items.find(i=>i.id===S.selId);if(!it)return;
-    const cur=it.readCount||(it.status==='Finished'?1:0);
-    await qSave({...it,readCount:cur+1});
+    const dates=ensureReadDates(it);dates.push(new Date().toISOString());  // record "I re-read this today"
+    await qSave({...it,readDates:dates,readCount:dates.length});
   });
   document.getElementById('rr-minus')?.addEventListener('click',async()=>{
     const it=S.items.find(i=>i.id===S.selId);if(!it)return;
-    const cur=it.readCount||(it.status==='Finished'?1:0);
-    await qSave({...it,readCount:Math.max(0,cur-1)});
+    const dates=ensureReadDates(it);dates.pop();                          // remove the most recent read
+    await qSave({...it,readDates:dates,readCount:dates.length});
   });
   document.getElementById('sh-edit')?.addEventListener('click',()=>{const it=S.items.find(i=>i.id===S.selId);if(it)openModal(it)});
   document.getElementById('sh-open')?.addEventListener('click',()=>{const it=S.items.find(i=>i.id===S.selId);if(it?.url)window.open(it.url,'_blank')});
@@ -939,7 +949,7 @@ function closeSheet(){
 
 async function qSave(up){
   const idx=S.items.findIndex(i=>i.id===up.id);if(idx<0)return;
-  S.items[idx]=up;renderLibrary();openSheet(up.id);await doSave();
+  S.items[idx]=up;renderLibrary();renderStatRow();openSheet(up.id);await doSave();
 }
 
 // ── Icon editor ───────────────────────────────────────────────────────────────
@@ -987,7 +997,7 @@ function closeModal(){
 
 function renderModalBody(){
   const x=S.editing||{};const isFf=x.type==='ff';const isNew=!x.id;
-  const rc=x.readCount??(x.status==='Finished'?1:0);
+  const rc=timesRead(x);
   const sOpts=STATUS.map(s=>`<option value="${s}"${(x.status||'TBR')===s?' selected':''}>${s}</option>`).join('');
   const tagsHtml=S.mTags.map(t=>`<span class="m-tag">${esc(t)}<span class="m-tag-x" data-t="${esc(t)}">×</span></span>`).join('');
   const mStars=[1,2,3,4,5].map(i=>`<span class="m-star${i<=S.mRating?' on':''}" data-v="${i}">★</span>`).join('');
@@ -1113,6 +1123,14 @@ async function saveModal(){
   };
   if(isFf){item.url=g('f-url').trim();item.fandom=g('f-fandom').trim();item.pairing=g('f-pairing').trim();item.hearts=gN('f-hearts');item.rating=g('f-rating');item.oneshot=g('f-oneshot')==='true'}
   else{item.genre=g('f-genre').trim();item.section=g('f-section').trim();item.pages=gN('f-pages')}
+  // Reconcile per-read timestamps with the chosen "times read" count.
+  {
+    const wantCount=rc!==''?Math.max(0,parseInt(rc)||0):(S.editing?.readCount??(st==='Finished'?1:0));
+    const rdates=ensureReadDates(S.editing||{});
+    if(wantCount>rdates.length){const fill=item.finishedAt||null;while(rdates.length<wantCount)rdates.push(fill)}
+    else rdates.length=wantCount;
+    item.readDates=rdates;item.readCount=rdates.length;
+  }
   const idx=S.items.findIndex(i=>i.id===item.id);
   if(idx>=0)S.items[idx]=item;else S.items.unshift(item);
   closeModal();renderLibrary();renderStatRow();await doSave();

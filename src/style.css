@@ -271,6 +271,8 @@ textarea { min-height: 70px; resize: vertical; }
 .reread-label { font-size: 13px; color: #5b21b6; font-weight: 500; }
 .reread-btn { background: #6366f1; border: none; border-radius: 6px; color: #fff; font-size: 12px; font-weight: 600; padding: 4px 10px; cursor: pointer; }
 .reread-btn:hover { background: #4f46e5; }
+.reread-info { display: flex; flex-direction: column; gap: 2px; }
+.reread-sub { font-size: 11px; color: #7c3aed; opacity: .75; }
 .reread-stepper { display: flex; gap: 6px; align-items: center; }
 .reread-step { width: 28px; height: 28px; background: #6366f1; border: none; border-radius: 6px; color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; }
 .reread-step:hover { background: #4f46e5; }
