@@ -23,9 +23,6 @@
   --nav-h:54px;
 }
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif;overflow:hidden}
-/* Pin to the real viewport edges — reliable in iOS standalone PWAs where 100vh/100dvh
-   leave a phantom-toolbar gap at the bottom. viewport-fit=cover extends this to the screen edges. */
-body{position:fixed;inset:0;display:flex;flex-direction:column}
 
 /* ── Setup ── */
 #setup{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:32px;background:linear-gradient(160deg,#ede9fe 0%,#fff 55%,#fdf4ff 100%);z-index:1000;gap:14px;text-align:center}
@@ -42,7 +39,7 @@ body{position:fixed;inset:0;display:flex;flex-direction:column}
 #setup-err{color:#b91c1c;font-size:13px;font-weight:600;display:none;background:#fef2f2;padding:9px 14px;border-radius:10px;width:100%;text-align:center}
 
 /* ── App shell ── */
-#app{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+#app{position:fixed;top:0;left:0;right:0;bottom:calc(var(--nav-h) + var(--nav-inset));display:flex;flex-direction:column;overflow:hidden}
 #app.hidden{display:none}
 
 /* ── Header ── */
@@ -172,7 +169,7 @@ body{position:fixed;inset:0;display:flex;flex-direction:column}
 .snote{font-size:11px;color:var(--muted);padding:6px 16px 20px;line-height:1.6}
 
 /* ── Bottom nav ── */
-#bottom-nav{flex-shrink:0;height:calc(var(--nav-h) + var(--nav-inset));background:#fff;border-top:1px solid var(--border);display:flex;align-items:stretch;z-index:190;box-shadow:0 -4px 20px rgba(99,102,241,.08)}
+#bottom-nav{position:fixed;left:0;right:0;bottom:0;height:calc(var(--nav-h) + var(--nav-inset));background:#fff;border-top:1px solid var(--border);display:flex;align-items:stretch;z-index:190;box-shadow:0 -4px 20px rgba(99,102,241,.08)}
 .bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:var(--nav-inset);cursor:pointer;transition:opacity .1s;gap:3px;-webkit-tap-highlight-color:transparent}
 .bnav-item:active{opacity:.6}
 .bnav-ico{font-size:22px;line-height:1;transition:transform .15s}
@@ -433,20 +430,25 @@ if('serviceWorker' in navigator){
     });
   }).catch(()=>{});
 }
-// ── TEMP DIAGNOSTIC: show real viewport numbers from this device (tap to dismiss) ──
-window.addEventListener('load',()=>{setTimeout(()=>{
-  try{
-    const probeB=document.createElement('div');probeB.style.cssText='position:fixed;bottom:0;left:0;width:1px;height:env(safe-area-inset-bottom)';document.body.appendChild(probeB);
-    const sab=probeB.offsetHeight;probeB.remove();
-    const nav=document.getElementById('bottom-nav').getBoundingClientRect();
-    const vv=window.visualViewport;
-    const d=document.createElement('div');
-    d.style.cssText='position:fixed;top:50px;left:8px;right:8px;z-index:99999;background:#111;color:#0f0;font:12px/1.5 monospace;padding:10px;border-radius:8px;white-space:pre-line;box-shadow:0 4px 20px rgba(0,0,0,.5)';
-    d.textContent=`DIAGNOSTIC (tap to close)\nbuild=v8-fixedinset\nstandalone=${navigator.standalone}\ninnerH=${window.innerHeight}  screenH=${screen.height}\nvisualVP.h=${vv?Math.round(vv.height):'n/a'}\nsafeBottomInset=${sab}px\nnav.top=${Math.round(nav.top)}  nav.bottom=${Math.round(nav.bottom)}\nGAP below nav=${Math.round(window.innerHeight-nav.bottom)}px`;
-    d.onclick=()=>d.remove();
-    document.body.appendChild(d);
-  }catch(e){}
-},600);});
+// ── TEMP DIAGNOSTIC: live viewport numbers (tap to close) ──
+window.addEventListener('load',()=>{
+  const d=document.createElement('div');
+  d.style.cssText='position:fixed;top:50px;left:8px;right:8px;z-index:99999;background:#111;color:#0f0;font:12px/1.5 monospace;padding:10px;border-radius:8px;white-space:pre-line;box-shadow:0 4px 20px rgba(0,0,0,.5)';
+  const iv=setInterval(measure,500);
+  d.onclick=()=>{clearInterval(iv);d.remove();};
+  document.body.appendChild(d);
+  function measure(){
+    try{
+      const p=document.createElement('div');p.style.cssText='position:fixed;bottom:0;left:0;width:1px;height:env(safe-area-inset-bottom)';document.body.appendChild(p);
+      const sab=p.offsetHeight;p.remove();
+      const nav=document.getElementById('bottom-nav').getBoundingClientRect();
+      const vv=window.visualViewport;
+      d.textContent=`DIAGNOSTIC v9-fixednav (tap to close)\nstandalone=${navigator.standalone}\ninnerH=${window.innerHeight} screenH=${screen.height}\nvisualVP=${vv?Math.round(vv.height):'n/a'}\nsafeBottom=${sab}px\nnav.bottom=${Math.round(nav.bottom)}\nGAP below nav=${Math.round(window.innerHeight-nav.bottom)}px`;
+    }catch(e){}
+  }
+  measure();
+  setTimeout(()=>clearInterval(iv),10000);
+});
 // ── Config ────────────────────────────────────────────────────────────────────
 const REPO='elenaliberti/my-library';
 const FILE='library-data.json';
