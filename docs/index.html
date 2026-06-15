@@ -432,25 +432,6 @@ if('serviceWorker' in navigator){
     });
   }).catch(()=>{});
 }
-// ── TEMP DIAGNOSTIC: live viewport numbers (tap to close) ──
-window.addEventListener('load',()=>{
-  const d=document.createElement('div');
-  d.style.cssText='position:fixed;top:50px;left:8px;right:8px;z-index:99999;background:#111;color:#0f0;font:12px/1.5 monospace;padding:10px;border-radius:8px;white-space:pre-line;box-shadow:0 4px 20px rgba(0,0,0,.5)';
-  const iv=setInterval(measure,500);
-  d.onclick=()=>{clearInterval(iv);d.remove();};
-  document.body.appendChild(d);
-  function measure(){
-    try{
-      const p=document.createElement('div');p.style.cssText='position:fixed;bottom:0;left:0;width:1px;height:env(safe-area-inset-bottom)';document.body.appendChild(p);
-      const sab=p.offsetHeight;p.remove();
-      const nav=document.getElementById('bottom-nav').getBoundingClientRect();
-      const vv=window.visualViewport;
-      d.textContent=`DIAGNOSTIC v10 (tap to close)\nstandalone=${navigator.standalone}\ninnerH=${window.innerHeight} screenH=${screen.height}\nhtmlH=${document.documentElement.clientHeight} bodyH=${document.body.offsetHeight}\nvisualVP=${vv?Math.round(vv.height):'n/a'}\nsafeBottom=${sab}px\nnav.bottom=${Math.round(nav.bottom)}\nGAP below nav=${Math.round(window.innerHeight-nav.bottom)}px`;
-    }catch(e){}
-  }
-  measure();
-  setTimeout(()=>clearInterval(iv),10000);
-});
 // ── Config ────────────────────────────────────────────────────────────────────
 const REPO='elenaliberti/my-library';
 const FILE='library-data.json';
