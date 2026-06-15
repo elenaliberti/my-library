@@ -23,7 +23,9 @@
   --nav-h:54px;
 }
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif;overflow:hidden}
-body{height:100dvh;display:flex;flex-direction:column}
+/* Pin to the real viewport edges — reliable in iOS standalone PWAs where 100vh/100dvh
+   leave a phantom-toolbar gap at the bottom. viewport-fit=cover extends this to the screen edges. */
+body{position:fixed;inset:0;display:flex;flex-direction:column}
 
 /* ── Setup ── */
 #setup{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:32px;background:linear-gradient(160deg,#ede9fe 0%,#fff 55%,#fdf4ff 100%);z-index:1000;gap:14px;text-align:center}

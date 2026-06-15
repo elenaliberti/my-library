@@ -2,7 +2,7 @@
   "name": "My Library",
   "short_name": "Library",
   "description": "Your personal book and fanfiction tracker",
-  "start_url": "/my-library/",
+  "start_url": "/my-library/?app=1",
   "display": "standalone",
   "background_color": "#f8f7ff",
   "theme_color": "#f8f7ff",
