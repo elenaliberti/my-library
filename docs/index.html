@@ -109,16 +109,17 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .loading{text-align:center;padding:48px 20px;color:var(--muted);font-size:14px}
 
 /* ── Grid ── */
-#v-grid{display:none;flex:1;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+#v-grid{display:none;flex:1;flex-direction:column;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 #v-grid::-webkit-scrollbar{display:none}
 .grid-crumb{padding:10px 16px 8px;font-size:12px;color:var(--muted);display:flex;gap:4px;align-items:center;flex-wrap:wrap;border-bottom:1px solid var(--border);background:var(--bg);position:sticky;top:0;z-index:2}
 .crumb{color:var(--accent);cursor:pointer;font-weight:700}.crumb:active{opacity:.6}
 .crumb-sep{color:var(--border2);margin:0 3px}
 .folder-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:14px 16px 16px}
+.folder-grid-root{grid-template-columns:1fr;margin-block:auto;width:100%}
 .fc{background:#fff;border:1px solid var(--border);border-radius:18px;cursor:pointer;overflow:hidden;transition:transform .1s;box-shadow:var(--shadow);position:relative}
 .fc:active{transform:scale(.97)}
 .fc-thumb{aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:40px;overflow:hidden;position:relative}
-.folder-grid-root .fc-thumb{aspect-ratio:1/1;font-size:58px}
+.folder-grid-root .fc-thumb{aspect-ratio:16/9;font-size:64px}
 .fc-thumb img{width:100%;height:100%;object-fit:cover}
 .fc-body{padding:10px 12px 12px}
 .fc-name{font-size:14px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text);margin-bottom:2px}
@@ -594,7 +595,7 @@ function cover(item,w,h,r){
 function renderStatRow(){
   const el=document.getElementById('stat-row');if(!el)return;
   const counts={};STATUS.forEach(s=>counts[s]=S.items.filter(x=>x.status===s).length);
-  const totalWords=S.items.reduce((s,x)=>s+(x.words||0)*readMult(x),0);
+  const totalWords=S.items.reduce((s,x)=>s+itemWords(x)*readMult(x),0);
   el.innerHTML=STATUS.map(s=>`<div class="spill${S.statFilter===s?' on-'+s:''}" data-spill="${s}"><span class="spill-num">${counts[s]}</span><span class="spill-lbl">${s}</span></div>`).join('')+
     `<span class="spill-words">📝 ${fmtN(totalWords)}</span>`;
   el.querySelectorAll('[data-spill]').forEach(el=>el.addEventListener('click',()=>{
@@ -816,16 +817,16 @@ function renderStats(){
   const el=document.getElementById('v-stats');if(!el)return;
   const SPEED=250;
   const fin={
-    all:S.items.filter(x=>x.status==='Finished'),
-    books:S.items.filter(x=>x.status==='Finished'&&x.type==='book'),
-    ff:S.items.filter(x=>x.status==='Finished'&&x.type==='ff'&&!x.oneshot),
-    oneshot:S.items.filter(x=>x.status==='Finished'&&x.type==='ff'&&x.oneshot),
+    all:S.items,
+    books:S.items.filter(x=>x.type==='book'),
+    ff:S.items.filter(x=>x.type==='ff'&&!x.oneshot),
+    oneshot:S.items.filter(x=>x.type==='ff'&&x.oneshot),
   };
   const cat=S.statsCat;const items=fin[cat];
   const totalCount=items.length;
   const totalWords=items.reduce((s,x)=>s+itemWords(x)*readMult(x),0);
   const totalMins=totalWords/SPEED;
-  const summary=`<div class="ssum"><div class="stile"><div class="stile-n">${totalCount}</div><div class="stile-l">Finished</div></div><div class="stile"><div class="stile-n">${fmtN(totalWords)}</div><div class="stile-l">Words</div></div><div class="stile"><div class="stile-n">${fmtTime(totalMins)}</div><div class="stile-l">Time*</div></div></div>`;
+  const summary=`<div class="ssum"><div class="stile"><div class="stile-n">${totalCount}</div><div class="stile-l">Items</div></div><div class="stile"><div class="stile-n">${fmtN(totalWords)}</div><div class="stile-l">Words</div></div><div class="stile"><div class="stile-n">${fmtTime(totalMins)}</div><div class="stile-l">Time*</div></div></div>`;
   let breakdown='';
   if(cat==='all'&&totalWords>0){
     const parts=[{lbl:'📚 Books',cls:'green',list:fin.books},{lbl:'📖 Fanfic',cls:'purple',list:fin.ff},{lbl:'📄 One-shots',cls:'amber',list:fin.oneshot}].filter(p=>p.list.length>0);
@@ -1188,7 +1189,7 @@ function switchView(v){
     vl.style.display='flex';vg.style.display='none';vs.style.display='none';
     fab.classList.remove('hidden');renderLibrary();renderStatRow();
   }else if(v==='grid'){
-    vl.style.display='none';vg.style.display='block';vs.style.display='none';
+    vl.style.display='none';vg.style.display='flex';vs.style.display='none';
     fab.classList.remove('hidden');S.folderPath=[];renderGrid();
   }else{
     vl.style.display='none';vg.style.display='none';vs.style.display='block';

@@ -261,7 +261,7 @@ function getStats() {
     reading: items.filter(x => x.status === 'Reading').length,
     finished: items.filter(x => x.status === 'Finished').length,
     dropped: items.filter(x => x.status === 'Dropped').length,
-    totalWords: items.reduce((s,x) => s + (x.words||0) * readMult(x), 0),
+    totalWords: items.reduce((s,x) => s + itemWords(x) * readMult(x), 0),
   };
 }
 
@@ -515,10 +515,10 @@ function modalHtml() {
 function statsViewHtml() {
   const SPEED = 250;
   const fin = {
-    all:     state.items.filter(x => x.status === 'Finished'),
-    books:   state.items.filter(x => x.status === 'Finished' && x.type === 'book'),
-    ff:      state.items.filter(x => x.status === 'Finished' && x.type === 'ff' && !x.oneshot),
-    oneshot: state.items.filter(x => x.status === 'Finished' && x.type === 'ff' && x.oneshot),
+    all:     state.items,
+    books:   state.items.filter(x => x.type === 'book'),
+    ff:      state.items.filter(x => x.type === 'ff' && !x.oneshot),
+    oneshot: state.items.filter(x => x.type === 'ff' && x.oneshot),
   };
   const cat = state.statsCategory;
   const items = fin[cat];
@@ -590,7 +590,7 @@ function statsViewHtml() {
       ${tab('all','All')}${tab('books','📚 Books')}${tab('ff','📖 Fanfiction')}${tab('oneshot','📄 One-shots')}
     </div>
     <div class="stats-summary">
-      <div class="scard"><div class="scard-num">${totalCount}</div><div class="scard-lbl">finished</div></div>
+      <div class="scard"><div class="scard-num">${totalCount}</div><div class="scard-lbl">items</div></div>
       <div class="scard"><div class="scard-num">${fmtNum(totalWords)}</div><div class="scard-lbl">words read</div></div>
       <div class="scard"><div class="scard-num">${fmtTime(totalMins)}</div><div class="scard-lbl">reading time*</div></div>
     </div>
