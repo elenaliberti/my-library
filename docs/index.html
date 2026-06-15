@@ -23,6 +23,7 @@
   --nav-h:54px;
 }
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif;overflow:hidden}
+body{height:100dvh;display:flex;flex-direction:column}
 
 /* ── Setup ── */
 #setup{position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:32px;background:linear-gradient(160deg,#ede9fe 0%,#fff 55%,#fdf4ff 100%);z-index:1000;gap:14px;text-align:center}
@@ -39,7 +40,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 #setup-err{color:#b91c1c;font-size:13px;font-weight:600;display:none;background:#fef2f2;padding:9px 14px;border-radius:10px;width:100%;text-align:center}
 
 /* ── App shell ── */
-#app{position:fixed;top:0;left:0;right:0;bottom:calc(var(--nav-h) + var(--nav-inset));display:flex;flex-direction:column;overflow:hidden}
+#app{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
 #app.hidden{display:none}
 
 /* ── Header ── */
@@ -169,7 +170,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
 .snote{font-size:11px;color:var(--muted);padding:6px 16px 20px;line-height:1.6}
 
 /* ── Bottom nav ── */
-#bottom-nav{position:fixed;left:0;right:0;bottom:0;height:calc(var(--nav-h) + var(--nav-inset));background:#fff;border-top:1px solid var(--border);display:flex;align-items:stretch;z-index:190;box-shadow:0 -4px 20px rgba(99,102,241,.08)}
+#bottom-nav{flex-shrink:0;height:calc(var(--nav-h) + var(--nav-inset));background:#fff;border-top:1px solid var(--border);display:flex;align-items:stretch;z-index:190;box-shadow:0 -4px 20px rgba(99,102,241,.08)}
 .bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:var(--nav-inset);cursor:pointer;transition:opacity .1s;gap:3px;-webkit-tap-highlight-color:transparent}
 .bnav-item:active{opacity:.6}
 .bnav-ico{font-size:22px;line-height:1;transition:transform .15s}
