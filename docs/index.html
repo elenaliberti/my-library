@@ -333,7 +333,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-
     <div id="search-sort">
       <input class="search-in" id="search-in" type="search" placeholder="Search…"/>
       <select class="sort-sel" id="sort-sel">
-        <option value="added">Recent</option>
+        <option value="added">Recent (last read/added)</option>
         <option value="title">A → Z</option>
         <option value="author">Author</option>
         <option value="words">Words</option>
@@ -568,7 +568,14 @@ function filtered(){
     if(S.sortBy==='author')return(a.author||'').localeCompare(b.author||'');
     if(S.sortBy==='words')return(b.words||0)-(a.words||0);
     if(S.sortBy==='rating')return(b.userRating||0)-(a.userRating||0);
-    return(a._addedAt??0)-(b._addedAt??0);
+    // default 'recent': most recently read/finished first; not-yet-read items on top by add order
+    const ra=lastReadAt(a),rb=lastReadAt(b);
+    const ta=ra?Date.parse(ra):null,tb=rb?Date.parse(rb):null;
+    if(ta===null&&tb===null)return(b._addedAt??0)-(a._addedAt??0);
+    if(ta===null)return -1;
+    if(tb===null)return 1;
+    if(tb!==ta)return tb-ta;
+    return(b._addedAt??0)-(a._addedAt??0);
   });
   return items;
 }

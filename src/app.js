@@ -240,7 +240,14 @@ function getFiltered() {
     if (state.sortBy === 'hearts') return (b.hearts||0) - (a.hearts||0);
     if (state.sortBy === 'rating') return (b.userRating||0) - (a.userRating||0);
     if (state.sortBy === 'author') return (a.author||'').localeCompare(b.author||'');
-    return (a._addedAt||0) - (b._addedAt||0);
+    // default 'recent': most recently read/finished first; not-yet-read items on top by add order
+    const ra = lastReadAt(a), rb = lastReadAt(b);
+    const ta = ra ? Date.parse(ra) : null, tb = rb ? Date.parse(rb) : null;
+    if (ta === null && tb === null) return (b._addedAt||0) - (a._addedAt||0);
+    if (ta === null) return -1;
+    if (tb === null) return 1;
+    if (tb !== ta) return tb - ta;
+    return (b._addedAt||0) - (a._addedAt||0);
   });
 }
 
@@ -1066,7 +1073,7 @@ function render() {
     <div class="controls">
       <input id="search-input" type="text" placeholder="Search title, author, fandom, tag…" value="${state.search}" />
       <select class="filter-select" id="sort-select">
-        <option value="added"${state.sortBy==='added'?' selected':''}>Recently added</option>
+        <option value="added"${state.sortBy==='added'?' selected':''}>Recent (last read/added)</option>
         <option value="title"${state.sortBy==='title'?' selected':''}>A → Z</option>
         <option value="author"${state.sortBy==='author'?' selected':''}>Author A → Z</option>
         <option value="words"${state.sortBy==='words'?' selected':''}>Most words</option>
