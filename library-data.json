@@ -22,11 +22,7 @@
       "pages": null,
       "userRating": 0,
       "finishedAt": null,
-      "_addedAt": 631,
-      "readDates": [
-        "2026-06-15T20:39:54.942Z"
-      ],
-      "readCount": 1
+      "_addedAt": 631
     },
     {
       "title": "Glory Be",
@@ -222,7 +218,7 @@
       "coverIcon": "https://i.pinimg.com/webp87/736x/30/e8/e0/30e8e0c4e8d56595c3b083011de1436e.webp"
     },
     {
-      "title": "Make A Wish",
+      "title": "Make A Wish Chapter 1: Goodbye",
       "author": "Rorschach's Blot",
       "fandom": "harry potter",
       "words": 187589,
@@ -241,10 +237,7 @@
       "notes": "",
       "oneshot": false,
       "finishedAt": null,
-      "_addedAt": 625,
-      "favorite": false,
-      "readCount": 0,
-      "readDates": []
+      "_addedAt": 625
     },
     {
       "title": "Cold Soul (I Want It Back)",
@@ -563,7 +556,7 @@
     {
       "id": "ff_7",
       "type": "ff",
-      "title": "SynkardiÃ¡s",
+      "title": "Synkardiás",
       "author": "00Q_Magnus, ArielSakura",
       "fandom": "Harry Potter",
       "words": 90949,
@@ -6552,7 +6545,7 @@
     {
       "id": "book_25",
       "type": "book",
-      "title": "Shadowhunters: CittÃ  di ossa",
+      "title": "Shadowhunters: Città di ossa",
       "author": "Cassandra Clare",
       "genre": "Fantasy / Urban Fantasy",
       "section": "Fantasy",
@@ -6569,7 +6562,7 @@
     {
       "id": "book_26",
       "type": "book",
-      "title": "Shadowhunters: CittÃ  di cenere",
+      "title": "Shadowhunters: Città di cenere",
       "author": "Cassandra Clare",
       "genre": "Fantasy / Urban Fantasy",
       "section": "Fantasy",
@@ -7168,7 +7161,7 @@
     {
       "id": "book_62",
       "type": "book",
-      "title": "Non Ã¨ ancora finita",
+      "title": "Non è ancora finita",
       "author": "S. Marty",
       "genre": "Trash Fantasy",
       "section": "Fantasy",
@@ -7515,7 +7508,7 @@
     {
       "id": "book_81",
       "type": "book",
-      "title": "CittÃ  di carta",
+      "title": "Città di carta",
       "author": "John Green",
       "genre": "YA / Romance",
       "section": "Fantasy",
@@ -7757,7 +7750,7 @@
     {
       "id": "book_95",
       "type": "book",
-      "title": "Il ragazzo che entrÃ² dalla finestra e si infilÃ² nel mio letto",
+      "title": "Il ragazzo che entrò dalla finestra e si infilò nel mio letto",
       "author": "Kirsty Moseley",
       "genre": "Romance",
       "section": "Fantasy",
@@ -7944,7 +7937,7 @@
     {
       "id": "book_106",
       "type": "book",
-      "title": "Un disastro Ã¨ per sempre",
+      "title": "Un disastro è per sempre",
       "author": "Jamie McGuire",
       "genre": "Romance / New Adult",
       "section": "Fantasy",
@@ -8008,7 +8001,7 @@
     {
       "id": "book_110",
       "type": "book",
-      "title": "L'assistente del capo: Chi Ã¨ ora il boss?",
+      "title": "L'assistente del capo: Chi è ora il boss?",
       "author": "Lexy Timms",
       "genre": "Romance",
       "section": "Fantasy",
@@ -8201,7 +8194,7 @@
     {
       "id": "book_122",
       "type": "book",
-      "title": "Siamo amici solo il mercoledÃ¬",
+      "title": "Siamo amici solo il mercoledì",
       "author": "Tania Paxia",
       "genre": "Romance",
       "section": "Fantasy",
@@ -8480,7 +8473,7 @@
     {
       "id": "book_139",
       "type": "book",
-      "title": "Viciniâ¦ anche troppo",
+      "title": "Vicini… anche troppo",
       "author": "Scarlett Reese",
       "genre": "Romance",
       "section": "Fantasy",
@@ -10260,7 +10253,7 @@
       "words": 112000,
       "status": "Finished",
       "userRating": 0,
-      "notes": "Un fottuto capolavoroâ¦ solo wow",
+      "notes": "Un fottuto capolavoro… solo wow",
       "tags": [],
       "url": "",
       "_addedAt": 498,
@@ -10355,7 +10348,7 @@
     {
       "id": "book_257",
       "type": "book",
-      "title": "Sposa a metÃ ",
+      "title": "Sposa a metà",
       "author": "Mary Balogh",
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
@@ -11707,7 +11700,7 @@
     {
       "id": "book_342",
       "type": "book",
-      "title": "Verso la maturitÃ ",
+      "title": "Verso la maturità",
       "author": "",
       "genre": "Wattpad / YA",
       "section": "Fantasy",
@@ -12005,7 +11998,7 @@
       "words": null,
       "status": "Finished",
       "userRating": 0,
-      "notes": "Bellissimoâ¦ mi ha fatta piangere",
+      "notes": "Bellissimo… mi ha fatta piangere",
       "tags": [],
       "url": "",
       "_addedAt": 605
