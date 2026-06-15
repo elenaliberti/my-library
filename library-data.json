@@ -12264,5 +12264,406 @@
       "section": ""
     }
   ],
-  "folderConfig": {}
+  "folderConfig": {
+    "ff|Harry Potter": {
+      "displayName": "Harry Potter",
+      "pinned": true,
+      "icon": "https://i.pinimg.com/webp87/736x/a9/3b/5a/a93b5a03655487ba9cef4511d7e5bb91.webp"
+    },
+    "book": {
+      "displayName": "book",
+      "icon": "https://i.pinimg.com/736x/ee/b0/ee/eeb0ee8342b7d24e703d57492236ab35.jpg",
+      "pinned": false
+    },
+    "ff": {
+      "displayName": "FanFiction",
+      "icon": "https://i.pinimg.com/webp87/1200x/1c/d0/3d/1cd03dfc6cf3306ccd15fed2fdb30bfd.webp",
+      "pinned": false
+    },
+    "ff|Harry Potter|Tomarry": {
+      "displayName": "Tomarry",
+      "icon": "https://i.pinimg.com/736x/53/c6/8c/53c68cf2bda407cf95c6ede5c5ec03ee.jpg",
+      "pinned": false,
+      "section": "pairing"
+    },
+    "ff|Harry Potter|Powerful!Harry": {
+      "displayName": "Powerful!Harry",
+      "icon": "https://i.pinimg.com/736x/8d/36/8d/8d368deb36414f608432d3c2a797d52e.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Drarry": {
+      "displayName": "Drarry",
+      "icon": "https://i.pinimg.com/736x/5d/65/6f/5d656f1d414938f949dc95149de63ded.jpg",
+      "pinned": false,
+      "section": "pairing"
+    },
+    "ff|Harry Potter|Time/Dimension Travel HP": {
+      "displayName": "Time/Dimension Travel HP",
+      "icon": "https://i.pinimg.com/1200x/b8/54/38/b854382117213114e4b6398ff62df1c0.jpg",
+      "pinned": false,
+      "section": "trope"
+    },
+    "ff|Harry Potter|Harry/Ginny": {
+      "displayName": "Harry/Ginny",
+      "icon": "https://i.pinimg.com/736x/90/86/c3/9086c355d76b548533c1b723fc07077b.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Harry in Slytherin": {
+      "displayName": "Harry in Slytherin",
+      "icon": "https://i.pinimg.com/736x/21/18/80/21188058d8bbd270806b95e044ec921e.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Mentor Severus": {
+      "displayName": "Mentor Severus",
+      "icon": "https://i.pinimg.com/webp87/1200x/fb/13/4e/fb134ed0dce91679687b2e4738660ecc.webp",
+      "pinned": false
+    },
+    "ff|Harry Potter|Harry/Hermione": {
+      "displayName": "Harry/Hermione",
+      "icon": "https://i.pinimg.com/736x/27/54/2c/27542ca81fa3e569d46fc976978f83c0.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Time Travel": {
+      "displayName": "Time Travel",
+      "icon": "https://i.pinimg.com/736x/50/0a/21/500a217593481e94af167aa70467a0cf.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|BAMF Harry Potter": {
+      "displayName": "BAMF Harry Potter",
+      "icon": "https://i.pinimg.com/webp87/736x/00/af/60/00af60488e5f40dfd910ed4139297d7f.webp",
+      "pinned": false
+    },
+    "ff|Harry Potter|Harry Potter/Draco Malfoy/Charlie Weasley": {
+      "displayName": "Harry Potter/Draco Malfoy/Charlie Weasley",
+      "icon": "https://i.pinimg.com/736x/00/66/4a/00664a252b37745dc1ce94419b80df40.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|HarryMort": {
+      "displayName": "Harry/Voldemort",
+      "icon": "https://i.pinimg.com/736x/31/af/94/31af94109f30bde53c1f72ee5b14c186.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Master of Death Harry Potter": {
+      "displayName": "Master of Death Harry Potter",
+      "icon": "https://i.pinimg.com/736x/bc/bd/e4/bcbde441f3b0ac165c73d15a4b25b59d.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Time Travel Fix-it": {
+      "displayName": "Time Travel Fix-It",
+      "pinned": false
+    },
+    "ff|Harry Potter|Time Travel Fix-It": {
+      "displayName": "Time Travel Fix-It",
+      "icon": "https://i.pinimg.com/1200x/bd/b1/40/bdb14065513ed3fba197be13aab7eab6.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Do-Over": {
+      "displayName": "Do-Over",
+      "icon": "https://i.pinimg.com/736x/f9/4b/88/f94b88e44ce2bffb01e437e0b2e7cec7.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Dramione": {
+      "displayName": "Dramione",
+      "pinned": false,
+      "section": "pairing",
+      "icon": "https://i.pinimg.com/736x/77/1f/b9/771fb92ff35ec4cc4d97a77904e659c5.jpg"
+    },
+    "ff|Harry Potter|Alpha/Beta/Omega Dynamics": {
+      "displayName": "Alpha/Beta/Omega Dynamics",
+      "pinned": false,
+      "section": "trope",
+      "icon": "https://i.pinimg.com/736x/2f/3c/c7/2f3cc79d90d766a7fe084f1127593b58.jpg"
+    },
+    "ff|Harry Potter|Daphne Greengrass/Harry Potter": {
+      "displayName": "Daphne Greengrass/Harry Potter",
+      "icon": "https://i.pinimg.com/1200x/c6/64/a9/c664a935d5767b209dac25e118c475ed.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|HP/PJ Crossover": {
+      "displayName": "HP/PJ Crossover",
+      "pinned": false,
+      "section": "trope",
+      "icon": "https://i.pinimg.com/736x/17/c7/a8/17c7a84ca7fbafab865309948b464d3b.jpg"
+    },
+    "ff|Harry Potter|Cedric Diggory/Harry Potter": {
+      "displayName": "Cedric Diggory/Harry Potter",
+      "icon": "https://i.pinimg.com/1200x/0e/64/fd/0e64fdca0c7264674b4a3771e4f60e6b.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Harry/Multi": {
+      "displayName": "Harry/Multi",
+      "icon": "https://i.pinimg.com/736x/8c/63/49/8c634949bc7dcb9e03f02f9962e85508.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Blaise/Ginny": {
+      "displayName": "Blaise/Ginny",
+      "icon": "https://i.pinimg.com/736x/a7/47/a6/a747a6898f3274498940498b005ae1c1.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Harry Potter/Bill Weasley": {
+      "displayName": "Harry Potter/Bill Weasley",
+      "icon": "https://i.pinimg.com/736x/79/b4/ea/79b4ea40a75244dc3c93e312954ee708.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Harry/Pansy": {
+      "displayName": "Harry/Pansy",
+      "icon": "https://i.pinimg.com/736x/fd/90/89/fd90892cd6427358d96903735124d4c9.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Harry Potter/Blaise Zabini": {
+      "displayName": "Harry Potter/Blaise Zabini",
+      "icon": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/1bf33c9f-ad96-4869-b3be-f5222b2222ac/dc0uz7v-736f4774-3741-4ed2-a30c-9dee74dd3b14.png/v1/fill/w_1024,h_838,q_80,strp/harry_potter_and_blaise_zabini_by_manarly_art_dc0uz7v-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9ODM4IiwicGF0aCI6Ii9mLzFiZjMzYzlmLWFkOTYtNDg2OS1iM2JlLWY1MjIyYjIyMjJhYy9kYzB1ejd2LTczNmY0Nzc0LTM3NDEtNGVkMi1hMzBjLTlkZWU3NGRkM2IxNC5wbmciLCJ3aWR0aCI6Ijw9MTAyNCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.vcpVjhHpcHjsm07qPD6Cmg423rfeZuJO7Q882ch1gxo",
+      "pinned": false
+    },
+    "ff|Harry Potter|Harry Potter/Charlie Weasley": {
+      "displayName": "Harry Potter/Charlie Weasley",
+      "icon": "https://i.pinimg.com/1200x/73/94/00/7394009474d8a339c73a61aaa41b5e27.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Harry Potter/Terry Boot": {
+      "displayName": "Harry Potter/Terry Boot",
+      "icon": "https://i.pinimg.com/webp87/736x/b4/24/05/b424050f42390685447bc8a7487aa1ef.webp",
+      "pinned": false
+    },
+    "ff|Harry Potter|Harry/Tonks": {
+      "displayName": "Harry/Tonks",
+      "icon": "https://i.pinimg.com/1200x/05/9b/b7/059bb7318cf04b2e73d7359b6dc97287.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Harry/Tracey": {
+      "displayName": "Harry/Tracey",
+      "icon": "https://i.pinimg.com/736x/ff/74/f7/ff74f7b7d6c22bd3bd17cc644068a1b4.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Jasper Hale/Harry Potter": {
+      "displayName": "Jasper Hale/Harry Potter",
+      "icon": "https://i.pinimg.com/736x/17/a3/08/17a30888dd869d26edd261406ee1fcd7.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Ron/Pansy": {
+      "displayName": "Ron/Pansy",
+      "icon": "https://i.pinimg.com/736x/47/44/6a/47446aecc24b0bff821d166355f5cb08.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Vincent Crabbe/Harry Potter": {
+      "displayName": "Vincent Crabbe/Harry Potter",
+      "icon": "https://i.pinimg.com/736x/d6/a1/65/d6a165f1a2eb2b41af48fbc8eb381172.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Harry/Peter Parker": {
+      "displayName": "Harry/Peter Parker",
+      "icon": "https://i.pinimg.com/webp87/736x/9e/f8/eb/9ef8eb2722953fa23ed98fe54a4e32be.webp",
+      "pinned": false
+    },
+    "ff|Harry Potter|Harry/Muggle": {
+      "displayName": "Harry/Muggle",
+      "icon": "https://i.pinimg.com/736x/ca/7e/4f/ca7e4f46adeb189389bb76c356febe36.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Creature Harry": {
+      "displayName": "Creature Harry",
+      "icon": "https://i.pinimg.com/736x/ca/b6/06/cab606dcbb8d0b6ce0b89b5cc622b8b4.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|HP-Sherlock Crossover": {
+      "displayName": "HP-Sherlock Crossover",
+      "icon": "https://i.pinimg.com/736x/56/f9/40/56f940308ae3d63929735fefc00b97be.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|HP-Twilight Crossover": {
+      "displayName": "HP-Twilight Crossover",
+      "icon": "https://i.pinimg.com/1200x/64/2e/da/642edac318ef3fb7dec77d5deedd4b31.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Harry is not the BWL": {
+      "displayName": "Harry is not the BWL",
+      "icon": "https://i.pinimg.com/736x/45/1c/ec/451ceca0a9de7466f7eb5bd801d1fee8.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Do Over": {
+      "displayName": "Do Over",
+      "icon": "https://i.pinimg.com/webp87/736x/1e/2d/77/1e2d776c896786c4c83cdabe2c177116.webp",
+      "pinned": false
+    },
+    "ff|Harry Potter|Professor!Harry AU": {
+      "displayName": "Professor!Harry AU",
+      "icon": "https://i.pinimg.com/736x/d3/5c/5c/d35c5ce7e0c8b7197374e4eac7eea0f2.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|WBWL": {
+      "displayName": "WBWL",
+      "icon": "https://i.pinimg.com/1200x/be/89/3d/be893de1c01b8397592f8b14b65bf3a6.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Dimension Travel": {
+      "displayName": "Dimension Travel",
+      "icon": "https://i.pinimg.com/736x/a1/90/7e/a1907e5dbd6c515130edd0d369725b1b.jpg",
+      "pinned": false
+    },
+    "ff|Harry Potter|Harry Potter Epilogue What Epilogue | EWE": {
+      "displayName": "EWE (After The War)",
+      "icon": "https://i.pinimg.com/1200x/9f/2b/80/9f2b80be9ec9501615b29cf1e71caa63.jpg",
+      "pinned": false
+    },
+    "ff|Merlin (BBC)": {
+      "displayName": "Merlin (BBC)",
+      "icon": "https://i.pinimg.com/736x/cf/17/7f/cf177f9aa1fafb7b708f01e29978994c.jpg",
+      "pinned": false
+    },
+    "ff|Merlin (TV)": {
+      "displayName": "Merlin (TV)",
+      "icon": "https://i.pinimg.com/736x/1e/7d/99/1e7d9975f321cb99f4ec6a4a33f6561f.jpg",
+      "pinned": false
+    },
+    "ff|Merlin (TV)|Hurt/Comfort": {
+      "displayName": "Hurt/Comfort",
+      "pinned": false,
+      "section": "trope"
+    },
+    "ff|Merlin (TV)|Emotional Hurt/Comfort": {
+      "displayName": "Emotional Hurt/Comfort",
+      "pinned": false,
+      "section": "trope"
+    },
+    "ff|Merlin (TV)|Post-Season/Series 04": {
+      "displayName": "Post-Season/Series 04",
+      "pinned": false,
+      "section": "trope"
+    },
+    "ff|Merlin (TV)|Arthur/Merlin": {
+      "displayName": "Arthur/Merlin",
+      "icon": "https://i.pinimg.com/webp87/1200x/a7/ca/8d/a7ca8d649feb2ebb5d1cc6ee163c4ff6.webp",
+      "pinned": false
+    },
+    "ff|Merlin (TV)|Elyan/Merlin": {
+      "displayName": "Elyan/Merlin",
+      "icon": "https://i.pinimg.com/736x/15/eb/78/15eb782c68f379b7fe4d5f4d46d5ba1d.jpg",
+      "pinned": false
+    },
+    "ff|Merlin (TV)|Gwaine/Merlin": {
+      "displayName": "Gwaine/Merlin",
+      "icon": "https://i.pinimg.com/736x/c9/ea/f1/c9eaf181966e0c007db4b71df01e06e7.jpg",
+      "pinned": false
+    },
+    "ff|Merlin (TV)|Gwen/Merlin/Arthur": {
+      "displayName": "Gwen/Merlin/Arthur",
+      "icon": "https://i.pinimg.com/1200x/aa/11/95/aa11955334e09c23f3ae1af4f8638afd.jpg",
+      "pinned": false
+    },
+    "ff|Merlin (TV)|Gwen/Morgana": {
+      "displayName": "Gwen/Morgana",
+      "icon": "https://i.pinimg.com/736x/da/b7/90/dab790685dde7cca92743e7b656e5690.jpg",
+      "pinned": false
+    },
+    "ff|Merlin (TV)|Merlin/Mithian": {
+      "displayName": "Merlin/Mithian",
+      "icon": "https://i.pinimg.com/1200x/57/bd/8f/57bd8f1512b73d131f1c08d44fdfc961.jpg",
+      "pinned": false
+    },
+    "ff|Merlin (TV)|Lancelot/Merlin": {
+      "displayName": "Lancelot/Merlin",
+      "icon": "https://i.pinimg.com/1200x/62/2f/b3/622fb308b7bfa0adbab12be8fce4de66.jpg",
+      "pinned": false
+    },
+    "ff|Merlin (TV)|Leon/Merlin": {
+      "displayName": "Leon/Merlin",
+      "icon": "https://i.pinimg.com/736x/71/48/c5/7148c5e4e82be715a55a3fb989852b54.jpg",
+      "pinned": false
+    },
+    "ff|Merlin (TV)|Merlin/Percival": {
+      "displayName": "Merlin/Percival",
+      "icon": "https://i.pinimg.com/736x/dc/03/ba/dc03baa317ee7b8e5e88830104ae19e5.jpg",
+      "pinned": false
+    },
+    "ff|Percy Jackson": {
+      "displayName": "Percy Jackson",
+      "icon": "https://i.pinimg.com/736x/46/cb/34/46cb346695100a32c06767a28b717474.jpg",
+      "pinned": false
+    },
+    "ff|ACOTAR": {
+      "displayName": "ACOTAR",
+      "icon": "https://i.pinimg.com/webp87/1200x/6f/d6/44/6fd644df8f2e0ef71c3ee65c97cb910e.webp",
+      "pinned": false
+    },
+    "ff|TSITP": {
+      "displayName": "TSITP",
+      "icon": "https://i.pinimg.com/736x/d9/f7/09/d9f70944d616522a50363b9c9e963684.jpg",
+      "pinned": false
+    },
+    "book|Romance": {
+      "displayName": "Romance",
+      "icon": "https://i.pinimg.com/webp87/1200x/b8/e3/b0/b8e3b05d5961242edc36730c0d92bef5.webp",
+      "pinned": false
+    },
+    "book|Fantasy": {
+      "displayName": "Fantasy",
+      "icon": "https://i.pinimg.com/webp87/736x/82/05/e3/8205e3ef79a6e40048ef475582af42ca.webp",
+      "pinned": false
+    },
+    "book|Romanzo Storico": {
+      "displayName": "Romanzo Storico",
+      "icon": "https://i.pinimg.com/webp87/1200x/03/2a/32/032a32028fe1d71f61e3d3ac8ea4cf51.webp",
+      "pinned": false
+    },
+    "book|Erotico": {
+      "displayName": "Erotico",
+      "icon": "https://i.pinimg.com/webp87/736x/57/50/f4/5750f4afd14c07a7ef389caf7f105e39.webp",
+      "pinned": false
+    },
+    "book|Wattpad": {
+      "displayName": "Wattpad",
+      "icon": "https://i.pinimg.com/webp87/736x/04/65/40/04654042523def2f284239c3498fe4ad.webp",
+      "pinned": false
+    },
+    "book|Narrativa per Bambini": {
+      "displayName": "Narrativa per Bambini",
+      "icon": "https://i.pinimg.com/736x/17/38/6d/17386dc6ae4751282cf098103bd9aeff.jpg",
+      "pinned": false
+    },
+    "book|Trash Fantasy": {
+      "displayName": "Trash Fantasy",
+      "icon": "https://i.pinimg.com/webp87/736x/b8/3c/c4/b83cc47e931d2be5b8aed78e8c120a12.webp",
+      "pinned": false
+    },
+    "book|YA": {
+      "displayName": "YA",
+      "icon": "https://i.pinimg.com/webp87/736x/a0/29/ac/a029ac320a53f11dca83a8630179d7b7.webp",
+      "pinned": false
+    },
+    "book|Romantasy": {
+      "displayName": "Romantasy",
+      "icon": "https://i.pinimg.com/736x/03/64/21/03642139f8c8911b6b980d8ea0d360b3.jpg",
+      "pinned": false
+    },
+    "book|Manhwa": {
+      "displayName": "Manhwa",
+      "icon": "https://i.pinimg.com/736x/76/de/66/76de66aa5cd78681d89c56137c26a2c7.jpg",
+      "pinned": false
+    },
+    "book|Thriller": {
+      "displayName": "Thriller",
+      "icon": "https://i.pinimg.com/webp87/1200x/fd/2c/ef/fd2cef9c1c0fce78e6b56aa30a9d532f.webp",
+      "pinned": false
+    },
+    "book|Umoristico": {
+      "displayName": "Umoristico",
+      "icon": "https://i.pinimg.com/originals/42/76/3c/42763cd3bfb9f42340a197e15b99195f.gif",
+      "pinned": false
+    },
+    "book|hard science-fiction": {
+      "displayName": "hard science-fiction",
+      "icon": "https://i.pinimg.com/webp87/1200x/05/84/22/0584229023f26a00a9dfff6cce742283.webp",
+      "pinned": false
+    },
+    "book|Saggistica": {
+      "displayName": "Saggistica",
+      "icon": "https://i.pinimg.com/webp87/736x/79/72/8c/79728c74c50abd33a8882324f0c162fd.webp",
+      "pinned": false
+    },
+    "book|Religioso": {
+      "displayName": "Religioso",
+      "icon": "https://i.pinimg.com/webp87/736x/d3/da/c8/d3dac89be7b8e4bdbc8d19659b043c62.webp",
+      "pinned": false
+    }
+  }
 }
