@@ -3065,7 +3065,8 @@
     "genre": "",
     "section": "",
     "pages": null,
-    "oneshot": false
+    "oneshot": false,
+    "readCount": 3
   },
   {
     "id": "ff_121",
@@ -5137,7 +5138,8 @@
     "_addedAt": 213,
     "favorite": true,
     "finishedAt": "2026-06-05T19:11:54.641336+00:00",
-    "coverIcon": "https://i.pinimg.com/736x/c0/fe/92/c0fe92908f29d54f7d6a049b1fabe7dd.jpg"
+    "coverIcon": "https://i.pinimg.com/736x/c0/fe/92/c0fe92908f29d54f7d6a049b1fabe7dd.jpg",
+    "readCount": 2
   },
   {
     "id": "ff_215",
@@ -5159,7 +5161,8 @@
     "url": "",
     "_addedAt": 214,
     "favorite": true,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00",
+    "readCount": 2
   },
   {
     "id": "ff_216",
@@ -5181,7 +5184,8 @@
     "url": "",
     "_addedAt": 215,
     "favorite": true,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00",
+    "readCount": 2
   },
   {
     "id": "ff_217",
@@ -5203,7 +5207,8 @@
     "url": "",
     "_addedAt": 216,
     "favorite": true,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00",
+    "readCount": 2
   },
   {
     "id": "ff_218",
@@ -5225,7 +5230,8 @@
     "url": "",
     "_addedAt": 217,
     "favorite": true,
-    "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+    "finishedAt": "2026-06-05T19:11:54.641336+00:00",
+    "readCount": 2
   },
   {
     "id": "ff_219",
@@ -5248,7 +5254,8 @@
     "_addedAt": 218,
     "favorite": true,
     "finishedAt": "2026-06-05T19:11:54.641336+00:00",
-    "coverIcon": "https://i.pinimg.com/736x/93/6d/54/936d5482e475128eadd750e1d7d142b9.jpg"
+    "coverIcon": "https://i.pinimg.com/736x/93/6d/54/936d5482e475128eadd750e1d7d142b9.jpg",
+    "readCount": 2
   },
   {
     "id": "ff_220",
@@ -6147,7 +6154,8 @@
     "rating": "",
     "hearts": null,
     "favorite": true,
-    "coverIcon": "https://preview.redd.it/the-italian-cover-of-the-philosophers-stone-its-a-v0-hv6vzf3peqaa1.jpg?width=1080&crop=smart&auto=webp&s=d4a9e38798e588402d83390ec6d05fb56fb7c62e"
+    "coverIcon": "https://preview.redd.it/the-italian-cover-of-the-philosophers-stone-its-a-v0-hv6vzf3peqaa1.jpg?width=1080&crop=smart&auto=webp&s=d4a9e38798e588402d83390ec6d05fb56fb7c62e",
+    "readCount": 4
   },
   {
     "id": "book_3",
@@ -7754,7 +7762,8 @@
     "url": "",
     "_addedAt": 345,
     "favorite": true,
-    "coverIcon": "https://m.media-amazon.com/images/I/61whefI+L8L._AC_UF1000,1000_QL80_.jpg"
+    "coverIcon": "https://m.media-amazon.com/images/I/61whefI+L8L._AC_UF1000,1000_QL80_.jpg",
+    "readCount": 3
   },
   {
     "id": "book_96",

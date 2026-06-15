@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "mobile-pwa",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-p", "8765", "docs"],
+      "port": 8765
+    }
+  ]
+}
