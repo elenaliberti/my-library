@@ -1244,7 +1244,7 @@ async function init(){
     S.items=r.items;S.sha=r.sha;
     // Merge: remote folderConfig wins for any key not already set locally
     S.folderConfig={...r.folderConfig,...S.folderConfig};
-    S.loading=false;renderLibrary();renderStatRow();
+    S.loading=false;renderStatRow();switchView('grid');  // open to Browse by default
   }catch(e){
     S.loading=false;
     if(e.message==='invalid_token'){toast('Token invalid','err');setTimeout(showSetup,1200)}
@@ -1261,7 +1261,7 @@ document.getElementById('s-btn').addEventListener('click',async()=>{
   const t=document.getElementById('pat-in').value.trim();if(!t)return;
   const errEl=document.getElementById('setup-err');errEl.textContent='';errEl.style.display='none';
   document.getElementById('s-btn').textContent='Connecting…';
-  try{localStorage.setItem('gh_token',t);const r=await ghLoad();S.items=r.items;S.sha=r.sha;S.folderConfig=r.folderConfig||{};showApp();renderLibrary();renderStatRow()}
+  try{localStorage.setItem('gh_token',t);const r=await ghLoad();S.items=r.items;S.sha=r.sha;S.folderConfig=r.folderConfig||{};showApp();renderStatRow();switchView('grid')}
   catch(e){localStorage.removeItem('gh_token');errEl.style.display='block';errEl.textContent=e.message==='invalid_token'?'❌ Token invalid or missing repo access':'❌ '+e.message;document.getElementById('s-btn').textContent='Connect Library →'}
 });
 document.getElementById('pat-in').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('s-btn').click()});
