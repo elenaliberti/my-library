@@ -4911,7 +4911,7 @@
       "type": "ff",
       "title": "Diagnosis",
       "author": "MaidenMotherCrone (orphan_account)",
-      "fandom": "Harry Potter - J. K. Rowling",
+      "fandom": "Harry Potter",
       "words": 282456,
       "hearts": 9355,
       "rating": "Not Rated",
@@ -4935,7 +4935,11 @@
       "genre": "",
       "section": "",
       "pages": null,
-      "oneshot": false
+      "oneshot": false,
+      "readCount": 1,
+      "readDates": [
+        "2026-06-05T11:00:00.000Z"
+      ]
     },
     {
       "id": "ff_203",
