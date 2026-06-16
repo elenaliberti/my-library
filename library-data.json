@@ -568,7 +568,7 @@
     {
       "id": "ff_7",
       "type": "ff",
-      "title": "SynkardiÃ¡s",
+      "title": "SynkardiÃÂ¡s",
       "author": "00Q_Magnus, ArielSakura",
       "fandom": "Harry Potter",
       "words": 90949,
@@ -6628,7 +6628,7 @@
     {
       "id": "book_25",
       "type": "book",
-      "title": "Shadowhunters: CittÃ  di ossa",
+      "title": "Shadowhunters: CittÃÂ  di ossa",
       "author": "Cassandra Clare",
       "genre": "Fantasy / Urban Fantasy",
       "section": "Fantasy",
@@ -6645,7 +6645,7 @@
     {
       "id": "book_26",
       "type": "book",
-      "title": "Shadowhunters: CittÃ  di cenere",
+      "title": "Shadowhunters: CittÃÂ  di cenere",
       "author": "Cassandra Clare",
       "genre": "Fantasy / Urban Fantasy",
       "section": "Fantasy",
@@ -7244,7 +7244,7 @@
     {
       "id": "book_62",
       "type": "book",
-      "title": "Non Ã¨ ancora finita",
+      "title": "Non ÃÂ¨ ancora finita",
       "author": "S. Marty",
       "genre": "Trash Fantasy",
       "section": "Fantasy",
@@ -7591,7 +7591,7 @@
     {
       "id": "book_81",
       "type": "book",
-      "title": "CittÃ  di carta",
+      "title": "CittÃÂ  di carta",
       "author": "John Green",
       "genre": "YA / Romance",
       "section": "Fantasy",
@@ -7833,7 +7833,7 @@
     {
       "id": "book_95",
       "type": "book",
-      "title": "Il ragazzo che entrÃ² dalla finestra e si infilÃ² nel mio letto",
+      "title": "Il ragazzo che entrÃÂ² dalla finestra e si infilÃÂ² nel mio letto",
       "author": "Kirsty Moseley",
       "genre": "Romance",
       "section": "Fantasy",
@@ -8020,7 +8020,7 @@
     {
       "id": "book_106",
       "type": "book",
-      "title": "Un disastro Ã¨ per sempre",
+      "title": "Un disastro ÃÂ¨ per sempre",
       "author": "Jamie McGuire",
       "genre": "Romance / New Adult",
       "section": "Fantasy",
@@ -8084,7 +8084,7 @@
     {
       "id": "book_110",
       "type": "book",
-      "title": "L'assistente del capo: Chi Ã¨ ora il boss?",
+      "title": "L'assistente del capo: Chi ÃÂ¨ ora il boss?",
       "author": "Lexy Timms",
       "genre": "Romance",
       "section": "Fantasy",
@@ -8277,7 +8277,7 @@
     {
       "id": "book_122",
       "type": "book",
-      "title": "Siamo amici solo il mercoledÃ¬",
+      "title": "Siamo amici solo il mercoledÃÂ¬",
       "author": "Tania Paxia",
       "genre": "Romance",
       "section": "Fantasy",
@@ -8556,7 +8556,7 @@
     {
       "id": "book_139",
       "type": "book",
-      "title": "Viciniâ¦ anche troppo",
+      "title": "ViciniÃ¢ÂÂ¦ anche troppo",
       "author": "Scarlett Reese",
       "genre": "Romance",
       "section": "Fantasy",
@@ -10336,7 +10336,7 @@
       "words": 112000,
       "status": "Finished",
       "userRating": 0,
-      "notes": "Un fottuto capolavoroâ¦ solo wow",
+      "notes": "Un fottuto capolavoroÃ¢ÂÂ¦ solo wow",
       "tags": [],
       "url": "",
       "_addedAt": 498,
@@ -10431,7 +10431,7 @@
     {
       "id": "book_257",
       "type": "book",
-      "title": "Sposa a metÃ ",
+      "title": "Sposa a metÃÂ ",
       "author": "Mary Balogh",
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
@@ -11783,7 +11783,7 @@
     {
       "id": "book_342",
       "type": "book",
-      "title": "Verso la maturitÃ ",
+      "title": "Verso la maturitÃÂ ",
       "author": "",
       "genre": "Wattpad / YA",
       "section": "Fantasy",
@@ -12081,7 +12081,7 @@
       "words": null,
       "status": "Finished",
       "userRating": 0,
-      "notes": "Bellissimoâ¦ mi ha fatta piangere",
+      "notes": "BellissimoÃ¢ÂÂ¦ mi ha fatta piangere",
       "tags": [],
       "url": "",
       "_addedAt": 605
@@ -12740,6 +12740,9 @@
       "displayName": "Religioso",
       "icon": "https://i.pinimg.com/webp87/736x/d3/da/c8/d3dac89be7b8e4bdbc8d19659b043c62.webp",
       "pinned": false
+    },
+    "ff|A Court of Thorns and Roses Series - Sarah J. Maas": {
+      "icon": "https://pin.it/3TTdS9Wa9"
     }
   }
 }
