@@ -1312,9 +1312,21 @@
       "status": "Finished",
       "userRating": 0,
       "notes": "",
-      "tags": [],
-      "url": "",
-      "_addedAt": 40
+      "tags": [
+        "Apollo/Percy Jackson"
+      ],
+      "url": "https://archiveofourown.org/works/56365399/chapters/143213833",
+      "_addedAt": 40,
+      "readDates": [
+        null
+      ],
+      "readCount": 1,
+      "genre": "",
+      "section": "",
+      "pages": null,
+      "oneshot": false,
+      "finishedAt": "2026-06-16T11:00:00.000Z",
+      "_modAt": "2026-06-16T20:51:20.060Z"
     },
     {
       "id": "ff_42",
@@ -3298,11 +3310,22 @@
       "userRating": 5,
       "notes": "",
       "tags": [
-        "Creature Harry"
+        "Creature Harry",
+        "Harry/Multi",
+        "Harry Potter/Charlie Weasley"
       ],
       "url": "",
       "_addedAt": 126,
-      "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+      "finishedAt": "2026-06-05T11:00:00.000Z",
+      "readDates": [
+        "2026-06-05T19:11:54.641336+00:00"
+      ],
+      "readCount": 1,
+      "genre": "",
+      "section": "",
+      "pages": null,
+      "oneshot": false,
+      "_modAt": "2026-06-16T20:45:23.595Z"
     },
     {
       "id": "ff_128",
@@ -6122,16 +6145,30 @@
       "author": "chellethewriter",
       "fandom": "Percy Jackson",
       "words": 25873,
-      "hearts": null,
-      "rating": "https://archiveofourown.org/works/21981151/chapters/52452565",
-      "pairing": "",
+      "hearts": 4659,
+      "rating": "",
+      "pairing": "Annabeth Chase/Percy Jackson",
       "status": "Finished",
       "userRating": 5,
-      "notes": "",
-      "tags": [],
-      "url": "",
+      "notes": "percy jackson will graduate so help me rick × the camp squads up to save percy's gpa",
+      "tags": [
+        "Crack Treated Seriously",
+        "Post-Canon",
+        "the camp squads up to save percy&#39;s gpa",
+        "Annabeth Chase/Percy Jackson"
+      ],
+      "url": "https://archiveofourown.org/works/21981151/chapters/52452565",
       "_addedAt": 249,
-      "finishedAt": "2026-06-05T21:32:23.756Z"
+      "finishedAt": "2026-06-05T11:00:00.000Z",
+      "readDates": [
+        "2026-06-05T21:32:23.756Z"
+      ],
+      "readCount": 1,
+      "genre": "",
+      "section": "",
+      "pages": null,
+      "oneshot": false,
+      "_modAt": "2026-06-16T20:48:23.993Z"
     },
     {
       "id": "ff_251",
@@ -6140,16 +6177,29 @@
       "author": "LyraLee33",
       "fandom": "Percy Jackson",
       "words": 190395,
-      "hearts": null,
-      "rating": "https://archive.transformativeworks.org/works/53427841",
-      "pairing": "",
+      "hearts": 5322,
+      "rating": "Explicit",
+      "pairing": "Annabeth Chase/Percy Jackson",
       "status": "Finished",
       "userRating": 0,
       "notes": "",
-      "tags": [],
-      "url": "",
+      "tags": [
+        "Time Travel",
+        "Fix-It",
+        "Alternate Universe"
+      ],
+      "url": "https://archiveofourown.org/works/53427841/chapters/135228064",
       "_addedAt": 250,
-      "finishedAt": "2026-06-05T21:32:18.289Z"
+      "finishedAt": "2026-06-05T11:00:00.000Z",
+      "readDates": [
+        "2026-06-05T21:32:18.289Z"
+      ],
+      "readCount": 1,
+      "genre": "",
+      "section": "",
+      "pages": null,
+      "oneshot": false,
+      "_modAt": "2026-06-16T20:49:38.259Z"
     },
     {
       "id": "ff_252",
@@ -6186,18 +6236,32 @@
       "type": "ff",
       "title": "if you ever think you got it wrong",
       "author": "moonsblue",
-      "fandom": "TSITP",
-      "words": null,
-      "hearts": null,
-      "rating": "",
-      "pairing": "",
+      "fandom": "The Summer I Turned Pretty",
+      "words": 19839,
+      "hearts": 989,
+      "rating": "Mature",
+      "pairing": "Isabel",
       "status": "Finished",
       "userRating": 0,
       "notes": "",
-      "tags": [],
-      "url": "",
+      "tags": [
+        "Second Chances",
+        "Road Trips",
+        "Mutual Pining",
+        "Isabel \"Belly\" Conklin/Conrad Fisher"
+      ],
+      "url": "https://archiveofourown.org/works/68058671/chapters/176037476",
       "_addedAt": 252,
-      "finishedAt": "2026-06-05T21:32:12.939Z"
+      "finishedAt": "2026-06-05T11:00:00.000Z",
+      "readDates": [
+        "2026-06-05T21:32:12.939Z"
+      ],
+      "readCount": 1,
+      "genre": "",
+      "section": "",
+      "pages": null,
+      "oneshot": false,
+      "_modAt": "2026-06-16T20:41:19.363Z"
     },
     {
       "id": "ff_254",
@@ -12415,6 +12479,66 @@
       "readDates": [
         "2026-06-16T20:05:51.986Z"
       ]
+    },
+    {
+      "title": "Are You Calling Me An Animal?",
+      "author": "cheddarplums",
+      "fandom": "The Summer I Turned Pretty",
+      "words": 12364,
+      "hearts": 768,
+      "rating": "Explicit",
+      "pairing": "Isabel",
+      "tags": [
+        "Alpha/Beta/Omega Dynamics",
+        "Late-presenting omega Belly",
+        "Alpha Conrad",
+        "Isabel \"Belly\" Conklin/Conrad Fisher"
+      ],
+      "url": "https://archiveofourown.org/works/68643341/chapters/177744691",
+      "notes": "",
+      "status": "Finished",
+      "readDates": [],
+      "readCount": 0,
+      "id": "1781642209248_7pyqd5dy76i",
+      "type": "ff",
+      "genre": "",
+      "section": "",
+      "pages": null,
+      "userRating": 0,
+      "oneshot": false,
+      "finishedAt": "2026-06-16T11:00:00.000Z",
+      "_addedAt": 634,
+      "_modAt": "2026-06-16T20:41:27.097Z"
+    },
+    {
+      "title": "By the Fireplace",
+      "author": "FN70000",
+      "fandom": "The Summer I Turned Pretty",
+      "words": 27803,
+      "hearts": 372,
+      "rating": "",
+      "pairing": "Isabel",
+      "tags": [
+        "Mutual Pining",
+        "Yearning",
+        "Alpha/Beta/Omega Dynamics",
+        "Isabel \"Belly\" Conklin/Conrad Fisher"
+      ],
+      "url": "https://archiveofourown.org/works/68806831/chapters/178223081",
+      "notes": "abandoned by author\nUpdated:2025-08-12",
+      "status": "Finished",
+      "readDates": [],
+      "readCount": 0,
+      "id": "1781642101083_boxmh9313t8",
+      "type": "ff",
+      "genre": "",
+      "section": "",
+      "pages": null,
+      "userRating": 0,
+      "oneshot": false,
+      "finishedAt": "2026-06-16T11:00:00.000Z",
+      "_addedAt": 633,
+      "_modAt": "2026-06-16T20:35:24.065Z"
     }
   ],
   "folderConfig": {
@@ -13000,6 +13124,57 @@
     "ff|Percy Jackson|Slow Burn": {
       "displayName": "Slow Burn",
       "icon": "https://i.pinimg.com/736x/45/96/ac/4596ac335038a72064e54ac694d50f86.jpg",
+      "pinned": false
+    },
+    "ff|A Court of Thorns and Roses Series - Sarah J. Maas|Feyre Archeron/Rhysand": {
+      "displayName": "Feyre Archeron/Rhysand",
+      "icon": "https://i.pinimg.com/1200x/88/9a/5e/889a5eeb9eba7a7a825c4125fa0c63a9.jpg",
+      "pinned": false
+    },
+    "ff|The Summer I Turned Pretty|Alpha/Beta/Omega Dynamics": {
+      "displayName": "Alpha/Beta/Omega Dynamics",
+      "pinned": false,
+      "section": "trope",
+      "icon": "https://i.pinimg.com/736x/80/1c/f3/801cf349b51b327e18a279ab07a55808.jpg"
+    },
+    "ff|The Summer I Turned Pretty": {
+      "displayName": "The Summer I Turned Pretty",
+      "icon": "https://i.pinimg.com/736x/46/65/f0/4665f0ff6512a3f23d7711eabc05e225.jpg",
+      "pinned": false
+    },
+    "ff|The Summer I Turned Pretty|Isabel \"Belly\" Conklin/Conrad Fisher": {
+      "displayName": "Isabel",
+      "icon": "https://i.pinimg.com/736x/d5/e0/7a/d5e07a54ca5f1822a12fe1ef4726d35f.jpg",
+      "pinned": false
+    },
+    "ff|The Summer I Turned Pretty|Mutual Pining": {
+      "displayName": "Mutual Pining",
+      "icon": "https://i.pinimg.com/originals/ff/83/a8/ff83a8728b37803873470654a4186c47.gif",
+      "pinned": false
+    },
+    "ff|The Summer I Turned Pretty|Alpha Conrad": {
+      "displayName": "Alpha Conrad",
+      "icon": "https://i.pinimg.com/originals/36/4d/64/364d643897a4e4360fc0532e5593bf05.gif",
+      "pinned": false
+    },
+    "ff|The Summer I Turned Pretty|Yearning": {
+      "displayName": "Yearning",
+      "icon": "https://i.pinimg.com/736x/e7/e7/37/e7e737d1558c4979e9b370f581c1013e.jpg",
+      "pinned": false
+    },
+    "ff|The Summer I Turned Pretty|Second Chances": {
+      "displayName": "Second Chances",
+      "icon": "https://i.pinimg.com/736x/c2/52/fc/c252fcff7836ebe5d604fc0cee3f0227.jpg",
+      "pinned": false
+    },
+    "ff|The Summer I Turned Pretty|Road Trips": {
+      "displayName": "Road Trips",
+      "icon": "https://i.pinimg.com/736x/13/fe/ed/13feed926b78a881d6bfbe3cd6d4c978.jpg",
+      "pinned": false
+    },
+    "ff|The Summer I Turned Pretty|Late-presenting omega Belly": {
+      "displayName": "Late-presenting omega Belly",
+      "icon": "https://i.pinimg.com/736x/81/8d/52/818d5225de2cc83d602b67a2c83fc82c.jpg",
       "pinned": false
     }
   }
