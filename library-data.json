@@ -231,9 +231,9 @@
       "coverIcon": "https://i.pinimg.com/webp87/736x/30/e8/e0/30e8e0c4e8d56595c3b083011de1436e.webp"
     },
     {
-      "title": "Make A Wish Chapter 1: Goodbye",
+      "title": "Make A Wish",
       "author": "Rorschach's Blot",
-      "fandom": "harry potter",
+      "fandom": "Harry Potter",
       "words": 187589,
       "hearts": 27556,
       "rating": "",
@@ -250,7 +250,10 @@
       "notes": "",
       "oneshot": false,
       "finishedAt": null,
-      "_addedAt": 625
+      "_addedAt": 625,
+      "favorite": false,
+      "readCount": 0,
+      "readDates": []
     },
     {
       "title": "Cold Soul (I Want It Back)",
