@@ -6150,11 +6150,10 @@
       "pairing": "Annabeth Chase/Percy Jackson",
       "status": "Finished",
       "userRating": 5,
-      "notes": "percy jackson will graduate so help me rick × the camp squads up to save percy's gpa",
+      "notes": "percy jackson will graduate so help me rick Ã the camp squads up to save percy's gpa",
       "tags": [
         "Crack Treated Seriously",
         "Post-Canon",
-        "the camp squads up to save percy&#39;s gpa",
         "Annabeth Chase/Percy Jackson"
       ],
       "url": "https://archiveofourown.org/works/21981151/chapters/52452565",
@@ -6168,7 +6167,8 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T20:48:23.993Z"
+      "_modAt": "2026-06-16T20:52:06.310Z",
+      "favorite": false
     },
     {
       "id": "ff_251",
@@ -6184,9 +6184,7 @@
       "userRating": 0,
       "notes": "",
       "tags": [
-        "Time Travel",
-        "Fix-It",
-        "Alternate Universe"
+        "Time Travel Fix-It"
       ],
       "url": "https://archiveofourown.org/works/53427841/chapters/135228064",
       "_addedAt": 250,
@@ -6199,7 +6197,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T20:49:38.259Z"
+      "_modAt": "2026-06-16T20:53:43.491Z"
     },
     {
       "id": "ff_252",
@@ -13175,6 +13173,16 @@
     "ff|The Summer I Turned Pretty|Late-presenting omega Belly": {
       "displayName": "Late-presenting omega Belly",
       "icon": "https://i.pinimg.com/736x/81/8d/52/818d5225de2cc83d602b67a2c83fc82c.jpg",
+      "pinned": false
+    },
+    "ff|Percy Jackson|Post-Canon": {
+      "displayName": "Post-Canon",
+      "icon": "https://i.pinimg.com/1200x/eb/99/7e/eb997e7173857623549805fecbcac897.jpg",
+      "pinned": false
+    },
+    "ff|Percy Jackson|Crack Treated Seriously": {
+      "displayName": "Crack Treated Seriously",
+      "icon": "https://i.pinimg.com/1200x/b6/72/5d/b6725d5fb7b0b91b4c4299e811370f1f.jpg",
       "pinned": false
     }
   }
