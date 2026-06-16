@@ -3087,7 +3087,7 @@
       "type": "ff",
       "title": "Star Quality",
       "author": "who_la_hoop",
-      "fandom": "Harry Potter - J. K. Rowling",
+      "fandom": "Harry Potter",
       "words": 118607,
       "hearts": 13935,
       "rating": "Explicit",
@@ -3105,7 +3105,12 @@
       "genre": "",
       "section": "",
       "pages": null,
-      "oneshot": false
+      "oneshot": false,
+      "favorite": false,
+      "readCount": 1,
+      "readDates": [
+        "2026-06-05T11:00:00.000Z"
+      ]
     },
     {
       "id": "ff_122",
