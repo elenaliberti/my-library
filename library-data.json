@@ -124,12 +124,9 @@
       "rating": "",
       "pairing": "Merlin & Arthur Pendragon (Merlin)",
       "tags": [
-        "Merlin&#39;s Magic Revealed (Merlin)",
-        "Merlin&#39;s Neckerchief (Merlin)",
-        "The Knights Find Out About Merlin&#39;s Magic (Merlin)",
-        "Merlin&#39;s Scars Revealed (Merlin)",
         "Age Regression/De-Aging",
-        "Angst"
+        "Magic Revealed",
+        "Knights find out about Merlin"
       ],
       "url": "https://archiveofourown.org/works/46464097",
       "notes": "",
@@ -141,8 +138,14 @@
       "pages": null,
       "userRating": 0,
       "oneshot": true,
-      "finishedAt": "2026-06-14T03:01:15.224Z",
-      "_addedAt": 627
+      "finishedAt": "2026-06-14T11:00:00.000Z",
+      "_addedAt": 627,
+      "favorite": false,
+      "readCount": 1,
+      "_modAt": "2026-06-16T20:09:19.611Z",
+      "readDates": [
+        "2026-06-14T03:01:15.224Z"
+      ]
     },
     {
       "title": "Trading Tomorrow",
@@ -5832,10 +5835,7 @@
       "userRating": 5,
       "notes": "",
       "tags": [
-        "Merlin&#39;s Magic Revealed (Merlin)",
-        "Branding",
         "Abduction",
-        "Rescue",
         "BAMF Merlin (Merlin)",
         "Hurt/Comfort",
         "Magic Revealed",
@@ -5847,7 +5847,13 @@
       "genre": "",
       "section": "",
       "pages": null,
-      "oneshot": false
+      "oneshot": false,
+      "favorite": false,
+      "readCount": 1,
+      "_modAt": "2026-06-16T20:10:28.633Z",
+      "readDates": [
+        "2026-06-05T11:00:00.000Z"
+      ]
     },
     {
       "id": "ff_240",
@@ -5910,7 +5916,7 @@
     {
       "id": "ff_242",
       "type": "ff",
-      "title": "Unbreakable Chapter 1",
+      "title": "Unbreakable",
       "author": "eight 0f hearts",
       "fandom": "Merlin (TV)",
       "words": 52365,
@@ -5929,7 +5935,13 @@
       "genre": "",
       "section": "",
       "pages": null,
-      "oneshot": false
+      "oneshot": false,
+      "favorite": false,
+      "readCount": 1,
+      "_modAt": "2026-06-16T20:10:59.883Z",
+      "readDates": [
+        "2026-06-05T11:00:00.000Z"
+      ]
     },
     {
       "id": "ff_243",
@@ -5998,12 +6010,12 @@
       "userRating": 0,
       "notes": "",
       "tags": [
-        "Merlin&#39;s Magic Revealed (Merlin)",
         "Branding",
         "Abduction",
         "Rescue",
         "BAMF Merlin (Merlin)",
-        "Hurt/Comfort"
+        "Hurt/Comfort",
+        "Magic Revealed"
       ],
       "url": "https://archiveofourown.org/works/28939431/chapters/71007483",
       "_addedAt": 244,
@@ -6011,7 +6023,13 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "finishedAt": "2026-06-05T11:00:00.000Z"
+      "finishedAt": "2026-06-05T11:00:00.000Z",
+      "favorite": false,
+      "readCount": 1,
+      "_modAt": "2026-06-16T20:14:42.024Z",
+      "readDates": [
+        "2026-06-05T11:00:00.000Z"
+      ]
     },
     {
       "id": "ff_246",
@@ -6195,12 +6213,7 @@
       "userRating": 0,
       "notes": "",
       "tags": [
-        "Hurt/Comfort",
-        "Emotional Hurt/Comfort",
-        "Self-Hatred",
-        "Self-Esteem Issues",
-        "Merlin Has Issues (Merlin)",
-        "Look he&#39;s been told all his life that magic makes people monsters"
+        "Arthur/Merlin"
       ],
       "url": "https://archiveofourown.org/works/54860815",
       "_addedAt": 253,
@@ -6208,7 +6221,13 @@
       "genre": "",
       "section": "",
       "pages": null,
-      "oneshot": false
+      "oneshot": false,
+      "favorite": false,
+      "readCount": 1,
+      "_modAt": "2026-06-16T20:13:34.524Z",
+      "readDates": [
+        "2026-06-05T11:00:00.000Z"
+      ]
     },
     {
       "id": "ff_255",
@@ -6225,11 +6244,8 @@
       "notes": "",
       "tags": [
         "Slow Burn",
-        "Angst",
-        "Whump",
         "Hurt/Comfort",
-        "Did I Mention Angst?",
-        "A LOT of Angst"
+        "Arthur/Merlin"
       ],
       "url": "https://archiveofourown.org/works/29485752/chapters/72430446",
       "_addedAt": 254,
@@ -6237,7 +6253,13 @@
       "genre": "",
       "section": "",
       "pages": null,
-      "oneshot": false
+      "oneshot": false,
+      "favorite": false,
+      "readCount": 1,
+      "_modAt": "2026-06-16T20:13:42.206Z",
+      "readDates": [
+        "2026-06-05T11:00:00.000Z"
+      ]
     },
     {
       "id": "book_2",
@@ -12364,6 +12386,35 @@
       "_addedAt": 618,
       "genre": "",
       "section": ""
+    },
+    {
+      "tags": [
+        "Arthur/Merlin"
+      ],
+      "id": "1781640351986_0308jrwshlp5",
+      "type": "ff",
+      "title": "Inhuman",
+      "author": "poetic_emrys",
+      "fandom": "Merlin (TV)",
+      "genre": "",
+      "section": "",
+      "pairing": "",
+      "rating": "Mature",
+      "status": "Finished",
+      "words": 8112,
+      "hearts": 1470,
+      "pages": null,
+      "userRating": 0,
+      "notes": "",
+      "url": "https://archiveofourown.org/works/54860815",
+      "oneshot": false,
+      "finishedAt": "2026-06-16T11:00:00.000Z",
+      "readCount": 1,
+      "_addedAt": 631,
+      "_modAt": "2026-06-16T20:16:42.123Z",
+      "readDates": [
+        "2026-06-16T20:05:51.986Z"
+      ]
     }
   ],
   "folderConfig": {
@@ -12895,6 +12946,11 @@
       "displayName": "Alternate Universe",
       "icon": "https://i.pinimg.com/736x/9c/e5/f0/9ce5f0ef22b34129369aa31505027d76.jpg",
       "pinned": false
+    },
+    "ff|Merlin (TV)|Age Regression/De-Aging": {
+      "displayName": "Age Regression/De-Aging",
+      "pinned": false,
+      "section": "trope"
     }
   }
 }
