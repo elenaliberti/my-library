@@ -82,10 +82,18 @@ function mergeLibrary(localItems, localFC, remoteItems, remoteFC) {
     byId.set(x.id, r ? pickItem(x, r) : x);
   });
   const fc = { ...(remoteFC||{}) };
-  for (const [k, v] of Object.entries(localFC||{})) {
-    const m = { ...(fc[k]||{}) };
-    for (const [kk, vv] of Object.entries(v||{})) if (vv != null && vv !== '') m[kk] = vv;
-    fc[k] = m;
+  for (const [k, lv] of Object.entries(localFC||{})) {
+    const rv = fc[k];
+    if (!rv) { fc[k] = lv; continue; }
+    const lm = Date.parse(lv._modAt||'')||0, rm = Date.parse(rv._modAt||'')||0, localNewer = lm >= rm;
+    const out = {};
+    for (const kk of new Set([...Object.keys(rv), ...Object.keys(lv)])) {
+      if (kk === '_modAt') continue;
+      const a = lv[kk], b = rv[kk];
+      out[kk] = a === undefined ? b : b === undefined ? a : (JSON.stringify(a) === JSON.stringify(b) ? a : (localNewer ? a : b));
+    }
+    const m = (lm >= rm ? lv._modAt : rv._modAt) || lv._modAt || rv._modAt; if (m) out._modAt = m;
+    fc[k] = out;
   }
   return { items: [...byId.values()], folderConfig: fc };
 }
@@ -1318,6 +1326,7 @@ function bindEvents() {
       if (sectionVal) state.folderConfig[key].section = sectionVal;
       else delete state.folderConfig[key].section;
       if (!name && !icon && !pinned && !sectionVal && !existing.isCustom && !existing.filterTag) delete state.folderConfig[key];
+      else state.folderConfig[key]._modAt = new Date().toISOString();  // stamp so the change syncs to phone
       saveFolderConfig();
       state.editingFolder = null;
       render();
@@ -1351,7 +1360,7 @@ function bindEvents() {
       const id = 'custom_' + Date.now();
       const newPath = [...parentPath, id];
       const key = newPath.join('|');
-      state.folderConfig[key] = { displayName: name, isCustom: true };
+      state.folderConfig[key] = { displayName: name, isCustom: true, _modAt: new Date().toISOString() };
       if (icon) state.folderConfig[key].icon = icon;
       if (filterTag) state.folderConfig[key].filterTag = filterTag;
       saveFolderConfig();

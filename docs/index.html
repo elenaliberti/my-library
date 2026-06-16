@@ -262,6 +262,12 @@ html{background:#fff}
 .ish-in:focus{border-color:var(--accent)}
 .ish-save{padding:11px 16px;background:var(--accent);border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:700;cursor:pointer}
 .ish-emojis{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.ish-section{margin-top:14px;border-top:1px solid var(--border);padding-top:12px}
+.ish-section-lbl{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px}
+.ish-seg{display:flex;gap:8px}
+.ish-seg-btn{flex:1;padding:11px 8px;border:1.5px solid var(--border);border-radius:10px;background:#fff;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ish-seg-btn.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.ish-seg-btn:active{opacity:.7}
 .ish-e{width:40px;height:40px;border-radius:10px;border:1.5px solid var(--border);background:#fff;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .ish-e:active{background:var(--surface)}
 
@@ -407,6 +413,14 @@ html{background:#fff}
     <button class="ish-save" id="ish-save">Save</button>
   </div>
   <div class="ish-emojis" id="ish-emojis"></div>
+  <div class="ish-section" id="ish-section" style="display:none">
+    <div class="ish-section-lbl">Folder type</div>
+    <div class="ish-seg">
+      <button class="ish-seg-btn" data-sec="pairing">🚢 Pairing</button>
+      <button class="ish-seg-btn" data-sec="trope">⚡ Trope</button>
+      <button class="ish-seg-btn" data-sec="">Auto</button>
+    </div>
+  </div>
 </div>
 
 <!-- Add / Edit modal (FULL SCREEN — no X cut-off) -->
@@ -496,7 +510,19 @@ function mergeLibrary(localItems,localFC,remoteItems,remoteFC){
   (remoteItems||[]).forEach(x=>{if(x&&x.id!=null)byId.set(x.id,x)});
   (localItems||[]).forEach(x=>{if(!x||x.id==null)return;const r=byId.get(x.id);byId.set(x.id,r?pickItem(x,r):x)});
   const fc={...(remoteFC||{})};
-  for(const [k,v] of Object.entries(localFC||{})){const m={...(fc[k]||{})};for(const [kk,vv] of Object.entries(v||{}))if(vv!=null&&vv!=='')m[kk]=vv;fc[k]=m}
+  for(const [k,lv] of Object.entries(localFC||{})){
+    const rv=fc[k];
+    if(!rv){fc[k]=lv;continue;}
+    const lm=Date.parse(lv._modAt||'')||0, rm=Date.parse(rv._modAt||'')||0, localNewer=lm>=rm;
+    const out={};
+    for(const kk of new Set([...Object.keys(rv),...Object.keys(lv)])){
+      if(kk==='_modAt')continue;
+      const a=lv[kk],b=rv[kk];
+      out[kk]= a===undefined?b : b===undefined?a : (JSON.stringify(a)===JSON.stringify(b)?a:(localNewer?a:b));
+    }
+    const m=(lm>=rm?lv._modAt:rv._modAt)||lv._modAt||rv._modAt; if(m)out._modAt=m;
+    fc[k]=out;
+  }
   return{items:[...byId.values()],folderConfig:fc};
 }
 function fmtTime(m){if(!m)return'0m';const h=Math.floor(m/60);if(!h)return Math.round(m)+'m';const d=Math.floor(h/24);const rh=h%24;if(!d)return h+'h';return rh?`${d}d ${rh}h`:`${d}d`}
@@ -516,9 +542,9 @@ function isPairingTag(label,key){
   return (label||'').includes('/')||d.includes('/')||d.includes(' & ');
 }
 function setCfg(key,patch){
-  S.folderConfig[key]={...(S.folderConfig[key]||{}),...patch};
+  S.folderConfig[key]={...(S.folderConfig[key]||{}),...patch,_modAt:new Date().toISOString()};
   const c=S.folderConfig[key];
-  if(!c.displayName&&!c.icon&&!c.pinned&&!c.isCustom&&!c.filterTag) delete S.folderConfig[key];
+  if(!c.displayName&&!c.icon&&!c.pinned&&!c.isCustom&&!c.filterTag&&!c.section) delete S.folderConfig[key];
 }
 
 // ── GitHub API ─────────────────────────────────────────────────────────────────
@@ -846,7 +872,7 @@ function renderGrid(){
         setCfg(key,{icon:val||undefined});
         if(!val)delete(S.folderConfig[key]||{}).icon;
         await doSave();renderGrid();
-      });
+      },key);
     });
   });
 
@@ -1008,13 +1034,23 @@ async function qSave(up){
 
 // ── Icon editor ───────────────────────────────────────────────────────────────
 let _iconCb=null;
+let _iconFolderKey=null;
 const QUICK_EMOJIS=['📚','📖','✍️','⭐','💕','🐉','🔮','⚡','🐍','🌙','🌊','🔥','❄️','🌸','💫','🎭','🎨','🎵','💎','🦋','🌺','🏹','⚔️','🔱','🌈','🍀','🦅','🦁','🐺','🌑','🏛️','🚀'];
 
-function openIconEditor(current,onSave){
+function openIconEditor(current,onSave,folderKey){
   _iconCb=onSave;
+  _iconFolderKey=folderKey||null;
   const inp=document.getElementById('ish-in');
   inp.value=current||'';
   _updateIshPreview(current||'');
+  // Pairing/Trope toggle only for fandom sub-folders (ff|fandom|tag) — matches the computer
+  const sec=document.getElementById('ish-section');
+  const showSec=folderKey && folderKey.split('|').length===3 && folderKey.indexOf('ff|')===0;
+  if(showSec){
+    sec.style.display='';
+    const cur=getCfg(folderKey).section||'';
+    document.querySelectorAll('#ish-section .ish-seg-btn').forEach(b=>b.classList.toggle('on',(b.dataset.sec||'')===cur));
+  }else{ sec.style.display='none'; }
   document.getElementById('icon-shade').classList.add('on');
   document.getElementById('icon-sheet').classList.add('on');
 }
@@ -1378,6 +1414,18 @@ document.getElementById('ish-save').addEventListener('click',()=>{
 });
 document.getElementById('ish-close').addEventListener('click',closeIconEditor);
 document.getElementById('icon-shade').addEventListener('click',closeIconEditor);
+// Pairing/Trope toggle (applies immediately, syncs via _modAt)
+document.querySelectorAll('#ish-section .ish-seg-btn').forEach(b=>{
+  b.addEventListener('click',async()=>{
+    if(!_iconFolderKey)return;
+    const sec=b.dataset.sec||'';
+    setCfg(_iconFolderKey,{section:sec||undefined});
+    document.querySelectorAll('#ish-section .ish-seg-btn').forEach(x=>x.classList.toggle('on',(x.dataset.sec||'')===sec));
+    if(S.view==='grid')renderGrid();
+    await doSave();
+    toast(sec?('Moved to '+(sec==='pairing'?'Pairings':'Tropes')+' ✓'):'Set to Auto ✓','ok');
+  });
+});
 
 // Quick emoji buttons
 (function(){
