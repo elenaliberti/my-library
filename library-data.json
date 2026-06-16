@@ -547,18 +547,31 @@
       "rating": "Mature",
       "pairing": "F/F",
       "status": "Finished",
-      "userRating": 0,
+      "userRating": 2,
       "notes": "",
       "tags": [
-        "Creature Harry"
+        "Creature Harry",
+        "Viktor Krum/Harry Potter",
+        "Harry is not the BWL",
+        "Mpreg",
+        "Dumbledore bashing",
+        "Submissive Harry Potter",
+        "Weasley Bashing",
+        "Soulmate",
+        "Alpha/Beta/Omega Dynamics"
       ],
-      "url": "",
+      "url": "https://archive.transformativeworks.org/works/25522093/chapters/61922383",
       "_addedAt": 4,
       "finishedAt": "2026-06-05T11:00:00.000Z",
       "genre": "",
       "section": "",
       "pages": null,
-      "oneshot": false
+      "oneshot": false,
+      "_modAt": "2026-06-16T22:15:00.323Z",
+      "readDates": [
+        "2026-06-05T11:00:00.000Z"
+      ],
+      "readCount": 1
     },
     {
       "id": "ff_6",
@@ -567,40 +580,66 @@
       "author": "Graydove71",
       "fandom": "Harry Potter",
       "words": 56017,
-      "hearts": 9684,
+      "hearts": 9864,
       "rating": "Teen+",
-      "pairing": "Gen/M/M",
+      "pairing": "Theodore Nott & Harry Potter",
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [
-        "Creature Harry"
+        "Creature Harry Potter",
+        "Ginny Weasley Bashing",
+        "Theodore Nott/Harry Potter",
+        "Harry in Slytherin",
+        "Powerful!Harry",
+        "Submissive Harry Potter",
+        "Weasley Bashing",
+        "Dumbledore bashing"
       ],
-      "url": "",
+      "url": "https://archiveofourown.gay/works/23305828/chapters/55820923",
       "_addedAt": 5,
-      "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+      "finishedAt": "2026-06-05T11:00:00.000Z",
+      "readDates": [
+        "2026-06-05T19:11:54.641336+00:00"
+      ],
+      "readCount": 1,
+      "genre": "",
+      "section": "",
+      "pages": null,
+      "oneshot": false,
+      "_modAt": "2026-06-16T22:21:26.789Z"
     },
     {
       "id": "ff_7",
       "type": "ff",
-      "title": "SynkardiÃÂÃÂ¡s",
-      "author": "00Q_Magnus, ArielSakura",
+      "title": "Synkardiás",
+      "author": "00Q_Magnus",
       "fandom": "Harry Potter",
       "words": 90949,
-      "hearts": 7475,
+      "hearts": 7568,
       "rating": "Mature",
-      "pairing": "M/M",
+      "pairing": "Harry Potter/Blaise Zabini",
       "status": "Finished",
-      "userRating": 0,
-      "notes": "",
+      "userRating": 3,
+      "notes": "Kitsune Harry Potter",
       "tags": [
+        "Hurt Harry Potter",
         "Creature Harry",
-        "Powerful!Harry"
+        "Harry Potter/Blaise Zabini"
       ],
-      "url": "",
+      "url": "https://archiveofourown.org/works/18264353/chapters/43220396",
       "_addedAt": 6,
       "favorite": true,
-      "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+      "finishedAt": "2026-06-05T11:00:00.000Z",
+      "readDates": [
+        "2026-06-05T19:11:54.641336+00:00"
+      ],
+      "readCount": 1,
+      "genre": "",
+      "section": "",
+      "pages": null,
+      "oneshot": false,
+      "_modAt": "2026-06-16T22:21:17.906Z"
     },
     {
       "id": "ff_8",
@@ -1547,7 +1586,8 @@
       "userRating": 0,
       "notes": "",
       "tags": [
-        "Creature Harry"
+        "Creature Harry",
+        "Harry Potter/Charlie Weasley"
       ],
       "url": "",
       "_addedAt": 50,
@@ -1555,7 +1595,12 @@
       "genre": "",
       "section": "",
       "pages": null,
-      "oneshot": false
+      "oneshot": false,
+      "readDates": [
+        "2026-06-05T11:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-16T22:08:17.094Z"
     },
     {
       "id": "ff_52",
