@@ -3185,12 +3185,14 @@
       "words": 409773,
       "hearts": 17573,
       "rating": "Mature",
-      "pairing": "Various",
+      "pairing": "",
       "status": "Finished",
       "userRating": 5,
       "notes": "",
       "tags": [
-        "Time/Dimension Travel HP"
+        "Time/Dimension Travel HP",
+        "Aberforth Mentor",
+        "Harry/Gideon"
       ],
       "url": "",
       "_addedAt": 122,
@@ -3199,7 +3201,11 @@
       "genre": "",
       "section": "",
       "pages": null,
-      "oneshot": false
+      "oneshot": false,
+      "readCount": 1,
+      "readDates": [
+        "2026-06-05T11:00:00.000Z"
+      ]
     },
     {
       "id": "ff_124",
