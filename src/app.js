@@ -16,7 +16,7 @@ let state = {
   modalOpen: false,
   editItem: null,
   view: 'library',
-  viewMode: 'list',
+  viewMode: 'folder',
   folderPath: [],
   folderConfig: {},
   editingFolder: null,
@@ -1931,6 +1931,21 @@ window.addEventListener('keydown', e => {
     document.getElementById('search-input')?.focus();
   }
 });
+
+// Trackpad swipe-back in the folder grid: two-finger swipe right (macOS "back") goes up a level
+let _navSwipeAt = 0;
+window.addEventListener('wheel', e => {
+  if (state.view === 'stats' || state.viewMode !== 'folder') return;     // only in the folder grid
+  if (!state.folderPath || !state.folderPath.length) return;             // already at the root
+  if (Math.abs(e.deltaX) <= Math.abs(e.deltaY) + 4) return;              // must be a horizontal swipe
+  if (e.deltaX < -30) {                                                  // swipe right = go back
+    const now = Date.now();
+    if (now - _navSwipeAt < 700) return;                                 // one step per swipe
+    _navSwipeAt = now;
+    state.folderPath = state.folderPath.slice(0, -1);
+    render();
+  }
+}, { passive: true });
 
 (async () => {
   state.items = await loadData();
