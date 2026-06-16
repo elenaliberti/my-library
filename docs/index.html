@@ -839,9 +839,9 @@ function renderGrid(){
       const editBtn=key?`<button class="fc-edit-btn" data-edit-key="${esc(key)}">✏️</button>`:'';
       return `<div class="fc" data-fc-label="${esc(nav)}"><div class="fc-thumb" style="background:linear-gradient(135deg,${c1},${c2})">${iconHtml}${editBtn}</div><div class="fc-body"><div class="fc-name">${esc(label)}</div><div class="fc-count">${count} item${count!==1?'s':''}</div></div></div>`;
     };
-    const byLabel=(a,b)=>(getCfg(a.key).displayName||a.label).localeCompare(getCfg(b.key).displayName||b.label);
-    const pairings=entries.filter(e=>isPairingTag(e.label,e.key)).sort(byLabel);
-    const tropes=entries.filter(e=>!isPairingTag(e.label,e.key)).sort(byLabel);
+    const byCount=(a,b)=>(b.count-a.count)||(getCfg(a.key).displayName||a.label).localeCompare(getCfg(b.key).displayName||b.label);
+    const pairings=entries.filter(e=>isPairingTag(e.label,e.key)).sort(byCount);
+    const tropes=entries.filter(e=>!isPairingTag(e.label,e.key)).sort(byCount);
     const untagged=ficItems.filter(x=>!(x.tags||[]).length).length;
     let body=`<div class="folder-grid">`+cell('__all__','All','📋',ficItems.length,null)+(untagged?cell('__untagged__','Untagged','📄',untagged,null):'')+`</div>`;
     if(pairings.length)body+=`<div class="grid-section-lbl">🚢 Pairings</div><div class="folder-grid">`+pairings.map(e=>cell(e.nav,e.label,'🚢',e.count,e.key)).join('')+`</div>`;
