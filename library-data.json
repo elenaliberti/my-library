@@ -124,12 +124,9 @@
       "rating": "",
       "pairing": "Merlin & Arthur Pendragon (Merlin)",
       "tags": [
-        "Merlin&#39;s Magic Revealed (Merlin)",
-        "Merlin&#39;s Neckerchief (Merlin)",
-        "The Knights Find Out About Merlin&#39;s Magic (Merlin)",
-        "Merlin&#39;s Scars Revealed (Merlin)",
         "Age Regression/De-Aging",
-        "Angst"
+        "Magic Revealed",
+        "Knights find out about Merlin"
       ],
       "url": "https://archiveofourown.org/works/46464097",
       "notes": "",
@@ -141,8 +138,14 @@
       "pages": null,
       "userRating": 0,
       "oneshot": true,
-      "finishedAt": "2026-06-14T03:01:15.224Z",
-      "_addedAt": 627
+      "finishedAt": "2026-06-14T11:00:00.000Z",
+      "_addedAt": 627,
+      "favorite": false,
+      "readCount": 1,
+      "_modAt": "2026-06-16T20:09:19.611Z",
+      "readDates": [
+        "2026-06-14T03:01:15.224Z"
+      ]
     },
     {
       "title": "Trading Tomorrow",
