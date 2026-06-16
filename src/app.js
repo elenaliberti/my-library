@@ -340,7 +340,7 @@ function badgeHtml(status) {
 }
 
 function tagHtml(t, removable=false, itemId='') {
-  return `<span class="tag">${t}${removable ? `<span class="tag-remove" data-tag="${t}" data-id="${itemId}">×</span>` : ''}</span>`;
+  return `<span class="tag">${t}${removable ? `<span class="tag-remove" data-tag="${esc(t)}" data-id="${itemId}">×</span>` : ''}</span>`;
 }
 
 // ── Card HTML ─────────────────────────────────────────────────────────────────
