@@ -88,7 +88,7 @@
     {
       "title": "A Place Apart",
       "author": "Metalduck",
-      "fandom": "Harry Potter - J. K. Rowling",
+      "fandom": "Harry Potter",
       "words": 239394,
       "hearts": 16455,
       "rating": "Mature",
@@ -111,8 +111,13 @@
       "userRating": 0,
       "notes": "",
       "oneshot": false,
-      "finishedAt": "2026-06-14T03:10:28.905Z",
-      "_addedAt": 628
+      "finishedAt": "2026-06-14T11:00:00.000Z",
+      "_addedAt": 628,
+      "favorite": false,
+      "readCount": 1,
+      "readDates": [
+        "2026-06-14T03:10:28.905Z"
+      ]
     },
     {
       "title": "our Merlin",
