@@ -1736,7 +1736,7 @@ function bindEvents() {
   const fetchBtn = document.getElementById('btn-fetch');
   if (fetchBtn) {
     fetchBtn.addEventListener('click', async () => {
-      const url = document.getElementById('m-url')?.value?.trim();
+      const url = (document.getElementById('m-url')?.value?.trim() || '').replace('archive.transformativeworks.org', 'archiveofourown.org');
       const msgEl = document.getElementById('fetch-msg');
       if (!url) {
         if (msgEl) { msgEl.textContent = 'Paste a fic URL in the field above first.'; msgEl.className = 'fetch-msg err'; }

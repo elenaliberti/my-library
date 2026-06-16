@@ -108,7 +108,9 @@ function isRealWorkPage(html) {
 // ── AO3 fetch ─────────────────────────────────────────────────────────────────
 ipcMain.handle('ao3:fetch', async (_, url) => {
   try {
-    const workUrl = url.replace(/\/chapters\/[^?#]+/, '').replace(/#.*$/, '')
+    url = url.replace('archive.transformativeworks.org', 'archiveofourown.org')  // alternate AO3 domain
+    // /works/{id}/chapters/{cid} → strip to the work; a bare /chapters/{cid} is fetched as-is (AO3 redirects it to the work)
+    const workUrl = url.includes('/works/') ? url.replace(/\/chapters\/[^?#]+/, '').replace(/#.*$/, '') : url.replace(/#.*$/, '')
     const fetchUrl = workUrl.includes('?') ? workUrl + '&view_adult=true' : workUrl + '?view_adult=true'
 
     // Pre-set age verification cookie so AO3 doesn't redirect to warning page

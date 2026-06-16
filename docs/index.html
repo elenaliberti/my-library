@@ -594,10 +594,12 @@ async function fetchBook(query){
 
 // ── Auto-fill: AO3 / FF.net ───────────────────────────────────────────────────
 async function fetchFic(url){
+  url=url.replace('archive.transformativeworks.org','archiveofourown.org');  // alternate AO3 domain
   const isAO3=url.includes('archiveofourown');
   const isFF=url.includes('fanfiction.net');
   if(!isAO3&&!isFF)throw new Error('URL must be from AO3 or fanfiction.net');
-  const target=isAO3?(url.replace(/\/chapters\/[^?#]+/,'').replace(/#.*$/,'')+(url.includes('?')?'&':'?')+'view_adult=true'):url;
+  const base=isAO3?(url.includes('/works/')?url.replace(/\/chapters\/[^?#]+/,''):url).replace(/#.*$/,''):url;
+  const target=isAO3?(base+(base.includes('?')?'&':'?')+'view_adult=true'):url;
   const proxyUrl='https://corsproxy.io/?'+encodeURIComponent(target);
   const r=await fetch(proxyUrl,{headers:{'User-Agent':'Mozilla/5.0'}});
   if(!r.ok)throw new Error(`Proxy error ${r.status}`);
