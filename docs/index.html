@@ -506,6 +506,14 @@ function badgeClass(s){return{TBR:'b-tbr',Reading:'b-reading',Finished:'b-finish
 
 // ── folderConfig helpers ──────────────────────────────────────────────────────
 function getCfg(key){return{...(FOLDER_DEFAULTS[key]||{}), ...(S.folderConfig[key]||{})}}
+// classify a tag as a Pairing vs a Trope (matches the desktop): folderConfig.section wins, else "/" or " & " in the name
+function isPairingTag(label,key){
+  const cfg=key?getCfg(key):{};
+  if(cfg.section==='trope')return false;
+  if(cfg.section==='pairing')return true;
+  const d=cfg.displayName||label||'';
+  return (label||'').includes('/')||d.includes('/')||d.includes(' & ');
+}
 function setCfg(key,patch){
   S.folderConfig[key]={...(S.folderConfig[key]||{}),...patch};
   const c=S.folderConfig[key];
@@ -752,46 +760,46 @@ function renderGrid(){
     const fandomKey=`ff|${fandom==='Other'?'__none__':fandom}`;
     const fandomLabel=getCfg(fandomKey).displayName||fandom;
 
-    // Build section: All + Pairings + Tags
-    const pairings=[...new Set(ficItems.filter(x=>x.pairing).map(x=>x.pairing))].sort();
-    const allTagsSet=new Set();ficItems.forEach(x=>(x.tags||[]).forEach(t=>allTagsSet.add(t)));
-    const tags=[...allTagsSet].sort();
+    // One folder per TAG, split into Pairings / Tropes (matches the computer version)
+    const subKey=fandom==='Other'?'__none__':fandom;
+    const tagSet=[...new Set(ficItems.flatMap(x=>x.tags||[]))].sort();
+    let entries=tagSet.map(t=>({nav:t,label:t,key:`ff|${subKey}|${t}`,count:ficItems.filter(x=>(x.tags||[]).includes(t)).length}));
+    // user-created custom folders (folderConfig isCustom + filterTag)
+    Object.keys(S.folderConfig).filter(k=>{const p=k.split('|');return S.folderConfig[k].isCustom&&p.length===3&&p[0]==='ff'&&p[1]===subKey;}).forEach(k=>{
+      const cfg=S.folderConfig[k],tail=k.split('|')[2];
+      entries.push({nav:tail,label:cfg.displayName||'Custom',key:k,count:cfg.filterTag?ficItems.filter(x=>(x.tags||[]).includes(cfg.filterTag)).length:0});
+    });
+    const cell=(nav,fallbackLabel,fallbackIcon,count,key)=>{
+      const cfg=key?getCfg(key):{};
+      const label=cfg.displayName||fallbackLabel;
+      const icon=cfg.icon||fallbackIcon;
+      const[c1,c2]=grad(key||nav);
+      const iconHtml=String(icon).startsWith('http')?`<img src="${esc(icon)}" style="width:100%;height:100%;object-fit:cover">`:`<span>${icon}</span>`;
+      const editBtn=key?`<button class="fc-edit-btn" data-edit-key="${esc(key)}">✏️</button>`:'';
+      return `<div class="fc" data-fc-label="${esc(nav)}"><div class="fc-thumb" style="background:linear-gradient(135deg,${c1},${c2})">${iconHtml}${editBtn}</div><div class="fc-body"><div class="fc-name">${esc(label)}</div><div class="fc-count">${count} item${count!==1?'s':''}</div></div></div>`;
+    };
+    const byLabel=(a,b)=>(getCfg(a.key).displayName||a.label).localeCompare(getCfg(b.key).displayName||b.label);
+    const pairings=entries.filter(e=>isPairingTag(e.label,e.key)).sort(byLabel);
+    const tropes=entries.filter(e=>!isPairingTag(e.label,e.key)).sort(byLabel);
+    const untagged=ficItems.filter(x=>!(x.tags||[]).length).length;
+    let body=`<div class="folder-grid">`+cell('__all__','All','📋',ficItems.length,null)+(untagged?cell('__untagged__','Untagged','📄',untagged,null):'')+`</div>`;
+    if(pairings.length)body+=`<div class="grid-section-lbl">🚢 Pairings</div><div class="folder-grid">`+pairings.map(e=>cell(e.nav,e.label,'🚢',e.count,e.key)).join('')+`</div>`;
+    if(tropes.length)body+=`<div class="grid-section-lbl">⚡ Tropes & AUs</div><div class="folder-grid">`+tropes.map(e=>cell(e.nav,e.label,'⚡',e.count,e.key)).join('')+`</div>`;
+    html=crumbBar([{label:'Fanfiction',path:['Fanfiction']},{label:fandomLabel,path:['Fanfiction',fandom]}])+body;
 
-    let cards=[];
-    // "All" folder always first
-    const allKey=`ff|${fandom==='Other'?'__none__':fandom}|__all__`;
-    cards.push(`<div class="fc" data-fc-label="__all__"><div class="fc-thumb" style="background:linear-gradient(135deg,${grad(allKey)[0]},${grad(allKey)[1]})"><span>📖</span></div><div class="fc-body"><div class="fc-name">All (${ficItems.length})</div><div class="fc-count">${ficItems.length} item${ficItems.length!==1?'s':''}</div></div></div>`);
-
-    let sections='';
-    if(pairings.length){
-      sections+=`<div class="grid-section-lbl">💞 Pairings</div><div class="folder-grid">`;
-      sections+=pairings.map(p=>{
-        const n=ficItems.filter(x=>x.pairing===p).length;
-        const key=`ff|${fandom==='Other'?'__none__':fandom}|${p}`;
-        return folderCard(p,getCfg(key).icon||'💞',n,key);
-      }).join('');
-      sections+='</div>';
-    }
-    if(tags.length){
-      sections+=`<div class="grid-section-lbl">🏷 Tags</div><div class="folder-grid">`;
-      sections+=tags.map(t=>{
-        const n=ficItems.filter(x=>(x.tags||[]).includes(t)).length;
-        const key=`ff|${fandom==='Other'?'__none__':fandom}|${t}`;
-        return folderCard(t,getCfg(key).icon||'🏷',n,key);
-      }).join('');
-      sections+='</div>';
-    }
-    html=crumbBar([{label:'Fanfiction',path:['Fanfiction']},{label:fandomLabel,path:['Fanfiction',fandom]}])+
-      `<div class="folder-grid">${cards.join('')}</div>${sections}`;
-
-  // ── Level 3: fandom → tag/pairing → items ──
+  // ── Level 3: fandom → tag → items ──
   }else if(path[0]==='Fanfiction'&&path.length===3){
     const fandom=path[1];const tagFilter=path[2];
+    const subKey=fandom==='Other'?'__none__':fandom;
     const ficItems=fandom==='Other'?S.items.filter(x=>x.type==='ff'&&!x.fandom):S.items.filter(x=>x.type==='ff'&&x.fandom===fandom);
-    const items=tagFilter==='__all__'?ficItems:ficItems.filter(x=>x.pairing===tagFilter||(x.tags||[]).includes(tagFilter));
-    const fandomKey=`ff|${fandom==='Other'?'__none__':fandom}`;
-    const fandomLabel=getCfg(fandomKey).displayName||fandom;
-    const tagLabel=tagFilter==='__all__'?'All':tagFilter;
+    const customCfg=S.folderConfig[`ff|${subKey}|${tagFilter}`];
+    let items;
+    if(tagFilter==='__all__')items=ficItems;
+    else if(tagFilter==='__untagged__')items=ficItems.filter(x=>!(x.tags||[]).length);
+    else if(customCfg&&customCfg.isCustom&&customCfg.filterTag)items=ficItems.filter(x=>(x.tags||[]).includes(customCfg.filterTag));
+    else items=ficItems.filter(x=>(x.tags||[]).includes(tagFilter));
+    const fandomLabel=getCfg(`ff|${subKey}`).displayName||fandom;
+    const tagLabel=getCfg(`ff|${subKey}|${tagFilter}`).displayName||(tagFilter==='__all__'?'All':tagFilter==='__untagged__'?'Untagged':tagFilter);
     html=crumbBar([{label:'Fanfiction',path:['Fanfiction']},{label:fandomLabel,path:['Fanfiction',fandom]},{label:tagLabel,path:['Fanfiction',fandom,tagFilter]}])+
       itemListHtml(items);
 
