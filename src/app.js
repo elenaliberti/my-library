@@ -954,7 +954,6 @@ function folderViewHtml() {
       return [['ff',sub,t],'🏷️',t,n];
     });
     const untagged = base.filter(x=>!(x.tags||[]).length);
-    if (untagged.length) tagEntries.push([['ff',sub,'__untagged__'],'📄','Untagged',untagged.length]);
     Object.keys(state.folderConfig).filter(k=>{
       const p = k.split('|');
       return state.folderConfig[k].isCustom && p.length===3 && p[0]==='ff' && p[1]===sub;
@@ -967,7 +966,8 @@ function folderViewHtml() {
     const pairings = sortedCards(filtered.filter(([p,e,l,c]) => isPairingTag(l,p)));
     const tropes   = sortedCards(filtered.filter(([p,e,l,c]) => !isPairingTag(l,p)));
     const subLbl = getCfg(`ff|${sub}`).displayName || (sub==='__none__'?'Other':sub);
-    let gridContent = folderCard(allEntry[0], allEntry[1], allEntry[2], allEntry[3]);
+    let gridContent = folderCard(allEntry[0], allEntry[1], allEntry[2], allEntry[3])
+      + (untagged.length ? folderCard(['ff',sub,'__untagged__'], '📄', 'Untagged', untagged.length) : '');
     if (pairings.length) {
       gridContent += `<div class="fv-section-hdr fv-section-full">🚢 Pairings</div>` + pairings.map(([p,e,l,c])=>folderCard(p,e,l,c)).join('');
     }
