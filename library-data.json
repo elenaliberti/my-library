@@ -5557,7 +5557,7 @@
       "type": "ff",
       "title": "Waiting By An Open Door",
       "author": "Femme (femmequixotic)",
-      "fandom": "Harry Potter - J. K. Rowling",
+      "fandom": "Harry Potter",
       "words": 29506,
       "hearts": 11233,
       "rating": "Explicit",
@@ -5577,7 +5577,12 @@
       "section": "",
       "pages": null,
       "oneshot": true,
-      "finishedAt": "2026-06-05T11:00:00.000Z"
+      "finishedAt": "2026-06-05T11:00:00.000Z",
+      "favorite": false,
+      "readCount": 1,
+      "readDates": [
+        "2026-06-05T11:00:00.000Z"
+      ]
     },
     {
       "id": "ff_231",
