@@ -2739,7 +2739,7 @@
       "type": "ff",
       "title": "The Consort Tournament",
       "author": "Watermelonsmellinfellon",
-      "fandom": "Harry Potter - J. K. Rowling",
+      "fandom": "Harry Potter",
       "words": 182594,
       "hearts": 8317,
       "rating": "Explicit",
@@ -2762,7 +2762,12 @@
       "genre": "",
       "section": "",
       "pages": null,
-      "oneshot": false
+      "oneshot": false,
+      "favorite": false,
+      "readCount": 1,
+      "readDates": [
+        "2026-06-05T11:00:00.000Z"
+      ]
     },
     {
       "id": "ff_108",
