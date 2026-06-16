@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#6366f1">
@@ -10,6 +10,9 @@
 <link rel="manifest" href="manifest.json">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+/* native app feel: no long-press text selection / callout on the UI, but keep it in form fields */
+#app,#bottom-nav,#setup{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:text}
 :root{
   --bg:#f8f7ff;--card:#fff;--card2:#f3f0ff;
   --border:#e8e3ff;--border2:#ebebf0;
@@ -67,7 +70,7 @@ html{background:#fff}
 
 /* ── Search + sort ── */
 #search-sort{display:flex;gap:8px;padding:6px 16px;flex-shrink:0}
-.search-in{flex:1;padding:10px 14px;background:#fff;border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:14px;outline:none;-webkit-appearance:none;box-shadow:var(--shadow)}
+.search-in{flex:1;padding:10px 14px;background:#fff;border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:16px;outline:none;-webkit-appearance:none;box-shadow:var(--shadow)}
 .search-in:focus{border-color:var(--accent)}
 .search-in::placeholder{color:var(--muted)}
 .sort-sel{padding:10px 10px;background:#fff;border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:12px;font-weight:600;outline:none;-webkit-appearance:none;cursor:pointer;box-shadow:var(--shadow)}
@@ -1272,6 +1275,18 @@ document.getElementById('pat-in').addEventListener('keydown',e=>{if(e.key==='Ent
 
 // Bottom nav
 document.querySelectorAll('.bnav-item').forEach(t=>t.addEventListener('click',()=>switchView(t.dataset.view)));
+
+// iOS-style edge-swipe-back in the folder view: swipe right from the left edge to go up a level
+(function(){
+  const vg=document.getElementById('v-grid');if(!vg)return;
+  let sx=0,sy=0,edge=false;
+  vg.addEventListener('touchstart',e=>{const t=e.touches[0];sx=t.clientX;sy=t.clientY;edge=t.clientX<28;},{passive:true});
+  vg.addEventListener('touchend',e=>{
+    if(!edge||!S.folderPath.length)return;
+    const t=e.changedTouches[0];
+    if(t.clientX-sx>60 && Math.abs(t.clientY-sy)<45){S.folderPath=S.folderPath.slice(0,-1);renderGrid();}
+  },{passive:true});
+})();
 
 // Filter chips
 document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
