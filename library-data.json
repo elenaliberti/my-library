@@ -58,7 +58,7 @@
     {
       "title": "Harry Potter and the Problem of Potions",
       "author": "Wyste",
-      "fandom": "Harry Potter - J. K. Rowling",
+      "fandom": "Harry Potter",
       "words": 184441,
       "hearts": 22159,
       "rating": "",
@@ -80,7 +80,10 @@
       "userRating": 0,
       "oneshot": false,
       "finishedAt": null,
-      "_addedAt": 629
+      "_addedAt": 629,
+      "favorite": false,
+      "readCount": 0,
+      "readDates": []
     },
     {
       "title": "A Place Apart",
