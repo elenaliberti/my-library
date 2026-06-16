@@ -548,9 +548,10 @@ function modalHtml() {
 
         <label class="field-label">Tags</label>
         <div class="tags-input-row">
-          <input type="text" id="m-tag-input" placeholder="Add tag + Enter (e.g. Drarry, slow burn)" />
+          <input type="text" id="m-tag-input" placeholder="Add tag + Enter (e.g. Drarry, slow burn)" autocomplete="off" />
           <button class="btn btn-secondary btn-sm" id="btn-add-tag">+</button>
         </div>
+        <div class="tag-suggest" id="tag-suggest" style="display:none"></div>
         <div class="tags-display" id="tags-display">${tags}</div>
 
         <label class="field-label">Times read</label>
@@ -1664,18 +1665,32 @@ function bindEvents() {
     });
   });
 
-  // Tag add
+  // Tag add (with autocomplete from existing tags)
   const tagInput = document.getElementById('m-tag-input');
-  const addTag = () => {
-    const t = tagInput?.value.trim();
+  const sugEl = document.getElementById('tag-suggest');
+  const allTags = [...new Set(state.items.flatMap(x => x.tags || []))].sort((a, b) => a.localeCompare(b));
+  const addTagValue = (t) => {
+    t = (t || '').trim();
     if (!t) return;
     const existing = state.editItem?.tags || [];
     if (!existing.includes(t)) {
       snapshotModalForm();
       state.editItem = { ...(state.editItem||{}), tags: [...existing, t] };
       render();
-    } else { if(tagInput) tagInput.value = ''; }
+    } else if (tagInput) { tagInput.value = ''; }
   };
+  const addTag = () => addTagValue(tagInput?.value);
+  const renderSug = () => {
+    if (!sugEl || !tagInput) return;
+    const q = tagInput.value.trim().toLowerCase();
+    const cur = state.editItem?.tags || [];
+    const matches = q ? allTags.filter(t => !cur.includes(t) && t.toLowerCase().includes(q)).slice(0, 8) : [];
+    if (!matches.length) { sugEl.style.display = 'none'; return; }
+    sugEl.innerHTML = matches.map(t => `<div class="tag-sug" data-t="${t.replace(/"/g,'&quot;')}">${t}</div>`).join('');
+    sugEl.style.display = 'block';
+    sugEl.querySelectorAll('.tag-sug').forEach(el => el.addEventListener('mousedown', e => { e.preventDefault(); addTagValue(el.dataset.t); }));
+  };
+  tagInput?.addEventListener('input', renderSug);
   tagInput?.addEventListener('keydown', e => e.key==='Enter' && addTag());
   document.getElementById('btn-add-tag')?.addEventListener('click', addTag);
 

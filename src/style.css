@@ -257,6 +257,10 @@ textarea { min-height: 70px; resize: vertical; }
 .fetch-msg.err { color: var(--amber); }
 .tags-input-row { display: flex; gap: 8px; }
 .tags-input-row input { flex: 1; }
+.tag-suggest { margin-top: 6px; border: 1px solid #e5e7eb; border-radius: 10px; background: #fff; max-height: 200px; overflow-y: auto; box-shadow: 0 6px 20px rgba(0,0,0,.1); }
+.tag-sug { padding: 8px 12px; font-size: 13px; color: #1f2937; cursor: pointer; border-bottom: 1px solid #f3f4f6; }
+.tag-sug:last-child { border-bottom: none; }
+.tag-sug:hover { background: #ede9fe; }
 .tags-display { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 .star-picker { display: flex; gap: 4px; margin-top: 6px; }
 .star-picker span { font-size: 24px; cursor: pointer; color: var(--gray-200); transition: color 0.1s; }

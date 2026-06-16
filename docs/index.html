@@ -136,6 +136,8 @@ html{background:#fff}
 .fc-edit-btn{position:absolute;top:6px;right:6px;width:28px;height:28px;background:rgba(255,255,255,.88);border-radius:50%;border:none;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);box-shadow:0 2px 8px rgba(0,0,0,.12);z-index:1}
 .fc-edit-btn:active{opacity:.6}
 .grid-section-lbl{padding:8px 16px 2px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.grid-search-row{padding:10px 16px 2px}
+.grid-search-in{width:100%;padding:10px 14px;background:#fff;border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:16px;outline:none;-webkit-appearance:none;box-shadow:var(--shadow)}
 
 /* ── Stats ── */
 #v-stats{display:none;flex:1;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
@@ -307,6 +309,11 @@ html{background:#fff}
 .dupe-warn{font-size:12px;color:#b45309;margin-top:5px;min-height:1px;font-weight:600}
 .tag-add-row{display:flex;gap:8px}
 .tag-add-row .m-in{flex:1}
+.tag-suggest{display:none;margin-top:6px;border:1px solid var(--border);border-radius:10px;background:#fff;max-height:190px;overflow-y:auto;box-shadow:var(--shadow)}
+.tag-suggest.on{display:block}
+.tag-sug{padding:10px 12px;font-size:13px;color:var(--text);cursor:pointer;border-bottom:1px solid var(--border)}
+.tag-sug:last-child{border-bottom:none}
+.tag-sug:active{background:var(--surface)}
 .tag-add-btn{padding:13px 16px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;color:var(--accent2);font-size:20px;font-weight:700;cursor:pointer}
 .tags-area{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px;min-height:10px}
 .m-tag{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:4px 10px;font-size:12px;color:var(--accent2);display:flex;align-items:center;gap:5px;font-weight:600}
@@ -812,7 +819,8 @@ function renderGrid(){
     let body=`<div class="folder-grid">`+cell('__all__','All','📋',ficItems.length,null)+(untagged?cell('__untagged__','Untagged','📄',untagged,null):'')+`</div>`;
     if(pairings.length)body+=`<div class="grid-section-lbl">🚢 Pairings</div><div class="folder-grid">`+pairings.map(e=>cell(e.nav,e.label,'🚢',e.count,e.key)).join('')+`</div>`;
     if(tropes.length)body+=`<div class="grid-section-lbl">⚡ Tropes & AUs</div><div class="folder-grid">`+tropes.map(e=>cell(e.nav,e.label,'⚡',e.count,e.key)).join('')+`</div>`;
-    html=crumbBar([{label:'Fanfiction',path:['Fanfiction']},{label:fandomLabel,path:['Fanfiction',fandom]}])+body;
+    html=crumbBar([{label:'Fanfiction',path:['Fanfiction']},{label:fandomLabel,path:['Fanfiction',fandom]}])
+      +`<div class="grid-search-row"><input class="grid-search-in" id="grid-search" placeholder="🔍 Search folders…" autocomplete="off"></div>`+body;
 
   // ── Level 3: fandom → tag → items ──
   }else if(path[0]==='Fanfiction'&&path.length===3){
@@ -850,6 +858,24 @@ function renderGrid(){
   }
 
   el.innerHTML=html;
+
+  // folder search — filter the visible folder cards by name (no re-render, keeps focus)
+  const gs=document.getElementById('grid-search');
+  if(gs){
+    gs.addEventListener('input',()=>{
+      const q=gs.value.trim().toLowerCase();
+      el.querySelectorAll('.fc').forEach(c=>{
+        const name=(c.querySelector('.fc-name')?.textContent||'').toLowerCase();
+        c.style.display=(!q||name.includes(q))?'':'none';
+      });
+      el.querySelectorAll('.grid-section-lbl').forEach(lbl=>{
+        const grid=lbl.nextElementSibling;
+        const anyVisible=grid&&[...grid.querySelectorAll('.fc')].some(c=>c.style.display!=='none');
+        lbl.style.display=anyVisible?'':'none';
+        if(grid)grid.style.display=anyVisible?'':'none';
+      });
+    });
+  }
 
   // folder card clicks
   el.querySelectorAll('.fc').forEach(fc=>{
@@ -1011,7 +1037,7 @@ function openSheet(id){
   document.getElementById('sh-open')?.addEventListener('click',()=>{const it=S.items.find(i=>i.id===S.selId);if(it?.url)window.open(it.url,'_blank')});
   document.getElementById('sh-del')?.addEventListener('click',async()=>{
     if(!confirm('Delete this entry?'))return;
-    S.items=S.items.filter(i=>i.id!==S.selId);closeSheet();renderLibrary();await doSave();
+    S.items=S.items.filter(i=>i.id!==S.selId);closeSheet();renderLibrary();if(S.view==='grid')renderGrid();await doSave();
   });
 
   document.getElementById('shade').classList.add('on');
@@ -1029,7 +1055,7 @@ function closeSheet(){
 async function qSave(up){
   const idx=S.items.findIndex(i=>i.id===up.id);if(idx<0)return;
   up._modAt=new Date().toISOString();   // stamp edit time so sync prefers this version
-  S.items[idx]=up;renderLibrary();renderStatRow();openSheet(up.id);await doSave();
+  S.items[idx]=up;renderLibrary();renderStatRow();if(S.view==='grid')renderGrid();openSheet(up.id);await doSave();
 }
 
 // ── Icon editor ───────────────────────────────────────────────────────────────
@@ -1107,7 +1133,8 @@ function renderModalBody(){
     <label class="m-lbl">Times read</label><input class="m-in" id="f-readcount" type="number" min="0" value="${rc}" style="max-width:130px"/>
     <label class="m-lbl">Date finished</label><input class="m-in" id="f-finished" type="date" value="${x.finishedAt?x.finishedAt.slice(0,10):''}"/>
     <label class="m-lbl">Your rating</label><div class="m-stars">${mStars}</div>
-    <label class="m-lbl">Tags</label><div class="tag-add-row"><input class="m-in" id="f-tag-in" placeholder="Add tag + Enter"/><button class="tag-add-btn" id="f-tag-btn">＋</button></div>
+    <label class="m-lbl">Tags</label><div class="tag-add-row"><input class="m-in" id="f-tag-in" placeholder="Add tag + Enter" autocomplete="off"/><button class="tag-add-btn" id="f-tag-btn">＋</button></div>
+    <div class="tag-suggest" id="f-tag-suggest"></div>
     <div class="tags-area" id="f-tags">${tagsHtml}</div>
     <label class="m-lbl">Notes</label><textarea class="m-ta" id="f-notes">${esc(x.notes||'')}</textarea>
     <label class="m-lbl">Favorite</label><select class="m-sel" id="f-fav"><option value="false"${!x.favorite?' selected':''}>No</option><option value="true"${x.favorite?' selected':''}>⭐ Yes</option></select>`;
@@ -1123,7 +1150,22 @@ function renderModalBody(){
   };
   bindTags();
   const tagIn=document.getElementById('f-tag-in');
-  const addTag=()=>{const t=tagIn?.value.trim();if(!t||S.mTags.includes(t)){if(tagIn)tagIn.value='';return}S.mTags.push(t);tagIn.value='';bindTags()};
+  const sug=document.getElementById('f-tag-suggest');
+  const allTags=[...new Set(S.items.flatMap(x=>x.tags||[]))].sort((a,b)=>a.localeCompare(b));
+  const addTagValue=t=>{t=(t||'').trim();if(!t||S.mTags.includes(t))return;S.mTags.push(t);bindTags()};
+  const hideSug=()=>{if(sug)sug.classList.remove('on')};
+  const addTag=()=>{addTagValue(tagIn?.value);if(tagIn)tagIn.value='';hideSug()};
+  const renderSug=()=>{
+    if(!sug||!tagIn)return;
+    const q=tagIn.value.trim().toLowerCase();
+    const matches=q?allTags.filter(t=>!S.mTags.includes(t)&&t.toLowerCase().includes(q)).slice(0,8):[];
+    if(!matches.length){hideSug();return}
+    sug.innerHTML=matches.map(t=>`<div class="tag-sug" data-t="${esc(t)}">${esc(t)}</div>`).join('');
+    sug.classList.add('on');
+    sug.querySelectorAll('.tag-sug').forEach(el=>el.addEventListener('click',()=>{addTagValue(el.dataset.t);tagIn.value='';hideSug();tagIn.focus()}));
+  };
+  tagIn?.addEventListener('input',renderSug);
+  tagIn?.addEventListener('blur',()=>setTimeout(hideSug,150));
   tagIn?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addTag()}});
   document.getElementById('f-tag-btn')?.addEventListener('click',addTag);
   const titleEl=document.getElementById('f-title');
@@ -1224,7 +1266,7 @@ async function saveModal(){
   }
   const idx=S.items.findIndex(i=>i.id===item.id);
   if(idx>=0)S.items[idx]=item;else S.items.unshift(item);
-  closeModal();renderLibrary();renderStatRow();await doSave();
+  closeModal();renderLibrary();renderStatRow();if(S.view==='grid')renderGrid();await doSave();
 }
 
 // ── Save to GitHub ─────────────────────────────────────────────────────────────
