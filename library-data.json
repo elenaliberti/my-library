@@ -181,7 +181,7 @@
       "words": 71393,
       "hearts": 4876,
       "rating": "",
-      "pairing": "Harry Potter & James Potter",
+      "pairing": "",
       "tags": [
         "Time Travel",
         "Dimension Travel",
@@ -198,7 +198,10 @@
       "userRating": 0,
       "oneshot": false,
       "finishedAt": null,
-      "_addedAt": 626
+      "_addedAt": 626,
+      "favorite": false,
+      "readCount": 0,
+      "readDates": []
     },
     {
       "title": "Twice in One Lifetime",
