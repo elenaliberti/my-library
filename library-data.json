@@ -3597,11 +3597,19 @@
       "userRating": 0,
       "notes": "",
       "tags": [
-        "Powerful!Harry"
+        "Powerful!Harry",
+        "Jasper Hale/Harry Potter"
       ],
       "url": "",
       "_addedAt": 139,
-      "finishedAt": "2026-06-05T19:11:54.641336+00:00"
+      "finishedAt": "2026-06-05T11:00:00.000Z",
+      "readDates": [],
+      "readCount": 0,
+      "genre": "",
+      "section": "",
+      "pages": null,
+      "oneshot": false,
+      "_modAt": "2026-06-16T21:47:09.402Z"
     },
     {
       "id": "ff_141",
@@ -12571,8 +12579,9 @@
   "folderConfig": {
     "ff|Harry Potter": {
       "displayName": "Harry Potter",
-      "pinned": true,
-      "icon": "https://i.pinimg.com/webp87/736x/a9/3b/5a/a93b5a03655487ba9cef4511d7e5bb91.webp"
+      "pinned": false,
+      "icon": "https://i.pinimg.com/webp87/736x/a9/3b/5a/a93b5a03655487ba9cef4511d7e5bb91.webp",
+      "_modAt": "2026-06-16T21:45:23.335Z"
     },
     "book": {
       "displayName": "book",
