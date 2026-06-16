@@ -2874,7 +2874,7 @@
       "type": "ff",
       "title": "Slytherin's Mirror",
       "author": "Snarry5evr",
-      "fandom": "Harry Potter - J. K. Rowling",
+      "fandom": "Harry Potter",
       "words": 38967,
       "hearts": 7219,
       "rating": "Explicit",
@@ -2893,7 +2893,12 @@
       "genre": "",
       "section": "",
       "pages": null,
-      "oneshot": false
+      "oneshot": false,
+      "favorite": false,
+      "readCount": 1,
+      "readDates": [
+        "2026-06-05T11:00:00.000Z"
+      ]
     },
     {
       "id": "ff_113",
