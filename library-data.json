@@ -2637,7 +2637,7 @@
       "type": "ff",
       "title": "Genius by the Numbers",
       "author": "Lomonaaeren",
-      "fandom": "Harry Potter - J. K. Rowling",
+      "fandom": "Harry Potter",
       "words": 44975,
       "hearts": 11911,
       "rating": "Mature",
@@ -2659,7 +2659,12 @@
       "genre": "",
       "section": "",
       "pages": null,
-      "oneshot": false
+      "oneshot": false,
+      "favorite": false,
+      "readCount": 1,
+      "readDates": [
+        "2026-06-05T11:00:00.000Z"
+      ]
     },
     {
       "id": "ff_104",
