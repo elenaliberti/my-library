@@ -333,7 +333,8 @@ html{background:#fff}
 <div id="app" class="hidden">
   <div id="hdr">
     <span class="hdr-title">My <em>Library</em></span>
-    <div class="ico-btn" id="btn-sync">↻</div>
+    <div class="ico-btn" id="btn-sync" title="Sync — get the latest from GitHub">↻</div>
+    <div class="ico-btn" id="btn-backup" title="Back up — save all changes to GitHub">☁️</div>
     <div class="ico-btn" id="btn-settings">⚙️</div>
   </div>
   <div id="v-library" style="display:flex;flex-direction:column;flex:1;overflow:hidden;min-height:0">
@@ -1194,7 +1195,7 @@ async function saveModal(){
 let saving=false;
 async function doSave(){
   if(saving)return;saving=true;
-  const syncBtn=document.getElementById('btn-sync');if(syncBtn)syncBtn.textContent='⏳';
+  const syncBtn=document.getElementById('btn-backup');if(syncBtn)syncBtn.textContent='⏳';
   try{
     let sha=S.sha;
     if(!sha){const f=await ghLoad();sha=f.sha}
@@ -1212,7 +1213,7 @@ async function doSave(){
       catch(e2){toast('Save failed: '+e2.message,'err')}
     }else if(e.message==='invalid_token'){toast('Token invalid — tap ⚙️ to reset','err')}
     else{toast('Offline? Changes not saved','err')}
-  }finally{saving=false;if(syncBtn)syncBtn.textContent='↻'}
+  }finally{saving=false;if(syncBtn)syncBtn.textContent='☁️'}
 }
 
 // ── Toast ─────────────────────────────────────────────────────────────────────
@@ -1342,18 +1343,24 @@ modalEl.addEventListener('touchend',e=>{
 },{passive:true});
 
 // Sync
+// Sync — pull the latest from GitHub and merge it in (never drops local changes)
 document.getElementById('btn-sync').addEventListener('click',async()=>{
-  document.getElementById('btn-sync').textContent='⏳';
+  const b=document.getElementById('btn-sync');b.textContent='⏳';
   try{
     const r=await ghLoad();
-    S.items=r.items;S.sha=r.sha;
-    S.folderConfig={...r.folderConfig,...S.folderConfig};
+    const m=mergeLibrary(S.items,S.folderConfig,r.items,r.folderConfig);
+    S.items=m.items;S.folderConfig=m.folderConfig;S.sha=r.sha;
     renderLibrary();renderStatRow();
     if(S.view==='stats')renderStats();
     if(S.view==='grid')renderGrid();
-    toast('Synced ✓','ok');
-  }catch(e){toast('Sync failed','err')}
-  finally{document.getElementById('btn-sync').textContent='↻'}
+    toast('Synced ✓ — up to date','ok');
+  }catch(e){toast('Sync failed — check connection','err')}
+  finally{b.textContent='↻'}
+});
+
+// Back up — push all current changes to GitHub
+document.getElementById('btn-backup').addEventListener('click',async()=>{
+  await doSave();   // pushes (and merge-on-conflict); shows its own toast + spins this button
 });
 
 // Settings

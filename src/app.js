@@ -1049,7 +1049,8 @@ function render() {
       <div id="titlebar-actions">
         <button class="btn btn-secondary btn-sm btn-icon" id="btn-export" title="Export to Excel">📊 Export</button>
         <button class="btn btn-secondary btn-sm btn-icon" id="btn-data-folder" title="Open data folder">📁</button>
-        <button class="btn btn-backup btn-sm btn-icon" id="btn-backup" title="Back up to GitHub">☁️ Back up</button>
+        <button class="btn btn-secondary btn-sm btn-icon" id="btn-sync" title="Sync — get the latest from GitHub">🔄 Sync</button>
+        <button class="btn btn-backup btn-sm btn-icon" id="btn-backup" title="Back up — save all changes to GitHub">☁️ Back up</button>
         <button class="btn ${state.view==='stats'?'btn-primary':'btn-secondary'} btn-sm btn-icon" id="btn-stats">${state.view==='stats'?'📚 Library':'📈 Stats'}</button>
         <div class="view-seg">
           <button class="vseg-btn${state.viewMode==='list'?' active':''}" id="btn-view-list" title="List view">☰</button>
@@ -1430,7 +1431,9 @@ function bindEvents() {
   const dfBtn = document.getElementById('btn-data-folder');
   if (dfBtn) dfBtn.addEventListener('click', () => window.api.openDataFolder());
 
-  // GitHub backup
+  // GitHub sync + backup
+  const syncBtn = document.getElementById('btn-sync');
+  if (syncBtn) syncBtn.addEventListener('click', handleSync);
   const backupBtn = document.getElementById('btn-backup');
   if (backupBtn) backupBtn.addEventListener('click', handleBackup);
 
@@ -1853,6 +1856,29 @@ function showToast(message, type = 'info') {
 }
 
 // ── GitHub backup ─────────────────────────────────────────────────────────────
+async function handleSync() {
+  showToast('Getting the latest from GitHub…', 'loading');
+  try {
+    const res = await window.api.pullData();
+    document.getElementById('toast')?.remove();
+    if (!res || !res.ok) { showToast('Sync failed: ' + ((res && res.error) || 'no connection'), 'error'); return; }
+    if (res.data) {
+      const merged = mergeLibrary(state.items, state.folderConfig, res.data.items, res.data.folderConfig);
+      if (merged.items.length >= Math.max(state.items.length, (res.data.items||[]).length)) {  // never shrink
+        state.items = merged.items;
+        state.folderConfig = merged.folderConfig;
+        localStorage.setItem('folderConfig', JSON.stringify(state.folderConfig));
+        await saveData();
+      }
+    }
+    render();
+    showToast('Synced ✓ — up to date', 'success');
+  } catch(e) {
+    document.getElementById('toast')?.remove();
+    showToast('Sync failed: ' + e.message, 'error');
+  }
+}
+
 async function handleBackup() {
   const btn = document.getElementById('btn-backup');
   if (btn) { btn.disabled = true; btn.textContent = '⏳ Backing up…'; }
