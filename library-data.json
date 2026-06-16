@@ -3776,7 +3776,7 @@
       "type": "ff",
       "title": "Away Childish Things",
       "author": "lettered",
-      "fandom": "Harry Potter - J. K. Rowling",
+      "fandom": "Harry Potter",
       "words": 153881,
       "hearts": 60629,
       "rating": "",
@@ -3799,7 +3799,12 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "finishedAt": "2026-06-05T11:00:00.000Z"
+      "finishedAt": "2026-06-05T11:00:00.000Z",
+      "favorite": false,
+      "readCount": 1,
+      "readDates": [
+        "2026-06-05T11:00:00.000Z"
+      ]
     },
     {
       "id": "ff_151",
