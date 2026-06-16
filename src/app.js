@@ -916,7 +916,36 @@ function folderControlBar(isItemList) {
   </div>`;
 }
 
+// If the current folder has become empty (e.g. after removing the last item's tag), step back out of it.
+function pruneEmptyFolderPath() {
+  const countAt = p => {
+    const [type, sub, tag] = p;
+    if (!type) return 1;
+    if (type === 'ff') {
+      if (!sub) return 1;
+      const base = state.items.filter(x=>x.type==='ff'&&(sub==='__none__'?!x.fandom:x.fandom===sub));
+      if (!tag) return base.length;
+      if (tag === '__all__') return base.length;
+      if (tag === '__untagged__') return base.filter(x=>!(x.tags||[]).length).length;
+      const cfg = state.folderConfig['ff|'+sub+'|'+tag];
+      if (cfg && cfg.isCustom) return 1;
+      return base.filter(x=>(x.tags||[]).includes(tag)).length;
+    }
+    if (type === 'book') {
+      if (!sub) return 1;
+      return (sub==='__none__'
+        ? state.items.filter(x=>x.type==='book'&&!x.genre)
+        : state.items.filter(x=>x.type==='book'&&(x.genre||'').split(' / ')[0].trim()===sub)).length;
+    }
+    return 1;
+  };
+  while (state.folderPath.length > 1 && countAt(state.folderPath) === 0) {
+    state.folderPath = state.folderPath.slice(0, -1);
+  }
+}
+
 function folderViewHtml() {
+  pruneEmptyFolderPath();
   const [type, sub, tag] = state.folderPath;
 
   // Root — two big tiles

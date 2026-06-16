@@ -709,8 +709,33 @@ function renderLibrary(){
 }
 
 // ── Grid / folder view ────────────────────────────────────────────────────────
+// If the current folder has become empty (e.g. after removing the last item's tag), step back out of it.
+function pruneEmptyFolderPath(){
+  const countAt=p=>{
+    if(!p.length)return 1;
+    if(p[0]==='Fanfiction'){
+      if(p.length<2)return 1;
+      const fandom=p[1],subKey=fandom==='Other'?'__none__':fandom;
+      const fic=fandom==='Other'?S.items.filter(x=>x.type==='ff'&&!x.fandom):S.items.filter(x=>x.type==='ff'&&x.fandom===fandom);
+      if(p.length<3)return fic.length;
+      const tag=p[2];
+      if(tag==='__all__')return fic.length;
+      if(tag==='__untagged__')return fic.filter(x=>!(x.tags||[]).length).length;
+      if((S.folderConfig['ff|'+subKey+'|'+tag]||{}).isCustom)return 1;
+      return fic.filter(x=>(x.tags||[]).includes(tag)).length;
+    }
+    if(p[0]==='Books'){
+      if(p.length<2)return 1;
+      const g=p[1];
+      return (g==='Other'?S.items.filter(x=>x.type==='book'&&!x.genre):S.items.filter(x=>x.type==='book'&&(x.genre||'').split(' / ')[0].trim()===g)).length;
+    }
+    return 1;
+  };
+  while(S.folderPath.length>1 && countAt(S.folderPath)===0){ S.folderPath=S.folderPath.slice(0,-1); }
+}
 function renderGrid(){
   const el=document.getElementById('v-grid');if(!el)return;
+  pruneEmptyFolderPath();
   const path=S.folderPath;
 
   function folderCard(label,icon,count,key){
