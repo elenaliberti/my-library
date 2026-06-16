@@ -57,6 +57,10 @@ async function saveData() {
 
 // ── Cloud sync (merge with GitHub copy so phone ↔ desktop changes don't clobber) ──
 function pickItem(a, b) {
+  // Primary signal: which copy was edited more recently (any field change stamps _modAt).
+  const ma = Date.parse(a._modAt || '') || 0, mb = Date.parse(b._modAt || '') || 0;
+  if (ma !== mb) return ma > mb ? a : b;
+  // Fallback for legacy items without _modAt: most recent read/finish, then more reads.
   const score = x => {
     let t = 0;
     if (Array.isArray(x.readDates) && x.readDates.length) { const d = Date.parse(x.readDates[x.readDates.length-1]); if (d) t = Math.max(t, d); }
@@ -1389,7 +1393,7 @@ function bindEvents() {
     iimClear.addEventListener('click', () => {
       const id = state.editingItemIcon;
       if (!id) return;
-      state.items = state.items.map(x => x.id === id ? { ...x, coverIcon: undefined } : x);
+      state.items = state.items.map(x => x.id === id ? { ...x, coverIcon: undefined, _modAt: new Date().toISOString() } : x);
       saveData(); state.editingItemIcon = null; render();
     });
   }
@@ -1398,7 +1402,7 @@ function bindEvents() {
       const id = state.editingItemIcon;
       if (!id) return;
       const icon = document.getElementById('iim-icon')?.value.trim();
-      state.items = state.items.map(x => x.id === id ? { ...x, coverIcon: icon || undefined } : x);
+      state.items = state.items.map(x => x.id === id ? { ...x, coverIcon: icon || undefined, _modAt: new Date().toISOString() } : x);
       saveData(); state.editingItemIcon = null; render();
     });
   }
@@ -1449,7 +1453,7 @@ function bindEvents() {
     el.addEventListener('click', e => {
       e.stopPropagation();
       const id = el.dataset.toggleFav;
-      state.items = state.items.map(x => x.id === id ? { ...x, favorite: !x.favorite } : x);
+      state.items = state.items.map(x => x.id === id ? { ...x, favorite: !x.favorite, _modAt: new Date().toISOString() } : x);
       saveData(); render();
     });
   });
@@ -1535,7 +1539,7 @@ function bindEvents() {
       const status = el.dataset.setStatus;
       state.items = state.items.map(x => {
         if (x.id !== id) return x;
-        const update = { ...x, status };
+        const update = { ...x, status, _modAt: new Date().toISOString() };
         if (status === 'Finished' && !x.finishedAt) update.finishedAt = new Date().toISOString();
         if (status === 'Finished' && !(x.readCount > 0)) update.readCount = 1;
         return update;
@@ -1555,7 +1559,7 @@ function bindEvents() {
         const dates = ensureReadDates(x);
         if (delta > 0) dates.push(new Date().toISOString());  // record "I re-read this" with today's date
         else dates.pop();                                     // remove the most recent read
-        return { ...x, readDates: dates, readCount: dates.length };
+        return { ...x, readDates: dates, readCount: dates.length, _modAt: new Date().toISOString() };
       });
       saveData(); render();
     });
@@ -1569,7 +1573,7 @@ function bindEvents() {
       const id = star.dataset.id;
       state.items = state.items.map(x => {
         if (x.id !== id) return x;
-        return { ...x, userRating: x.userRating === val ? 0 : val };
+        return { ...x, userRating: x.userRating === val ? 0 : val, _modAt: new Date().toISOString() };
       });
       saveData(); render();
     });
@@ -1796,6 +1800,7 @@ function bindEvents() {
         return state.editItem?.readCount || 0;
       })(),
       _addedAt: state.editItem?._addedAt ?? state.items.length,
+      _modAt: new Date().toISOString(),
     };
 
     const idx = state.items.findIndex(x => x.id === item.id);

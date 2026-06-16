@@ -480,6 +480,8 @@ const lastReadAt=x=>{const d=ensureReadDates(x).filter(Boolean);return d.length?
 const readEvents=items=>{const ev=[];items.forEach(x=>{const w=itemWords(x);ensureReadDates(x).forEach(d=>{if(d)ev.push({date:d,words:w})})});return ev};
 // ── Merge (so phone ↔ desktop saves never clobber each other) ──
 function pickItem(a,b){
+  const ma=Date.parse(a._modAt||'')||0, mb=Date.parse(b._modAt||'')||0;
+  if(ma!==mb)return ma>mb?a:b;                       // most recently edited wins
   const score=x=>{let t=0;if(Array.isArray(x.readDates)&&x.readDates.length){const d=Date.parse(x.readDates[x.readDates.length-1]);if(d)t=Math.max(t,d)}if(x.finishedAt){const d=Date.parse(x.finishedAt);if(d)t=Math.max(t,d)}return t};
   const sa=score(a),sb=score(b);if(sa!==sb)return sa>sb?a:b;
   const ra=Array.isArray(a.readDates)?a.readDates.length:(a.readCount||0),rb=Array.isArray(b.readDates)?b.readDates.length:(b.readCount||0);
@@ -988,6 +990,7 @@ function closeSheet(){
 
 async function qSave(up){
   const idx=S.items.findIndex(i=>i.id===up.id);if(idx<0)return;
+  up._modAt=new Date().toISOString();   // stamp edit time so sync prefers this version
   S.items[idx]=up;renderLibrary();renderStatRow();openSheet(up.id);await doSave();
 }
 
@@ -1159,6 +1162,7 @@ async function saveModal(){
     readCount:rc?parseInt(rc)||0:(S.editing?.readCount??(st==='Finished'?1:0)),
     finishedAt:finV?new Date(finV+'T12:00:00').toISOString():(st==='Finished'&&!S.editing?.finishedAt?new Date().toISOString():S.editing?.finishedAt||null),
     _addedAt:S.editing?._addedAt??S.items.length,
+    _modAt:new Date().toISOString(),
   };
   if(isFf){item.url=g('f-url').trim();item.fandom=g('f-fandom').trim();item.pairing=g('f-pairing').trim();item.hearts=gN('f-hearts');item.rating=g('f-rating');item.oneshot=g('f-oneshot')==='true'}
   else{item.genre=g('f-genre').trim();item.section=g('f-section').trim();item.pages=gN('f-pages')}
