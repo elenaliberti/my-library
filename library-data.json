@@ -3742,7 +3742,7 @@
       "type": "ff",
       "title": "Twelve and One",
       "author": "Lomonaaeren",
-      "fandom": "Harry Potter - J. K. Rowling",
+      "fandom": "Harry Potter",
       "words": 26164,
       "hearts": 7730,
       "rating": "Mature",
@@ -3764,7 +3764,12 @@
       "genre": "",
       "section": "",
       "pages": null,
-      "oneshot": false
+      "oneshot": false,
+      "favorite": false,
+      "readCount": 1,
+      "readDates": [
+        "2026-06-05T11:00:00.000Z"
+      ]
     },
     {
       "id": "ff_150",
