@@ -4877,7 +4877,7 @@
       "type": "ff",
       "title": "Kept Man",
       "author": "Lomonaaeren",
-      "fandom": "Harry Potter - J. K. Rowling",
+      "fandom": "Harry Potter",
       "words": 18803,
       "hearts": 11416,
       "rating": "Mature",
@@ -4899,7 +4899,12 @@
       "genre": "",
       "section": "",
       "pages": null,
-      "oneshot": false
+      "oneshot": false,
+      "favorite": false,
+      "readCount": 1,
+      "readDates": [
+        "2026-06-05T11:00:00.000Z"
+      ]
     },
     {
       "id": "ff_202",
