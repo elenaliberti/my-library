@@ -82,6 +82,12 @@ html{background:#fff}
 .chip{padding:7px 14px;background:#fff;border:1.5px solid var(--border);border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap;cursor:pointer;flex-shrink:0;transition:all .15s;color:var(--text2);box-shadow:0 1px 4px rgba(0,0,0,.04)}
 .chip.on{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 4px 12px rgba(99,102,241,.3)}
 .chip:active{opacity:.7}
+.gfilter-row{display:flex;gap:7px;overflow-x:auto;padding:12px 16px 4px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.gfilter-row::-webkit-scrollbar{display:none}
+.gfilter{padding:7px 13px;background:#fff;border:1.5px solid var(--border);border-radius:20px;font-size:12px;font-weight:700;white-space:nowrap;cursor:pointer;flex-shrink:0;transition:all .15s;color:var(--text2);box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.gfilter.on{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 4px 12px rgba(99,102,241,.3)}
+.gfilter:active{opacity:.7}
+.gfilter-n{opacity:.6;font-weight:600}
 
 /* ── Main list ── */
 #main{flex:1;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
@@ -482,7 +488,7 @@ const S={
   folderConfig:{},
   search:'',filter:'all',sortBy:'added',statFilter:'all',
   view:'library',
-  folderPath:[],
+  folderPath:[],gridFilter:null,
   statsPeriod:'year',statsMetric:'words',statsCat:'all',
   selId:null,editing:null,mRating:0,mTags:[],
 };
@@ -781,10 +787,25 @@ function renderGrid(){
     return'📚';
   }
 
+  const GRID_FILTERS=[
+    ['favorite','⭐','Favourite',x=>x.favorite],
+    ['TBR','📋','TBR',x=>(x.status||'TBR')==='TBR'],
+    ['Reading','📖','Reading',x=>x.status==='Reading'],
+    ['Finished','✅','Finished',x=>x.status==='Finished'],
+    ['Dropped','🚫','Dropped',x=>x.status==='Dropped'],
+    ['oneshot','📄','One-shot',x=>!!x.oneshot]
+  ];
   function itemListHtml(items){
-    if(!items.length)return`<div class="empty"><div class="empty-ico">📭</div><div class="empty-txt">Nothing here</div></div>`;
-    return`<div class="lcount" style="padding-top:12px">${items.length} item${items.length!==1?'s':''}</div>`+
-      items.map(x=>{
+    const f=S.gridFilter;
+    const pills=GRID_FILTERS.map(([key,ico,lbl,pred])=>{
+      const n=items.filter(pred).length;
+      return `<button class="gfilter${f===key?' on':''}" data-grid-filter="${key}">${ico} ${lbl} <span class="gfilter-n">${n}</span></button>`;
+    }).join('');
+    const pillRow=`<div class="gfilter-row">${pills}</div>`;
+    const shown=f?items.filter(GRID_FILTERS.find(g=>g[0]===f)[3]):items;
+    if(!shown.length)return pillRow+`<div class="empty"><div class="empty-ico">${f?'🔍':'📭'}</div><div class="empty-txt">${f?'None match this filter':'Nothing here'}</div></div>`;
+    return pillRow+`<div class="lcount" style="padding-top:12px">${shown.length} item${shown.length!==1?'s':''}</div>`+
+      shown.map(x=>{
         const rc=timesRead(x);
         const meta=[];if(x.words)meta.push(`${fmt(x.words)}w`);if(x.pages&&x.type!=='ff')meta.push(`${x.pages}p`);if(rc>1)meta.push(`↻${rc}`);if(x.favorite)meta.push('⭐');
         return`<div class="card" data-id="${esc(x.id)}">${cover(x,50,70,8)}<div class="c-body"><div class="c-title">${esc(x.title||'Untitled')}</div><div class="c-sub">${esc(x.author||'—')}</div><div class="c-badges"><span class="bdg ${badgeClass(x.status)}">${esc(x.status||'TBR')}</span></div>${meta.length?`<div class="c-meta">${meta.join(' · ')}</div>`:''}</div></div>`;
@@ -909,6 +930,7 @@ function renderGrid(){
     fc.addEventListener('click',e=>{
       if(e.target.closest('.fc-edit-btn'))return; // handled separately
       const lbl=fc.dataset.fcLabel;
+      S.gridFilter=null;
       if(!path.length){S.folderPath=[lbl==='Fanfiction'?'Fanfiction':'Books'];renderGrid();}
       else if(path.length===1){S.folderPath=[...path,lbl];renderGrid();}
       else if(path.length===2){S.folderPath=[...path,lbl];renderGrid();}
@@ -930,7 +952,14 @@ function renderGrid(){
   });
 
   // crumb navigation
-  el.querySelectorAll('[data-go]').forEach(c=>c.addEventListener('click',()=>{S.folderPath=JSON.parse(c.dataset.go);renderGrid()}));
+  el.querySelectorAll('[data-go]').forEach(c=>c.addEventListener('click',()=>{S.gridFilter=null;S.folderPath=JSON.parse(c.dataset.go);renderGrid()}));
+
+  // in-folder status/favourite/one-shot filters
+  el.querySelectorAll('[data-grid-filter]').forEach(b=>b.addEventListener('click',()=>{
+    const k=b.dataset.gridFilter;
+    S.gridFilter=S.gridFilter===k?null:k;
+    renderGrid();
+  }));
 
   // item card clicks (in level 3)
   el.querySelectorAll('.card').forEach(c=>c.addEventListener('click',()=>openSheet(c.dataset.id)));

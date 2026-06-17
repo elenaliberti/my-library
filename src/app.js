@@ -22,6 +22,7 @@ let state = {
   editingFolder: null,
   creatingFolderIn: null,
   folderSearch: '',
+  folderItemFilter: null,
   folderSortBy: 'count',
   editingItemIcon: null,
   statsCategory: 'all',
@@ -784,17 +785,32 @@ function folderCrumbs(crumbs) {
   </div>`;
 }
 
+const FOLDER_ITEM_FILTERS = [
+  ['favorite', '⭐ Favourite', x => x.favorite],
+  ['TBR',      '📋 TBR',       x => (x.status||'TBR')==='TBR'],
+  ['Reading',  '📖 Reading',   x => x.status==='Reading'],
+  ['Finished', '✅ Finished',  x => x.status==='Finished'],
+  ['Dropped',  '🚫 Dropped',   x => x.status==='Dropped'],
+  ['oneshot',  '📄 One-shot',  x => !!x.oneshot],
+];
+
 function folderItemList(items) {
-  const filtered = state.folderSearch
-    ? items.filter(x => {
-        const q = state.folderSearch.toLowerCase();
-        return (x.title||'').toLowerCase().includes(q) || (x.author||'').toLowerCase().includes(q);
-      })
-    : items;
-  return `<div class="folder-item-meta">${filtered.length} ${filtered.length===1?'entry':'entries'}${state.folderSearch&&filtered.length!==items.length?' found':''}</div>
+  const f = state.folderItemFilter;
+  const pills = FOLDER_ITEM_FILTERS.map(([key, label, pred]) =>
+    `<button class="fpill folder-item-filter${f===key?' active':''}" data-folder-filter="${key}">${label} <span class="fpill-n">${items.filter(pred).length}</span></button>`
+  ).join('');
+  let filtered = items;
+  if (state.folderSearch) {
+    const q = state.folderSearch.toLowerCase();
+    filtered = filtered.filter(x => (x.title||'').toLowerCase().includes(q) || (x.author||'').toLowerCase().includes(q));
+  }
+  if (f) filtered = filtered.filter(FOLDER_ITEM_FILTERS.find(g => g[0]===f)[2]);
+  const filteredActive = state.folderSearch || f;
+  return `<div class="folder-filter-row">${pills}</div>
+    <div class="folder-item-meta">${filtered.length} ${filtered.length===1?'entry':'entries'}${filteredActive&&filtered.length!==items.length?' shown':''}</div>
     <div id="list">${filtered.length
       ? filtered.map(cardHtml).join('')
-      : `<div class="empty"><div class="empty-icon">${state.folderSearch?'🔍':'📭'}</div><p>${state.folderSearch?'No items match your search.':'Nothing here yet.'}</p></div>`
+      : `<div class="empty"><div class="empty-icon">${filteredActive?'🔍':'📭'}</div><p>${filteredActive?'No items match this filter.':'Nothing here yet.'}</p></div>`
     }</div>`;
 }
 
@@ -1296,11 +1312,21 @@ function bindEvents() {
   const folderSortEl = document.getElementById('folder-sort');
   if (folderSortEl) folderSortEl.addEventListener('change', e => { state.folderSortBy = e.target.value; render(); });
 
-  // Folder navigation (reset search on navigate)
+  // In-folder status / favourite / one-shot filters
+  document.querySelectorAll('[data-folder-filter]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const k = btn.dataset.folderFilter;
+      state.folderItemFilter = state.folderItemFilter === k ? null : k;
+      render();
+    });
+  });
+
+  // Folder navigation (reset search + item filter on navigate)
   document.querySelectorAll('[data-folder-nav]').forEach(el => {
     el.addEventListener('click', () => {
       state.folderPath = JSON.parse(el.dataset.folderNav);
       state.folderSearch = '';
+      state.folderItemFilter = null;
       render();
     });
   });
@@ -1308,6 +1334,7 @@ function bindEvents() {
     el.addEventListener('click', () => {
       state.folderPath = JSON.parse(el.dataset.folderGo);
       state.folderSearch = '';
+      state.folderItemFilter = null;
       render();
     });
   });
