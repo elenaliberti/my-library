@@ -22,7 +22,11 @@ function createWindow() {
       nodeIntegration: false
     }
   })
-  win.loadFile('src/index.html')
+  // Always load fresh renderer code: drop any stale V8 bytecode cache from a
+  // previous app version before loading, so code updates always take effect.
+  session.defaultSession.clearCodeCaches({ urls: [] }).finally(() => {
+    win.loadFile('src/index.html')
+  })
 }
 
 app.whenReady().then(() => {
