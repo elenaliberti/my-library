@@ -811,7 +811,7 @@ function folderEditModalHtml() {
   const isUrl = icon.startsWith('http');
   const preview = isUrl
     ? `<img src="${esc(icon)}" style="width:100%;height:100%;object-fit:cover;border-radius:12px" />`
-    : `<span style="font-size:42px;line-height:1">${icon || '📁'}</span>`;
+    : `<span style="font-size:38px;line-height:1">${icon || '📁'}</span>`;
   return `<div class="folder-edit-backdrop" id="folder-edit-backdrop">
     <div class="folder-edit-modal">
       <div class="fem-header">
@@ -836,9 +836,12 @@ function folderEditModalHtml() {
           <span>Pin to top</span>
         </label>
       </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" id="fem-cancel">Cancel</button>
-        <button class="btn btn-primary" id="fem-save">Save</button>
+      <div class="modal-footer"${cfg.isCustom ? ' style="justify-content:space-between"' : ''}>
+        ${cfg.isCustom ? `<button class="btn fem-delete" id="fem-delete">🗑 Delete folder</button>` : ''}
+        <div class="fem-footer-actions">
+          <button class="btn btn-secondary" id="fem-cancel">Cancel</button>
+          <button class="btn btn-primary" id="fem-save">Save</button>
+        </div>
       </div>
     </div>
   </div>`;
@@ -882,7 +885,7 @@ function itemIconModalHtml() {
   const [c1, c2] = folderGradient(item.id);
   const preview = isUrl
     ? `<img src="${esc(icon)}" style="width:100%;height:100%;object-fit:cover;border-radius:10px" />`
-    : `<span style="font-size:42px;line-height:1">${icon || (isFf?'✍️':'📚')}</span>`;
+    : `<span style="font-size:38px;line-height:1">${icon || (isFf?'✍️':'📚')}</span>`;
   return `<div class="folder-edit-backdrop" id="item-icon-backdrop">
     <div class="folder-edit-modal">
       <div class="fem-header">
@@ -1335,7 +1338,7 @@ function bindEvents() {
       const isUrl = val.startsWith('http');
       preview.innerHTML = isUrl
         ? `<img src="${val}" style="width:100%;height:100%;object-fit:cover;border-radius:12px" />`
-        : `<span style="font-size:42px;line-height:1">${val || '📁'}</span>`;
+        : `<span style="font-size:38px;line-height:1">${val || '📁'}</span>`;
     });
   }
   if (febSave) {
@@ -1357,6 +1360,18 @@ function bindEvents() {
       else delete state.folderConfig[key].section;
       if (!name && !icon && !pinned && !sectionVal && !existing.isCustom && !existing.filterTag) delete state.folderConfig[key];
       else state.folderConfig[key]._modAt = new Date().toISOString();  // stamp so the change syncs to phone
+      saveFolderConfig();
+      state.editingFolder = null;
+      render();
+    });
+  }
+  const febDelete = document.getElementById('fem-delete');
+  if (febDelete) {
+    febDelete.addEventListener('click', () => {
+      const key = state.editingFolder;
+      if (!key) return;
+      if (!confirm('Delete this folder? The items inside keep their tags — only this custom folder is removed.')) return;
+      delete state.folderConfig[key];
       saveFolderConfig();
       state.editingFolder = null;
       render();
@@ -1426,7 +1441,7 @@ function bindEvents() {
       const isFf = item?.type === 'ff';
       preview.innerHTML = isUrl
         ? `<img src="${val}" style="width:100%;height:100%;object-fit:cover;border-radius:10px" />`
-        : `<span style="font-size:42px;line-height:1">${val || (isFf?'✍️':'📚')}</span>`;
+        : `<span style="font-size:38px;line-height:1">${val || (isFf?'✍️':'📚')}</span>`;
     });
   }
   if (iimClear) {
