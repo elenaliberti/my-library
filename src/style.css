@@ -132,7 +132,7 @@ select.filter-select:focus { border-color: var(--purple); }
 .folder-search-row { display: flex; align-items: center; gap: 10px; padding: 9px 18px; background: #fff; border-bottom: 1px solid var(--gray-200); flex-shrink: 0; position: sticky; top: 0; z-index: 5; }
 .folder-search-input { flex: 1; height: 30px; border: 1.5px solid var(--gray-200); border-radius: 20px; padding: 0 14px; font-size: 12.5px; color: var(--gray-900); outline: none; font-family: inherit; background: var(--gray-100); }
 .folder-search-input:focus { border-color: #a5b4fc; background: #fff; }
-.folder-sort-select { font-size: 12px; padding: 4px 10px; border-radius: 20px; border: 1.5px solid var(--gray-200); background: #fff; color: var(--gray-700); cursor: pointer; flex-shrink: 0; }
+.folder-sort-select { width: auto; flex: 0 0 auto; font-size: 12px; padding: 4px 10px; border-radius: 20px; border: 1.5px solid var(--gray-200); background: #fff; color: var(--gray-700); cursor: pointer; }
 
 /* Pairing / trope section headers */
 .fv-section-hdr { font-size: 11px; font-weight: 700; color: var(--gray-400); letter-spacing: 0.07em; text-transform: uppercase; padding: 8px 4px 2px; }
