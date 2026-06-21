@@ -320,6 +320,9 @@ html{background:#fff}
 .tag-sug{padding:10px 12px;font-size:13px;color:var(--text);cursor:pointer;border-bottom:1px solid var(--border)}
 .tag-sug:last-child{border-bottom:none}
 .tag-sug:active{background:var(--surface)}
+.ac-wrap{position:relative}
+.field-suggest{display:none;position:absolute;left:0;right:0;top:100%;z-index:30;margin-top:4px;border:1px solid var(--border);border-radius:10px;background:#fff;max-height:190px;overflow-y:auto;box-shadow:var(--shadow)}
+.field-suggest.on{display:block}
 .tag-add-btn{padding:13px 16px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;color:var(--accent2);font-size:20px;font-weight:700;cursor:pointer}
 .tags-area{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px;min-height:10px}
 .m-tag{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:4px 10px;font-size:12px;color:var(--accent2);display:flex;align-items:center;gap:5px;font-weight:600}
@@ -1176,11 +1179,11 @@ function renderModalBody(){
   document.getElementById('m-body').innerHTML=`
     ${isNew?`<label class="m-lbl" style="margin-top:0">Type</label><div class="type-row"><button class="type-btn${isFf?' on':''}" data-tp="ff">📖 Fanfiction</button><button class="type-btn${!isFf?' on':''}" data-tp="book">📚 Book</button></div>`:''}
     ${isFf?`<label class="m-lbl">Fic URL</label><div class="fetch-row"><input class="m-in" id="f-url" type="url" value="${esc(x.url||'')}" placeholder="AO3 or fanfiction.net link"/><button class="fetch-btn" id="f-autofill">Auto-fill ✦</button></div><div class="fetch-msg" id="fetch-msg"></div>`:
-    `<label class="m-lbl">Title *</label><div class="fetch-row"><input class="m-in" id="f-title" value="${esc(x.title||'')}" placeholder="Title or author…"/><button class="fetch-btn" id="f-bookfill">Search ✦</button></div><div class="fetch-msg" id="fetch-msg"></div>`}
-    ${isFf?`<label class="m-lbl">Title *</label><input class="m-in" id="f-title" value="${esc(x.title||'')}" placeholder="Title"/>`:'' }
+    `<label class="m-lbl">Title *</label><div class="ac-wrap"><div class="fetch-row"><input class="m-in" id="f-title" value="${esc(x.title||'')}" placeholder="Title or author…"/><button class="fetch-btn" id="f-bookfill">Search ✦</button></div><div class="field-suggest" id="sug-title"></div></div><div class="fetch-msg" id="fetch-msg"></div>`}
+    ${isFf?`<label class="m-lbl">Title *</label><div class="ac-wrap"><input class="m-in" id="f-title" value="${esc(x.title||'')}" placeholder="Title"/><div class="field-suggest" id="sug-title"></div></div>`:'' }
     <div class="dupe-warn" id="f-dupe"></div>
-    <label class="m-lbl">Author</label><input class="m-in" id="f-author" value="${esc(x.author||'')}" placeholder="Author / username"/>
-    ${isFf?`<div class="f-row"><div><label class="m-lbl">Fandom</label><input class="m-in" id="f-fandom" value="${esc(x.fandom||'')}" placeholder="Harry Potter"/></div><div><label class="m-lbl">Pairing</label><input class="m-in" id="f-pairing" value="${esc(x.pairing||'')}" placeholder="M/M"/></div></div>
+    <label class="m-lbl">Author</label><div class="ac-wrap"><input class="m-in" id="f-author" value="${esc(x.author||'')}" placeholder="Author / username"/><div class="field-suggest" id="sug-author"></div></div>
+    ${isFf?`<div class="f-row"><div class="ac-wrap"><label class="m-lbl">Fandom</label><input class="m-in" id="f-fandom" value="${esc(x.fandom||'')}" placeholder="Harry Potter"/><div class="field-suggest" id="sug-fandom"></div></div><div><label class="m-lbl">Pairing</label><input class="m-in" id="f-pairing" value="${esc(x.pairing||'')}" placeholder="M/M"/></div></div>
     <div class="f-row"><div><label class="m-lbl">Words</label><input class="m-in" id="f-words" type="number" value="${x.words||''}"/></div><div><label class="m-lbl">Kudos</label><input class="m-in" id="f-hearts" type="number" value="${x.hearts||''}"/></div></div>
     <div class="f-row"><div><label class="m-lbl">Format</label><select class="m-sel" id="f-oneshot"><option value="false"${!x.oneshot?' selected':''}>Multi-chapter</option><option value="true"${x.oneshot?' selected':''}>One-shot</option></select></div><div><label class="m-lbl">AO3 Rating</label><select class="m-sel" id="f-rating">${['','General','Teen+','Mature','Explicit','Not Rated'].map(r=>`<option value="${r}"${x.rating===r?' selected':''}>${r||'—'}</option>`).join('')}</select></div></div>`:
     `<div class="f-row"><div><label class="m-lbl">Genre</label><input class="m-in" id="f-genre" value="${esc(x.genre||'')}"/></div><div><label class="m-lbl">Pages</label><input class="m-in" id="f-pages" type="number" value="${x.pages||''}"/></div></div>
@@ -1224,6 +1227,27 @@ function renderModalBody(){
   tagIn?.addEventListener('blur',()=>setTimeout(hideSug,150));
   tagIn?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();addTag()}});
   document.getElementById('f-tag-btn')?.addEventListener('click',addTag);
+
+  // Autocomplete dropdowns for Fandom / Author / Title (reuse existing values)
+  const distinctVals=key=>[...new Set(S.items.map(x=>(x[key]||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+  const attachAC=(inId,sugId,values)=>{
+    const inp=document.getElementById(inId),s=document.getElementById(sugId);
+    if(!inp||!s)return;
+    const show=()=>{
+      const q=inp.value.trim().toLowerCase();
+      const matches=q?values.filter(v=>v.toLowerCase().includes(q)&&v.toLowerCase()!==q).slice(0,8):[];
+      if(!matches.length){s.classList.remove('on');return}
+      s.innerHTML=matches.map(v=>`<div class="tag-sug" data-v="${esc(v)}">${esc(v)}</div>`).join('');
+      s.classList.add('on');
+      s.querySelectorAll('.tag-sug').forEach(el=>el.addEventListener('click',()=>{inp.value=el.dataset.v;s.classList.remove('on')}));
+    };
+    inp.addEventListener('input',show);
+    inp.addEventListener('focus',show);
+    inp.addEventListener('blur',()=>setTimeout(()=>s.classList.remove('on'),150));
+  };
+  attachAC('f-fandom','sug-fandom',distinctVals('fandom'));
+  attachAC('f-author','sug-author',distinctVals('author'));
+  attachAC('f-title','sug-title',distinctVals('title'));
   const titleEl=document.getElementById('f-title');
   const dupeEl=document.getElementById('f-dupe');
   if(titleEl&&dupeEl&&!x.id){

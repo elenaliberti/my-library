@@ -481,22 +481,26 @@ function modalHtml() {
 
         <label class="field-label">Title *</label>
         ${!isFf ? `
-          <div class="fetch-row">
-            <input type="text" id="m-title" value="${item.title||''}" placeholder="Title, author or ISBN…" />
-            <button class="btn btn-primary btn-sm" id="btn-book-fetch">Auto-fill ✦</button>
+          <div class="ac-wrap">
+            <div class="fetch-row">
+              <input type="text" id="m-title" value="${item.title||''}" placeholder="Title, author or ISBN…" />
+              <button class="btn btn-primary btn-sm" id="btn-book-fetch">Auto-fill ✦</button>
+            </div>
+            <div class="field-suggest" id="sug-title"></div>
           </div>
           <div class="fetch-msg" id="book-fetch-msg"></div>
-        ` : `<input type="text" id="m-title" value="${item.title||''}" placeholder="Title" />`}
+        ` : `<div class="ac-wrap"><input type="text" id="m-title" value="${item.title||''}" placeholder="Title" /><div class="field-suggest" id="sug-title"></div></div>`}
         <div class="dupe-warn" id="dupe-warning"></div>
 
         <label class="field-label">Author</label>
-        <input type="text" id="m-author" value="${item.author||''}" placeholder="Author / username" />
+        <div class="ac-wrap"><input type="text" id="m-author" value="${item.author||''}" placeholder="Author / username" /><div class="field-suggest" id="sug-author"></div></div>
 
         <div class="field-row">
           ${isFf ? `
-          <div>
+          <div class="ac-wrap">
             <label class="field-label">Fandom</label>
             <input type="text" id="m-fandom" value="${item.fandom||''}" placeholder="e.g. Harry Potter" />
+            <div class="field-suggest" id="sug-fandom"></div>
           </div>
           <div>
             <label class="field-label">Pairing</label>
@@ -1240,7 +1244,11 @@ function render() {
 
 // ── Event binding ─────────────────────────────────────────────────────────────
 function snapshotModalForm() {
-  if (!state.modalOpen || !state.editItem) return;
+  // Capture whatever is currently typed into the modal form, even for a brand-new
+  // entry (state.editItem === null) — otherwise adding a tag mid-entry wipes the
+  // title/author/etc. on the re-render.
+  if (!state.modalOpen) return;
+  const base = state.editItem || {};
   const v = id => document.getElementById(id)?.value ?? null;
   const patch = {};
   const url     = v('m-url');     if (url     !== null) patch.url     = url.trim();
@@ -1253,19 +1261,19 @@ function snapshotModalForm() {
   const notes   = v('m-notes');   if (notes   !== null) patch.notes   = notes.trim();
   const status  = v('m-status');  if (status  !== null) patch.status  = status;
   const rating  = v('m-rating');  if (rating  !== null) patch.rating  = rating;
-  const ws = v('m-words');     if (ws && ws.trim())  patch.words     = parseInt(ws)  || state.editItem.words;
-  const hs = v('m-hearts');    if (hs && hs.trim())  patch.hearts    = parseInt(hs)  || state.editItem.hearts;
-  const ps = v('m-pages');     if (ps && ps.trim())  patch.pages     = parseInt(ps)  || state.editItem.pages;
+  const ws = v('m-words');     if (ws && ws.trim())  patch.words     = parseInt(ws)  || base.words;
+  const hs = v('m-hearts');    if (hs && hs.trim())  patch.hearts    = parseInt(hs)  || base.hearts;
+  const ps = v('m-pages');     if (ps && ps.trim())  patch.pages     = parseInt(ps)  || base.pages;
   const rc = v('m-readcount');
   if (rc !== null) {
     const n = Math.max(0, parseInt(rc) || 0);
-    const dates = ensureReadDates(state.editItem);
-    if (n > dates.length) { const fill = state.editItem.finishedAt || null; while (dates.length < n) dates.push(fill); }
+    const dates = ensureReadDates(base);
+    if (n > dates.length) { const fill = base.finishedAt || null; while (dates.length < n) dates.push(fill); }
     else dates.length = n;
     patch.readDates = dates;
     patch.readCount = n;
   }
-  state.editItem = { ...state.editItem, ...patch };
+  state.editItem = { ...base, ...patch };
 }
 
 function bindEvents() {
@@ -1764,6 +1772,27 @@ function bindEvents() {
   tagInput?.addEventListener('input', renderSug);
   tagInput?.addEventListener('keydown', e => e.key==='Enter' && addTag());
   document.getElementById('btn-add-tag')?.addEventListener('click', addTag);
+
+  // Autocomplete dropdowns for Fandom / Author / Title (reuse existing values)
+  const distinctVals = key => [...new Set(state.items.map(x => (x[key]||'').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+  const attachAutocomplete = (inputId, sugId, values) => {
+    const inp = document.getElementById(inputId), sug = document.getElementById(sugId);
+    if (!inp || !sug) return;
+    const showMatches = () => {
+      const q = inp.value.trim().toLowerCase();
+      const matches = q ? values.filter(v => v.toLowerCase().includes(q) && v.toLowerCase() !== q).slice(0, 8) : [];
+      if (!matches.length) { sug.style.display = 'none'; return; }
+      sug.innerHTML = matches.map(v => `<div class="tag-sug" data-v="${esc(v).replace(/"/g,'&quot;')}">${esc(v)}</div>`).join('');
+      sug.style.display = 'block';
+      sug.querySelectorAll('.tag-sug').forEach(el => el.addEventListener('mousedown', e => { e.preventDefault(); inp.value = el.dataset.v; sug.style.display = 'none'; }));
+    };
+    inp.addEventListener('input', showMatches);
+    inp.addEventListener('focus', showMatches);
+    inp.addEventListener('blur', () => setTimeout(() => { sug.style.display = 'none'; }, 150));
+  };
+  attachAutocomplete('m-fandom', 'sug-fandom', distinctVals('fandom'));
+  attachAutocomplete('m-author', 'sug-author', distinctVals('author'));
+  attachAutocomplete('m-title',  'sug-title',  distinctVals('title'));
 
   // Duplicate title warning (live, on blur)
   const titleEl = document.getElementById('m-title');
