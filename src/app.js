@@ -803,7 +803,8 @@ function folderItemList(items) {
   const pills = FOLDER_ITEM_FILTERS.map(([key, label, pred]) =>
     `<button class="fpill folder-item-filter${f===key?' active':''}" data-folder-filter="${key}">${label} <span class="fpill-n">${items.filter(pred).length}</span></button>`
   ).join('');
-  let filtered = items;
+  // Newest added first (last added → oldest), matching the main list view.
+  let filtered = items.slice().sort((a, b) => (b._addedAt||0) - (a._addedAt||0));
   if (state.folderSearch) {
     const q = state.folderSearch.toLowerCase();
     filtered = filtered.filter(x => (x.title||'').toLowerCase().includes(q) || (x.author||'').toLowerCase().includes(q));

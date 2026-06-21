@@ -805,7 +805,8 @@ function renderGrid(){
       return `<button class="gfilter${f===key?' on':''}" data-grid-filter="${key}">${ico} ${lbl} <span class="gfilter-n">${n}</span></button>`;
     }).join('');
     const pillRow=`<div class="gfilter-row">${pills}</div>`;
-    const shown=f?items.filter(GRID_FILTERS.find(g=>g[0]===f)[3]):items;
+    let shown=f?items.filter(GRID_FILTERS.find(g=>g[0]===f)[3]):items.slice();
+    shown=shown.slice().sort((a,b)=>(b._addedAt??0)-(a._addedAt??0)); // newest added first
     if(!shown.length)return pillRow+`<div class="empty"><div class="empty-ico">${f?'🔍':'📭'}</div><div class="empty-txt">${f?'None match this filter':'Nothing here'}</div></div>`;
     return pillRow+`<div class="lcount" style="padding-top:12px">${shown.length} item${shown.length!==1?'s':''}</div>`+
       shown.map(x=>{
