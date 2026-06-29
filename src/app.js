@@ -895,8 +895,6 @@ async function moveMsCard(id, target) {
 function hpCatHtml() {
   return `<div id="hp-cat" class="hp-cat" title="touch me to fly!">
     <img class="hp-cat-img" src="hp_cat.png" alt="Gryffindor cat on a broom" draggable="false" />
-    <span class="hp-eye" style="left:25%;top:46.5%"><span class="hp-pupil"></span></span>
-    <span class="hp-eye" style="left:37%;top:45.5%"><span class="hp-pupil"></span></span>
   </div>`;
 }
 
@@ -930,12 +928,6 @@ function mountHpCat() {
   window._hpMove = e => {
     const c = document.getElementById('hp-cat');
     if (!c) { document.removeEventListener('mousemove', window._hpMove); window._hpMove = null; return; }
-    if (!c.classList.contains('is-flying')) {
-      const r = c.getBoundingClientRect();
-      const ang = Math.atan2(e.clientY - (r.top + r.height * 0.46), e.clientX - (r.left + r.width * 0.32));
-      c.style.setProperty('--ex', (Math.cos(ang) * 2.4).toFixed(1) + 'px');
-      c.style.setProperty('--ey', (Math.sin(ang) * 2.2).toFixed(1) + 'px');
-    }
     const now = Date.now();
     if (now - lastTrail > 45) { lastTrail = now; sparkle(e.clientX, e.clientY, false); }
   };
