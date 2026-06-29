@@ -494,23 +494,31 @@ textarea { min-height: 70px; resize: vertical; }
 .stat-label { font-weight: 600; }
 
 /* ── Filled sage-green header bars (white text) ── */
-.ms-col-hdr { background: #3c5429; color: #fff; border-bottom: none; }
+.ms-col-hdr { background: var(--banner, #3c5429); color: #fff; border-bottom: none; background-size: cover; background-position: center; }
 .ms-col-hdr .ms-count { background: rgba(255,255,255,0.22); color: #fff; }
-.fv-section-hdr { display: inline-block; background: #3c5429; color: #fff; padding: 4px 12px; border-radius: 7px; letter-spacing: 0.05em; }
-.stats-section-ttl { display: inline-block; background: #3c5429; color: #fff; padding: 4px 13px; border-radius: 8px; }
+.fv-section-hdr { display: inline-block; background: var(--banner, #3c5429); color: #fff; padding: 4px 12px; border-radius: 7px; letter-spacing: 0.05em; background-size: cover; background-position: center; }
+.stats-section-ttl { display: inline-block; background: var(--banner, #3c5429); color: #fff; padding: 4px 13px; border-radius: 8px; background-size: cover; background-position: center; }
 /* bigger flanking plants */
 .ms-plant { width: 70px; }
 
 /* ── Sage-green toolbar bars; pills stay white ── */
-.stat-row { background: #7d9d6a; border-bottom: none; }
+.stat-row { background: var(--banner, #7d9d6a); border-bottom: none; background-size: cover; background-position: center; }
 .stat-pill { background: #fff; border-color: rgba(255,255,255,0.55); }
 .stat-words { color: rgba(255,255,255,0.95); }
 .stat-divider { background: rgba(255,255,255,0.4); }
-.filter-bar { background: #7d9d6a; padding: 11px 20px; }
-.folder-filter-row { background: #7d9d6a; border-bottom: none; }
+.filter-bar { background: var(--banner, #7d9d6a); padding: 11px 20px; background-size: cover; background-position: center; }
+.folder-filter-row { background: var(--banner, #7d9d6a); border-bottom: none; background-size: cover; background-position: center; }
 .fpill { background: #fff; }
 .fpill.active { background: #3c5429; border-color: #3c5429; color: #fff; }
 .fpill.active-fav { background: #fffbeb; }
 .dd-btn { background: #fff; }
 .dd-on .dd-btn { background: #3c5429; border-color: #3c5429; color: #fff; }
 .dd-on .dd-chev { color: rgba(255,255,255,0.7); }
+
+/* ── Settings: page banner editor ── */
+.banner-edit { display: flex; align-items: center; gap: 8px; margin-top: 5px; }
+.banner-prev { width: 40px; height: 28px; border-radius: 6px; border: 1px solid var(--gray-200); flex-shrink: 0; background-size: cover; background-position: center; }
+.banner-in { flex: 1; }
+.banner-presets { display: flex; gap: 6px; margin-top: 7px; flex-wrap: wrap; }
+.banner-swatch { width: 22px; height: 22px; border-radius: 6px; cursor: pointer; border: 1.5px solid rgba(0,0,0,0.12); transition: transform 0.1s; }
+.banner-swatch:hover { transform: scale(1.15); }

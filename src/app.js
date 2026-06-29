@@ -29,9 +29,65 @@ let state = {
   statsCategory: 'all',
   statsPeriod: 'year',
   statsMetric: 'words',
+  settingsOpen: false,
+  bannerConfig: {},
 };
 
 const STATUS = ['TBR','Reading','Finished','Dropped'];
+const BANNER_PAGES = [
+  { key: 'list',    label: '📚 Library (list view)' },
+  { key: 'folder',  label: '🗂 Browse / folders' },
+  { key: 'myspace', label: '🗂️ MySpace' },
+  { key: 'stats',   label: '📈 Stats' },
+];
+const BANNER_PRESETS = ['#7d9d6a', '#3c5429', '#9bb08a', '#a98467', '#b9854f', '#6b8e9e', '#b07d9e', '#c98b8b'];
+
+function loadBannerConfig() { try { return JSON.parse(localStorage.getItem('bannerConfig') || '{}'); } catch { return {}; } }
+function saveBannerConfig() { try { localStorage.setItem('bannerConfig', JSON.stringify(state.bannerConfig)); } catch (e) {} }
+// Turn a stored value (colour or image URL) into a CSS background value; null = use the page default.
+function resolveBanner(v) {
+  v = (v || '').trim();
+  if (!v) return null;
+  if (/^https?:\/\//i.test(v)) return `url("${v.replace(/"/g, '%22')}") center / cover no-repeat`;
+  return v;
+}
+function currentPageKey() {
+  if (state.view === 'stats') return 'stats';
+  if (state.viewMode === 'myspace') return 'myspace';
+  if (state.viewMode === 'folder') return 'folder';
+  return 'list';
+}
+function applyBanner() {
+  const el = document.getElementById('app');
+  if (!el) return;
+  const bg = resolveBanner(state.bannerConfig[currentPageKey()]);
+  if (bg) el.style.setProperty('--banner', bg); else el.style.removeProperty('--banner');
+}
+function settingsModalHtml() {
+  if (!state.settingsOpen) return '';
+  const rows = BANNER_PAGES.map(p => {
+    const val = state.bannerConfig[p.key] || '';
+    const prev = resolveBanner(val) || '#7d9d6a';
+    return `
+      <label class="field-label" style="margin-top:14px">${p.label}</label>
+      <div class="banner-edit">
+        <span class="banner-prev" data-banner-prev="${p.key}" style="background:${prev}"></span>
+        <input type="text" class="banner-in" data-banner="${p.key}" value="${esc(val)}" placeholder="#7d9d6a  or  https://image…" autocomplete="off" />
+        <button class="btn btn-secondary btn-sm" data-banner-reset="${p.key}">Reset</button>
+      </div>
+      <div class="banner-presets">${BANNER_PRESETS.map(c => `<span class="banner-swatch" data-banner-set="${p.key}|${c}" style="background:${c}" title="${c}"></span>`).join('')}</div>`;
+  }).join('');
+  return `<div class="folder-edit-backdrop" id="settings-backdrop">
+    <div class="folder-edit-modal" style="width:470px">
+      <div class="fem-header"><span class="fem-title">⚙️ Page banners</span><button class="fem-close" id="settings-close">×</button></div>
+      <div class="fem-body" style="padding-bottom:14px; max-height:70vh; overflow-y:auto">
+        <p class="fem-hint" style="display:block; margin-bottom:2px">Give each page's banner a colour (<b>#hex</b>) or a background <b>image URL</b> — like a book cover. Leave blank for the default sage.</p>
+        ${rows}
+      </div>
+      <div class="modal-footer" style="padding:0 22px 18px"><button class="btn btn-primary" id="settings-done">Done</button></div>
+    </div>
+  </div>`;
+}
 const STATUS_COLOR = { TBR:'purple', Reading:'amber', Finished:'green', Dropped:'red' };
 
 // ── Persistence ───────────────────────────────────────────────────────────────
@@ -1416,6 +1472,7 @@ function render() {
         <button class="btn btn-secondary btn-sm btn-icon" id="btn-sync" title="Sync — get the latest from GitHub">🔄 Sync</button>
         <button class="btn btn-backup btn-sm btn-icon" id="btn-backup" title="Back up — save all changes to GitHub">☁️ Back up</button>
         <button class="btn ${state.view==='stats'?'btn-primary':'btn-secondary'} btn-sm btn-icon" id="btn-stats">${state.view==='stats'?'📚 Library':'📈 Stats'}</button>
+        <button class="btn btn-secondary btn-sm btn-icon" id="btn-settings" title="Settings — customise page banners">⚙️</button>
         <div class="view-seg">
           <button class="vseg-btn${state.viewMode==='folder'?' active':''}" id="btn-view-folder" title="Folder view">⊞</button>
           <button class="vseg-btn${state.viewMode==='myspace'?' active':''}" id="btn-view-myspace" title="MySpace — reading board">🗂️</button>
@@ -1426,7 +1483,7 @@ function render() {
     </div>`;
 
   if (state.view === 'stats') {
-    document.getElementById('app').innerHTML = titlebarHtml + statsViewHtml() + (state.modalOpen ? modalHtml() : '');
+    document.getElementById('app').innerHTML = titlebarHtml + statsViewHtml() + (state.modalOpen ? modalHtml() : '') + settingsModalHtml();
     const newScrollable = document.getElementById('stats-view');
     if (newScrollable) newScrollable.scrollTop = scrollTop;
     bindEvents();
@@ -1435,7 +1492,7 @@ function render() {
 
   if (state.viewMode === 'folder') {
     const inHp = state.folderPath[0] === 'ff' && state.folderPath[1] === 'Harry Potter - J. K. Rowling';
-    document.getElementById('app').innerHTML = titlebarHtml + folderViewHtml() + folderEditModalHtml() + folderCreateModalHtml() + itemIconModalHtml() + (state.modalOpen ? modalHtml() : '') + (inHp ? hpCatHtml() : '');
+    document.getElementById('app').innerHTML = titlebarHtml + folderViewHtml() + folderEditModalHtml() + folderCreateModalHtml() + itemIconModalHtml() + (state.modalOpen ? modalHtml() : '') + settingsModalHtml() + (inHp ? hpCatHtml() : '');
     const newFolderView = document.getElementById('folder-view');
     if (newFolderView) newFolderView.scrollTop = folderScrollTop;
     bindEvents();
@@ -1453,7 +1510,7 @@ function render() {
         </div>
         ${msTab==='books' ? mySpaceBooksHtml() : mySpaceHtml()}
       </div>` +
-      (state.modalOpen ? modalHtml() : '') + itemIconModalHtml();
+      (state.modalOpen ? modalHtml() : '') + itemIconModalHtml() + settingsModalHtml();
     bindEvents();
     return;
   }
@@ -1565,6 +1622,7 @@ function render() {
 
     ${state.modalOpen ? modalHtml() : ''}
     ${itemIconModalHtml()}
+    ${settingsModalHtml()}
   `;
 
   const newListEl = document.getElementById('list');
@@ -2374,6 +2432,38 @@ function bindEvents() {
     state.modalOpen = false; state.editItem = null;
     saveData(); render();
   });
+
+  // ── Settings: per-page banner customization ──
+  document.getElementById('btn-settings')?.addEventListener('click', () => { state.settingsOpen = true; render(); });
+  const closeSettings = () => { state.settingsOpen = false; render(); };
+  document.getElementById('settings-close')?.addEventListener('click', closeSettings);
+  document.getElementById('settings-done')?.addEventListener('click', closeSettings);
+  const sb = document.getElementById('settings-backdrop');
+  if (sb) sb.addEventListener('click', e => { if (e.target === sb) closeSettings(); });
+  // live text edit (no re-render, keeps focus)
+  document.querySelectorAll('.banner-in').forEach(inp => {
+    inp.addEventListener('input', () => {
+      const key = inp.dataset.banner;
+      state.bannerConfig[key] = inp.value.trim();
+      saveBannerConfig();
+      const prevEl = document.querySelector(`[data-banner-prev="${key}"]`);
+      if (prevEl) prevEl.style.background = resolveBanner(inp.value) || '#7d9d6a';
+      if (key === currentPageKey()) applyBanner();
+    });
+  });
+  document.querySelectorAll('[data-banner-set]').forEach(sw => {
+    sw.addEventListener('click', () => {
+      const [key, color] = sw.dataset.bannerSet.split('|');
+      state.bannerConfig[key] = color; saveBannerConfig(); render();
+    });
+  });
+  document.querySelectorAll('[data-banner-reset]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.bannerConfig[btn.dataset.bannerReset] = ''; saveBannerConfig(); render();
+    });
+  });
+
+  applyBanner();
 }
 
 // ── Toast notifications ───────────────────────────────────────────────────────
@@ -2537,6 +2627,7 @@ window.addEventListener('wheel', e => {
 (async () => {
   state.items = await loadData();
   state.folderConfig = loadFolderConfig();
+  state.bannerConfig = loadBannerConfig();
   // One-time migration: older data files stored folder icons only in localStorage.
   // Write them into the JSON file so cloud backup syncs folder covers to mobile.
   if (state._loadedFromFile && !state._jsonHadFolderConfig && Object.keys(state.folderConfig).length) {
