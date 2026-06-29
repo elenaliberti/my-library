@@ -628,24 +628,47 @@ function statsViewHtml() {
 
   // Chart
   const groups = getPeriodData(items, state.statsPeriod);
-  const metricFn = state.statsMetric === 'words'
+  const isWords = state.statsMetric === 'words';
+  const metricFn = isWords
     ? g => g.events.reduce((s, e) => s + e.words, 0)
     : g => g.events.length;
   const values = groups.map(metricFn);
   const maxVal = Math.max(...values, 1);
+  const periodTotal = values.reduce((a, b) => a + b, 0);
+  const peakIdx = values.reduce((bi, v, i) => (v > values[bi] ? i : bi), 0);
+  const peakVal = values[peakIdx];
+  const lastV = values[values.length - 1] || 0;
+  const prevV = values[values.length - 2] || 0;
+  const pctChange = prevV > 0 ? Math.round((lastV - prevV) / prevV * 100) : null;
   const bars = groups.map((g, i) => {
     const val = values[i];
-    const pct = val > 0 ? Math.max(val / maxVal * 100, 4) : 0;
-    const lbl = state.statsMetric === 'words' ? fmtNum(val) : String(val);
-    return `<div class="chart-col">
+    const pct = val > 0 ? Math.max(val / maxVal * 88, 5) : 0;
+    const lbl = isWords ? fmtNum(val) : String(val);
+    const isPeak = val > 0 && i === peakIdx;
+    const tip = `${g.label}: ${isWords ? fmtNum(val) + ' words · ' + fmtTime(val / SPEED) : val + (val === 1 ? ' read' : ' reads')}`;
+    return `<div class="chart-col" title="${tip}">
       <div class="chart-bar-wrap">
-        <div class="chart-bar${val === 0 ? ' empty' : ''}" style="height:${pct}%">
-          ${val > 0 ? `<span class="chart-bar-val">${lbl}</span>` : ''}
-        </div>
+        ${val > 0 ? `<span class="chart-bar-val${isPeak ? ' peak' : ''}">${isPeak ? '🔥' : ''}${lbl}</span>` : ''}
+        <div class="chart-bar${val === 0 ? ' empty' : ''}${isPeak ? ' peak' : ''}" style="height:${pct}%"></div>
       </div>
-      <div class="chart-bar-lbl">${g.label}</div>
+      <div class="chart-bar-lbl${isPeak ? ' peak' : ''}">${g.label}</div>
     </div>`;
   }).join('');
+  // Friendly, dynamic headline for the trend
+  const periodName = { week: 'this week', month: 'this past month', year: 'this year', ever: 'all time' }[state.statsPeriod] || '';
+  const trendTxt = pctChange === null ? '' :
+    pctChange > 0 ? ` · <span class="ins-up">▲ ${pctChange}% vs before</span>` :
+    pctChange < 0 ? ` · <span class="ins-down">▼ ${Math.abs(pctChange)}% vs before</span>` : ` · <span class="ins-flat">→ steady</span>`;
+  let insightHtml;
+  if (periodTotal === 0) {
+    insightHtml = `<span class="ins-emoji">🌱</span> Nothing logged ${periodName} yet — finish a fic (or add a finish date) and watch this fill up!`;
+  } else if (isWords) {
+    const books = periodTotal / 90000;
+    const booksTxt = books >= 0.4 ? ` &nbsp;·&nbsp; 📚 ≈ ${books < 10 ? books.toFixed(1) : Math.round(books)} books` : '';
+    insightHtml = `<span class="ins-emoji">📖</span> <b>${fmtNum(periodTotal)}</b> words ${periodName}${booksTxt} &nbsp;·&nbsp; 🔥 best: <b>${groups[peakIdx].label}</b>${trendTxt}`;
+  } else {
+    insightHtml = `<span class="ins-emoji">✅</span> <b>${periodTotal}</b> finished ${periodName} &nbsp;·&nbsp; 🔥 best: <b>${groups[peakIdx].label}</b>${trendTxt}`;
+  }
 
   const datedCount = items.filter(x => x.finishedAt).length;
   const noteHtml = datedCount < totalCount
@@ -667,9 +690,9 @@ function statsViewHtml() {
     const avg = Math.round(pacedReads.reduce((s, r) => s + r.pace, 0) / pacedReads.length);
     const maxPace = Math.max(...pacedReads.map(r => r.pace), 1);
     const paceBars = pacedReads.map(r => {
-      const h = Math.max(r.pace / maxPace * 100, 4);
-      return `<div class="chart-col">
-        <div class="chart-bar-wrap"><div class="chart-bar" style="height:${h}%" title="${esc(r.title || '')} — ${fmtNum(r.pace)} words/day (${fmtNum(r.words)}w in ${r.days}d)"><span class="chart-bar-val">${fmtNum(r.pace)}</span></div></div>
+      const h = Math.max(r.pace / maxPace * 88, 5);
+      return `<div class="chart-col" title="${esc(r.title || '')} — ${fmtNum(r.pace)} words/day (${fmtNum(r.words)}w in ${r.days}d)">
+        <div class="chart-bar-wrap"><span class="chart-bar-val">${fmtNum(r.pace)}</span><div class="chart-bar" style="height:${h}%"></div></div>
         <div class="chart-bar-lbl">${fmtDateShort(r.end)}</div>
       </div>`;
     }).join('');
@@ -700,6 +723,7 @@ function statsViewHtml() {
         <div class="smetric-group">${mBtn('words','Words')}${mBtn('items','Items')}</div>
       </div>
     </div>
+    <div class="stats-insight">${insightHtml}</div>
     <div class="stats-chart">${bars}</div>
     <div class="stats-chart-base"></div>
     ${noteHtml}
