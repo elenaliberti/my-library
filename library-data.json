@@ -6890,7 +6890,12 @@
       "hearts": null,
       "favorite": true,
       "coverIcon": "https://preview.redd.it/the-italian-cover-of-the-philosophers-stone-its-a-v0-hv6vzf3peqaa1.jpg?width=1080&crop=smart&auto=webp&s=d4a9e38798e588402d83390ec6d05fb56fb7c62e",
-      "readCount": 4
+      "readCount": 4,
+      "finishedAt": "2012-01-14T12:00:00.000Z",
+      "readDates": [
+        "2012-01-14T12:00:00.000Z"
+      ],
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_3",
@@ -6908,7 +6913,13 @@
       "url": "",
       "_addedAt": 256,
       "favorite": true,
-      "coverIcon": "https://m.media-amazon.com/images/I/5158VD0qjCL._AC_UF1000,1000_QL80_.jpg"
+      "coverIcon": "https://m.media-amazon.com/images/I/5158VD0qjCL._AC_UF1000,1000_QL80_.jpg",
+      "finishedAt": "2012-03-14T12:00:00.000Z",
+      "readDates": [
+        "2012-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_4",
@@ -6926,7 +6937,13 @@
       "url": "",
       "_addedAt": 257,
       "favorite": true,
-      "coverIcon": "https://m.media-amazon.com/images/I/815+uRmsOsL._AC_UF1000,1000_QL80_.jpg"
+      "coverIcon": "https://m.media-amazon.com/images/I/815+uRmsOsL._AC_UF1000,1000_QL80_.jpg",
+      "finishedAt": "2012-04-14T12:00:00.000Z",
+      "readDates": [
+        "2012-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_5",
@@ -6944,7 +6961,13 @@
       "url": "",
       "_addedAt": 258,
       "favorite": true,
-      "coverIcon": "https://m.media-amazon.com/images/I/81L07Gl7kwL._AC_UF1000,1000_QL80_.jpg"
+      "coverIcon": "https://m.media-amazon.com/images/I/81L07Gl7kwL._AC_UF1000,1000_QL80_.jpg",
+      "finishedAt": "2012-06-14T12:00:00.000Z",
+      "readDates": [
+        "2012-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_6",
@@ -6962,7 +6985,13 @@
       "url": "",
       "_addedAt": 259,
       "favorite": true,
-      "coverIcon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTPhDWjs4mPfC9AzfxI7LVOMjPXN7MqwvhBU-l_Vv5SBqeSKVo4DoyL7w&s=10"
+      "coverIcon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTPhDWjs4mPfC9AzfxI7LVOMjPXN7MqwvhBU-l_Vv5SBqeSKVo4DoyL7w&s=10",
+      "finishedAt": "2012-07-14T12:00:00.000Z",
+      "readDates": [
+        "2012-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_7",
@@ -6980,7 +7009,13 @@
       "url": "",
       "_addedAt": 260,
       "favorite": true,
-      "coverIcon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrc-hgHPdi20kNlrqGF7tPShxkE_4ST_Caf_Re9-XnzKANSdXjH8zvzqRw&s=10"
+      "coverIcon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrc-hgHPdi20kNlrqGF7tPShxkE_4ST_Caf_Re9-XnzKANSdXjH8zvzqRw&s=10",
+      "finishedAt": "2012-09-14T12:00:00.000Z",
+      "readDates": [
+        "2012-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_8",
@@ -6998,7 +7033,13 @@
       "url": "",
       "_addedAt": 261,
       "favorite": true,
-      "coverIcon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSv-gt9urukJHLu85AO_4P_h2ZtFewoAKchAbFzifx5fD8uGdVOViJ_7XA&s=10"
+      "coverIcon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSv-gt9urukJHLu85AO_4P_h2ZtFewoAKchAbFzifx5fD8uGdVOViJ_7XA&s=10",
+      "finishedAt": "2012-10-14T12:00:00.000Z",
+      "readDates": [
+        "2012-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_9",
@@ -7015,7 +7056,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 262,
-      "coverIcon": "https://www.salani.it/libri/le-fiabe-di-beda-il-bardo-9788862560368/image_preview"
+      "coverIcon": "https://www.salani.it/libri/le-fiabe-di-beda-il-bardo-9788862560368/image_preview",
+      "finishedAt": "2012-12-14T12:00:00.000Z",
+      "readDates": [
+        "2012-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_10",
@@ -7033,7 +7080,13 @@
       "url": "",
       "_addedAt": 263,
       "favorite": true,
-      "coverIcon": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSlP6ECVtrOODb7kHRbr9woGvbnOlV_PDYBif6Ms1TMyyB4p3Azl1m9yo_t77E&usqp=CAc"
+      "coverIcon": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSlP6ECVtrOODb7kHRbr9woGvbnOlV_PDYBif6Ms1TMyyB4p3Azl1m9yo_t77E&usqp=CAc",
+      "finishedAt": "2014-01-14T12:00:00.000Z",
+      "readDates": [
+        "2014-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_11",
@@ -7051,7 +7104,13 @@
       "url": "",
       "_addedAt": 264,
       "favorite": true,
-      "coverIcon": "https://m.media-amazon.com/images/I/81XuIXUZJoL._AC_UF894,1000_QL80_.jpg"
+      "coverIcon": "https://m.media-amazon.com/images/I/81XuIXUZJoL._AC_UF894,1000_QL80_.jpg",
+      "finishedAt": "2014-02-14T12:00:00.000Z",
+      "readDates": [
+        "2014-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_12",
@@ -7069,7 +7128,13 @@
       "url": "",
       "_addedAt": 265,
       "favorite": true,
-      "coverIcon": "https://m.media-amazon.com/images/I/81cWXwrr2NL._AC_UF1000,1000_QL80_.jpg"
+      "coverIcon": "https://m.media-amazon.com/images/I/81cWXwrr2NL._AC_UF1000,1000_QL80_.jpg",
+      "finishedAt": "2014-03-14T12:00:00.000Z",
+      "readDates": [
+        "2014-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_13",
@@ -7087,7 +7152,13 @@
       "url": "",
       "_addedAt": 266,
       "favorite": true,
-      "coverIcon": "https://covers.openlibrary.org/b/id/6274739-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/6274739-L.jpg",
+      "finishedAt": "2014-03-14T12:00:00.000Z",
+      "readDates": [
+        "2014-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_14",
@@ -7105,7 +7176,13 @@
       "url": "",
       "_addedAt": 267,
       "favorite": true,
-      "coverIcon": "https://covers.openlibrary.org/b/id/6624107-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/6624107-L.jpg",
+      "finishedAt": "2014-04-14T12:00:00.000Z",
+      "readDates": [
+        "2014-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_15",
@@ -7123,7 +7200,13 @@
       "url": "",
       "_addedAt": 268,
       "favorite": true,
-      "coverIcon": "https://covers.openlibrary.org/b/id/7396660-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/7396660-L.jpg",
+      "finishedAt": "2014-05-14T12:00:00.000Z",
+      "readDates": [
+        "2014-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_16",
@@ -7140,7 +7223,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 269,
-      "coverIcon": "https://covers.openlibrary.org/b/id/12848687-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/12848687-L.jpg",
+      "finishedAt": "2014-06-14T12:00:00.000Z",
+      "readDates": [
+        "2014-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_17",
@@ -7158,7 +7247,13 @@
       "url": "",
       "_addedAt": 270,
       "favorite": true,
-      "coverIcon": "https://covers.openlibrary.org/b/id/13012024-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/13012024-L.jpg",
+      "finishedAt": "2014-07-14T12:00:00.000Z",
+      "readDates": [
+        "2014-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_18",
@@ -7175,7 +7270,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 271,
-      "coverIcon": "https://covers.openlibrary.org/b/id/12848680-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/12848680-L.jpg",
+      "finishedAt": "2014-07-14T12:00:00.000Z",
+      "readDates": [
+        "2014-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_19",
@@ -7192,7 +7293,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 272,
-      "coverIcon": "https://covers.openlibrary.org/b/id/8057334-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/8057334-L.jpg",
+      "finishedAt": "2014-08-14T12:00:00.000Z",
+      "readDates": [
+        "2014-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_20",
@@ -7209,7 +7316,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 273,
-      "coverIcon": "https://covers.openlibrary.org/b/id/11272966-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/11272966-L.jpg",
+      "finishedAt": "2014-09-14T12:00:00.000Z",
+      "readDates": [
+        "2014-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_21",
@@ -7226,7 +7339,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 274,
-      "coverIcon": "https://covers.openlibrary.org/b/id/6934834-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/6934834-L.jpg",
+      "finishedAt": "2014-10-14T12:00:00.000Z",
+      "readDates": [
+        "2014-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_22",
@@ -7236,13 +7355,20 @@
       "genre": "Fantasy",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 110000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 275
+      "_addedAt": 275,
+      "finishedAt": "2014-11-14T12:00:00.000Z",
+      "readDates": [
+        "2014-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_23",
@@ -7252,13 +7378,20 @@
       "genre": "Fantasy",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 110000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 276
+      "_addedAt": 276,
+      "finishedAt": "2014-11-14T12:00:00.000Z",
+      "readDates": [
+        "2014-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_24",
@@ -7268,13 +7401,20 @@
       "genre": "Fantasy",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 110000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 277
+      "_addedAt": 277,
+      "finishedAt": "2014-12-14T12:00:00.000Z",
+      "readDates": [
+        "2014-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_25",
@@ -7325,7 +7465,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 280,
-      "coverIcon": "https://covers.openlibrary.org/b/id/7879561-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/7879561-L.jpg",
+      "finishedAt": "2015-02-14T12:00:00.000Z",
+      "readDates": [
+        "2015-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_28",
@@ -7335,13 +7481,20 @@
       "genre": "Fantasy",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 110000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 281
+      "_addedAt": 281,
+      "finishedAt": "2015-05-14T12:00:00.000Z",
+      "readDates": [
+        "2015-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_29",
@@ -7351,13 +7504,20 @@
       "genre": "Fantasy / Paranormal",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 110000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 282
+      "_addedAt": 282,
+      "finishedAt": "2016-01-14T12:00:00.000Z",
+      "readDates": [
+        "2016-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_30",
@@ -7367,14 +7527,21 @@
       "genre": "Fantasy / Paranormal",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 110000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 283,
-      "coverIcon": "https://www.libraccio.it/images/9788854168800_0_500_0_75.jpg"
+      "coverIcon": "https://www.libraccio.it/images/9788854168800_0_500_0_75.jpg",
+      "finishedAt": "2016-01-14T12:00:00.000Z",
+      "readDates": [
+        "2016-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_31",
@@ -7384,14 +7551,21 @@
       "genre": "Fantasy / Paranormal",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 110000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 284,
-      "coverIcon": "https://www.libraccio.it/images/9788854168800_0_500_0_75.jpg"
+      "coverIcon": "https://www.libraccio.it/images/9788854168800_0_500_0_75.jpg",
+      "finishedAt": "2016-01-14T12:00:00.000Z",
+      "readDates": [
+        "2016-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_32",
@@ -7401,14 +7575,21 @@
       "genre": "Fantasy / Paranormal",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 110000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 285,
-      "coverIcon": "https://www.libraccio.it/images/9788854168800_0_500_0_75.jpg"
+      "coverIcon": "https://www.libraccio.it/images/9788854168800_0_500_0_75.jpg",
+      "finishedAt": "2016-01-14T12:00:00.000Z",
+      "readDates": [
+        "2016-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_33",
@@ -7418,13 +7599,20 @@
       "genre": "Fantasy",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 110000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 286
+      "_addedAt": 286,
+      "finishedAt": "2016-01-14T12:00:00.000Z",
+      "readDates": [
+        "2016-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_34",
@@ -7441,7 +7629,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 287,
-      "coverIcon": "https://covers.openlibrary.org/b/id/13198814-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/13198814-L.jpg",
+      "finishedAt": "2016-01-14T12:00:00.000Z",
+      "readDates": [
+        "2016-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_35",
@@ -7458,7 +7652,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 288,
-      "coverIcon": "https://covers.openlibrary.org/b/id/6597605-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/6597605-L.jpg",
+      "finishedAt": "2016-01-14T12:00:00.000Z",
+      "readDates": [
+        "2016-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_36",
@@ -7475,7 +7675,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 289,
-      "coverIcon": "https://covers.openlibrary.org/b/id/12641977-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/12641977-L.jpg",
+      "finishedAt": "2016-01-14T12:00:00.000Z",
+      "readDates": [
+        "2016-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_37",
@@ -7492,7 +7698,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 290,
-      "coverIcon": "https://covers.openlibrary.org/b/id/12643406-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/12643406-L.jpg",
+      "finishedAt": "2016-01-14T12:00:00.000Z",
+      "readDates": [
+        "2016-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_38",
@@ -7509,7 +7721,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 291,
-      "coverIcon": "https://covers.openlibrary.org/b/id/12643410-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/12643410-L.jpg",
+      "finishedAt": "2016-01-14T12:00:00.000Z",
+      "readDates": [
+        "2016-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_39",
@@ -7526,7 +7744,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 292,
-      "coverIcon": "https://covers.openlibrary.org/b/id/12643419-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/12643419-L.jpg",
+      "finishedAt": "2016-01-14T12:00:00.000Z",
+      "readDates": [
+        "2016-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_40",
@@ -7543,7 +7767,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 293,
-      "coverIcon": "https://m.media-amazon.com/images/I/71zSeiukzwL._AC_UF894,1000_QL80_.jpg"
+      "coverIcon": "https://m.media-amazon.com/images/I/71zSeiukzwL._AC_UF894,1000_QL80_.jpg",
+      "finishedAt": "2016-01-14T12:00:00.000Z",
+      "readDates": [
+        "2016-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_41",
@@ -7560,7 +7790,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 294,
-      "coverIcon": "https://covers.openlibrary.org/b/id/6636110-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/6636110-L.jpg",
+      "finishedAt": "2016-01-14T12:00:00.000Z",
+      "readDates": [
+        "2016-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_42",
@@ -7577,7 +7813,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 295,
-      "coverIcon": "https://covers.openlibrary.org/b/id/13274634-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/13274634-L.jpg",
+      "finishedAt": "2016-01-14T12:00:00.000Z",
+      "readDates": [
+        "2016-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_43",
@@ -7594,7 +7836,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 296,
-      "coverIcon": "https://covers.openlibrary.org/b/id/7083755-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/7083755-L.jpg",
+      "finishedAt": "2016-01-14T12:00:00.000Z",
+      "readDates": [
+        "2016-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_44",
@@ -7604,14 +7852,21 @@
       "genre": "Fantasy / Paranormal",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 110000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 297,
-      "coverIcon": "https://covers.openlibrary.org/b/id/8539161-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/8539161-L.jpg",
+      "finishedAt": "2020-01-14T12:00:00.000Z",
+      "readDates": [
+        "2020-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_45",
@@ -7621,7 +7876,7 @@
       "genre": "Fantasy / Paranormal",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 110000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
@@ -7629,7 +7884,14 @@
       "url": "",
       "_addedAt": 298,
       "favorite": true,
-      "coverIcon": "https://covers.openlibrary.org/b/id/13936659-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/13936659-L.jpg",
+      "finishedAt": "2020-03-14T12:00:00.000Z",
+      "readDates": [
+        "2020-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_46",
@@ -7646,7 +7908,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 299,
-      "coverIcon": "https://covers.openlibrary.org/b/id/7434883-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/7434883-L.jpg",
+      "finishedAt": "2020-05-14T12:00:00.000Z",
+      "readDates": [
+        "2020-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_47",
@@ -7663,7 +7931,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 300,
-      "coverIcon": "https://covers.openlibrary.org/b/id/11219081-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/11219081-L.jpg",
+      "finishedAt": "2020-07-14T12:00:00.000Z",
+      "readDates": [
+        "2020-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_48",
@@ -7680,7 +7954,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 301,
-      "coverIcon": "https://covers.openlibrary.org/b/id/8443732-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/8443732-L.jpg",
+      "finishedAt": "2020-08-14T12:00:00.000Z",
+      "readDates": [
+        "2020-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_49",
@@ -7690,13 +7970,20 @@
       "genre": "Fantasy / Paranormal",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 110000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 302
+      "_addedAt": 302,
+      "finishedAt": "2020-10-14T12:00:00.000Z",
+      "readDates": [
+        "2020-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_50",
@@ -7713,7 +8000,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 303,
-      "coverIcon": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ9XCpO6xwSiEmbLhDRMrQB72upq31dkRb6a2shlpxkeK03hulHMiZHfi6qEA&usqp=CAc"
+      "coverIcon": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ9XCpO6xwSiEmbLhDRMrQB72upq31dkRb6a2shlpxkeK03hulHMiZHfi6qEA&usqp=CAc",
+      "finishedAt": "2022-01-14T12:00:00.000Z",
+      "readDates": [
+        "2022-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_51",
@@ -7730,7 +8023,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 304,
-      "coverIcon": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSTGmoLwLxfKbkWkJxv9h3PNe9ocXobDAHMo-u9w8EakrKPVVguoBoE7qHc9A&usqp=CAc"
+      "coverIcon": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSTGmoLwLxfKbkWkJxv9h3PNe9ocXobDAHMo-u9w8EakrKPVVguoBoE7qHc9A&usqp=CAc",
+      "finishedAt": "2022-03-14T12:00:00.000Z",
+      "readDates": [
+        "2022-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_52",
@@ -7747,7 +8046,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 305,
-      "coverIcon": "https://covers.openlibrary.org/b/id/12989260-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/12989260-L.jpg",
+      "finishedAt": "2022-04-14T12:00:00.000Z",
+      "readDates": [
+        "2022-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_53",
@@ -7764,7 +8069,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 306,
-      "coverIcon": "https://covers.openlibrary.org/b/id/10138062-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/10138062-L.jpg",
+      "finishedAt": "2022-05-14T12:00:00.000Z",
+      "readDates": [
+        "2022-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_54",
@@ -7781,7 +8092,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 307,
-      "coverIcon": "https://covers.openlibrary.org/b/id/15159374-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/15159374-L.jpg",
+      "finishedAt": "2022-07-14T12:00:00.000Z",
+      "readDates": [
+        "2022-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_55",
@@ -7798,7 +8115,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 308,
-      "coverIcon": "https://covers.openlibrary.org/b/id/14315081-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/14315081-L.jpg",
+      "finishedAt": "2022-08-14T12:00:00.000Z",
+      "readDates": [
+        "2022-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_56",
@@ -7815,7 +8138,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 309,
-      "coverIcon": "https://covers.openlibrary.org/b/id/8506724-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/8506724-L.jpg",
+      "finishedAt": "2022-09-14T12:00:00.000Z",
+      "readDates": [
+        "2022-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_57",
@@ -7832,7 +8161,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 310,
-      "coverIcon": "https://covers.openlibrary.org/b/id/8569939-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/8569939-L.jpg",
+      "finishedAt": "2022-11-14T12:00:00.000Z",
+      "readDates": [
+        "2022-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_58",
@@ -7873,7 +8208,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 312,
-      "coverIcon": "https://covers.openlibrary.org/b/id/14405746-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/14405746-L.jpg",
+      "finishedAt": "2022-12-14T12:00:00.000Z",
+      "readDates": [
+        "2022-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_61",
@@ -7883,14 +8224,21 @@
       "genre": "Trash Fantasy / Paranormal",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 55000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 313,
-      "coverIcon": "https://m.media-amazon.com/images/I/61j2gnrOzRL.jpg"
+      "coverIcon": "https://m.media-amazon.com/images/I/61j2gnrOzRL.jpg",
+      "finishedAt": "2025-02-14T12:00:00.000Z",
+      "readDates": [
+        "2025-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_62",
@@ -8076,13 +8424,20 @@
       "genre": "Trash Fantasy",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 55000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 322
+      "_addedAt": 322,
+      "finishedAt": "2025-05-14T12:00:00.000Z",
+      "readDates": [
+        "2025-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_71",
@@ -8121,7 +8476,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 324,
-      "coverIcon": "https://covers.openlibrary.org/b/id/10483619-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/10483619-L.jpg",
+      "finishedAt": "2025-08-14T12:00:00.000Z",
+      "readDates": [
+        "2025-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_74",
@@ -8153,7 +8514,7 @@
       "genre": "Romantasy",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 110000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Very nice",
@@ -8161,7 +8522,14 @@
       "url": "",
       "_addedAt": 326,
       "favorite": true,
-      "coverIcon": "https://covers.openlibrary.org/b/id/15179226-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/15179226-L.jpg",
+      "finishedAt": "2026-01-14T12:00:00.000Z",
+      "readDates": [
+        "2026-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_76",
@@ -8171,7 +8539,7 @@
       "genre": "Romantasy",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 110000,
       "status": "Finished",
       "userRating": 3,
       "notes": "",
@@ -8179,7 +8547,14 @@
       "url": "",
       "_addedAt": 327,
       "favorite": true,
-      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1735779710i/222287410.jpg"
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1735779710i/222287410.jpg",
+      "finishedAt": "2026-01-14T12:00:00.000Z",
+      "readDates": [
+        "2026-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_78",
@@ -8189,7 +8564,7 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 4,
       "notes": "",
@@ -8197,7 +8572,14 @@
       "url": "",
       "_addedAt": 328,
       "favorite": true,
-      "coverIcon": "https://m.media-amazon.com/images/I/51GnH7BA+8L._AC_UF894,1000_QL80_.jpg"
+      "coverIcon": "https://m.media-amazon.com/images/I/51GnH7BA+8L._AC_UF894,1000_QL80_.jpg",
+      "finishedAt": "2016-01-14T12:00:00.000Z",
+      "readDates": [
+        "2016-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_79",
@@ -8230,14 +8612,21 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 330,
-      "coverIcon": "https://m.media-amazon.com/images/I/71MQolbXO1L._UF1000,1000_QL80_.jpg"
+      "coverIcon": "https://m.media-amazon.com/images/I/71MQolbXO1L._UF1000,1000_QL80_.jpg",
+      "finishedAt": "2016-01-14T12:00:00.000Z",
+      "readDates": [
+        "2016-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_81",
@@ -8271,7 +8660,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 332,
-      "coverIcon": "https://covers.openlibrary.org/b/id/7418786-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/7418786-L.jpg",
+      "finishedAt": "2016-01-14T12:00:00.000Z",
+      "readDates": [
+        "2016-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_83",
@@ -8281,13 +8676,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 333
+      "_addedAt": 333,
+      "finishedAt": "2016-01-14T12:00:00.000Z",
+      "readDates": [
+        "2016-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_84",
@@ -8297,14 +8699,21 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 334,
-      "coverIcon": "https://m.media-amazon.com/images/I/61jYdEB5NQL._AC_UF1000,1000_QL80_.jpg"
+      "coverIcon": "https://m.media-amazon.com/images/I/61jYdEB5NQL._AC_UF1000,1000_QL80_.jpg",
+      "finishedAt": "2016-02-14T12:00:00.000Z",
+      "readDates": [
+        "2016-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_85",
@@ -8314,7 +8723,7 @@
       "genre": "Romance / Thriller",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 5,
       "notes": "",
@@ -8326,7 +8735,14 @@
       "rating": "",
       "hearts": null,
       "favorite": false,
-      "coverIcon": "https://m.media-amazon.com/images/I/71cDaYjMF4L._AC_UF894,1000_QL80_.jpg"
+      "coverIcon": "https://m.media-amazon.com/images/I/71cDaYjMF4L._AC_UF894,1000_QL80_.jpg",
+      "finishedAt": "2016-02-14T12:00:00.000Z",
+      "readDates": [
+        "2016-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_86",
@@ -8336,14 +8752,21 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 336,
-      "coverIcon": "https://m.media-amazon.com/images/I/617ERVPuYvL._AC_UF1000,1000_QL80_.jpg"
+      "coverIcon": "https://m.media-amazon.com/images/I/617ERVPuYvL._AC_UF1000,1000_QL80_.jpg",
+      "finishedAt": "2016-02-14T12:00:00.000Z",
+      "readDates": [
+        "2016-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_87",
@@ -8360,7 +8783,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 337,
-      "coverIcon": "https://m.media-amazon.com/images/I/71Vf+kc+ojL._AC_UF1000,1000_QL80_.jpg"
+      "coverIcon": "https://m.media-amazon.com/images/I/71Vf+kc+ojL._AC_UF1000,1000_QL80_.jpg",
+      "finishedAt": "2016-02-14T12:00:00.000Z",
+      "readDates": [
+        "2016-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_88",
@@ -8377,7 +8806,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 338,
-      "coverIcon": "https://www.mondadori.it/content/uploads/2017/06/978880467694HIG-310x480.jpg?x91957"
+      "coverIcon": "https://www.mondadori.it/content/uploads/2017/06/978880467694HIG-310x480.jpg?x91957",
+      "finishedAt": "2016-02-14T12:00:00.000Z",
+      "readDates": [
+        "2016-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_89",
@@ -8394,7 +8829,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 339,
-      "coverIcon": "https://img2.libreriauniversitaria.it/BIT/500/701/9788804677017.jpg"
+      "coverIcon": "https://img2.libreriauniversitaria.it/BIT/500/701/9788804677017.jpg",
+      "finishedAt": "2016-02-14T12:00:00.000Z",
+      "readDates": [
+        "2016-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_90",
@@ -8411,7 +8852,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 340,
-      "coverIcon": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg70GKcfJNeYcQDyin51CbYtK6tjBVqwmOXecJukB3IuhBdZvGtrsFL1Ot7_KIUxHuBuWX55U28B3wA-POmHWOcdsewafWTz4Gtf_KCn_hyXaBIwOtAsf4Bv3pBKkgxE_4j9sCQsuqnaZlw/s1600/COVER.jpg"
+      "coverIcon": "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg70GKcfJNeYcQDyin51CbYtK6tjBVqwmOXecJukB3IuhBdZvGtrsFL1Ot7_KIUxHuBuWX55U28B3wA-POmHWOcdsewafWTz4Gtf_KCn_hyXaBIwOtAsf4Bv3pBKkgxE_4j9sCQsuqnaZlw/s1600/COVER.jpg",
+      "finishedAt": "2016-02-14T12:00:00.000Z",
+      "readDates": [
+        "2016-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_91",
@@ -8428,7 +8875,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 341,
-      "coverIcon": "https://covers.openlibrary.org/b/id/7284881-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/7284881-L.jpg",
+      "finishedAt": "2016-02-14T12:00:00.000Z",
+      "readDates": [
+        "2016-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_92",
@@ -8445,7 +8898,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 342,
-      "coverIcon": "https://covers.openlibrary.org/b/id/7284838-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/7284838-L.jpg",
+      "finishedAt": "2016-02-14T12:00:00.000Z",
+      "readDates": [
+        "2016-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_93",
@@ -8462,7 +8921,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 343,
-      "coverIcon": "https://covers.openlibrary.org/b/id/7284881-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/7284881-L.jpg",
+      "finishedAt": "2016-02-14T12:00:00.000Z",
+      "readDates": [
+        "2016-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_94",
@@ -8479,7 +8944,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 344,
-      "coverIcon": "https://covers.openlibrary.org/b/id/13319742-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/13319742-L.jpg",
+      "finishedAt": "2016-02-14T12:00:00.000Z",
+      "readDates": [
+        "2016-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_95",
@@ -8508,14 +8979,21 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 346,
-      "coverIcon": "https://m.media-amazon.com/images/I/810GEmwFnrL._UF1000,1000_QL80_.jpg"
+      "coverIcon": "https://m.media-amazon.com/images/I/810GEmwFnrL._UF1000,1000_QL80_.jpg",
+      "finishedAt": "2016-02-14T12:00:00.000Z",
+      "readDates": [
+        "2016-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_97",
@@ -8525,14 +9003,21 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 347,
-      "coverIcon": "https://m.media-amazon.com/images/I/81S8rR7+BbL._UF1000,1000_QL80_.jpg"
+      "coverIcon": "https://m.media-amazon.com/images/I/81S8rR7+BbL._UF1000,1000_QL80_.jpg",
+      "finishedAt": "2016-02-14T12:00:00.000Z",
+      "readDates": [
+        "2016-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_98",
@@ -8542,14 +9027,21 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 348,
-      "coverIcon": "https://m.media-amazon.com/images/I/81XjpE3bK1L._UF1000,1000_QL80_.jpg"
+      "coverIcon": "https://m.media-amazon.com/images/I/81XjpE3bK1L._UF1000,1000_QL80_.jpg",
+      "finishedAt": "2016-02-14T12:00:00.000Z",
+      "readDates": [
+        "2016-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_99",
@@ -8559,14 +9051,21 @@
       "genre": "Romance / Paranormal",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 4,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 349,
-      "coverIcon": "https://covers.openlibrary.org/b/id/11978170-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/11978170-L.jpg",
+      "finishedAt": "2016-02-14T12:00:00.000Z",
+      "readDates": [
+        "2016-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_100",
@@ -8576,14 +9075,21 @@
       "genre": "Romance / New Adult",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 5,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 350,
-      "coverIcon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtljpOmDMQREw57ll1KHnO0zomhWsRa-lKIKcX-sbwFX1ug_Jwe4LYTA8&s=10"
+      "coverIcon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtljpOmDMQREw57ll1KHnO0zomhWsRa-lKIKcX-sbwFX1ug_Jwe4LYTA8&s=10",
+      "finishedAt": "2016-02-14T12:00:00.000Z",
+      "readDates": [
+        "2016-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_101",
@@ -8593,14 +9099,21 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 351,
-      "coverIcon": "https://m.media-amazon.com/images/I/81JTCpyXJvL._UF1000,1000_QL80_.jpg"
+      "coverIcon": "https://m.media-amazon.com/images/I/81JTCpyXJvL._UF1000,1000_QL80_.jpg",
+      "finishedAt": "2016-02-14T12:00:00.000Z",
+      "readDates": [
+        "2016-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_102",
@@ -8610,13 +9123,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 352
+      "_addedAt": 352,
+      "finishedAt": "2016-02-14T12:00:00.000Z",
+      "readDates": [
+        "2016-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_103",
@@ -8626,13 +9146,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 353
+      "_addedAt": 353,
+      "finishedAt": "2016-02-14T12:00:00.000Z",
+      "readDates": [
+        "2016-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_104",
@@ -8649,7 +9176,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 354,
-      "coverIcon": "https://covers.openlibrary.org/b/id/7241922-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/7241922-L.jpg",
+      "finishedAt": "2016-02-14T12:00:00.000Z",
+      "readDates": [
+        "2016-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_105",
@@ -8666,7 +9199,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 355,
-      "coverIcon": "https://covers.openlibrary.org/b/id/10820897-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/10820897-L.jpg",
+      "finishedAt": "2016-03-14T12:00:00.000Z",
+      "readDates": [
+        "2016-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_106",
@@ -8692,13 +9231,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 357
+      "_addedAt": 357,
+      "finishedAt": "2016-03-14T12:00:00.000Z",
+      "readDates": [
+        "2016-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_108",
@@ -8708,13 +9254,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 358
+      "_addedAt": 358,
+      "finishedAt": "2016-03-14T12:00:00.000Z",
+      "readDates": [
+        "2016-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_109",
@@ -8724,13 +9277,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 359
+      "_addedAt": 359,
+      "finishedAt": "2016-03-14T12:00:00.000Z",
+      "readDates": [
+        "2016-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_110",
@@ -8756,13 +9316,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 361
+      "_addedAt": 361,
+      "finishedAt": "2016-03-14T12:00:00.000Z",
+      "readDates": [
+        "2016-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_112",
@@ -8772,13 +9339,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 362
+      "_addedAt": 362,
+      "finishedAt": "2016-03-14T12:00:00.000Z",
+      "readDates": [
+        "2016-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_113",
@@ -8788,13 +9362,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 363
+      "_addedAt": 363,
+      "finishedAt": "2016-03-14T12:00:00.000Z",
+      "readDates": [
+        "2016-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_114",
@@ -8804,13 +9385,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 364
+      "_addedAt": 364,
+      "finishedAt": "2016-03-14T12:00:00.000Z",
+      "readDates": [
+        "2016-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_115",
@@ -8820,13 +9408,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 365
+      "_addedAt": 365,
+      "finishedAt": "2016-03-14T12:00:00.000Z",
+      "readDates": [
+        "2016-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_116",
@@ -8836,13 +9431,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 366
+      "_addedAt": 366,
+      "finishedAt": "2016-03-14T12:00:00.000Z",
+      "readDates": [
+        "2016-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_117",
@@ -8852,13 +9454,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 367
+      "_addedAt": 367,
+      "finishedAt": "2016-03-14T12:00:00.000Z",
+      "readDates": [
+        "2016-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_118",
@@ -8868,13 +9477,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 368
+      "_addedAt": 368,
+      "finishedAt": "2016-03-14T12:00:00.000Z",
+      "readDates": [
+        "2016-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_119",
@@ -8884,13 +9500,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 369
+      "_addedAt": 369,
+      "finishedAt": "2016-03-14T12:00:00.000Z",
+      "readDates": [
+        "2016-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_120",
@@ -8900,13 +9523,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 370
+      "_addedAt": 370,
+      "finishedAt": "2016-03-14T12:00:00.000Z",
+      "readDates": [
+        "2016-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_121",
@@ -8916,14 +9546,21 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 371,
-      "coverIcon": "https://covers.openlibrary.org/b/id/13618714-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/13618714-L.jpg",
+      "finishedAt": "2016-03-14T12:00:00.000Z",
+      "readDates": [
+        "2016-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_122",
@@ -8949,13 +9586,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 373
+      "_addedAt": 373,
+      "finishedAt": "2016-03-14T12:00:00.000Z",
+      "readDates": [
+        "2016-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_124",
@@ -8987,13 +9631,20 @@
       "genre": "Romance / Fantascienza",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 375
+      "_addedAt": 375,
+      "finishedAt": "2016-03-14T12:00:00.000Z",
+      "readDates": [
+        "2016-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_126",
@@ -9003,13 +9654,20 @@
       "genre": "Romance / Fantascienza",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 376
+      "_addedAt": 376,
+      "finishedAt": "2016-03-14T12:00:00.000Z",
+      "readDates": [
+        "2016-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_127",
@@ -9019,13 +9677,20 @@
       "genre": "Romance / Fantascienza",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 377
+      "_addedAt": 377,
+      "finishedAt": "2016-03-14T12:00:00.000Z",
+      "readDates": [
+        "2016-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_128",
@@ -9035,13 +9700,20 @@
       "genre": "Romance / Paranormal (Omegaverse)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 378
+      "_addedAt": 378,
+      "finishedAt": "2016-04-14T12:00:00.000Z",
+      "readDates": [
+        "2016-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_129",
@@ -9051,13 +9723,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 379
+      "_addedAt": 379,
+      "finishedAt": "2016-04-14T12:00:00.000Z",
+      "readDates": [
+        "2016-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_130",
@@ -9067,13 +9746,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 380
+      "_addedAt": 380,
+      "finishedAt": "2016-04-14T12:00:00.000Z",
+      "readDates": [
+        "2016-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_131",
@@ -9083,13 +9769,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 381
+      "_addedAt": 381,
+      "finishedAt": "2016-04-14T12:00:00.000Z",
+      "readDates": [
+        "2016-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_132",
@@ -9099,13 +9792,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 382
+      "_addedAt": 382,
+      "finishedAt": "2016-04-14T12:00:00.000Z",
+      "readDates": [
+        "2016-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_133",
@@ -9115,13 +9815,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 383
+      "_addedAt": 383,
+      "finishedAt": "2016-04-14T12:00:00.000Z",
+      "readDates": [
+        "2016-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_134",
@@ -9131,13 +9838,20 @@
       "genre": "Romance / Sport",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 384
+      "_addedAt": 384,
+      "finishedAt": "2016-04-14T12:00:00.000Z",
+      "readDates": [
+        "2016-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_135",
@@ -9147,13 +9861,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 385
+      "_addedAt": 385,
+      "finishedAt": "2016-04-14T12:00:00.000Z",
+      "readDates": [
+        "2016-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_136",
@@ -9163,13 +9884,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 386
+      "_addedAt": 386,
+      "finishedAt": "2016-04-14T12:00:00.000Z",
+      "readDates": [
+        "2016-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_137",
@@ -9179,14 +9907,21 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 387,
-      "coverIcon": "https://covers.openlibrary.org/b/id/12566495-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/12566495-L.jpg",
+      "finishedAt": "2016-04-14T12:00:00.000Z",
+      "readDates": [
+        "2016-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_138",
@@ -9196,13 +9931,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 388
+      "_addedAt": 388,
+      "finishedAt": "2016-04-14T12:00:00.000Z",
+      "readDates": [
+        "2016-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_139",
@@ -9229,13 +9971,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 390
+      "_addedAt": 390,
+      "finishedAt": "2016-04-14T12:00:00.000Z",
+      "readDates": [
+        "2016-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_141",
@@ -9245,13 +9994,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 391
+      "_addedAt": 391,
+      "finishedAt": "2016-04-14T12:00:00.000Z",
+      "readDates": [
+        "2016-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_142",
@@ -9261,13 +10017,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 392
+      "_addedAt": 392,
+      "finishedAt": "2016-04-14T12:00:00.000Z",
+      "readDates": [
+        "2016-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_143",
@@ -9277,13 +10040,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 393
+      "_addedAt": 393,
+      "finishedAt": "2016-04-14T12:00:00.000Z",
+      "readDates": [
+        "2016-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_144",
@@ -9293,13 +10063,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 394
+      "_addedAt": 394,
+      "finishedAt": "2016-04-14T12:00:00.000Z",
+      "readDates": [
+        "2016-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_145",
@@ -9309,13 +10086,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 395
+      "_addedAt": 395,
+      "finishedAt": "2016-04-14T12:00:00.000Z",
+      "readDates": [
+        "2016-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_146",
@@ -9325,13 +10109,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Bruttissimo, una tortura",
       "tags": [],
       "url": "",
-      "_addedAt": 396
+      "_addedAt": 396,
+      "finishedAt": "2016-04-14T12:00:00.000Z",
+      "readDates": [
+        "2016-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_147",
@@ -9341,13 +10132,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 397
+      "_addedAt": 397,
+      "finishedAt": "2016-04-14T12:00:00.000Z",
+      "readDates": [
+        "2016-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_148",
@@ -9357,13 +10155,20 @@
       "genre": "Romance / New Adult",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 398
+      "_addedAt": 398,
+      "finishedAt": "2016-04-14T12:00:00.000Z",
+      "readDates": [
+        "2016-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_149",
@@ -9373,14 +10178,21 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Mi ha fatto piangere 24/11/2019",
       "tags": [],
       "url": "",
       "_addedAt": 399,
-      "favorite": true
+      "favorite": true,
+      "finishedAt": "2016-05-14T12:00:00.000Z",
+      "readDates": [
+        "2016-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_150",
@@ -9390,13 +10202,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Mi piace",
       "tags": [],
       "url": "",
-      "_addedAt": 400
+      "_addedAt": 400,
+      "finishedAt": "2016-05-14T12:00:00.000Z",
+      "readDates": [
+        "2016-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_151",
@@ -9406,13 +10225,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 401
+      "_addedAt": 401,
+      "finishedAt": "2016-05-14T12:00:00.000Z",
+      "readDates": [
+        "2016-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_152",
@@ -9422,13 +10248,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Due cuori in affitto 15",
       "tags": [],
       "url": "",
-      "_addedAt": 402
+      "_addedAt": 402,
+      "finishedAt": "2016-05-14T12:00:00.000Z",
+      "readDates": [
+        "2016-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_153",
@@ -9438,13 +10271,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 403
+      "_addedAt": 403,
+      "finishedAt": "2016-05-14T12:00:00.000Z",
+      "readDates": [
+        "2016-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_154",
@@ -9454,13 +10294,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 404
+      "_addedAt": 404,
+      "finishedAt": "2016-05-14T12:00:00.000Z",
+      "readDates": [
+        "2016-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_155",
@@ -9476,7 +10323,13 @@
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 405
+      "_addedAt": 405,
+      "finishedAt": "2016-05-14T12:00:00.000Z",
+      "readDates": [
+        "2016-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_156",
@@ -9492,7 +10345,13 @@
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 406
+      "_addedAt": 406,
+      "finishedAt": "2016-05-14T12:00:00.000Z",
+      "readDates": [
+        "2016-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_157",
@@ -9502,13 +10361,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 407
+      "_addedAt": 407,
+      "finishedAt": "2016-05-14T12:00:00.000Z",
+      "readDates": [
+        "2016-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_158",
@@ -9518,13 +10384,20 @@
       "genre": "Romance / New Adult",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "The Second Possibilities Trilogy #1",
       "tags": [],
       "url": "",
-      "_addedAt": 408
+      "_addedAt": 408,
+      "finishedAt": "2016-05-14T12:00:00.000Z",
+      "readDates": [
+        "2016-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_159",
@@ -9540,7 +10413,13 @@
       "notes": "Caroline e West #1",
       "tags": [],
       "url": "",
-      "_addedAt": 409
+      "_addedAt": 409,
+      "finishedAt": "2016-05-14T12:00:00.000Z",
+      "readDates": [
+        "2016-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_160",
@@ -9550,13 +10429,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 410
+      "_addedAt": 410,
+      "finishedAt": "2016-05-14T12:00:00.000Z",
+      "readDates": [
+        "2016-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_161",
@@ -9566,13 +10452,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 411
+      "_addedAt": 411,
+      "finishedAt": "2016-05-14T12:00:00.000Z",
+      "readDates": [
+        "2016-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_162",
@@ -9582,13 +10475,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "The Proposition #2",
       "tags": [],
       "url": "",
-      "_addedAt": 412
+      "_addedAt": 412,
+      "finishedAt": "2016-05-14T12:00:00.000Z",
+      "readDates": [
+        "2016-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_163",
@@ -9598,13 +10498,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 413
+      "_addedAt": 413,
+      "finishedAt": "2016-05-14T12:00:00.000Z",
+      "readDates": [
+        "2016-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_164",
@@ -9614,13 +10521,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Guarded Heart 1",
       "tags": [],
       "url": "",
-      "_addedAt": 414
+      "_addedAt": 414,
+      "finishedAt": "2016-05-14T12:00:00.000Z",
+      "readDates": [
+        "2016-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_165",
@@ -9630,13 +10544,20 @@
       "genre": "Romance / Paranormal (Vampiri)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Mhe",
       "tags": [],
       "url": "",
-      "_addedAt": 415
+      "_addedAt": 415,
+      "finishedAt": "2016-05-14T12:00:00.000Z",
+      "readDates": [
+        "2016-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_166",
@@ -9646,13 +10567,20 @@
       "genre": "Romance / New Adult",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Rixon Raiders 1",
       "tags": [],
       "url": "",
-      "_addedAt": 416
+      "_addedAt": 416,
+      "finishedAt": "2016-05-14T12:00:00.000Z",
+      "readDates": [
+        "2016-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_167",
@@ -9662,13 +10590,20 @@
       "genre": "Romance / New Adult",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Rixon Raiders #2",
       "tags": [],
       "url": "",
-      "_addedAt": 417
+      "_addedAt": 417,
+      "finishedAt": "2016-05-14T12:00:00.000Z",
+      "readDates": [
+        "2016-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_168",
@@ -9678,13 +10613,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 418
+      "_addedAt": 418,
+      "finishedAt": "2016-06-14T12:00:00.000Z",
+      "readDates": [
+        "2016-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_169",
@@ -9694,13 +10636,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 419
+      "_addedAt": 419,
+      "finishedAt": "2016-06-14T12:00:00.000Z",
+      "readDates": [
+        "2016-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_170",
@@ -9710,13 +10659,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 420
+      "_addedAt": 420,
+      "finishedAt": "2016-06-14T12:00:00.000Z",
+      "readDates": [
+        "2016-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_171",
@@ -9733,7 +10689,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 421,
-      "coverIcon": "https://covers.openlibrary.org/b/id/10558598-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/10558598-L.jpg",
+      "finishedAt": "2016-06-14T12:00:00.000Z",
+      "readDates": [
+        "2016-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_172",
@@ -9749,7 +10711,13 @@
       "notes": "Mafia Chronicles 2",
       "tags": [],
       "url": "",
-      "_addedAt": 422
+      "_addedAt": 422,
+      "finishedAt": "2016-06-14T12:00:00.000Z",
+      "readDates": [
+        "2016-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_173",
@@ -9766,7 +10734,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 423,
-      "coverIcon": "https://covers.openlibrary.org/b/id/10873049-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/10873049-L.jpg",
+      "finishedAt": "2016-06-14T12:00:00.000Z",
+      "readDates": [
+        "2016-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_174",
@@ -9783,7 +10757,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 424,
-      "coverIcon": "https://covers.openlibrary.org/b/id/12756251-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/12756251-L.jpg",
+      "finishedAt": "2016-06-14T12:00:00.000Z",
+      "readDates": [
+        "2016-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_175",
@@ -9793,14 +10773,21 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Interessante ma troppo lento, mhe",
       "tags": [],
       "url": "",
       "_addedAt": 425,
-      "coverIcon": "https://covers.openlibrary.org/b/id/13758174-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/13758174-L.jpg",
+      "finishedAt": "2016-06-14T12:00:00.000Z",
+      "readDates": [
+        "2016-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_176",
@@ -9810,13 +10797,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 426
+      "_addedAt": 426,
+      "finishedAt": "2016-06-14T12:00:00.000Z",
+      "readDates": [
+        "2016-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_177",
@@ -9826,13 +10820,20 @@
       "genre": "Romance / Sport",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 427
+      "_addedAt": 427,
+      "finishedAt": "2016-06-14T12:00:00.000Z",
+      "readDates": [
+        "2016-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_178",
@@ -9842,13 +10843,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Wall Street Titan #1",
       "tags": [],
       "url": "",
-      "_addedAt": 428
+      "_addedAt": 428,
+      "finishedAt": "2016-06-14T12:00:00.000Z",
+      "readDates": [
+        "2016-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_179",
@@ -9858,13 +10866,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 429
+      "_addedAt": 429,
+      "finishedAt": "2016-06-14T12:00:00.000Z",
+      "readDates": [
+        "2016-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_180",
@@ -9874,13 +10889,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 430
+      "_addedAt": 430,
+      "finishedAt": "2016-06-14T12:00:00.000Z",
+      "readDates": [
+        "2016-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_181",
@@ -9890,13 +10912,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 431
+      "_addedAt": 431,
+      "finishedAt": "2016-06-14T12:00:00.000Z",
+      "readDates": [
+        "2016-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_182",
@@ -9906,13 +10935,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 432
+      "_addedAt": 432,
+      "finishedAt": "2016-06-14T12:00:00.000Z",
+      "readDates": [
+        "2016-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_183",
@@ -9922,13 +10958,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 433
+      "_addedAt": 433,
+      "finishedAt": "2016-06-14T12:00:00.000Z",
+      "readDates": [
+        "2016-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_184",
@@ -9938,13 +10981,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 434
+      "_addedAt": 434,
+      "finishedAt": "2016-06-14T12:00:00.000Z",
+      "readDates": [
+        "2016-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_185",
@@ -9954,13 +11004,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Mhe",
       "tags": [],
       "url": "",
-      "_addedAt": 435
+      "_addedAt": 435,
+      "finishedAt": "2016-06-14T12:00:00.000Z",
+      "readDates": [
+        "2016-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_186",
@@ -9986,13 +11043,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 437
+      "_addedAt": 437,
+      "finishedAt": "2016-06-14T12:00:00.000Z",
+      "readDates": [
+        "2016-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_188",
@@ -10002,13 +11066,20 @@
       "genre": "Romance / New Adult",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 438
+      "_addedAt": 438,
+      "finishedAt": "2016-07-14T12:00:00.000Z",
+      "readDates": [
+        "2016-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_189",
@@ -10018,13 +11089,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 439
+      "_addedAt": 439,
+      "finishedAt": "2016-07-14T12:00:00.000Z",
+      "readDates": [
+        "2016-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_190",
@@ -10034,14 +11112,21 @@
       "genre": "Romance / New Adult",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "The Campus 1",
       "tags": [],
       "url": "",
       "_addedAt": 440,
-      "coverIcon": "https://covers.openlibrary.org/b/id/14790256-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/14790256-L.jpg",
+      "finishedAt": "2016-07-14T12:00:00.000Z",
+      "readDates": [
+        "2016-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_191",
@@ -10051,14 +11136,21 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 441,
-      "coverIcon": "https://covers.openlibrary.org/b/id/10201732-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/10201732-L.jpg",
+      "finishedAt": "2016-07-14T12:00:00.000Z",
+      "readDates": [
+        "2016-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_192",
@@ -10068,14 +11160,21 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 442,
-      "coverIcon": "https://covers.openlibrary.org/b/id/10471481-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/10471481-L.jpg",
+      "finishedAt": "2016-07-14T12:00:00.000Z",
+      "readDates": [
+        "2016-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_193",
@@ -10085,14 +11184,21 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 443,
-      "coverIcon": "https://covers.openlibrary.org/b/id/10471879-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/10471879-L.jpg",
+      "finishedAt": "2016-07-14T12:00:00.000Z",
+      "readDates": [
+        "2016-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_194",
@@ -10102,13 +11208,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 444
+      "_addedAt": 444,
+      "finishedAt": "2016-07-14T12:00:00.000Z",
+      "readDates": [
+        "2016-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_195",
@@ -10118,13 +11231,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Mi ha quasi fatto piangere",
       "tags": [],
       "url": "",
-      "_addedAt": 445
+      "_addedAt": 445,
+      "finishedAt": "2016-07-14T12:00:00.000Z",
+      "readDates": [
+        "2016-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_196",
@@ -10142,7 +11262,13 @@
       "url": "",
       "_addedAt": 446,
       "favorite": true,
-      "coverIcon": "https://covers.openlibrary.org/b/id/10601402-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/10601402-L.jpg",
+      "finishedAt": "2016-07-14T12:00:00.000Z",
+      "readDates": [
+        "2016-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_197",
@@ -10152,13 +11278,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 447
+      "_addedAt": 447,
+      "finishedAt": "2016-07-14T12:00:00.000Z",
+      "readDates": [
+        "2016-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_198",
@@ -10168,13 +11301,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 448
+      "_addedAt": 448,
+      "finishedAt": "2016-07-14T12:00:00.000Z",
+      "readDates": [
+        "2016-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_199",
@@ -10184,13 +11324,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 449
+      "_addedAt": 449,
+      "finishedAt": "2016-07-14T12:00:00.000Z",
+      "readDates": [
+        "2016-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_200",
@@ -10200,13 +11347,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 450
+      "_addedAt": 450,
+      "finishedAt": "2016-07-14T12:00:00.000Z",
+      "readDates": [
+        "2016-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_201",
@@ -10223,7 +11377,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 451,
-      "coverIcon": "https://covers.openlibrary.org/b/id/10473609-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/10473609-L.jpg",
+      "finishedAt": "2016-07-14T12:00:00.000Z",
+      "readDates": [
+        "2016-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_202",
@@ -10233,13 +11393,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "The Proposition 4",
       "tags": [],
       "url": "",
-      "_addedAt": 452
+      "_addedAt": 452,
+      "finishedAt": "2016-07-14T12:00:00.000Z",
+      "readDates": [
+        "2016-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_203",
@@ -10249,13 +11416,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 453
+      "_addedAt": 453,
+      "finishedAt": "2016-07-14T12:00:00.000Z",
+      "readDates": [
+        "2016-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_204",
@@ -10265,14 +11439,21 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 454,
-      "coverIcon": "https://covers.openlibrary.org/b/id/8106417-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/8106417-L.jpg",
+      "finishedAt": "2016-07-14T12:00:00.000Z",
+      "readDates": [
+        "2016-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_205",
@@ -10298,13 +11479,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 456
+      "_addedAt": 456,
+      "finishedAt": "2016-07-14T12:00:00.000Z",
+      "readDates": [
+        "2016-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_207",
@@ -10322,7 +11510,13 @@
       "url": "",
       "_addedAt": 457,
       "favorite": true,
-      "coverIcon": "https://covers.openlibrary.org/b/id/13818883-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/13818883-L.jpg",
+      "finishedAt": "2016-07-14T12:00:00.000Z",
+      "readDates": [
+        "2016-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_208",
@@ -10332,13 +11526,20 @@
       "genre": "Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 458
+      "_addedAt": 458,
+      "finishedAt": "2016-07-14T12:00:00.000Z",
+      "readDates": [
+        "2016-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_210",
@@ -10348,13 +11549,20 @@
       "genre": "Erotico / Dark Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 459
+      "_addedAt": 459,
+      "finishedAt": "2018-01-14T12:00:00.000Z",
+      "readDates": [
+        "2018-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_211",
@@ -10364,13 +11572,20 @@
       "genre": "Erotico / Dark Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 460
+      "_addedAt": 460,
+      "finishedAt": "2018-01-14T12:00:00.000Z",
+      "readDates": [
+        "2018-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_212",
@@ -10380,13 +11595,20 @@
       "genre": "Erotico / Dark Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 461
+      "_addedAt": 461,
+      "finishedAt": "2018-01-14T12:00:00.000Z",
+      "readDates": [
+        "2018-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_213",
@@ -10396,13 +11618,20 @@
       "genre": "Erotico / Dark Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 462
+      "_addedAt": 462,
+      "finishedAt": "2018-02-14T12:00:00.000Z",
+      "readDates": [
+        "2018-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_214",
@@ -10412,13 +11641,20 @@
       "genre": "Erotico / Dark Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 463
+      "_addedAt": 463,
+      "finishedAt": "2018-02-14T12:00:00.000Z",
+      "readDates": [
+        "2018-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_215",
@@ -10428,14 +11664,21 @@
       "genre": "Erotico / Paranormal (Omegaverse)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 464,
-      "coverIcon": "https://covers.openlibrary.org/b/id/12389641-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/12389641-L.jpg",
+      "finishedAt": "2018-02-14T12:00:00.000Z",
+      "readDates": [
+        "2018-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_216",
@@ -10445,13 +11688,20 @@
       "genre": "Erotico / Paranormal (Omegaverse)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 465
+      "_addedAt": 465,
+      "finishedAt": "2018-03-14T12:00:00.000Z",
+      "readDates": [
+        "2018-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_217",
@@ -10468,7 +11718,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 466,
-      "coverIcon": "https://covers.openlibrary.org/b/id/12446279-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/12446279-L.jpg",
+      "finishedAt": "2018-03-14T12:00:00.000Z",
+      "readDates": [
+        "2018-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_218",
@@ -10478,13 +11734,20 @@
       "genre": "Erotico / Paranormal (Omegaverse)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 467
+      "_addedAt": 467,
+      "finishedAt": "2016-08-14T12:00:00.000Z",
+      "readDates": [
+        "2016-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_219",
@@ -10494,13 +11757,20 @@
       "genre": "Erotico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Orribile",
       "tags": [],
       "url": "",
-      "_addedAt": 468
+      "_addedAt": 468,
+      "finishedAt": "2018-04-14T12:00:00.000Z",
+      "readDates": [
+        "2018-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_220",
@@ -10510,14 +11780,21 @@
       "genre": "Erotico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Cute ma scritto male",
       "tags": [],
       "url": "",
       "_addedAt": 469,
-      "coverIcon": "https://covers.openlibrary.org/b/id/11152228-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/11152228-L.jpg",
+      "finishedAt": "2018-04-14T12:00:00.000Z",
+      "readDates": [
+        "2018-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_221",
@@ -10527,13 +11804,20 @@
       "genre": "Erotico / Paranormal (Omegaverse)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Mhe, kinda liked her, relatable",
       "tags": [],
       "url": "",
-      "_addedAt": 470
+      "_addedAt": 470,
+      "finishedAt": "2018-04-14T12:00:00.000Z",
+      "readDates": [
+        "2018-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_222",
@@ -10543,14 +11827,21 @@
       "genre": "Erotico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Mid",
       "tags": [],
       "url": "",
       "_addedAt": 471,
-      "coverIcon": "https://covers.openlibrary.org/b/id/12539377-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/12539377-L.jpg",
+      "finishedAt": "2018-05-14T12:00:00.000Z",
+      "readDates": [
+        "2018-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_223",
@@ -10560,13 +11851,20 @@
       "genre": "Erotico / Paranormal (Omegaverse)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Mhe",
       "tags": [],
       "url": "",
-      "_addedAt": 472
+      "_addedAt": 472,
+      "finishedAt": "2018-05-14T12:00:00.000Z",
+      "readDates": [
+        "2018-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_224",
@@ -10576,13 +11874,20 @@
       "genre": "Erotico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 473
+      "_addedAt": 473,
+      "finishedAt": "2018-05-14T12:00:00.000Z",
+      "readDates": [
+        "2018-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_225",
@@ -10592,14 +11897,21 @@
       "genre": "Erotico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 474,
-      "coverIcon": "https://covers.openlibrary.org/b/id/12922535-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/12922535-L.jpg",
+      "finishedAt": "2018-06-14T12:00:00.000Z",
+      "readDates": [
+        "2018-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_226",
@@ -10609,13 +11921,20 @@
       "genre": "Erotico",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Awful novella, hated it",
       "tags": [],
       "url": "",
-      "_addedAt": 475
+      "_addedAt": 475,
+      "finishedAt": "2018-06-14T12:00:00.000Z",
+      "readDates": [
+        "2018-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_227",
@@ -10625,13 +11944,20 @@
       "genre": "Erotico / Paranormal (Omegaverse)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Liked the reverse harem",
       "tags": [],
       "url": "",
-      "_addedAt": 476
+      "_addedAt": 476,
+      "finishedAt": "2018-06-14T12:00:00.000Z",
+      "readDates": [
+        "2018-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_228",
@@ -10641,13 +11967,20 @@
       "genre": "Erotico / Paranormal (Omegaverse)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Liked the reverse harem",
       "tags": [],
       "url": "",
-      "_addedAt": 477
+      "_addedAt": 477,
+      "finishedAt": "2018-07-14T12:00:00.000Z",
+      "readDates": [
+        "2018-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_229",
@@ -10657,14 +11990,21 @@
       "genre": "Erotico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 478,
-      "coverIcon": "https://covers.openlibrary.org/b/id/12713597-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/12713597-L.jpg",
+      "finishedAt": "2018-07-14T12:00:00.000Z",
+      "readDates": [
+        "2018-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_230",
@@ -10674,14 +12014,21 @@
       "genre": "Erotico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 479,
-      "coverIcon": "https://covers.openlibrary.org/b/id/13125307-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/13125307-L.jpg",
+      "finishedAt": "2018-07-14T12:00:00.000Z",
+      "readDates": [
+        "2018-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_231",
@@ -10691,13 +12038,20 @@
       "genre": "Erotico / Dark Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 480
+      "_addedAt": 480,
+      "finishedAt": "2018-08-14T12:00:00.000Z",
+      "readDates": [
+        "2018-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_232",
@@ -10707,13 +12061,20 @@
       "genre": "Erotico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 481
+      "_addedAt": 481,
+      "finishedAt": "2018-08-14T12:00:00.000Z",
+      "readDates": [
+        "2018-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_233",
@@ -10723,13 +12084,20 @@
       "genre": "Erotico / Romance Sport",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Mhe - innamorati troppo in fretta",
       "tags": [],
       "url": "",
-      "_addedAt": 482
+      "_addedAt": 482,
+      "finishedAt": "2018-08-14T12:00:00.000Z",
+      "readDates": [
+        "2018-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_234",
@@ -10739,13 +12107,20 @@
       "genre": "Erotico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Pretty valid enemies to lovers",
       "tags": [],
       "url": "",
-      "_addedAt": 483
+      "_addedAt": 483,
+      "finishedAt": "2018-09-14T12:00:00.000Z",
+      "readDates": [
+        "2018-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_235",
@@ -10755,13 +12130,20 @@
       "genre": "Erotico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 484
+      "_addedAt": 484,
+      "finishedAt": "2018-09-14T12:00:00.000Z",
+      "readDates": [
+        "2018-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_236",
@@ -10771,13 +12153,20 @@
       "genre": "Erotico / Paranormal (Omegaverse)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 485
+      "_addedAt": 485,
+      "finishedAt": "2018-10-14T12:00:00.000Z",
+      "readDates": [
+        "2018-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_237",
@@ -10793,7 +12182,13 @@
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 486
+      "_addedAt": 486,
+      "finishedAt": "2018-10-14T12:00:00.000Z",
+      "readDates": [
+        "2018-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_238",
@@ -10803,14 +12198,21 @@
       "genre": "Erotico / Paranormal",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 487,
-      "coverIcon": "https://covers.openlibrary.org/b/id/12055492-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/12055492-L.jpg",
+      "finishedAt": "2018-10-14T12:00:00.000Z",
+      "readDates": [
+        "2018-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_239",
@@ -10820,14 +12222,21 @@
       "genre": "Erotico / Paranormal",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Chosen series",
       "tags": [],
       "url": "",
       "_addedAt": 488,
-      "coverIcon": "https://covers.openlibrary.org/b/id/13700739-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/13700739-L.jpg",
+      "finishedAt": "2018-11-14T12:00:00.000Z",
+      "readDates": [
+        "2018-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_240",
@@ -10837,13 +12246,20 @@
       "genre": "Erotico / Paranormal",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Chosen series",
       "tags": [],
       "url": "",
-      "_addedAt": 489
+      "_addedAt": 489,
+      "finishedAt": "2018-11-14T12:00:00.000Z",
+      "readDates": [
+        "2018-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_241",
@@ -10853,13 +12269,20 @@
       "genre": "Erotico / Paranormal",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Chosen series",
       "tags": [],
       "url": "",
-      "_addedAt": 490
+      "_addedAt": 490,
+      "finishedAt": "2018-11-14T12:00:00.000Z",
+      "readDates": [
+        "2018-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_242",
@@ -10869,13 +12292,20 @@
       "genre": "Erotico / Sci-Fi",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 491
+      "_addedAt": 491,
+      "finishedAt": "2018-12-14T12:00:00.000Z",
+      "readDates": [
+        "2018-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_243",
@@ -10885,13 +12315,20 @@
       "genre": "Erotico / Sci-Fi",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 45000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 492
+      "_addedAt": 492,
+      "finishedAt": "2018-12-14T12:00:00.000Z",
+      "readDates": [
+        "2018-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_245",
@@ -10901,13 +12338,20 @@
       "genre": "Thriller / Avventura",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 493
+      "_addedAt": 493,
+      "finishedAt": "2017-01-14T12:00:00.000Z",
+      "readDates": [
+        "2017-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_246",
@@ -10924,7 +12368,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 494,
-      "coverIcon": "https://covers.openlibrary.org/b/id/6974992-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/6974992-L.jpg",
+      "finishedAt": "2017-03-14T12:00:00.000Z",
+      "readDates": [
+        "2017-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_247",
@@ -10941,7 +12391,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 495,
-      "coverIcon": "https://covers.openlibrary.org/b/id/12727567-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/12727567-L.jpg",
+      "finishedAt": "2017-05-14T12:00:00.000Z",
+      "readDates": [
+        "2017-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_248",
@@ -10958,7 +12414,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 496,
-      "coverIcon": "https://covers.openlibrary.org/b/id/8352502-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/8352502-L.jpg",
+      "finishedAt": "2017-07-14T12:00:00.000Z",
+      "readDates": [
+        "2017-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_249",
@@ -10968,13 +12430,20 @@
       "genre": "Umoristico / Narrativa",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 85000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 497
+      "_addedAt": 497,
+      "finishedAt": "2017-08-14T12:00:00.000Z",
+      "readDates": [
+        "2017-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_250",
@@ -11010,7 +12479,13 @@
       "url": "",
       "_addedAt": 499,
       "favorite": true,
-      "coverIcon": "https://covers.openlibrary.org/b/id/10507582-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/10507582-L.jpg",
+      "finishedAt": "2017-10-14T12:00:00.000Z",
+      "readDates": [
+        "2017-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_253",
@@ -11020,13 +12495,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 500
+      "_addedAt": 500,
+      "finishedAt": "2016-08-14T12:00:00.000Z",
+      "readDates": [
+        "2016-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_254",
@@ -11036,14 +12518,21 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 501,
-      "coverIcon": "https://covers.openlibrary.org/b/id/1957584-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/1957584-L.jpg",
+      "finishedAt": "2016-08-14T12:00:00.000Z",
+      "readDates": [
+        "2016-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_255",
@@ -11053,14 +12542,21 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 502,
-      "coverIcon": "https://covers.openlibrary.org/b/id/11443514-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/11443514-L.jpg",
+      "finishedAt": "2016-08-14T12:00:00.000Z",
+      "readDates": [
+        "2016-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_256",
@@ -11070,14 +12566,21 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 503,
-      "favorite": true
+      "favorite": true,
+      "finishedAt": "2016-08-14T12:00:00.000Z",
+      "readDates": [
+        "2016-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_257",
@@ -11087,13 +12590,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 504
+      "_addedAt": 504,
+      "finishedAt": "2016-08-14T12:00:00.000Z",
+      "readDates": [
+        "2016-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_258",
@@ -11103,13 +12613,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "x2",
       "tags": [],
       "url": "",
-      "_addedAt": 505
+      "_addedAt": 505,
+      "finishedAt": "2016-08-14T12:00:00.000Z",
+      "readDates": [
+        "2016-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_259",
@@ -11119,13 +12636,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 506
+      "_addedAt": 506,
+      "finishedAt": "2016-08-14T12:00:00.000Z",
+      "readDates": [
+        "2016-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_260",
@@ -11135,13 +12659,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 507
+      "_addedAt": 507,
+      "finishedAt": "2016-08-14T12:00:00.000Z",
+      "readDates": [
+        "2016-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_261",
@@ -11151,14 +12682,21 @@
       "genre": "Romanzo Storico / Romance (Highlander)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 508,
-      "favorite": true
+      "favorite": true,
+      "finishedAt": "2016-08-14T12:00:00.000Z",
+      "readDates": [
+        "2016-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_262",
@@ -11168,13 +12706,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 509
+      "_addedAt": 509,
+      "finishedAt": "2016-08-14T12:00:00.000Z",
+      "readDates": [
+        "2016-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_263",
@@ -11184,13 +12729,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 510
+      "_addedAt": 510,
+      "finishedAt": "2016-08-14T12:00:00.000Z",
+      "readDates": [
+        "2016-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_264",
@@ -11200,13 +12752,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 511
+      "_addedAt": 511,
+      "finishedAt": "2016-08-14T12:00:00.000Z",
+      "readDates": [
+        "2016-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_265",
@@ -11216,13 +12775,20 @@
       "genre": "Romanzo Storico / Romance (Highlander)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 512
+      "_addedAt": 512,
+      "finishedAt": "2016-08-14T12:00:00.000Z",
+      "readDates": [
+        "2016-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_266",
@@ -11232,13 +12798,20 @@
       "genre": "Romanzo Storico / Romance (Highlander)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 513
+      "_addedAt": 513,
+      "finishedAt": "2016-08-14T12:00:00.000Z",
+      "readDates": [
+        "2016-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_267",
@@ -11248,13 +12821,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 514
+      "_addedAt": 514,
+      "finishedAt": "2016-08-14T12:00:00.000Z",
+      "readDates": [
+        "2016-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_268",
@@ -11264,14 +12844,21 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 515,
-      "coverIcon": "https://covers.openlibrary.org/b/id/408021-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/408021-L.jpg",
+      "finishedAt": "2016-08-14T12:00:00.000Z",
+      "readDates": [
+        "2016-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_269",
@@ -11281,14 +12868,21 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 516,
-      "favorite": true
+      "favorite": true,
+      "finishedAt": "2016-08-14T12:00:00.000Z",
+      "readDates": [
+        "2016-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_270",
@@ -11298,14 +12892,21 @@
       "genre": "Romanzo Storico / Romance (Highlander)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 517,
-      "favorite": true
+      "favorite": true,
+      "finishedAt": "2016-08-14T12:00:00.000Z",
+      "readDates": [
+        "2016-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_271",
@@ -11315,13 +12916,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 518
+      "_addedAt": 518,
+      "finishedAt": "2016-09-14T12:00:00.000Z",
+      "readDates": [
+        "2016-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_272",
@@ -11331,13 +12939,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 519
+      "_addedAt": 519,
+      "finishedAt": "2016-09-14T12:00:00.000Z",
+      "readDates": [
+        "2016-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_273",
@@ -11347,13 +12962,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 520
+      "_addedAt": 520,
+      "finishedAt": "2016-09-14T12:00:00.000Z",
+      "readDates": [
+        "2016-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_274",
@@ -11363,13 +12985,20 @@
       "genre": "Romanzo Storico / Romance (Highlander)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 521
+      "_addedAt": 521,
+      "finishedAt": "2016-09-14T12:00:00.000Z",
+      "readDates": [
+        "2016-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_275",
@@ -11379,13 +13008,20 @@
       "genre": "Romanzo Storico / Romance (Highlander)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 522
+      "_addedAt": 522,
+      "finishedAt": "2016-09-14T12:00:00.000Z",
+      "readDates": [
+        "2016-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_276",
@@ -11395,13 +13031,20 @@
       "genre": "Romanzo Storico / Romance (Highlander)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 523
+      "_addedAt": 523,
+      "finishedAt": "2016-09-14T12:00:00.000Z",
+      "readDates": [
+        "2016-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_277",
@@ -11411,13 +13054,20 @@
       "genre": "Romanzo Storico / Romance (Highlander)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 524
+      "_addedAt": 524,
+      "finishedAt": "2016-09-14T12:00:00.000Z",
+      "readDates": [
+        "2016-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_278",
@@ -11427,13 +13077,20 @@
       "genre": "Romanzo Storico / Romance (Highlander)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 525
+      "_addedAt": 525,
+      "finishedAt": "2016-09-14T12:00:00.000Z",
+      "readDates": [
+        "2016-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_279",
@@ -11449,7 +13106,13 @@
       "notes": "Smythe-Smith Quartet #1",
       "tags": [],
       "url": "",
-      "_addedAt": 526
+      "_addedAt": 526,
+      "finishedAt": "2016-09-14T12:00:00.000Z",
+      "readDates": [
+        "2016-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_280",
@@ -11459,13 +13122,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 527
+      "_addedAt": 527,
+      "finishedAt": "2016-09-14T12:00:00.000Z",
+      "readDates": [
+        "2016-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_281",
@@ -11475,13 +13145,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 528
+      "_addedAt": 528,
+      "finishedAt": "2016-09-14T12:00:00.000Z",
+      "readDates": [
+        "2016-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_282",
@@ -11491,13 +13168,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 529
+      "_addedAt": 529,
+      "finishedAt": "2016-09-14T12:00:00.000Z",
+      "readDates": [
+        "2016-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_283",
@@ -11507,13 +13191,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 530
+      "_addedAt": 530,
+      "finishedAt": "2016-09-14T12:00:00.000Z",
+      "readDates": [
+        "2016-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_284",
@@ -11523,13 +13214,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 531
+      "_addedAt": 531,
+      "finishedAt": "2016-09-14T12:00:00.000Z",
+      "readDates": [
+        "2016-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_285",
@@ -11539,14 +13237,21 @@
       "genre": "Romanzo Storico / Romance (Highlander)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 532,
-      "favorite": true
+      "favorite": true,
+      "finishedAt": "2016-09-14T12:00:00.000Z",
+      "readDates": [
+        "2016-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_286",
@@ -11556,13 +13261,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 533
+      "_addedAt": 533,
+      "finishedAt": "2016-09-14T12:00:00.000Z",
+      "readDates": [
+        "2016-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_287",
@@ -11572,13 +13284,20 @@
       "genre": "Romanzo Storico / Romance (Highlander)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 534
+      "_addedAt": 534,
+      "finishedAt": "2016-09-14T12:00:00.000Z",
+      "readDates": [
+        "2016-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_288",
@@ -11604,13 +13323,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 536
+      "_addedAt": 536,
+      "finishedAt": "2016-09-14T12:00:00.000Z",
+      "readDates": [
+        "2016-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_290",
@@ -11620,13 +13346,20 @@
       "genre": "Romanzo Storico / Romance (Highlander)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 537
+      "_addedAt": 537,
+      "finishedAt": "2016-09-14T12:00:00.000Z",
+      "readDates": [
+        "2016-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_291",
@@ -11636,13 +13369,20 @@
       "genre": "Romanzo Storico / Romance (Highlander)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 538
+      "_addedAt": 538,
+      "finishedAt": "2016-09-14T12:00:00.000Z",
+      "readDates": [
+        "2016-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_292",
@@ -11652,13 +13392,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 539
+      "_addedAt": 539,
+      "finishedAt": "2016-10-14T12:00:00.000Z",
+      "readDates": [
+        "2016-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_293",
@@ -11668,13 +13415,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Pag. 668",
       "tags": [],
       "url": "",
-      "_addedAt": 540
+      "_addedAt": 540,
+      "finishedAt": "2016-10-14T12:00:00.000Z",
+      "readDates": [
+        "2016-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_294",
@@ -11684,13 +13438,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 541
+      "_addedAt": 541,
+      "finishedAt": "2016-10-14T12:00:00.000Z",
+      "readDates": [
+        "2016-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_295",
@@ -11700,13 +13461,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 542
+      "_addedAt": 542,
+      "finishedAt": "2016-10-14T12:00:00.000Z",
+      "readDates": [
+        "2016-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_296",
@@ -11716,13 +13484,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 543
+      "_addedAt": 543,
+      "finishedAt": "2016-10-14T12:00:00.000Z",
+      "readDates": [
+        "2016-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_297",
@@ -11732,14 +13507,21 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 544,
-      "coverIcon": "https://covers.openlibrary.org/b/id/403266-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/403266-L.jpg",
+      "finishedAt": "2016-10-14T12:00:00.000Z",
+      "readDates": [
+        "2016-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_298",
@@ -11749,13 +13531,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "I Famigerati Flynn 1",
       "tags": [],
       "url": "",
-      "_addedAt": 545
+      "_addedAt": 545,
+      "finishedAt": "2016-10-14T12:00:00.000Z",
+      "readDates": [
+        "2016-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_299",
@@ -11765,13 +13554,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "I Famigerati Flynn 2",
       "tags": [],
       "url": "",
-      "_addedAt": 546
+      "_addedAt": 546,
+      "finishedAt": "2016-10-14T12:00:00.000Z",
+      "readDates": [
+        "2016-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_300",
@@ -11781,13 +13577,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "I Famigerati Flynn 3",
       "tags": [],
       "url": "",
-      "_addedAt": 547
+      "_addedAt": 547,
+      "finishedAt": "2016-10-14T12:00:00.000Z",
+      "readDates": [
+        "2016-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_301",
@@ -11797,13 +13600,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 548
+      "_addedAt": 548,
+      "finishedAt": "2016-10-14T12:00:00.000Z",
+      "readDates": [
+        "2016-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_302",
@@ -11813,13 +13623,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Dieci piccole mosse... 1",
       "tags": [],
       "url": "",
-      "_addedAt": 549
+      "_addedAt": 549,
+      "finishedAt": "2016-10-14T12:00:00.000Z",
+      "readDates": [
+        "2016-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_303",
@@ -11829,13 +13646,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Dieci piccole mosse... 2",
       "tags": [],
       "url": "",
-      "_addedAt": 550
+      "_addedAt": 550,
+      "finishedAt": "2016-10-14T12:00:00.000Z",
+      "readDates": [
+        "2016-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_304",
@@ -11845,13 +13669,20 @@
       "genre": "Romanzo Storico / Romance (Highlander)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 551
+      "_addedAt": 551,
+      "finishedAt": "2016-10-14T12:00:00.000Z",
+      "readDates": [
+        "2016-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_305",
@@ -11861,13 +13692,20 @@
       "genre": "Romanzo Storico / Romance (Pirati)",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 552
+      "_addedAt": 552,
+      "finishedAt": "2016-10-14T12:00:00.000Z",
+      "readDates": [
+        "2016-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_306",
@@ -11877,13 +13715,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 553
+      "_addedAt": 553,
+      "finishedAt": "2016-10-14T12:00:00.000Z",
+      "readDates": [
+        "2016-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_307",
@@ -11893,13 +13738,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 554
+      "_addedAt": 554,
+      "finishedAt": "2016-10-14T12:00:00.000Z",
+      "readDates": [
+        "2016-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_308",
@@ -11909,13 +13761,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 555
+      "_addedAt": 555,
+      "finishedAt": "2016-10-14T12:00:00.000Z",
+      "readDates": [
+        "2016-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_309",
@@ -11925,13 +13784,20 @@
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 556
+      "_addedAt": 556,
+      "finishedAt": "2016-10-14T12:00:00.000Z",
+      "readDates": [
+        "2016-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_311",
@@ -11948,7 +13814,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 557,
-      "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg",
+      "finishedAt": "2008-01-14T12:00:00.000Z",
+      "readDates": [
+        "2008-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_312",
@@ -11965,7 +13837,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 558,
-      "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg",
+      "finishedAt": "2008-01-14T12:00:00.000Z",
+      "readDates": [
+        "2008-01-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_313",
@@ -11982,7 +13860,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 559,
-      "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg",
+      "finishedAt": "2008-02-14T12:00:00.000Z",
+      "readDates": [
+        "2008-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_314",
@@ -11999,7 +13883,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 560,
-      "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg",
+      "finishedAt": "2008-02-14T12:00:00.000Z",
+      "readDates": [
+        "2008-02-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_315",
@@ -12016,7 +13906,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 561,
-      "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg",
+      "finishedAt": "2008-03-14T12:00:00.000Z",
+      "readDates": [
+        "2008-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_316",
@@ -12033,7 +13929,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 562,
-      "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg",
+      "finishedAt": "2008-03-14T12:00:00.000Z",
+      "readDates": [
+        "2008-03-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_317",
@@ -12050,7 +13952,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 563,
-      "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg",
+      "finishedAt": "2008-04-14T12:00:00.000Z",
+      "readDates": [
+        "2008-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_318",
@@ -12067,7 +13975,13 @@
       "tags": [],
       "url": "",
       "_addedAt": 564,
-      "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/7879043-L.jpg",
+      "finishedAt": "2008-04-14T12:00:00.000Z",
+      "readDates": [
+        "2008-04-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_319",
@@ -12083,7 +13997,13 @@
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 565
+      "_addedAt": 565,
+      "finishedAt": "2008-05-14T12:00:00.000Z",
+      "readDates": [
+        "2008-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_320",
@@ -12093,14 +14013,21 @@
       "genre": "Narrativa per Bambini",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 12000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 566,
-      "coverIcon": "https://covers.openlibrary.org/b/id/7272569-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/7272569-L.jpg",
+      "finishedAt": "2008-05-14T12:00:00.000Z",
+      "readDates": [
+        "2008-05-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_321",
@@ -12110,14 +14037,21 @@
       "genre": "Narrativa per Bambini",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 12000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 567,
-      "coverIcon": "https://covers.openlibrary.org/b/id/11686549-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/11686549-L.jpg",
+      "finishedAt": "2008-06-14T12:00:00.000Z",
+      "readDates": [
+        "2008-06-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_322",
@@ -12133,7 +14067,13 @@
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 568
+      "_addedAt": 568,
+      "finishedAt": "2008-07-14T12:00:00.000Z",
+      "readDates": [
+        "2008-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_323",
@@ -12143,14 +14083,21 @@
       "genre": "Narrativa per Bambini / Fantasy",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 12000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 569,
-      "coverIcon": "https://covers.openlibrary.org/b/id/6392893-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/6392893-L.jpg",
+      "finishedAt": "2008-07-14T12:00:00.000Z",
+      "readDates": [
+        "2008-07-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_324",
@@ -12160,13 +14107,20 @@
       "genre": "Narrativa per Bambini / Fantasy",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 12000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 570
+      "_addedAt": 570,
+      "finishedAt": "2008-08-14T12:00:00.000Z",
+      "readDates": [
+        "2008-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_325",
@@ -12176,14 +14130,21 @@
       "genre": "Narrativa per Bambini / Avventura",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 12000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 571,
-      "coverIcon": "https://covers.openlibrary.org/b/id/14418899-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/14418899-L.jpg",
+      "finishedAt": "2008-08-14T12:00:00.000Z",
+      "readDates": [
+        "2008-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_326",
@@ -12193,13 +14154,20 @@
       "genre": "Religioso / Bambini",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 12000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 572
+      "_addedAt": 572,
+      "finishedAt": "2008-09-14T12:00:00.000Z",
+      "readDates": [
+        "2008-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_327",
@@ -12209,14 +14177,21 @@
       "genre": "Narrativa per Bambini",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 12000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 573,
-      "coverIcon": "https://covers.openlibrary.org/b/id/8444194-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/8444194-L.jpg",
+      "finishedAt": "2008-09-14T12:00:00.000Z",
+      "readDates": [
+        "2008-09-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_328",
@@ -12226,14 +14201,21 @@
       "genre": "Narrativa per Bambini / Avventura",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 12000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 574,
-      "coverIcon": "https://covers.openlibrary.org/b/id/7253810-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/7253810-L.jpg",
+      "finishedAt": "2008-10-14T12:00:00.000Z",
+      "readDates": [
+        "2008-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_329",
@@ -12243,14 +14225,21 @@
       "genre": "Narrativa per Bambini / Fantasy",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 12000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 575,
-      "coverIcon": "https://covers.openlibrary.org/b/id/10181104-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/10181104-L.jpg",
+      "finishedAt": "2008-10-14T12:00:00.000Z",
+      "readDates": [
+        "2008-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_330",
@@ -12260,14 +14249,21 @@
       "genre": "Narrativa per Bambini",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 12000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 576,
-      "coverIcon": "https://covers.openlibrary.org/b/id/12344360-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/12344360-L.jpg",
+      "finishedAt": "2008-11-14T12:00:00.000Z",
+      "readDates": [
+        "2008-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_331",
@@ -12283,7 +14279,13 @@
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 577
+      "_addedAt": 577,
+      "finishedAt": "2008-11-14T12:00:00.000Z",
+      "readDates": [
+        "2008-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
       "id": "book_332",
@@ -12293,14 +14295,21 @@
       "genre": "Narrativa per Bambini / Avventura",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 12000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 578,
-      "coverIcon": "https://covers.openlibrary.org/b/id/6392888-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/6392888-L.jpg",
+      "finishedAt": "2008-12-14T12:00:00.000Z",
+      "readDates": [
+        "2008-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_333",
@@ -12310,13 +14319,20 @@
       "genre": "Narrativa per Bambini",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 12000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 579
+      "_addedAt": 579,
+      "finishedAt": "2008-12-14T12:00:00.000Z",
+      "readDates": [
+        "2008-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_335",
@@ -12326,14 +14342,21 @@
       "genre": "Wattpad / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 580,
-      "favorite": true
+      "favorite": true,
+      "finishedAt": "2016-10-14T12:00:00.000Z",
+      "readDates": [
+        "2016-10-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_336",
@@ -12343,13 +14366,20 @@
       "genre": "Wattpad / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 581
+      "_addedAt": 581,
+      "finishedAt": "2016-11-14T12:00:00.000Z",
+      "readDates": [
+        "2016-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_337",
@@ -12359,13 +14389,20 @@
       "genre": "Wattpad / Fantasy Dark",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 582
+      "_addedAt": 582,
+      "finishedAt": "2016-11-14T12:00:00.000Z",
+      "readDates": [
+        "2016-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_338",
@@ -12375,13 +14412,20 @@
       "genre": "Wattpad / Fantasy Dark",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 583
+      "_addedAt": 583,
+      "finishedAt": "2016-11-14T12:00:00.000Z",
+      "readDates": [
+        "2016-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_339",
@@ -12391,13 +14435,20 @@
       "genre": "Wattpad / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 584
+      "_addedAt": 584,
+      "finishedAt": "2016-11-14T12:00:00.000Z",
+      "readDates": [
+        "2016-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_340",
@@ -12407,13 +14458,20 @@
       "genre": "Wattpad / Paranormal Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 585
+      "_addedAt": 585,
+      "finishedAt": "2016-11-14T12:00:00.000Z",
+      "readDates": [
+        "2016-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_341",
@@ -12423,13 +14481,20 @@
       "genre": "Wattpad / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 586
+      "_addedAt": 586,
+      "finishedAt": "2016-11-14T12:00:00.000Z",
+      "readDates": [
+        "2016-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_342",
@@ -12439,13 +14504,20 @@
       "genre": "Wattpad / YA",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 587
+      "_addedAt": 587,
+      "finishedAt": "2016-11-14T12:00:00.000Z",
+      "readDates": [
+        "2016-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_343",
@@ -12455,13 +14527,20 @@
       "genre": "Wattpad / Fantasy",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 588
+      "_addedAt": 588,
+      "finishedAt": "2016-11-14T12:00:00.000Z",
+      "readDates": [
+        "2016-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_344",
@@ -12471,13 +14550,20 @@
       "genre": "Wattpad / Fantasy Dark",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 589
+      "_addedAt": 589,
+      "finishedAt": "2016-11-14T12:00:00.000Z",
+      "readDates": [
+        "2016-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_345",
@@ -12487,13 +14573,20 @@
       "genre": "Wattpad / Fantasy Dark",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 590
+      "_addedAt": 590,
+      "finishedAt": "2016-11-14T12:00:00.000Z",
+      "readDates": [
+        "2016-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_346",
@@ -12503,13 +14596,20 @@
       "genre": "Wattpad / Fantasy Dark",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 591
+      "_addedAt": 591,
+      "finishedAt": "2016-11-14T12:00:00.000Z",
+      "readDates": [
+        "2016-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_347",
@@ -12519,13 +14619,20 @@
       "genre": "Wattpad / Fantasy",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 592
+      "_addedAt": 592,
+      "finishedAt": "2016-11-14T12:00:00.000Z",
+      "readDates": [
+        "2016-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_348",
@@ -12535,13 +14642,20 @@
       "genre": "Wattpad / Fantasy",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 593
+      "_addedAt": 593,
+      "finishedAt": "2016-11-14T12:00:00.000Z",
+      "readDates": [
+        "2016-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_349",
@@ -12551,13 +14665,20 @@
       "genre": "Wattpad / Fantasy",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 594
+      "_addedAt": 594,
+      "finishedAt": "2016-11-14T12:00:00.000Z",
+      "readDates": [
+        "2016-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_350",
@@ -12567,13 +14688,20 @@
       "genre": "Wattpad / Fantasy",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 595
+      "_addedAt": 595,
+      "finishedAt": "2016-11-14T12:00:00.000Z",
+      "readDates": [
+        "2016-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_351",
@@ -12583,14 +14711,21 @@
       "genre": "Wattpad / Avventura",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 596,
-      "favorite": true
+      "favorite": true,
+      "finishedAt": "2016-11-14T12:00:00.000Z",
+      "readDates": [
+        "2016-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_352",
@@ -12600,13 +14735,20 @@
       "genre": "Wattpad / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 597
+      "_addedAt": 597,
+      "finishedAt": "2016-11-14T12:00:00.000Z",
+      "readDates": [
+        "2016-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_353",
@@ -12616,14 +14758,21 @@
       "genre": "Wattpad / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 598,
-      "favorite": true
+      "favorite": true,
+      "finishedAt": "2016-11-14T12:00:00.000Z",
+      "readDates": [
+        "2016-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_354",
@@ -12633,13 +14782,20 @@
       "genre": "Wattpad / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 599
+      "_addedAt": 599,
+      "finishedAt": "2016-11-14T12:00:00.000Z",
+      "readDates": [
+        "2016-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_355",
@@ -12649,13 +14805,20 @@
       "genre": "Wattpad / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 600
+      "_addedAt": 600,
+      "finishedAt": "2016-11-14T12:00:00.000Z",
+      "readDates": [
+        "2016-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_356",
@@ -12665,13 +14828,20 @@
       "genre": "Wattpad / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 601
+      "_addedAt": 601,
+      "finishedAt": "2016-12-14T12:00:00.000Z",
+      "readDates": [
+        "2016-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_357",
@@ -12681,13 +14851,20 @@
       "genre": "Wattpad / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 602
+      "_addedAt": 602,
+      "finishedAt": "2016-12-14T12:00:00.000Z",
+      "readDates": [
+        "2016-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_358",
@@ -12697,13 +14874,20 @@
       "genre": "Wattpad / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 603
+      "_addedAt": 603,
+      "finishedAt": "2016-12-14T12:00:00.000Z",
+      "readDates": [
+        "2016-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_359",
@@ -12713,13 +14897,20 @@
       "genre": "Wattpad / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 604
+      "_addedAt": 604,
+      "finishedAt": "2016-12-14T12:00:00.000Z",
+      "readDates": [
+        "2016-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_360",
@@ -12729,13 +14920,20 @@
       "genre": "Wattpad / Romance / Paranormal",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "BellissimoÃÂ¢ÃÂÃÂ¦ mi ha fatta piangere",
       "tags": [],
       "url": "",
-      "_addedAt": 605
+      "_addedAt": 605,
+      "finishedAt": "2016-12-14T12:00:00.000Z",
+      "readDates": [
+        "2016-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_361",
@@ -12745,14 +14943,21 @@
       "genre": "Wattpad / Drama",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 606,
-      "favorite": true
+      "favorite": true,
+      "finishedAt": "2016-12-14T12:00:00.000Z",
+      "readDates": [
+        "2016-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_362",
@@ -12762,13 +14967,20 @@
       "genre": "Wattpad / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 607
+      "_addedAt": 607,
+      "finishedAt": "2016-12-14T12:00:00.000Z",
+      "readDates": [
+        "2016-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_363",
@@ -12778,14 +14990,21 @@
       "genre": "Wattpad / Romance / Fantasy",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 608,
-      "favorite": true
+      "favorite": true,
+      "finishedAt": "2016-12-14T12:00:00.000Z",
+      "readDates": [
+        "2016-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_364",
@@ -12795,13 +15014,20 @@
       "genre": "Wattpad / Fantasy / Romance",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 65000,
       "status": "Finished",
       "userRating": 0,
       "notes": "Troppo sessista",
       "tags": [],
       "url": "",
-      "_addedAt": 609
+      "_addedAt": 609,
+      "finishedAt": "2016-12-14T12:00:00.000Z",
+      "readDates": [
+        "2016-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "id": "book_366",
@@ -12811,13 +15037,20 @@
       "genre": "Manhwa / Romance Storico",
       "section": "Fantasy",
       "pages": null,
-      "words": null,
+      "words": 90000,
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 610
+      "_addedAt": 610,
+      "finishedAt": "2020-12-14T12:00:00.000Z",
+      "readDates": [
+        "2020-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_wordsEstimated": true
     },
     {
       "type": "ff",
@@ -13295,6 +15528,261 @@
       "finishedAt": "2026-06-28T11:00:00.000Z",
       "_addedAt": 641,
       "_modAt": "2026-06-29T13:42:23.389Z"
+    },
+    {
+      "id": "book_1782756764570_0",
+      "type": "book",
+      "title": "Shadowhunters: Città di ossa",
+      "author": "",
+      "genre": "Fantasy",
+      "status": "Finished",
+      "words": 110000,
+      "userRating": 0,
+      "_addedAt": 642,
+      "finishedAt": "2015-08-14T12:00:00.000Z",
+      "readDates": [
+        "2015-08-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
+    },
+    {
+      "id": "book_1782756764570_1",
+      "type": "book",
+      "title": "Shadowhunters: Città di cenere",
+      "author": "",
+      "genre": "Fantasy",
+      "status": "Finished",
+      "words": 110000,
+      "userRating": 0,
+      "_addedAt": 643,
+      "finishedAt": "2015-11-14T12:00:00.000Z",
+      "readDates": [
+        "2015-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
+    },
+    {
+      "id": "book_1782756764570_2",
+      "type": "book",
+      "title": "Non è ancora finita",
+      "author": "",
+      "genre": "Trash fantasy",
+      "status": "Finished",
+      "words": 55000,
+      "userRating": 0,
+      "_addedAt": 644,
+      "finishedAt": "2025-11-14T12:00:00.000Z",
+      "readDates": [
+        "2025-11-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
+    },
+    {
+      "id": "book_1782756764570_3",
+      "type": "book",
+      "title": "Storie d'amore",
+      "author": "",
+      "genre": "Romance",
+      "status": "Finished",
+      "words": 80000,
+      "userRating": 0,
+      "_addedAt": 645,
+      "finishedAt": "2016-12-14T12:00:00.000Z",
+      "readDates": [
+        "2016-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
+    },
+    {
+      "id": "book_1782756764570_4",
+      "type": "book",
+      "title": "Città di carta",
+      "author": "",
+      "genre": "Romance",
+      "status": "Finished",
+      "words": 80000,
+      "userRating": 0,
+      "_addedAt": 646,
+      "finishedAt": "2016-12-14T12:00:00.000Z",
+      "readDates": [
+        "2016-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
+    },
+    {
+      "id": "book_1782756764570_5",
+      "type": "book",
+      "title": "Il ragazzo che entrò dalla finestra e si infilò nel mio letto",
+      "author": "",
+      "genre": "Romance",
+      "status": "Finished",
+      "words": 80000,
+      "userRating": 0,
+      "_addedAt": 647,
+      "finishedAt": "2016-12-14T12:00:00.000Z",
+      "readDates": [
+        "2016-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
+    },
+    {
+      "id": "book_1782756764570_6",
+      "type": "book",
+      "title": "Un disastro è per sempre",
+      "author": "",
+      "genre": "Romance",
+      "status": "Finished",
+      "words": 80000,
+      "userRating": 0,
+      "_addedAt": 648,
+      "finishedAt": "2016-12-14T12:00:00.000Z",
+      "readDates": [
+        "2016-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
+    },
+    {
+      "id": "book_1782756764570_7",
+      "type": "book",
+      "title": "L'assistente del capo: Chi è ora il boss?",
+      "author": "",
+      "genre": "Romance",
+      "status": "Finished",
+      "words": 80000,
+      "userRating": 0,
+      "_addedAt": 649,
+      "finishedAt": "2016-12-14T12:00:00.000Z",
+      "readDates": [
+        "2016-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
+    },
+    {
+      "id": "book_1782756764570_8",
+      "type": "book",
+      "title": "Siamo amici solo il mercoledì",
+      "author": "",
+      "genre": "Romance",
+      "status": "Finished",
+      "words": 80000,
+      "userRating": 0,
+      "_addedAt": 650,
+      "finishedAt": "2016-12-14T12:00:00.000Z",
+      "readDates": [
+        "2016-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
+    },
+    {
+      "id": "book_1782756764570_9",
+      "type": "book",
+      "title": "Vicini… anche troppo",
+      "author": "",
+      "genre": "Romance",
+      "status": "Finished",
+      "words": 80000,
+      "userRating": 0,
+      "_addedAt": 651,
+      "finishedAt": "2016-12-14T12:00:00.000Z",
+      "readDates": [
+        "2016-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
+    },
+    {
+      "id": "book_1782756764570_10",
+      "type": "book",
+      "title": "Ricco e Ribelle (Rush 1) - Penelope Ward",
+      "author": "",
+      "genre": "Romance",
+      "status": "Finished",
+      "words": 80000,
+      "userRating": 0,
+      "_addedAt": 652,
+      "finishedAt": "2016-12-14T12:00:00.000Z",
+      "readDates": [
+        "2016-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
+    },
+    {
+      "id": "book_1782756764570_11",
+      "type": "book",
+      "title": "Sweet Kitten",
+      "author": "",
+      "genre": "Romance",
+      "status": "Finished",
+      "words": 80000,
+      "userRating": 0,
+      "_addedAt": 653,
+      "finishedAt": "2016-12-14T12:00:00.000Z",
+      "readDates": [
+        "2016-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
+    },
+    {
+      "id": "book_1782756764570_12",
+      "type": "book",
+      "title": "Baby",
+      "author": "",
+      "genre": "English smut",
+      "status": "Finished",
+      "words": 45000,
+      "userRating": 0,
+      "_addedAt": 654,
+      "finishedAt": "2018-12-14T12:00:00.000Z",
+      "readDates": [
+        "2018-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
+    },
+    {
+      "id": "book_1782756764570_13",
+      "type": "book",
+      "title": "Neal Shusterman - Trilogia della falce 1 - Falce",
+      "author": "",
+      "genre": "Casuali",
+      "status": "Finished",
+      "words": 90000,
+      "userRating": 0,
+      "_addedAt": 655,
+      "finishedAt": "2017-12-14T12:00:00.000Z",
+      "readDates": [
+        "2017-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
+    },
+    {
+      "id": "book_1782756764570_14",
+      "type": "book",
+      "title": "Voglio ritrovarti - Capital Theatre - 1",
+      "author": "",
+      "genre": "Romanzi storici",
+      "status": "Finished",
+      "words": 90000,
+      "userRating": 0,
+      "_addedAt": 656,
+      "finishedAt": "2016-12-14T12:00:00.000Z",
+      "readDates": [
+        "2016-12-14T12:00:00.000Z"
+      ],
+      "readCount": 1,
+      "_modAt": "2026-06-29T18:12:44.570Z"
     }
   ],
   "folderConfig": {
