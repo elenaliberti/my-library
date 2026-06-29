@@ -403,17 +403,17 @@ textarea { min-height: 70px; resize: vertical; }
 .ms-shelf-book:hover .ms-cover-edit { opacity: 1; }
 .ms-cover-edit:hover { background: rgba(0,0,0,0.78); }
 
-/* Books board: full-height Finished column + the "currently reading" shelf */
-.ms-finish-col { flex: 1; align-self: stretch; }
-.ms-col-shelf .ms-col-body { padding: 0; }
-.ms-shelf-body { display: flex; flex-direction: column; }
-.ms-shelf-books { flex: 1; display: flex; flex-wrap: wrap; gap: 22px; align-items: flex-end; justify-content: center; padding: 24px 16px 0; overflow-y: auto; }
-.ms-shelf-book { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 150px; cursor: grab; }
+/* Books board: TBR (left) + right column with the shelf on top and Finished below */
+.ms-shelf-panel { flex: 1; min-height: 304px; display: flex; flex-direction: column; background: #fff; border: 1px solid var(--gray-200); border-radius: 16px; overflow: hidden; transition: box-shadow 0.12s, border-color 0.12s; }
+.ms-shelf-panel.ms-drop-over { border-color: var(--purple); box-shadow: 0 0 0 2px #c7d2fe; }
+.ms-finish-shelf { flex: 0 0 auto; min-height: 132px; }
+.ms-shelf-books { flex: 1; display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-end; justify-content: center; padding: 18px 16px 0; overflow-y: auto; }
+.ms-shelf-book { display: flex; flex-direction: column; align-items: center; gap: 5px; width: 128px; cursor: grab; }
 .ms-shelf-book:active { cursor: grabbing; }
-.ms-shelf-cover { position: relative; width: 138px; height: 200px; border-radius: 5px 9px 9px 5px; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: -7px 9px 20px rgba(0,0,0,0.3), inset 4px 0 0 rgba(255,255,255,0.18), inset -1px 0 3px rgba(0,0,0,0.25); transition: transform 0.15s; }
+.ms-shelf-cover { position: relative; width: 118px; height: 168px; border-radius: 5px 9px 9px 5px; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: -7px 9px 20px rgba(0,0,0,0.3), inset 4px 0 0 rgba(255,255,255,0.18), inset -1px 0 3px rgba(0,0,0,0.25); transition: transform 0.15s; }
 .ms-shelf-book:hover .ms-shelf-cover { transform: translateY(-4px) rotate(-1deg); }
 .ms-shelf-img { width: 100%; height: 100%; object-fit: cover; }
-.ms-shelf-emoji { font-size: 62px; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3)); }
+.ms-shelf-emoji { font-size: 52px; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3)); }
 .ms-shelf-ttl { font-size: 13px; font-weight: 700; font-family: var(--font-serif); color: var(--gray-900); text-align: center; line-height: 1.2; max-width: 150px; }
 .ms-shelf-author { font-size: 11px; color: var(--gray-400); }
 .ms-shelf-since { font-size: 10px; font-weight: 600; color: var(--purple-dark); background: var(--purple-light); border-radius: 10px; padding: 1px 8px; }

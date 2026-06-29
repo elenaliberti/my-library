@@ -821,14 +821,13 @@ function mySpaceBooksHtml() {
       <div class="ms-col-hdr"><span>📚 To Be Read</span><span class="ms-count">${tbr.length}</span></div>
       <div class="ms-col-body">${tbrBody}</div>
     </div>
-    <div class="ms-col ms-col-reading ms-col-shelf" data-ms-drop="Reading">
-      <div class="ms-col-hdr"><span>📖 Currently reading</span><span class="ms-count">${reading.length}</span></div>
-      <div class="ms-col-body ms-shelf-body">${shelf}</div>
-    </div>
-    <div class="ms-finish ms-finish-col" data-ms-drop="Finished">
-      <div class="ms-finish-icon">✅</div>
-      <div class="ms-finish-ttl">Finished</div>
-      <div class="ms-finish-sub">Drop here to mark it finished today</div>
+    <div class="ms-col-right">
+      <div class="ms-shelf-panel" data-ms-drop="Reading">${shelf}</div>
+      <div class="ms-finish ms-finish-shelf" data-ms-drop="Finished">
+        <div class="ms-finish-icon">✅</div>
+        <div class="ms-finish-ttl">Finished</div>
+        <div class="ms-finish-sub">Drop here to mark it finished today</div>
+      </div>
     </div>
   </div>`;
 }
@@ -1357,9 +1356,9 @@ function render() {
   if (state.viewMode === 'myspace') {
     document.getElementById('app').innerHTML = titlebarHtml +
       `<div id="myspace-page">
-        <div class="ms-section-ttl">📖 Fanfiction <span class="ms-section-sub">— track what you're reading</span></div>
+        <div class="ms-section-ttl">📖 Fanfiction</div>
         ${mySpaceHtml()}
-        <div class="ms-section-ttl">📚 Books <span class="ms-section-sub">— one at a time, on your shelf</span></div>
+        <div class="ms-section-ttl">📚 Books</div>
         ${mySpaceBooksHtml()}
       </div>` +
       (state.modalOpen ? modalHtml() : '') + itemIconModalHtml();
