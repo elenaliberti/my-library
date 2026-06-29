@@ -492,3 +492,11 @@ textarea { min-height: 70px; resize: vertical; }
 .fpill { color: #3c5429; }
 .fpill.active { color: #3c5429; }
 .stat-label { font-weight: 600; }
+
+/* ── Filled sage-green header bars (white text) ── */
+.ms-col-hdr { background: #3c5429; color: #fff; border-bottom: none; }
+.ms-col-hdr .ms-count { background: rgba(255,255,255,0.22); color: #fff; }
+.fv-section-hdr { display: inline-block; background: #3c5429; color: #fff; padding: 4px 12px; border-radius: 7px; letter-spacing: 0.05em; }
+.stats-section-ttl { display: inline-block; background: #3c5429; color: #fff; padding: 4px 13px; border-radius: 8px; }
+/* bigger flanking plants */
+.ms-plant { width: 70px; }
