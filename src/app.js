@@ -790,22 +790,34 @@ function mySpaceHtml() {
 }
 
 // Big book cover for the "currently reading" shelf.
-function mySpaceShelfBook(x) {
+const HP_PLANT = `<svg class="plant-svg" viewBox="0 0 60 90">
+  <path class="leaf" d="M30 58 C 10 50 9 22 22 12 C 31 30 35 47 30 58 Z"/>
+  <path class="leaf" d="M30 58 C 50 50 51 22 38 12 C 29 30 25 47 30 58 Z"/>
+  <path class="leaf" d="M30 58 C 24 34 26 9 31 2 C 39 14 39 40 30 58 Z"/>
+  <path class="leaf leaf-sm" d="M30 58 C 16 50 11 37 13 31 C 24 35 30 46 30 58 Z"/>
+  <path class="leaf leaf-sm" d="M30 58 C 44 50 49 37 47 31 C 36 35 30 46 30 58 Z"/>
+  <path class="pot" d="M19 57 L41 57 L38 84 L22 84 Z"/>
+  <rect class="pot-rim" x="16" y="52" width="28" height="8" rx="2"/>
+</svg>`;
+
+function mySpaceShelfCover(x) {
   const [c1, c2] = folderGradient(x.id);
   const coverIsUrl = (x.coverIcon || '').startsWith('http');
   const cover = coverIsUrl
     ? `<img class="ms-shelf-img" src="${esc(x.coverIcon)}" />`
     : `<span class="ms-shelf-emoji">${x.coverIcon || '📚'}</span>`;
-  const started = x.readingStartedAt
-    ? `<div class="ms-shelf-since">▶ ${fmtDateShort(x.readingStartedAt)} · ${daysBetween(x.readingStartedAt, new Date().toISOString())}d</div>` : '';
   return `<div class="ms-shelf-book" draggable="true" data-ms-id="${esc(x.id)}" title="${esc(x.title || '')}">
     <div class="ms-shelf-cover" style="background:linear-gradient(135deg,${c1},${c2})">${cover}<button class="ms-cover-edit cover-edit-btn" data-edit-item-icon="${esc(x.id)}" draggable="false" title="Change cover">✏️</button></div>
-    <div class="ms-shelf-plank"></div>
-    <div class="ms-shelf-cap">
-      <div class="ms-shelf-ttl">${esc(x.title || 'Untitled')}</div>
-      <div class="ms-shelf-author">${esc(x.author || '')}</div>
-      ${started}
-    </div>
+  </div>`;
+}
+
+function mySpaceShelfCap(x) {
+  const started = x.readingStartedAt
+    ? `<div class="ms-shelf-since">▶ ${fmtDateShort(x.readingStartedAt)} · ${daysBetween(x.readingStartedAt, new Date().toISOString())}d</div>` : '';
+  return `<div class="ms-shelf-cap">
+    <div class="ms-shelf-ttl">${esc(x.title || 'Untitled')}</div>
+    <div class="ms-shelf-author">${esc(x.author || '')}</div>
+    ${started}
   </div>`;
 }
 
@@ -818,8 +830,19 @@ function mySpaceBooksHtml() {
   tbr.sort(byAdded); reading.sort(byStarted);
   const tbrBody = tbr.length ? tbr.map(mySpaceCard).join('') : `<div class="ms-empty">Your to-read books live here</div>`;
   const shelf = reading.length
-    ? `<div class="ms-shelf-books">${reading.map(mySpaceShelfBook).join('')}</div>`
-    : `<div class="ms-shelf-empty"><div class="ms-shelf-empty-ico">📖</div><div>Drag a book here when you start reading it</div><div class="ms-shelf-plank ms-shelf-plank-empty"></div></div>`;
+    ? `<div class="ms-shelf-scene">
+         <div class="ms-plant ms-plant-l">${HP_PLANT}</div>
+         <div class="ms-shelf-covers">${reading.map(mySpaceShelfCover).join('')}</div>
+         <div class="ms-plant ms-plant-r">${HP_PLANT}</div>
+       </div>
+       <div class="ms-shelf-plank"></div>
+       <div class="ms-shelf-caps">${reading.map(mySpaceShelfCap).join('')}</div>`
+    : `<div class="ms-shelf-scene">
+         <div class="ms-plant ms-plant-l">${HP_PLANT}</div>
+         <div class="ms-shelf-empty"><div class="ms-shelf-empty-ico">📖</div><div>Drag a book here when you start reading it</div></div>
+         <div class="ms-plant ms-plant-r">${HP_PLANT}</div>
+       </div>
+       <div class="ms-shelf-plank"></div>`;
   return `<div class="ms-board ms-board-books">
     <div class="ms-col" data-ms-drop="TBR">
       <div class="ms-col-hdr"><span>📚 To Be Read</span><span class="ms-count">${tbr.length}</span></div>
