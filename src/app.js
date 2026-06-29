@@ -522,7 +522,10 @@ function modalHtml() {
         <div class="field-row">
           <div>
             <label class="field-label">Word count</label>
-            <input type="number" id="m-words" value="${item.words||''}" placeholder="e.g. 120000" />
+            <div class="wc-row">
+              <input type="number" id="m-words" value="${item.words||''}" placeholder="e.g. 120000" />
+              ${isFf ? `<button type="button" class="btn btn-secondary btn-sm" id="btn-refresh-words" title="Refresh word count & kudos from the link (doesn't touch your other fields)">↻</button>` : ''}
+            </div>
           </div>
           ${isFf ? `
           <div>
@@ -776,6 +779,7 @@ async function refreshWordCount(item) {
       item._modAt = new Date().toISOString();
       return { ok: true, old, new: data.words };
     }
+    if (data && data.needsLogin) return { ok: false, needsLogin: true };
   } catch (e) {}
   return { ok: false };
 }
@@ -803,6 +807,7 @@ async function moveMsCard(id, target) {
     saveData(); render();
     if (res && res.ok && res.new !== res.old) showToast(`Finished ✓ — word count updated ${fmtNum(res.old)} → ${fmtNum(res.new)}`, 'success');
     else if (res && res.ok) showToast('Finished ✓ — word count already current', 'success');
+    else if (res && res.needsLogin) showToast('Finished ✓ — 🔒 locked work; use “🔑 AO3 login” then ↻ to update the count.', 'info');
     else if (res === null) showToast('Finished ✓ (add the AO3/FF.net link to auto-update word count)', 'info');
     else showToast('Finished ✓ — couldn’t reach the link to refresh word count', 'info');
     return;
@@ -1249,6 +1254,7 @@ function render() {
       <div id="titlebar-actions">
         <button class="btn btn-secondary btn-sm btn-icon" id="btn-export" title="Export to Excel">📊 Export</button>
         <button class="btn btn-secondary btn-sm btn-icon" id="btn-data-folder" title="Open data folder">📁</button>
+        <button class="btn btn-secondary btn-sm btn-icon" id="btn-ao3-login" title="Log in to AO3 — needed to fetch locked / restricted works">🔑 AO3</button>
         <button class="btn btn-secondary btn-sm btn-icon" id="btn-sync" title="Sync — get the latest from GitHub">🔄 Sync</button>
         <button class="btn btn-backup btn-sm btn-icon" id="btn-backup" title="Back up — save all changes to GitHub">☁️ Back up</button>
         <button class="btn ${state.view==='stats'?'btn-primary':'btn-secondary'} btn-sm btn-icon" id="btn-stats">${state.view==='stats'?'📚 Library':'📈 Stats'}</button>
@@ -1486,6 +1492,7 @@ function bindEvents() {
       const res = await refreshWordCount(item);
       if (res && res.ok && res.new !== res.old) { saveData(); render(); showToast(`Word count updated ${fmtNum(res.old)} → ${fmtNum(res.new)}`, 'success'); }
       else if (res && res.ok) { showToast('Already up to date ✓', 'success'); btn.textContent = '↻'; btn.disabled = false; }
+      else if (res && res.needsLogin) { showToast('🔒 Locked work — use “🔑 AO3 login” (top bar), then retry.', 'info'); btn.textContent = '↻'; btn.disabled = false; }
       else { showToast('Couldn’t refresh — check the link', 'error'); btn.textContent = '↻'; btn.disabled = false; }
     });
   });
@@ -1713,6 +1720,37 @@ function bindEvents() {
   // Data folder
   const dfBtn = document.getElementById('btn-data-folder');
   if (dfBtn) dfBtn.addEventListener('click', () => window.api.openDataFolder());
+
+  document.getElementById('btn-ao3-login')?.addEventListener('click', async () => {
+    showToast('Opening AO3 login — sign in, then close that window.', 'loading');
+    try {
+      await window.api.ao3Login();
+      const ok = window.api.ao3LoggedIn ? await window.api.ao3LoggedIn() : true;
+      showToast(ok ? 'AO3 connected ✓ — locked works can now be fetched. Try Auto-fill / ↻ again.' : 'AO3 window closed — if you signed in, try fetching again.', ok ? 'success' : 'info');
+    } catch (e) { showToast('AO3 login failed: ' + e.message, 'error'); }
+  });
+
+  // Refresh only the word count (+ kudos) in the edit form from the link.
+  const refreshWordsBtn = document.getElementById('btn-refresh-words');
+  if (refreshWordsBtn) {
+    refreshWordsBtn.addEventListener('click', async () => {
+      const url = (document.getElementById('m-url')?.value?.trim() || '').replace('archive.transformativeworks.org', 'archiveofourown.org');
+      const isAO3 = url.includes('archiveofourown'), isFFNet = url.includes('fanfiction.net');
+      if (!url || (!isAO3 && !isFFNet)) { showToast('Add the AO3 / FF.net link first.', 'error'); return; }
+      refreshWordsBtn.disabled = true; refreshWordsBtn.textContent = '…';
+      try {
+        const data = isAO3 ? await window.api.fetchAO3(url) : await window.api.fetchFFNet(url);
+        if (data && data.needsLogin) showToast(data.error, 'info');
+        else if (data && !data.error && data.words) {
+          const wEl = document.getElementById('m-words'); const old = parseInt(wEl.value) || 0;
+          wEl.value = data.words;
+          const hEl = document.getElementById('m-hearts'); if (data.hearts && hEl) hEl.value = data.hearts;
+          showToast(old && old !== data.words ? `Word count ${fmtNum(old)} → ${fmtNum(data.words)} — remember to Save` : 'Word count already up to date ✓', 'success');
+        } else showToast('Couldn’t refresh — check the link.', 'error');
+      } catch (e) { showToast('Couldn’t refresh — check the link.', 'error'); }
+      refreshWordsBtn.disabled = false; refreshWordsBtn.textContent = '↻';
+    });
+  }
 
   // GitHub sync + backup
   const syncBtn = document.getElementById('btn-sync');
@@ -2046,6 +2084,11 @@ function bindEvents() {
       fetchBtn.disabled = true; fetchBtn.textContent = '…';
       try {
         const data = isAO3 ? await window.api.fetchAO3(url) : await window.api.fetchFFNet(url);
+        if (data && data.needsLogin) {
+          if (msgEl) { msgEl.innerHTML = '🔒 Locked work — click <b>🔑 AO3</b> in the top bar to log in, then Auto-fill again.'; msgEl.className = 'fetch-msg err'; }
+          fetchBtn.disabled = false; fetchBtn.textContent = 'Auto-fill ✦';
+          return;
+        }
         if (data.error) throw new Error(data.error);
         state.editItem = {
           ...(state.editItem||{}),

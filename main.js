@@ -132,6 +132,9 @@ ipcMain.handle('ao3:fetch', async (_, url) => {
     }
 
     if (!isRealWorkPage(html)) {
+      if (/id="loginform"|name="user\[login\]"|name="user_session\[login\]"|>\s*Log\s*In\s*<\/|Please log in|registered users of the Archive/i.test(html)) {
+        return { error: '🔒 This work is locked — only logged-in AO3 users can see it. Use “🔑 AO3 login”, then try again.', needsLogin: true }
+      }
       return { error: 'AO3 is busy right now — please try again in a few seconds.' }
     }
 
@@ -167,6 +170,34 @@ ipcMain.handle('ao3:fetch', async (_, url) => {
 
 ipcMain.handle('shell:open-external', (_, url) => {
   shell.openExternal(url)
+})
+
+// Open an AO3 login window in the SAME session the scraper uses (persist:fetch),
+// so afterwards locked / restricted works can be fetched with the login cookie.
+ipcMain.handle('ao3:login', async () => {
+  return await new Promise((resolve) => {
+    const win = new BrowserWindow({
+      width: 520, height: 700, title: 'Log in to AO3',
+      autoHideMenuBar: true,
+      webPreferences: { partition: 'persist:fetch' },
+    })
+    win.loadURL('https://archiveofourown.org/users/login')
+    let done = false
+    const finish = (ok) => { if (done) return; done = true; resolve({ ok }); if (!win.isDestroyed()) win.close() }
+    // After a successful login AO3 redirects away from /users/login (to the dashboard/home).
+    win.webContents.on('did-navigate', (_e, navUrl) => {
+      if (/archiveofourown\.org/.test(navUrl) && !/\/users\/login/.test(navUrl)) finish(true)
+    })
+    win.on('closed', () => { if (!done) { done = true; resolve({ ok: true, closed: true }) } })
+  })
+})
+
+// Whether the scraper session currently holds an AO3 login cookie.
+ipcMain.handle('ao3:logged-in', async () => {
+  try {
+    const cookies = await getFetchSession().cookies.get({ domain: 'archiveofourown.org' })
+    return cookies.some(c => /_otwarchive_session|remember_user_token/.test(c.name))
+  } catch (e) { return false }
 })
 
 // ── FF.net fetch ──────────────────────────────────────────────────────────────

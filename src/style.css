@@ -390,3 +390,6 @@ textarea { min-height: 70px; resize: vertical; }
 .ms-refresh { background: var(--gray-100); border: none; border-radius: 6px; color: var(--gray-600); font-size: 11px; font-weight: 700; cursor: pointer; padding: 0 6px; line-height: 1.7; transition: background 0.12s, color 0.12s; }
 .ms-refresh:hover { background: var(--purple-light); color: var(--purple-dark); }
 .ms-refresh:disabled { opacity: 0.6; cursor: default; }
+.wc-row { display: flex; gap: 6px; align-items: center; }
+.wc-row input { flex: 1; }
+.wc-row .btn { flex-shrink: 0; padding: 8px 11px; }
