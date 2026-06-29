@@ -895,12 +895,13 @@ async function moveMsCard(id, target) {
 function hpCatHtml() {
   return `<div id="hp-cat" class="hp-cat" title="touch me to fly!">
     <svg viewBox="0 0 240 150">
-      <rect class="broom-handle" x="14" y="118" width="168" height="8" rx="4"/>
+      <rect class="broom-handle" x="16" y="120" width="166" height="6" rx="3"/>
       <path class="tail" d="M150 96 q26 6 30 30 q1 10 -8 12 q-9 1 -10 -8 q-2 -16 -16 -22 z"/>
-      <path class="pcat-stripe" d="M168 122 h8 M170 130 h8"/>
-      <rect class="broom-band" x="178" y="112" width="13" height="20" rx="3"/>
-      <path class="broom-straw" d="M188 110 q40 -4 46 6 q4 12 0 24 q-8 8 -46 4 z"/>
-      <path class="broom-straw-l" d="M196 112 v34 M206 110 v38 M216 111 v36 M226 114 v30"/>
+      <path class="pcat-stripe" d="M168 122 h8 M170 130 h7"/>
+      <path class="broom-straw" d="M184 108 q42 -2 50 8 q5 11 0 22 q-9 9 -50 6 q-7 -21 0 -36 z"/>
+      <path class="broom-straw-l" d="M196 110 v36 M205 108 v40 M214 109 v38 M223 112 v32 M231 116 v24"/>
+      <rect class="broom-band" x="178" y="110" width="11" height="22" rx="3"/>
+      <path class="twine" d="M179 116 h10 M179 122 h10 M179 128 h10"/>
       <path class="pcat-body" d="M44 118 C 26 118 22 86 30 66 C 40 40 74 34 108 38 C 150 34 178 50 180 86 C 181 104 172 118 154 118 Z"/>
       <path class="pcat-body" d="M52 46 L48 22 L74 40 Z"/>
       <path class="pcat-body" d="M104 40 L114 18 L84 36 Z"/>
@@ -911,15 +912,18 @@ function hpCatHtml() {
       <circle class="pcat-glass" cx="98" cy="66" r="15"/>
       <path class="pcat-glass" d="M77 67 q3 -3 6 0"/>
       <path class="pcat-glass" d="M47 64 l-9 -3"/>
-      <circle class="pcat-eye" cx="62" cy="69" r="4.2"/>
-      <circle class="pcat-eye" cx="98" cy="67" r="4.2"/>
+      <circle class="pcat-eye" cx="62" cy="69" r="4.4"/>
+      <circle class="pcat-eye" cx="98" cy="67" r="4.4"/>
       <path class="pcat-nose" d="M77 78 h6 l-3 4 Z"/>
       <path class="pcat-mouth" d="M80 82 q-5 6 -10 1 M80 82 q5 6 10 1"/>
       <path class="pcat-whisker" d="M44 74 l-22 -4 M45 80 l-22 2 M116 72 l20 -5 M116 78 l20 2"/>
-      <path class="scarf-red" d="M40 92 q44 22 96 4 l0 14 q-52 18 -96 -4 z"/>
-      <rect class="scarf-red" x="58" y="108" width="20" height="40" rx="3"/>
-      <rect class="scarf-gold" x="58" y="118" width="20" height="9"/>
-      <rect class="scarf-gold" x="58" y="136" width="20" height="9"/>
+      <path class="scarf-red" d="M38 90 q46 24 100 5 l0 16 q-56 19 -100 -5 z"/>
+      <path class="scarf-gold" d="M58 100 q3 11 1 17 l9 1 q3 -8 -1 -18 z"/>
+      <path class="scarf-gold" d="M104 99 q2 9 0 15 l9 -2 q2 -8 0 -15 z"/>
+      <rect class="scarf-red" x="56" y="110" width="22" height="44" rx="3"/>
+      <rect class="scarf-gold" x="56" y="120" width="22" height="9"/>
+      <rect class="scarf-gold" x="56" y="138" width="22" height="9"/>
+      <path class="scarf-fringe" d="M59 154 v6 M65 154 v7 M71 154 v6 M77 154 v7"/>
     </svg>
   </div>`;
 }
@@ -927,10 +931,22 @@ function hpCatHtml() {
 function mountHpCat() {
   const cat = document.getElementById('hp-cat');
   if (!cat) return;
-  const W = 232;
+  const W = 188;
   const xFor = side => (side === 'left' ? 20 : Math.max(40, window.innerWidth - W - 30)) + 'px';
   if (!cat.dataset.side) cat.dataset.side = 'right';
   cat.style.left = xFor(cat.dataset.side);
+  // eyes follow the cursor
+  if (window._hpCatEyes) document.removeEventListener('mousemove', window._hpCatEyes);
+  window._hpCatEyes = e => {
+    const c = document.getElementById('hp-cat');
+    if (!c) { document.removeEventListener('mousemove', window._hpCatEyes); window._hpCatEyes = null; return; }
+    if (c.classList.contains('is-flying')) return;
+    const r = c.getBoundingClientRect();
+    const ang = Math.atan2(e.clientY - (r.top + r.height * 0.46), e.clientX - (r.left + r.width / 2));
+    c.style.setProperty('--ex', (Math.cos(ang) * 2.4).toFixed(1) + 'px');
+    c.style.setProperty('--ey', (Math.sin(ang) * 2).toFixed(1) + 'px');
+  };
+  document.addEventListener('mousemove', window._hpCatEyes);
   const fly = () => {
     if (cat.classList.contains('is-flying')) return;
     const to = cat.dataset.side === 'left' ? 'right' : 'left';
