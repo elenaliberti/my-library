@@ -720,6 +720,7 @@ function mySpaceCard(x) {
     tags.push(`<span class="ms-badge">▶ ${fmtDateShort(x.readingStartedAt)} · ${daysBetween(x.readingStartedAt, new Date().toISOString())}d</span>`);
   }
   if (x.words) tags.push(`<span class="ms-wc">${fmtNum(x.words)}w</span>`);
+  if (x.url) tags.push(`<button class="ms-link" data-open-url="${esc(x.url)}" draggable="false" title="Open in browser">🔗</button>`);
   if (/archiveofourown|fanfiction\.net|transformativeworks/.test(x.url || '')) tags.push(`<button class="ms-refresh" data-ms-refresh="${esc(x.id)}" draggable="false" title="Refresh word count from the link">↻</button>`);
   return `<div class="ms-card" draggable="true" data-ms-id="${esc(x.id)}" title="${esc(x.title || '')}">
     <div class="ms-cover" style="background:linear-gradient(135deg,${c1},${c2})">${cover}<button class="ms-cover-edit cover-edit-btn" data-edit-item-icon="${esc(x.id)}" draggable="false" title="Change cover">✏️</button></div>

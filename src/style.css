@@ -393,3 +393,5 @@ textarea { min-height: 70px; resize: vertical; }
 .wc-row { display: flex; gap: 6px; align-items: center; }
 .wc-row input { flex: 1; }
 .wc-row .btn { flex-shrink: 0; padding: 8px 11px; }
+.ms-link { background: var(--gray-100); border: none; border-radius: 6px; color: var(--gray-600); font-size: 11px; cursor: pointer; padding: 0 6px; line-height: 1.7; transition: background 0.12s; }
+.ms-link:hover { background: var(--purple-light); }
