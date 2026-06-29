@@ -438,7 +438,10 @@
       "url": "",
       "finishedAt": null,
       "_addedAt": 619,
-      "coverIcon": "https://covers.openlibrary.org/b/id/11200092-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/11200092-L.jpg",
+      "waitingOnChap": false,
+      "readingStartedAt": "2026-06-29T18:57:13.333Z",
+      "_modAt": "2026-06-29T18:57:53.582Z"
     },
     {
       "title": "Ashes of a Stolen Destiny",
@@ -1619,7 +1622,9 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-13T21:00:12.490Z",
-      "_modAt": "2026-06-29T13:44:14.149Z"
+      "_modAt": "2026-06-29T18:44:29.636Z",
+      "waitingOnChap": true,
+      "readingStartedAt": "2026-06-29T18:43:51.153Z"
     },
     {
       "id": "ff_41",
