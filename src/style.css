@@ -435,26 +435,10 @@ textarea { min-height: 70px; resize: vertical; }
 .ms-link { background: var(--gray-100); border: none; border-radius: 6px; color: var(--gray-600); font-size: 11px; cursor: pointer; padding: 0 6px; line-height: 1.7; transition: background 0.12s; }
 .ms-link:hover { background: var(--purple-light); }
 
-/* ── Harry Potter folder mascot: Pusheen-style Gryffindor cat on a broom ── */
-.hp-cat { position: fixed; bottom: 28px; width: 188px; height: 120px; cursor: pointer; z-index: 60; filter: drop-shadow(0 8px 11px rgba(0,0,0,0.15)); transition: left 3.8s cubic-bezier(0.45,0,0.25,1); }
+/* ── Harry Potter folder mascot: Gryffindor cat on a broom (image + animation) ── */
+.hp-cat { position: fixed; bottom: 28px; width: 200px; cursor: pointer; z-index: 60; filter: drop-shadow(0 8px 11px rgba(0,0,0,0.18)); transition: left 3.8s cubic-bezier(0.45,0,0.25,1); }
 .hp-cat.facing-right { transform: scaleX(-1); }
-.hp-cat svg { width: 100%; height: 100%; overflow: visible; display: block; transform-origin: center; animation: hpcat-float 4s ease-in-out infinite; }
+.hp-cat-img { width: 100%; height: auto; display: block; transform-origin: center; animation: hpcat-float 4s ease-in-out infinite; -webkit-user-drag: none; user-select: none; }
 @keyframes hpcat-float { 0%,100% { transform: translateY(0) rotate(-1.5deg); } 50% { transform: translateY(-7px) rotate(1.5deg); } }
-.hp-cat.is-flying svg { animation: hpcat-flap 0.7s ease-in-out infinite; }
+.hp-cat.is-flying .hp-cat-img { animation: hpcat-flap 0.7s ease-in-out infinite; }
 @keyframes hpcat-flap { 0%,100% { transform: translateY(0) rotate(-3.5deg); } 50% { transform: translateY(-13px) rotate(3.5deg); } }
-.pcat-body { fill: #bdb8b0; stroke: #8f8a82; stroke-width: 3; stroke-linejoin: round; }
-.pcat-stripe { fill: none; stroke: #8f8a82; stroke-width: 3; stroke-linecap: round; }
-.pcat-ear-in { fill: #a59f97; }
-.pcat-eye { fill: #3a352f; transform: translate(var(--ex, 0px), var(--ey, 0px)); transition: transform 0.1s ease-out; }
-.pcat-glass { fill: none; stroke: #2e2a26; stroke-width: 2.6; }
-.pcat-nose { fill: #8f8a82; }
-.pcat-mouth { fill: none; stroke: #8f8a82; stroke-width: 2; stroke-linecap: round; }
-.pcat-whisker { fill: none; stroke: #a8a39b; stroke-width: 1.6; stroke-linecap: round; }
-.scarf-red { fill: #8c2f2f; } .scarf-gold { fill: #e3b23c; }
-.scarf-fringe { fill: none; stroke: #8c2f2f; stroke-width: 3; stroke-linecap: round; }
-.broom-handle { fill: #a9743f; stroke: #7d5430; stroke-width: 2; }
-.broom-band { fill: #8a5e30; stroke: #6b4928; stroke-width: 1.5; }
-.broom-straw { fill: #edc451; stroke: #caa23a; stroke-width: 2; stroke-linejoin: round; }
-.broom-straw-l { stroke: #caa23a; stroke-width: 1.6; fill: none; stroke-linecap: round; }
-.twine { stroke: #6b4928; stroke-width: 1.4; fill: none; }
-.tail { fill: #bdb8b0; stroke: #8f8a82; stroke-width: 3; stroke-linejoin: round; }
