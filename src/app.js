@@ -765,7 +765,7 @@ function mySpaceHtml() {
   const byStarted = (a, b) => ((Date.parse(b.readingStartedAt) || 0) - (Date.parse(a.readingStartedAt) || 0)) || byAdded(a, b);
   tbr.sort(byAdded); reading.sort(byStarted); waiting.sort(byStarted);
   const body = (items, empty) => items.length ? items.map(mySpaceCard).join('') : `<div class="ms-empty">${empty}</div>`;
-  return `<div id="myspace">
+  return `<div class="ms-board">
     <div class="ms-col" data-ms-drop="TBR">
       <div class="ms-col-hdr"><span>📚 To Be Read</span><span class="ms-count">${tbr.length}</span></div>
       <div class="ms-col-body">${body(tbr, 'Your to-read fics live here')}</div>
@@ -784,6 +784,51 @@ function mySpaceHtml() {
         <div class="ms-finish-ttl">Finished</div>
         <div class="ms-finish-sub">Drop here to mark finished today &amp; log your reading pace</div>
       </div>
+    </div>
+  </div>`;
+}
+
+// Big book cover for the "currently reading" shelf.
+function mySpaceShelfBook(x) {
+  const [c1, c2] = folderGradient(x.id);
+  const coverIsUrl = (x.coverIcon || '').startsWith('http');
+  const cover = coverIsUrl
+    ? `<img class="ms-shelf-img" src="${esc(x.coverIcon)}" />`
+    : `<span class="ms-shelf-emoji">${x.coverIcon || '📚'}</span>`;
+  const started = x.readingStartedAt
+    ? `<div class="ms-shelf-since">▶ ${fmtDateShort(x.readingStartedAt)} · ${daysBetween(x.readingStartedAt, new Date().toISOString())}d</div>` : '';
+  return `<div class="ms-shelf-book" draggable="true" data-ms-id="${esc(x.id)}" title="${esc(x.title || '')}">
+    <div class="ms-shelf-cover" style="background:linear-gradient(135deg,${c1},${c2})">${cover}<button class="ms-cover-edit cover-edit-btn" data-edit-item-icon="${esc(x.id)}" draggable="false" title="Change cover">✏️</button></div>
+    <div class="ms-shelf-ttl">${esc(x.title || 'Untitled')}</div>
+    <div class="ms-shelf-author">${esc(x.author || '')}</div>
+    ${started}
+  </div>`;
+}
+
+function mySpaceBooksHtml() {
+  const books = state.items.filter(x => x.type === 'book');
+  const tbr = books.filter(x => (x.status || 'TBR') === 'TBR');
+  const reading = books.filter(x => x.status === 'Reading');
+  const byAdded = (a, b) => (b._addedAt || 0) - (a._addedAt || 0);
+  const byStarted = (a, b) => ((Date.parse(b.readingStartedAt) || 0) - (Date.parse(a.readingStartedAt) || 0)) || byAdded(a, b);
+  tbr.sort(byAdded); reading.sort(byStarted);
+  const tbrBody = tbr.length ? tbr.map(mySpaceCard).join('') : `<div class="ms-empty">Your to-read books live here</div>`;
+  const shelf = reading.length
+    ? `<div class="ms-shelf-books">${reading.map(mySpaceShelfBook).join('')}</div><div class="ms-shelf-plank"></div>`
+    : `<div class="ms-shelf-empty"><div class="ms-shelf-empty-ico">📖</div><div>Drag a book here when you start reading it</div></div><div class="ms-shelf-plank"></div>`;
+  return `<div class="ms-board ms-board-books">
+    <div class="ms-col" data-ms-drop="TBR">
+      <div class="ms-col-hdr"><span>📚 To Be Read</span><span class="ms-count">${tbr.length}</span></div>
+      <div class="ms-col-body">${tbrBody}</div>
+    </div>
+    <div class="ms-col ms-col-reading ms-col-shelf" data-ms-drop="Reading">
+      <div class="ms-col-hdr"><span>📖 Currently reading</span><span class="ms-count">${reading.length}</span></div>
+      <div class="ms-col-body ms-shelf-body">${shelf}</div>
+    </div>
+    <div class="ms-finish ms-finish-col" data-ms-drop="Finished">
+      <div class="ms-finish-icon">✅</div>
+      <div class="ms-finish-ttl">Finished</div>
+      <div class="ms-finish-sub">Drop here to mark it finished today</div>
     </div>
   </div>`;
 }
@@ -834,7 +879,7 @@ async function moveMsCard(id, target) {
     if (res && res.ok && res.new !== res.old) showToast(`Finished ✓ — word count updated ${fmtNum(res.old)} → ${fmtNum(res.new)}`, 'success');
     else if (res && res.ok) showToast('Finished ✓ — word count already current', 'success');
     else if (res && res.needsLogin) showToast('Finished ✓ — 🔒 locked work; use “🔑 AO3 login” then ↻ to update the count.', 'info');
-    else if (res === null) showToast('Finished ✓ (add the AO3/FF.net link to auto-update word count)', 'info');
+    else if (res === null) showToast(item.type === 'book' ? '📚 Finished ✓ — onto the read pile!' : 'Finished ✓ (add the AO3/FF.net link to auto-update word count)', 'info');
     else showToast('Finished ✓ — couldn’t reach the link to refresh word count', 'info');
     return;
   } else return;
@@ -1310,7 +1355,14 @@ function render() {
   }
 
   if (state.viewMode === 'myspace') {
-    document.getElementById('app').innerHTML = titlebarHtml + mySpaceHtml() + (state.modalOpen ? modalHtml() : '') + itemIconModalHtml();
+    document.getElementById('app').innerHTML = titlebarHtml +
+      `<div id="myspace-page">
+        <div class="ms-section-ttl">📖 Fanfiction <span class="ms-section-sub">— track what you're reading</span></div>
+        ${mySpaceHtml()}
+        <div class="ms-section-ttl">📚 Books <span class="ms-section-sub">— one at a time, on your shelf</span></div>
+        ${mySpaceBooksHtml()}
+      </div>` +
+      (state.modalOpen ? modalHtml() : '') + itemIconModalHtml();
     bindEvents();
     return;
   }
@@ -1490,7 +1542,7 @@ function bindEvents() {
 
   // ── MySpace board: drag & drop ──
   let _msDrag = null, _msDragged = false;
-  document.querySelectorAll('.ms-card').forEach(c => {
+  document.querySelectorAll('.ms-card, .ms-shelf-book').forEach(c => {
     c.addEventListener('dragstart', e => {
       _msDrag = c.dataset.msId; _msDragged = true;
       c.classList.add('ms-dragging');
@@ -1522,7 +1574,7 @@ function bindEvents() {
       else { showToast('Couldn’t refresh — check the link', 'error'); btn.textContent = '↻'; btn.disabled = false; }
     });
   });
-  document.querySelectorAll('#myspace [data-ms-drop]').forEach(zone => {
+  document.querySelectorAll('#myspace-page [data-ms-drop]').forEach(zone => {
     zone.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; zone.classList.add('ms-drop-over'); });
     zone.addEventListener('dragleave', e => { if (!zone.contains(e.relatedTarget)) zone.classList.remove('ms-drop-over'); });
     zone.addEventListener('drop', e => {

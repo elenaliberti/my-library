@@ -364,7 +364,10 @@ textarea { min-height: 70px; resize: vertical; }
 ::-webkit-scrollbar-thumb:hover { background: var(--gray-400); }
 
 /* ── MySpace — reading board ── */
-#myspace { flex: 1; display: flex; gap: 14px; padding: 16px 18px; overflow: hidden; background: #f8f8fb; min-height: 0; }
+#myspace-page { flex: 1; overflow-y: auto; padding: 14px 18px 48px; background: #f8f8fb; display: flex; flex-direction: column; gap: 10px; }
+.ms-section-ttl { font-size: 18px; font-weight: 700; font-family: var(--font-serif); color: var(--gray-900); margin-top: 8px; }
+.ms-section-sub { font-size: 13px; font-weight: 400; color: var(--gray-400); font-family: var(--font); }
+.ms-board { display: flex; gap: 14px; height: 60vh; min-height: 420px; }
 .ms-col { flex: 1; display: flex; flex-direction: column; background: #fff; border: 1px solid var(--gray-200); border-radius: 16px; overflow: hidden; min-height: 0; min-width: 0; transition: box-shadow 0.12s, border-color 0.12s; }
 .ms-col-right { flex: 1; display: flex; flex-direction: column; gap: 14px; min-height: 0; min-width: 0; }
 .ms-col-right .ms-col { flex: 1; }
@@ -397,7 +400,26 @@ textarea { min-height: 70px; resize: vertical; }
 .ms-cover { position: relative; }
 .ms-cover-edit { position: absolute; top: 2px; right: 2px; opacity: 0; background: rgba(0,0,0,0.5); color: #fff; border: none; border-radius: 6px; padding: 1px 5px; font-size: 10px; cursor: pointer; transition: opacity 0.12s, background 0.12s; line-height: 1.4; }
 .ms-card:hover .ms-cover-edit { opacity: 1; }
+.ms-shelf-book:hover .ms-cover-edit { opacity: 1; }
 .ms-cover-edit:hover { background: rgba(0,0,0,0.78); }
+
+/* Books board: full-height Finished column + the "currently reading" shelf */
+.ms-finish-col { flex: 1; align-self: stretch; }
+.ms-col-shelf .ms-col-body { padding: 0; }
+.ms-shelf-body { display: flex; flex-direction: column; }
+.ms-shelf-books { flex: 1; display: flex; flex-wrap: wrap; gap: 22px; align-items: flex-end; justify-content: center; padding: 24px 16px 0; overflow-y: auto; }
+.ms-shelf-book { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 150px; cursor: grab; }
+.ms-shelf-book:active { cursor: grabbing; }
+.ms-shelf-cover { position: relative; width: 138px; height: 200px; border-radius: 5px 9px 9px 5px; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: -7px 9px 20px rgba(0,0,0,0.3), inset 4px 0 0 rgba(255,255,255,0.18), inset -1px 0 3px rgba(0,0,0,0.25); transition: transform 0.15s; }
+.ms-shelf-book:hover .ms-shelf-cover { transform: translateY(-4px) rotate(-1deg); }
+.ms-shelf-img { width: 100%; height: 100%; object-fit: cover; }
+.ms-shelf-emoji { font-size: 62px; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3)); }
+.ms-shelf-ttl { font-size: 13px; font-weight: 700; font-family: var(--font-serif); color: var(--gray-900); text-align: center; line-height: 1.2; max-width: 150px; }
+.ms-shelf-author { font-size: 11px; color: var(--gray-400); }
+.ms-shelf-since { font-size: 10px; font-weight: 600; color: var(--purple-dark); background: var(--purple-light); border-radius: 10px; padding: 1px 8px; }
+.ms-shelf-plank { height: 16px; flex-shrink: 0; margin: 0 14px 16px; border-radius: 3px; background: linear-gradient(180deg, #c79a6b 0%, #a3744a 55%, #8a6240 100%); box-shadow: 0 8px 14px rgba(0,0,0,0.28), inset 0 2px 0 rgba(255,255,255,0.25); }
+.ms-shelf-empty { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--gray-400); font-size: 13px; text-align: center; padding: 0 20px; }
+.ms-shelf-empty-ico { font-size: 40px; opacity: 0.6; }
 .ms-refresh { background: var(--gray-100); border: none; border-radius: 6px; color: var(--gray-600); font-size: 11px; font-weight: 700; cursor: pointer; padding: 0 6px; line-height: 1.7; transition: background 0.12s, color 0.12s; }
 .ms-refresh:hover { background: var(--purple-light); color: var(--purple-dark); }
 .ms-refresh:disabled { opacity: 0.6; cursor: default; }
