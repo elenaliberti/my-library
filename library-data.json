@@ -18,12 +18,12 @@
       "genre": "",
       "section": "",
       "words": 14865,
-      "hearts": null,
+      "hearts": 1632,
       "pages": null,
       "userRating": 0,
       "finishedAt": null,
       "_addedAt": 631,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:42:35.684Z"
     },
     {
       "title": "Glory Be",
@@ -62,7 +62,7 @@
       "author": "Wyste",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 184441,
-      "hearts": 22159,
+      "hearts": 22231,
       "rating": "",
       "pairing": "Draco Malfoy & Harry Potter",
       "tags": [
@@ -84,7 +84,7 @@
       "favorite": false,
       "readCount": 0,
       "readDates": [],
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:42:37.134Z"
     },
     {
       "title": "A Place Apart",
@@ -181,7 +181,7 @@
       "author": "beom00",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 71393,
-      "hearts": 4876,
+      "hearts": 4927,
       "rating": "",
       "pairing": "",
       "tags": [
@@ -203,7 +203,7 @@
       "favorite": false,
       "readCount": 0,
       "readDates": [],
-      "_modAt": "2026-06-29T13:13:21.845Z",
+      "_modAt": "2026-06-29T13:42:37.969Z",
       "waitingOnChap": false,
       "readingStartedAt": null
     },
@@ -212,7 +212,7 @@
       "author": "VentiAlatus",
       "fandom": "Percy Jackson",
       "words": 86228,
-      "hearts": 4797,
+      "hearts": 4846,
       "rating": "Mature",
       "pairing": "Apollo/Percy Jackson",
       "tags": [
@@ -236,7 +236,7 @@
       "_addedAt": 626,
       "coverIcon": "https://i.pinimg.com/webp87/736x/30/e8/e0/30e8e0c4e8d56595c3b083011de1436e.webp",
       "favorite": false,
-      "_modAt": "2026-06-29T13:11:43.662Z",
+      "_modAt": "2026-06-29T13:42:39.108Z",
       "waitingOnChap": true,
       "readingStartedAt": "2026-06-29T13:11:43.662Z"
     },
@@ -245,7 +245,7 @@
       "author": "Rorschach's Blot",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 187589,
-      "hearts": 27556,
+      "hearts": 27580,
       "rating": "",
       "pairing": "",
       "tags": [],
@@ -264,14 +264,14 @@
       "favorite": false,
       "readCount": 0,
       "readDates": [],
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:42:40.206Z"
     },
     {
       "title": "Cold Soul (I Want It Back)",
       "author": "Kayliana",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 68989,
-      "hearts": 1304,
+      "hearts": 1309,
       "rating": "Explicit",
       "pairing": "Harry Potter/Tom Riddle | Voldemort",
       "tags": [
@@ -291,7 +291,7 @@
       "oneshot": false,
       "finishedAt": "2026-06-08T11:00:00.000Z",
       "_addedAt": 624,
-      "_modAt": "2026-06-17T11:06:37.307Z",
+      "_modAt": "2026-06-29T13:44:31.465Z",
       "coverIcon": "https://i.pinimg.com/1200x/ab/a8/d3/aba8d386177ba8cff9dbe0e800492d1c.jpg",
       "readDates": [
         "2026-06-08T11:00:00.000Z"
@@ -310,7 +310,7 @@
       "rating": "",
       "status": "Finished",
       "words": 41169,
-      "hearts": 1878,
+      "hearts": 1890,
       "pages": null,
       "userRating": 4,
       "notes": "AU in which Merlin is captured by King Cenred and forced to become his war sorcerer",
@@ -321,7 +321,8 @@
       "url": "https://archiveofourown.org/works/43806078/chapters/110155173",
       "oneshot": false,
       "finishedAt": "2026-06-08T11:00:00.000Z",
-      "_addedAt": 623
+      "_addedAt": 623,
+      "_modAt": "2026-06-29T13:44:32.757Z"
     },
     {
       "tags": [
@@ -340,7 +341,7 @@
       "rating": "Explicit",
       "status": "Finished",
       "words": 12602,
-      "hearts": null,
+      "hearts": 7409,
       "pages": null,
       "userRating": 0,
       "notes": "",
@@ -348,7 +349,7 @@
       "oneshot": false,
       "finishedAt": "2026-06-08T11:00:00.000Z",
       "_addedAt": 622,
-      "_modAt": "2026-06-17T11:20:07.757Z",
+      "_modAt": "2026-06-29T13:44:34.044Z",
       "coverIcon": "https://64.media.tumblr.com/ab9212e6594a47131ee54074c537451f/7d217b8fbb7570b4-dc/s1280x1920/8e41743362aa7efd3808872ddb1ca4752749c9dc.png",
       "readDates": [
         "2026-06-08T11:00:00.000Z"
@@ -360,7 +361,7 @@
       "author": "gentianflowers",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 456473,
-      "hearts": 2736,
+      "hearts": 2844,
       "rating": "Mature",
       "pairing": "Harry Potter/Tom Riddle",
       "tags": [
@@ -380,14 +381,14 @@
       "oneshot": false,
       "finishedAt": null,
       "_addedAt": 621,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:42:42.083Z"
     },
     {
       "title": "Just a Few Changes (will Keep you Safe)",
       "author": "Blueseabird2",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 29846,
-      "hearts": 20394,
+      "hearts": 20713,
       "rating": "",
       "pairing": "Hermione Granger & Harry Potter & Ron Weasley",
       "tags": [
@@ -406,7 +407,7 @@
       "oneshot": false,
       "finishedAt": null,
       "_addedAt": 620,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:42:43.006Z"
     },
     {
       "type": "book",
@@ -434,8 +435,8 @@
       "title": "Ashes of a Stolen Destiny",
       "author": "LillyAil",
       "fandom": "Harry Potter - J. K. Rowling",
-      "words": 42233,
-      "hearts": 1121,
+      "words": 47186,
+      "hearts": 1493,
       "rating": "Mature",
       "pairing": "",
       "tags": [
@@ -457,7 +458,7 @@
       "_addedAt": 611,
       "oneshot": false,
       "finishedAt": "2026-06-01T11:00:00.000Z",
-      "_modAt": "2026-06-29T13:14:36.428Z",
+      "_modAt": "2026-06-29T13:42:46.181Z",
       "readDates": [],
       "readCount": 0,
       "coverIcon": "https://i.pinimg.com/1200x/f4/3a/3b/f43a3b7e6d7a7c4295701b92be50efae.jpg",
@@ -470,8 +471,8 @@
       "title": "Living Well",
       "author": "Lomonaaeren",
       "fandom": "Harry Potter - J. K. Rowling",
-      "words": 39380,
-      "hearts": 22950,
+      "words": 41096,
+      "hearts": 1226,
       "rating": "Explicit",
       "pairing": "M/M",
       "status": "Finished",
@@ -490,7 +491,7 @@
       "pages": null,
       "oneshot": false,
       "coverIcon": "https://i.pinimg.com/736x/a1/90/7e/a1907e5dbd6c515130edd0d369725b1b.jpg",
-      "_modAt": "2026-06-17T11:07:16.182Z",
+      "_modAt": "2026-06-29T13:49:42.084Z",
       "readDates": [
         "2026-06-05T11:00:00.000Z"
       ],
@@ -503,7 +504,7 @@
       "author": "lemonchase",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 18608,
-      "hearts": 18620,
+      "hearts": 18842,
       "rating": "Explicit",
       "pairing": "M/M",
       "status": "Finished",
@@ -528,7 +529,7 @@
         "2026-06-05T11:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-17T12:02:08.667Z"
+      "_modAt": "2026-06-29T13:49:40.702Z"
     },
     {
       "id": "ff_3",
@@ -537,7 +538,7 @@
       "author": "lemonchase",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 15525,
-      "hearts": 4237,
+      "hearts": 4247,
       "rating": "Explicit",
       "pairing": "Harry Potter/Tom Riddle | Voldemort",
       "status": "Finished",
@@ -553,7 +554,7 @@
       "url": "https://archiveofourown.org/works/39450936/chapters/99347490#workskin",
       "_addedAt": 2,
       "finishedAt": "2026-06-05T11:00:00.000Z",
-      "_modAt": "2026-06-17T11:11:13.127Z",
+      "_modAt": "2026-06-29T13:45:57.979Z",
       "readDates": [
         "2026-06-05T19:11:54.641336+00:00"
       ],
@@ -600,7 +601,7 @@
       "author": "Kit_Kat_Cat23EH",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 13284,
-      "hearts": 7637,
+      "hearts": 7799,
       "rating": "Mature",
       "pairing": "F/F",
       "status": "Finished",
@@ -624,7 +625,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:54:42.772Z",
+      "_modAt": "2026-06-29T13:49:38.960Z",
       "readDates": [
         "2026-06-05T11:00:00.000Z"
       ],
@@ -637,7 +638,7 @@
       "author": "Graydove71",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 56017,
-      "hearts": 9864,
+      "hearts": 9897,
       "rating": "Teen+",
       "pairing": "Theodore Nott & Harry Potter",
       "status": "Finished",
@@ -664,7 +665,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:54:52.037Z"
+      "_modAt": "2026-06-29T13:45:56.605Z"
     },
     {
       "id": "ff_7",
@@ -673,7 +674,7 @@
       "author": "00Q_Magnus",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 90949,
-      "hearts": 7568,
+      "hearts": 7590,
       "rating": "Mature",
       "pairing": "Harry Potter/Blaise Zabini",
       "status": "Finished",
@@ -696,7 +697,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:45:55.037Z"
     },
     {
       "id": "ff_8",
@@ -704,8 +705,8 @@
       "title": "Delayed Inheritance",
       "author": "Faithless_3105",
       "fandom": "Harry Potter - J. K. Rowling",
-      "words": 89724,
-      "hearts": 1151,
+      "words": 122610,
+      "hearts": 1925,
       "rating": "Explicit",
       "pairing": "M/M",
       "status": "Dropped",
@@ -727,7 +728,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:45:31.434Z",
+      "_modAt": "2026-06-29T13:49:30.269Z",
       "readCount": 1,
       "readDates": [
         "2026-06-05T11:00:00.000Z"
@@ -740,7 +741,7 @@
       "author": "Snickerdoodlepop",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 172235,
-      "hearts": 5208,
+      "hearts": 5218,
       "rating": "Teen+",
       "pairing": "Harry Potter/Tom Riddle",
       "status": "Finished",
@@ -757,7 +758,7 @@
       "url": "https://archiveofourown.org/works/29243628/chapters/71806971",
       "_addedAt": 8,
       "finishedAt": "2026-06-05T11:00:00.000Z",
-      "_modAt": "2026-06-17T11:13:38.731Z",
+      "_modAt": "2026-06-29T13:45:53.153Z",
       "readDates": [
         "2026-06-05T19:11:54.641336+00:00"
       ],
@@ -774,7 +775,7 @@
       "author": "Snickerdoodlepop",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 302405,
-      "hearts": 9692,
+      "hearts": 9715,
       "rating": "Teen+",
       "pairing": "Harry Potter/Voldemort",
       "status": "Finished",
@@ -788,7 +789,7 @@
       "url": "https://archiveofourown.org/works/15994781/chapters/37317395",
       "_addedAt": 9,
       "finishedAt": "2026-06-05T11:00:00.000Z",
-      "_modAt": "2026-06-17T11:14:46.485Z",
+      "_modAt": "2026-06-29T13:45:51.611Z",
       "readDates": [
         "2026-06-05T19:11:54.641336+00:00"
       ],
@@ -805,7 +806,7 @@
       "author": "be11etrist",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 1490,
-      "hearts": 4785,
+      "hearts": 4789,
       "rating": "",
       "pairing": "Harry Potter/Tom Riddle | Voldemort",
       "status": "Finished",
@@ -818,7 +819,7 @@
       "url": "https://archiveofourown.org/works/18925861",
       "_addedAt": 10,
       "finishedAt": "2026-06-05T11:00:00.000Z",
-      "_modAt": "2026-06-17T12:19:29.117Z",
+      "_modAt": "2026-06-29T13:45:49.992Z",
       "readDates": [
         "2026-06-05T19:11:54.641336+00:00"
       ],
@@ -836,7 +837,7 @@
       "author": "lemonchase",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 103547,
-      "hearts": 19969,
+      "hearts": 20058,
       "rating": "Mature",
       "pairing": "Harry Potter/Tom Riddle | Voldemort",
       "status": "Finished",
@@ -851,7 +852,7 @@
       "url": "https://archiveofourown.org/works/33377146/chapters/82901548",
       "_addedAt": 11,
       "finishedAt": "2026-06-05T11:00:00.000Z",
-      "_modAt": "2026-06-17T12:19:43.085Z",
+      "_modAt": "2026-06-29T13:45:48.662Z",
       "readDates": [
         "2026-06-05T19:11:54.641336+00:00"
       ],
@@ -894,7 +895,7 @@
       "author": "Skylanian_Writer",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 150648,
-      "hearts": 6903,
+      "hearts": 6994,
       "rating": "Mature",
       "pairing": "Harry Potter/Tom Riddle",
       "status": "Finished",
@@ -910,7 +911,7 @@
       "url": "https://archiveofourown.org/works/45276646/chapters/113907454",
       "_addedAt": 13,
       "finishedAt": "2026-06-05T11:00:00.000Z",
-      "_modAt": "2026-06-17T11:29:38.082Z",
+      "_modAt": "2026-06-29T13:45:47.077Z",
       "readDates": [
         "2026-06-05T19:11:54.641336+00:00"
       ],
@@ -928,7 +929,7 @@
       "author": "temptresslove",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 5995,
-      "hearts": 9138,
+      "hearts": 9196,
       "rating": "",
       "pairing": "Harry Potter/Tom Riddle",
       "status": "Finished",
@@ -941,7 +942,7 @@
       "url": "https://archiveofourown.org/works/17033792",
       "_addedAt": 14,
       "finishedAt": "2026-06-05T11:00:00.000Z",
-      "_modAt": "2026-06-17T11:32:01.690Z",
+      "_modAt": "2026-06-29T13:45:45.589Z",
       "readDates": [
         "2026-06-05T19:11:54.641336+00:00"
       ],
@@ -959,7 +960,7 @@
       "author": "RenderedReversed",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 41387,
-      "hearts": 2467,
+      "hearts": 2632,
       "rating": "Teen+",
       "pairing": "M/M",
       "status": "Finished",
@@ -972,7 +973,7 @@
       "url": "https://archiveofourown.org/works/12061524/chapters/27315876",
       "_addedAt": 15,
       "finishedAt": "2026-06-05T11:00:00.000Z",
-      "_modAt": "2026-06-17T12:19:52.662Z",
+      "_modAt": "2026-06-29T13:45:43.848Z",
       "coverIcon": "https://i.pinimg.com/236x/5b/fe/a1/5bfea1565e2e5c207fd3b4204e0cf738.jpg",
       "readDates": [
         "2026-06-05T19:11:54.641336+00:00"
@@ -990,7 +991,7 @@
       "author": "May_May_0_0",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 191530,
-      "hearts": 44050,
+      "hearts": 44205,
       "rating": "",
       "pairing": "Harry Potter/Tom Riddle",
       "status": "Finished",
@@ -1004,7 +1005,7 @@
       "url": "https://archiveofourown.org/works/25440826/chapters/61701526",
       "_addedAt": 16,
       "finishedAt": "2026-06-05T11:00:00.000Z",
-      "_modAt": "2026-06-17T12:02:45.048Z",
+      "_modAt": "2026-06-29T13:45:42.311Z",
       "readDates": [
         "2026-06-05T19:11:54.641336+00:00"
       ],
@@ -1022,7 +1023,7 @@
       "author": "telelli",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 111708,
-      "hearts": 9137,
+      "hearts": 9176,
       "rating": "Mature",
       "pairing": "Harry Potter/Tom Riddle",
       "status": "Finished",
@@ -1041,7 +1042,7 @@
       "url": "https://archiveofourown.org/works/53293264/chapters/135115609",
       "_addedAt": 17,
       "finishedAt": "2026-06-05T11:00:00.000Z",
-      "_modAt": "2026-06-17T12:00:15.257Z",
+      "_modAt": "2026-06-29T13:45:40.775Z",
       "readDates": [
         "2026-06-05T19:11:54.641336+00:00"
       ],
@@ -1090,7 +1091,7 @@
       "author": "Emeralds_and_Lilies",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 277747,
-      "hearts": 12194,
+      "hearts": 12630,
       "rating": "Explicit",
       "pairing": "F/M, M/M",
       "status": "Finished",
@@ -1107,7 +1108,7 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-13T20:36:50.849Z",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:44:21.086Z"
     },
     {
       "id": "ff_21",
@@ -1528,11 +1529,11 @@
       "title": "The Unintended",
       "author": "Monkey_Madness123",
       "fandom": "Percy Jackson",
-      "words": 89618,
-      "hearts": 2106,
+      "words": 149667,
+      "hearts": 3273,
       "rating": "Mature",
       "pairing": "F/M, M/M",
-      "status": "Finished",
+      "status": "Reading",
       "userRating": 0,
       "notes": "",
       "tags": [
@@ -1544,7 +1545,8 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "finishedAt": "2026-06-13T21:00:12.490Z"
+      "finishedAt": "2026-06-13T21:00:12.490Z",
+      "_modAt": "2026-06-29T13:44:14.149Z"
     },
     {
       "id": "ff_41",
@@ -1651,7 +1653,7 @@
       "author": "Nahiel",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 51296,
-      "hearts": 10265,
+      "hearts": 10280,
       "rating": "Mature",
       "pairing": "Harry Potter/Charlie Weasley",
       "status": "Finished",
@@ -1671,7 +1673,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:54:58.871Z",
+      "_modAt": "2026-06-29T13:49:27.316Z",
       "readDates": [
         "2026-06-05T11:00:00.000Z"
       ],
@@ -1684,7 +1686,7 @@
       "author": "Allecto",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 9941,
-      "hearts": 715,
+      "hearts": 742,
       "rating": "Teen+",
       "pairing": "M/M",
       "status": "Finished",
@@ -1700,7 +1702,7 @@
       "section": "",
       "pages": null,
       "finishedAt": "2026-06-13T21:02:21.239Z",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:44:22.655Z"
     },
     {
       "id": "ff_47",
@@ -1799,7 +1801,7 @@
       "author": "Laceylane89",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 71647,
-      "hearts": 3698,
+      "hearts": 3714,
       "rating": "Not Rated",
       "pairing": "Viktor Krum/Harry Potter",
       "status": "Finished",
@@ -1826,7 +1828,7 @@
         "2026-06-05T11:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-16T23:24:27.710Z"
+      "_modAt": "2026-06-29T13:49:25.648Z"
     },
     {
       "id": "ff_52",
@@ -1881,7 +1883,7 @@
       "author": "Taliesin19",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 285204,
-      "hearts": 6962,
+      "hearts": 7524,
       "rating": "",
       "pairing": "M/F",
       "status": "Finished",
@@ -1899,7 +1901,7 @@
       "pages": null,
       "oneshot": false,
       "coverIcon": "https://i.pinimg.com/736x/11/bd/30/11bd301cc0583f13c92f198cd5391990.jpg",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:49:24.735Z"
     },
     {
       "id": "ff_55",
@@ -2034,7 +2036,7 @@
       "author": "FaeScribe35",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 121610,
-      "hearts": 2561,
+      "hearts": 2651,
       "rating": "",
       "pairing": "",
       "status": "Finished",
@@ -2050,7 +2052,7 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-13T21:06:05.438Z",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:44:24.747Z"
     },
     {
       "id": "ff_62",
@@ -2080,7 +2082,7 @@
       "author": "lorddwar",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 332503,
-      "hearts": 11770,
+      "hearts": 12862,
       "rating": "",
       "pairing": "M/F",
       "status": "Finished",
@@ -2096,7 +2098,7 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-05T11:00:00.000Z",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:49:23.164Z"
     },
     {
       "id": "ff_64",
@@ -2218,7 +2220,7 @@
       "author": "esama",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 64402,
-      "hearts": 27070,
+      "hearts": 29874,
       "rating": "Teen+",
       "pairing": "M/M",
       "status": "Finished",
@@ -2235,7 +2237,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:49:21.345Z"
     },
     {
       "id": "ff_70",
@@ -2353,7 +2355,7 @@
       "author": "sifshadowheart",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 237166,
-      "hearts": 4159,
+      "hearts": 4160,
       "rating": "Teen+",
       "pairing": "Harry/Harem",
       "status": "Finished",
@@ -2370,7 +2372,7 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-05T11:00:00.000Z",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:49:19.517Z"
     },
     {
       "id": "ff_76",
@@ -2559,7 +2561,7 @@
       "author": "tetsurashian",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 73621,
-      "hearts": 51236,
+      "hearts": 51372,
       "rating": "Not Rated",
       "pairing": "Harry Potter/Tom Riddle | Voldemort",
       "status": "Finished",
@@ -2584,7 +2586,7 @@
         "2026-06-05T11:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:49:17.045Z"
     },
     {
       "id": "ff_85",
@@ -2628,7 +2630,7 @@
       "url": "https://www.fanfiction.net/s/2819716/2/Dragonseeker-Heritage",
       "_addedAt": 85,
       "finishedAt": "2026-06-05T11:00:00.000Z",
-      "_modAt": "2026-06-16T22:47:04.152Z",
+      "_modAt": "2026-06-29T13:45:31.885Z",
       "readDates": [
         "2026-06-05T19:11:54.641336+00:00"
       ],
@@ -2645,7 +2647,7 @@
       "author": "NinjaPandaScholar",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 228691,
-      "hearts": 18270,
+      "hearts": 18762,
       "rating": "Teen+",
       "pairing": "F/M, M/M",
       "status": "Finished",
@@ -2661,7 +2663,7 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-13T21:11:49.469Z",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:43:49.056Z"
     },
     {
       "id": "ff_88",
@@ -2694,8 +2696,8 @@
       "title": "The Rise of the Drackens",
       "author": "StarLight_Massacre",
       "fandom": "Harry Potter - J. K. Rowling",
-      "words": 1443469,
-      "hearts": 16808,
+      "words": 1459051,
+      "hearts": 16970,
       "rating": "Explicit",
       "pairing": "M/M",
       "status": "Finished",
@@ -2712,7 +2714,7 @@
       "url": "https://archive.transformativeworks.org/chapters/142739500",
       "_addedAt": 88,
       "finishedAt": "2026-06-05T11:00:00.000Z",
-      "_modAt": "2026-06-16T22:48:52.499Z",
+      "_modAt": "2026-06-29T13:45:18.965Z",
       "readDates": [
         "2026-06-05T19:11:54.641336+00:00"
       ],
@@ -2729,7 +2731,7 @@
       "author": "drarryweasley",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 111974,
-      "hearts": 2906,
+      "hearts": 2909,
       "rating": "Explicit",
       "pairing": "Harry Potter/Charlie Weasley",
       "status": "Finished",
@@ -2750,7 +2752,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:50:30.697Z",
+      "_modAt": "2026-06-29T13:49:14.704Z",
       "readDates": [
         "2026-06-05T11:00:00.000Z"
       ],
@@ -2830,8 +2832,8 @@
       "title": "The Art of the Impossible",
       "author": "Lomonaaeren",
       "fandom": "Harry Potter - J. K. Rowling",
-      "words": 41794,
-      "hearts": 2564,
+      "words": 43580,
+      "hearts": 260,
       "rating": "Mature",
       "pairing": "Multi",
       "status": "Finished",
@@ -2848,7 +2850,7 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-13T21:13:23.269Z",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:43:21.474Z"
     },
     {
       "id": "ff_95",
@@ -2856,8 +2858,8 @@
       "title": "Covet",
       "author": "Lomonaaeren",
       "fandom": "Harry Potter - J. K. Rowling",
-      "words": 33591,
-      "hearts": 6405,
+      "words": 35016,
+      "hearts": 742,
       "rating": "Explicit",
       "pairing": "F/M",
       "status": "Finished",
@@ -2873,7 +2875,7 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-13T21:13:57.953Z",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:43:17.266Z"
     },
     {
       "id": "ff_96",
@@ -2928,7 +2930,7 @@
       "author": "Gimlili",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 174777,
-      "hearts": 13877,
+      "hearts": 14489,
       "rating": "Mature",
       "pairing": "F/M, M/M",
       "status": "Finished",
@@ -2945,7 +2947,7 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-13T11:00:00.000Z",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:44:29.815Z"
     },
     {
       "id": "ff_99",
@@ -3018,8 +3020,8 @@
       "title": "Fifth Year Rebooted",
       "author": "Labgasod",
       "fandom": "Harry Potter - J. K. Rowling",
-      "words": 93280,
-      "hearts": 9981,
+      "words": 93279,
+      "hearts": 10692,
       "rating": "Teen+",
       "pairing": "Gen",
       "status": "Finished",
@@ -3036,7 +3038,7 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-05T11:00:00.000Z",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:49:08.267Z"
     },
     {
       "id": "ff_103",
@@ -3045,7 +3047,7 @@
       "author": "Lomonaaeren",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 44975,
-      "hearts": 11911,
+      "hearts": 11972,
       "rating": "Mature",
       "pairing": "Harry Potter/Tom Riddle",
       "status": "Finished",
@@ -3071,7 +3073,7 @@
       "readDates": [
         "2026-06-05T11:00:00.000Z"
       ],
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:49:06.952Z"
     },
     {
       "id": "ff_104",
@@ -3080,7 +3082,7 @@
       "author": "Bounemr",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 25372,
-      "hearts": 866,
+      "hearts": 952,
       "rating": "General",
       "pairing": "M/M",
       "status": "Finished",
@@ -3096,7 +3098,7 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-13T21:17:25.349Z",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:43:15.812Z"
     },
     {
       "id": "ff_105",
@@ -3105,7 +3107,7 @@
       "author": "Bounemr",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 91411,
-      "hearts": 4282,
+      "hearts": 4364,
       "rating": "General",
       "pairing": "Michael Corner/Harry Potter",
       "status": "Finished",
@@ -3122,7 +3124,7 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-05T11:00:00.000Z",
-      "_modAt": "2026-06-16T23:24:16.645Z",
+      "_modAt": "2026-06-29T13:45:59.310Z",
       "readDates": [
         "2026-06-05T18:56:10.631Z"
       ],
@@ -3156,7 +3158,7 @@
       "author": "Watermelonsmellinfellon",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 182594,
-      "hearts": 8317,
+      "hearts": 8326,
       "rating": "Explicit",
       "pairing": "Harry Potter/Voldemort",
       "status": "Finished",
@@ -3178,7 +3180,7 @@
       "readDates": [
         "2026-06-05T11:00:00.000Z"
       ],
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:49:05.377Z"
     },
     {
       "id": "ff_108",
@@ -3187,7 +3189,7 @@
       "author": "DandelionAdrian",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 5894,
-      "hearts": 974,
+      "hearts": 980,
       "rating": "Mature",
       "pairing": "M/M",
       "status": "Finished",
@@ -3204,7 +3206,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:49:03.324Z"
     },
     {
       "id": "ff_109",
@@ -3264,11 +3266,11 @@
       "title": "The Spellmaker",
       "author": "SonnyGietzel",
       "fandom": "Harry Potter - J. K. Rowling",
-      "words": 205855,
-      "hearts": 20089,
+      "words": 217647,
+      "hearts": 21670,
       "rating": "Mature",
       "pairing": "M/M, Gen",
-      "status": "Finished",
+      "status": "TBR",
       "userRating": 0,
       "notes": "",
       "tags": [
@@ -3282,7 +3284,9 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:50:12.312Z",
+      "waitingOnChap": false,
+      "readingStartedAt": null
     },
     {
       "id": "ff_112",
@@ -3291,7 +3295,7 @@
       "author": "Snarry5evr",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 38967,
-      "hearts": 7219,
+      "hearts": 7238,
       "rating": "Explicit",
       "pairing": "Harry Potter/Salazar Slytherin",
       "status": "Finished",
@@ -3315,7 +3319,7 @@
         "2026-06-05T11:00:00.000Z"
       ],
       "coverIcon": "https://i.pinimg.com/736x/26/00/99/2600999942c87b8d9942346431a6864a.jpg",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:48:56.878Z"
     },
     {
       "id": "ff_113",
@@ -3324,7 +3328,7 @@
       "author": "okayletsbesirius",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 238983,
-      "hearts": 2995,
+      "hearts": 3109,
       "rating": "Not Rated",
       "pairing": "F/M",
       "status": "Finished",
@@ -3340,7 +3344,7 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-13T11:00:00.000Z",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:44:27.967Z"
     },
     {
       "id": "ff_114",
@@ -3370,7 +3374,7 @@
       "author": "cywscross",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 102274,
-      "hearts": 22860,
+      "hearts": 23342,
       "rating": "Teen+",
       "pairing": "Gen",
       "status": "Finished",
@@ -3386,7 +3390,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:48:58.518Z"
     },
     {
       "id": "ff_116",
@@ -3420,7 +3424,7 @@
       "author": "lq_traintracks (lumosed_quill)",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 10256,
-      "hearts": 10801,
+      "hearts": 10827,
       "rating": "Explicit",
       "pairing": "Draco Malfoy/Harry Potter",
       "status": "Finished",
@@ -3443,7 +3447,7 @@
       "readDates": [
         "2026-06-05T11:00:00.000Z"
       ],
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:49:00.576Z"
     },
     {
       "id": "ff_118",
@@ -3478,7 +3482,7 @@
       "author": "Faith Wood (faithwood)",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 21139,
-      "hearts": 80294,
+      "hearts": 80482,
       "rating": "Explicit",
       "pairing": "Draco Malfoy/Harry Potter",
       "status": "Finished",
@@ -3499,7 +3503,7 @@
       "readDates": [
         "2026-06-05T11:00:00.000Z"
       ],
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:47:56.709Z"
     },
     {
       "id": "ff_120",
@@ -3507,8 +3511,8 @@
       "title": "Onyx Snow",
       "author": "Kamerreon",
       "fandom": "Harry Potter - J. K. Rowling",
-      "words": 80000,
-      "hearts": null,
+      "words": 78841,
+      "hearts": 1322,
       "rating": "",
       "pairing": "Harry/Blaise",
       "status": "Finished",
@@ -3526,7 +3530,7 @@
       "pages": null,
       "oneshot": false,
       "readCount": 3,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:47:52.487Z"
     },
     {
       "id": "ff_121",
@@ -3535,7 +3539,7 @@
       "author": "who_la_hoop",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 118607,
-      "hearts": 13935,
+      "hearts": 13957,
       "rating": "Explicit",
       "pairing": "Draco Malfoy/Harry Potter",
       "status": "Finished",
@@ -3557,7 +3561,7 @@
       "readDates": [
         "2026-06-05T11:00:00.000Z"
       ],
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:47:51.336Z"
     },
     {
       "id": "ff_122",
@@ -3588,7 +3592,7 @@
       "author": "Eider_Down",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 409773,
-      "hearts": 17573,
+      "hearts": 17944,
       "rating": "Mature",
       "pairing": "",
       "status": "Finished",
@@ -3612,7 +3616,7 @@
         "2026-06-05T11:00:00.000Z"
       ],
       "coverIcon": "https://i.pinimg.com/1200x/cd/a8/3b/cda83b0cfea68bf959bce49f7a82f598.jpg",
-      "_modAt": "2026-06-28T15:18:44.603Z"
+      "_modAt": "2026-06-29T13:47:50.208Z"
     },
     {
       "id": "ff_124",
@@ -3685,8 +3689,8 @@
       "title": "There Be Dragons, Harry",
       "author": "Scioneeris",
       "fandom": "Harry Potter - J. K. Rowling",
-      "words": 1286279,
-      "hearts": 3335,
+      "words": 1286328,
+      "hearts": 3465,
       "rating": "",
       "pairing": "",
       "status": "Finished",
@@ -3709,7 +3713,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:52:40.148Z"
+      "_modAt": "2026-06-29T13:45:08.687Z"
     },
     {
       "id": "ff_128",
@@ -3740,7 +3744,7 @@
       "author": "Kandakicksass",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 20730,
-      "hearts": 70086,
+      "hearts": 71135,
       "rating": "Mature",
       "pairing": "M/M",
       "status": "Finished",
@@ -3756,7 +3760,7 @@
       "genre": "",
       "section": "",
       "pages": null,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:47:49.201Z"
     },
     {
       "id": "ff_130",
@@ -3849,7 +3853,7 @@
       "author": "gedsparrowhawk (FaceChanger)",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 11146,
-      "hearts": 22291,
+      "hearts": 22692,
       "rating": "General",
       "pairing": "Gen",
       "status": "Finished",
@@ -3865,7 +3869,7 @@
       "section": "",
       "pages": null,
       "finishedAt": "2026-06-13T21:20:23.832Z",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:43:11.595Z"
     },
     {
       "id": "ff_135",
@@ -4008,8 +4012,8 @@
       "title": "The Golden Snitch",
       "author": "Bokbok3",
       "fandom": "Harry Potter - J. K. Rowling",
-      "words": 46137,
-      "hearts": 455,
+      "words": 71459,
+      "hearts": 3378,
       "rating": "Mature",
       "pairing": "F/M, M/M",
       "status": "Finished",
@@ -4025,7 +4029,7 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-05T18:54:36.063Z",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:46:00.696Z"
     },
     {
       "id": "ff_142",
@@ -4033,8 +4037,8 @@
       "title": "Fighting From the Shadows",
       "author": "bachau",
       "fandom": "Harry Potter - J. K. Rowling",
-      "words": 973526,
-      "hearts": 3610,
+      "words": 985503,
+      "hearts": 4292,
       "rating": "Mature",
       "pairing": "F/M",
       "status": "Finished",
@@ -4052,7 +4056,7 @@
       "oneshot": false,
       "finishedAt": "2026-06-05T18:54:18.818Z",
       "favorite": true,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:46:16.106Z"
     },
     {
       "id": "ff_143",
@@ -4061,7 +4065,7 @@
       "author": "Vichan",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 222453,
-      "hearts": 89270,
+      "hearts": 91164,
       "rating": "Teen+",
       "pairing": "M/M",
       "status": "Finished",
@@ -4079,7 +4083,7 @@
       "oneshot": false,
       "finishedAt": "2026-06-05T18:53:51.614Z",
       "favorite": true,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:46:19.844Z"
     },
     {
       "id": "ff_144",
@@ -4087,8 +4091,8 @@
       "title": "To Shape and Change (ff.net)",
       "author": "Blueowl_ff",
       "fandom": "Harry Potter - J. K. Rowling",
-      "words": 226479,
-      "hearts": 2443,
+      "words": 232332,
+      "hearts": 29729,
       "rating": "Teen+",
       "pairing": "Gen",
       "status": "Finished",
@@ -4106,7 +4110,7 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-13T21:21:30.081Z",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:43:12.973Z"
     },
     {
       "id": "ff_145",
@@ -4140,7 +4144,7 @@
       "author": "Stardust_Warrior",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 243847,
-      "hearts": 3242,
+      "hearts": 3294,
       "rating": "Mature",
       "pairing": "F/M",
       "status": "Finished",
@@ -4157,7 +4161,7 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-13T21:22:42.031Z",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:43:09.834Z"
     },
     {
       "id": "ff_147",
@@ -4187,7 +4191,7 @@
       "author": "VivyPotter",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 220150,
-      "hearts": 25833,
+      "hearts": 25911,
       "rating": "",
       "pairing": "Harry Potter/Tom Riddle",
       "status": "Finished",
@@ -4210,7 +4214,7 @@
       "readDates": [
         "2026-06-05T11:00:00.000Z"
       ],
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:47:47.968Z"
     },
     {
       "id": "ff_149",
@@ -4219,7 +4223,7 @@
       "author": "Lomonaaeren",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 26164,
-      "hearts": 7730,
+      "hearts": 7748,
       "rating": "Mature",
       "pairing": "Harry Potter/Tom Riddle",
       "status": "Finished",
@@ -4242,7 +4246,7 @@
       "readDates": [
         "2026-06-05T11:00:00.000Z"
       ],
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:47:46.366Z"
     },
     {
       "id": "ff_150",
@@ -4251,7 +4255,7 @@
       "author": "lettered",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 153881,
-      "hearts": 60629,
+      "hearts": 60815,
       "rating": "",
       "pairing": "Draco Malfoy/Harry Potter",
       "status": "Finished",
@@ -4274,7 +4278,7 @@
       "readDates": [
         "2026-06-05T11:00:00.000Z"
       ],
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:47:45.299Z"
     },
     {
       "id": "ff_151",
@@ -4283,7 +4287,7 @@
       "author": "R-dude",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 90127,
-      "hearts": 7701,
+      "hearts": 8366,
       "rating": "",
       "pairing": "",
       "status": "Finished",
@@ -4299,7 +4303,7 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-05T11:00:00.000Z",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:47:43.685Z"
     },
     {
       "id": "ff_152",
@@ -4400,7 +4404,7 @@
       "author": "Janara",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 417467,
-      "hearts": 8610,
+      "hearts": 8842,
       "rating": "Mature",
       "pairing": "",
       "status": "Finished",
@@ -4415,7 +4419,7 @@
       "url": "https://www.fanfiction.net/s/2571676/1/Not-Your-Usual-Veela-Mate",
       "_addedAt": 155,
       "finishedAt": "2026-06-05T11:00:00.000Z",
-      "_modAt": "2026-06-16T22:53:35.896Z",
+      "_modAt": "2026-06-29T13:45:05.286Z",
       "readDates": [
         "2026-06-05T19:11:54.641336+00:00"
       ],
@@ -4607,7 +4611,7 @@
       "author": "The Potters of the Future",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 47723,
-      "hearts": 2487,
+      "hearts": 2637,
       "rating": "",
       "pairing": "",
       "status": "Finished",
@@ -4623,7 +4627,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:47:42.106Z"
     },
     {
       "id": "ff_166",
@@ -4632,7 +4636,7 @@
       "author": "The Potters of the Future",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 162028,
-      "hearts": 3472,
+      "hearts": 3645,
       "rating": "",
       "pairing": "",
       "status": "Finished",
@@ -4648,7 +4652,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:47:41.059Z"
     },
     {
       "id": "ff_167",
@@ -4657,7 +4661,7 @@
       "author": "The Potters of the Future",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 125994,
-      "hearts": 5499,
+      "hearts": 5902,
       "rating": "",
       "pairing": "",
       "status": "Finished",
@@ -4673,7 +4677,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:47:39.347Z"
     },
     {
       "id": "ff_168",
@@ -4811,7 +4815,7 @@
       "author": "Calypso Rosier",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 16276,
-      "hearts": 33,
+      "hearts": 68,
       "rating": "",
       "pairing": "Harry/Pansy",
       "status": "Finished",
@@ -4827,7 +4831,7 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-05T11:00:00.000Z",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:47:37.909Z"
     },
     {
       "id": "ff_175",
@@ -4836,7 +4840,7 @@
       "author": "jbern",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 189882,
-      "hearts": 6580,
+      "hearts": 7074,
       "rating": "",
       "pairing": "",
       "status": "Finished",
@@ -4853,7 +4857,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:47:36.587Z"
     },
     {
       "id": "ff_176",
@@ -4883,7 +4887,7 @@
       "author": "RZZMG",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 433623,
-      "hearts": 10169,
+      "hearts": 10490,
       "rating": "Explicit",
       "pairing": "Multi",
       "status": "Finished",
@@ -4902,7 +4906,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:47:35.172Z"
     },
     {
       "id": "ff_178",
@@ -4974,7 +4978,7 @@
       "author": "Morning Lilies",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 25445,
-      "hearts": 2987,
+      "hearts": 3153,
       "rating": "",
       "pairing": "",
       "status": "Finished",
@@ -4988,7 +4992,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:47:34.234Z"
     },
     {
       "id": "ff_182",
@@ -5324,7 +5328,7 @@
       "author": "Child_OTKW",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 452849,
-      "hearts": 25281,
+      "hearts": 25606,
       "rating": "Mature",
       "pairing": "F/M, M/M",
       "status": "Finished",
@@ -5340,7 +5344,7 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-05T19:11:54.641336+00:00",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:44:56.128Z"
     },
     {
       "id": "ff_198",
@@ -5391,7 +5395,7 @@
       "author": "dicta_contrion",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 131102,
-      "hearts": 15270,
+      "hearts": 15407,
       "rating": "Explicit",
       "pairing": "M/M",
       "status": "Finished",
@@ -5407,7 +5411,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:47:32.909Z"
     },
     {
       "id": "ff_201",
@@ -5416,7 +5420,7 @@
       "author": "Lomonaaeren",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 18803,
-      "hearts": 11416,
+      "hearts": 11458,
       "rating": "Mature",
       "pairing": "Harry Potter/Tom Riddle",
       "status": "Finished",
@@ -5440,7 +5444,7 @@
       "readDates": [
         "2026-06-05T11:00:00.000Z"
       ],
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:47:31.265Z"
     },
     {
       "id": "ff_202",
@@ -5449,7 +5453,7 @@
       "author": "MaidenMotherCrone (orphan_account)",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 282456,
-      "hearts": 9355,
+      "hearts": 9369,
       "rating": "Not Rated",
       "pairing": "Harry Potter/Tom Riddle",
       "status": "Finished",
@@ -5473,7 +5477,7 @@
       "readDates": [
         "2026-06-05T11:00:00.000Z"
       ],
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:47:29.219Z"
     },
     {
       "id": "ff_203",
@@ -5503,7 +5507,7 @@
       "author": "MayMarlow",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 541509,
-      "hearts": 17626,
+      "hearts": 17746,
       "rating": "Mature",
       "pairing": "F/M",
       "status": "Finished",
@@ -5519,7 +5523,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:47:28.191Z"
     },
     {
       "id": "ff_205",
@@ -5612,7 +5616,7 @@
       "author": "Louis IX",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 616225,
-      "hearts": 4151,
+      "hearts": 4288,
       "rating": "",
       "pairing": "",
       "status": "Finished",
@@ -5629,7 +5633,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:47:26.419Z"
     },
     {
       "id": "ff_210",
@@ -5939,7 +5943,7 @@
       "author": "Granger",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 47605,
-      "hearts": null,
+      "hearts": 1412,
       "rating": "",
       "pairing": "",
       "status": "Finished",
@@ -5955,16 +5959,16 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:47:24.039Z"
     },
     {
       "id": "ff_223",
       "type": "ff",
       "title": "The Reason",
-      "author": "-",
+      "author": "The Ghost of You",
       "fandom": "Harry Potter - J. K. Rowling",
-      "words": null,
-      "hearts": null,
+      "words": 3327,
+      "hearts": 13,
       "rating": "",
       "pairing": "",
       "status": "Finished",
@@ -5980,7 +5984,8 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:47:21.616Z",
+      "readCount": 1
     },
     {
       "id": "ff_224",
@@ -6014,7 +6019,7 @@
       "author": "Harmione95",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 136282,
-      "hearts": null,
+      "hearts": 1670,
       "rating": "",
       "pairing": "Harry/Cedric",
       "status": "Finished",
@@ -6030,7 +6035,7 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-05T11:00:00.000Z",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:46:58.908Z"
     },
     {
       "id": "ff_226",
@@ -6130,7 +6135,7 @@
       "author": "Femme (femmequixotic)",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 29506,
-      "hearts": 11233,
+      "hearts": 11252,
       "rating": "Explicit",
       "pairing": "Draco Malfoy/Harry Potter",
       "status": "Finished",
@@ -6151,7 +6156,7 @@
       "readDates": [
         "2026-06-05T11:00:00.000Z"
       ],
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:46:57.080Z"
     },
     {
       "id": "ff_231",
@@ -6160,7 +6165,7 @@
       "author": "simpleficgirl",
       "fandom": "Merlin (TV)",
       "words": 8834,
-      "hearts": 7872,
+      "hearts": 7916,
       "rating": "",
       "pairing": "",
       "status": "Finished",
@@ -6180,7 +6185,7 @@
         "2026-06-05T11:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-16T21:03:00.170Z"
+      "_modAt": "2026-06-29T13:46:55.948Z"
     },
     {
       "id": "ff_232",
@@ -6189,7 +6194,7 @@
       "author": "mollrach13",
       "fandom": "Merlin (TV)",
       "words": 28398,
-      "hearts": 20973,
+      "hearts": 21056,
       "rating": "Not Rated",
       "pairing": "Merlin & Arthur Pendragon (Merlin)",
       "status": "Finished",
@@ -6212,7 +6217,7 @@
         "2026-06-05T11:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-16T21:09:59.070Z"
+      "_modAt": "2026-06-29T13:46:54.809Z"
     },
     {
       "id": "ff_233",
@@ -6221,7 +6226,7 @@
       "author": "Flight-o'-Fantasy",
       "fandom": "Merlin (TV)",
       "words": 122723,
-      "hearts": 445,
+      "hearts": 446,
       "rating": "",
       "pairing": "",
       "status": "Finished",
@@ -6237,7 +6242,8 @@
       "genre": "",
       "section": "",
       "pages": null,
-      "oneshot": false
+      "oneshot": false,
+      "_modAt": "2026-06-29T13:46:53.528Z"
     },
     {
       "id": "ff_234",
@@ -6246,7 +6252,7 @@
       "author": "mushroomtale, Polomonkey",
       "fandom": "Merlin (TV)",
       "words": 71842,
-      "hearts": null,
+      "hearts": 7727,
       "rating": "",
       "pairing": "",
       "status": "Finished",
@@ -6263,7 +6269,8 @@
       "genre": "",
       "section": "",
       "pages": null,
-      "oneshot": false
+      "oneshot": false,
+      "_modAt": "2026-06-29T13:46:52.829Z"
     },
     {
       "id": "ff_235",
@@ -6272,7 +6279,7 @@
       "author": "LFB72",
       "fandom": "Merlin (TV)",
       "words": 40640,
-      "hearts": 1548,
+      "hearts": 1556,
       "rating": "Explicit",
       "pairing": "Merlin/Arthur Pendragon (Merlin)",
       "status": "Finished",
@@ -6294,7 +6301,7 @@
         "2026-06-05T11:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-16T21:19:52.329Z"
+      "_modAt": "2026-06-29T13:46:51.675Z"
     },
     {
       "id": "ff_236",
@@ -6318,7 +6325,8 @@
       "genre": "",
       "section": "",
       "pages": null,
-      "oneshot": false
+      "oneshot": false,
+      "_modAt": "2026-06-29T13:46:49.986Z"
     },
     {
       "id": "ff_237",
@@ -6375,7 +6383,7 @@
       "author": "BeautifulFiction",
       "fandom": "Merlin (TV)",
       "words": 264596,
-      "hearts": 14265,
+      "hearts": 14399,
       "rating": "Explicit",
       "pairing": "Merlin/Arthur Pendragon (Merlin)",
       "status": "Finished",
@@ -6396,7 +6404,7 @@
       "oneshot": false,
       "favorite": false,
       "readCount": 1,
-      "_modAt": "2026-06-16T21:19:01.148Z",
+      "_modAt": "2026-06-29T13:46:47.540Z",
       "readDates": [
         "2026-06-05T11:00:00.000Z"
       ]
@@ -6436,7 +6444,7 @@
       "author": "orphan_account",
       "fandom": "Merlin (TV)",
       "words": 70903,
-      "hearts": 2658,
+      "hearts": 2666,
       "rating": "",
       "pairing": "",
       "status": "Finished",
@@ -6465,7 +6473,7 @@
         "2026-06-05T11:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-16T21:02:52.889Z"
+      "_modAt": "2026-06-29T13:46:45.849Z"
     },
     {
       "id": "ff_242",
@@ -6474,7 +6482,7 @@
       "author": "eight 0f hearts",
       "fandom": "Merlin (TV)",
       "words": 52365,
-      "hearts": 758,
+      "hearts": 759,
       "rating": "",
       "pairing": "",
       "status": "Finished",
@@ -6492,7 +6500,7 @@
       "oneshot": false,
       "favorite": false,
       "readCount": 1,
-      "_modAt": "2026-06-16T20:10:59.883Z",
+      "_modAt": "2026-06-29T13:46:44.117Z",
       "readDates": [
         "2026-06-05T11:00:00.000Z"
       ]
@@ -6504,7 +6512,7 @@
       "author": "SherylFranks",
       "fandom": "Merlin (TV)",
       "words": 72319,
-      "hearts": 501,
+      "hearts": 575,
       "rating": "Explicit",
       "pairing": "Gwen/Merlin/Arthur Pendragon (Merlin)",
       "status": "Finished",
@@ -6527,7 +6535,7 @@
         "2026-06-05T11:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-16T21:11:10.183Z"
+      "_modAt": "2026-06-29T13:46:42.728Z"
     },
     {
       "id": "ff_244",
@@ -6562,7 +6570,7 @@
       "author": "BeautifulFiction",
       "fandom": "Merlin (TV)",
       "words": 264596,
-      "hearts": 14265,
+      "hearts": 14399,
       "rating": "Explicit",
       "pairing": "Merlin/Arthur Pendragon (Merlin)",
       "status": "Finished",
@@ -6583,7 +6591,7 @@
       "finishedAt": "2026-06-05T11:00:00.000Z",
       "favorite": false,
       "readCount": 1,
-      "_modAt": "2026-06-16T21:18:45.916Z",
+      "_modAt": "2026-06-29T13:46:41.089Z",
       "readDates": [
         "2026-06-05T11:00:00.000Z"
       ]
@@ -6595,7 +6603,7 @@
       "author": "misteeirene",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 114053,
-      "hearts": 6570,
+      "hearts": 6581,
       "rating": "Mature",
       "pairing": "Harry Potter/Cedric Diggory",
       "status": "Finished",
@@ -6619,7 +6627,7 @@
         "2026-06-05T11:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:46:39.144Z"
     },
     {
       "id": "ff_247",
@@ -6627,8 +6635,8 @@
       "title": "the stars, my destination",
       "author": "milkandmoon",
       "fandom": "Harry Potter - J. K. Rowling",
-      "words": 99540,
-      "hearts": null,
+      "words": 98540,
+      "hearts": 4004,
       "rating": "",
       "pairing": "",
       "status": "Finished",
@@ -6645,7 +6653,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:46:31.879Z"
     },
     {
       "id": "ff_249",
@@ -6654,7 +6662,7 @@
       "author": "1967HogwartsGoddess",
       "fandom": "Percy Jackson",
       "words": 269696,
-      "hearts": null,
+      "hearts": 23180,
       "rating": "",
       "pairing": "",
       "status": "Finished",
@@ -6671,7 +6679,8 @@
       "genre": "",
       "section": "",
       "pages": null,
-      "oneshot": false
+      "oneshot": false,
+      "_modAt": "2026-06-29T13:46:30.235Z"
     },
     {
       "id": "ff_250",
@@ -6680,7 +6689,7 @@
       "author": "chellethewriter",
       "fandom": "Percy Jackson",
       "words": 25873,
-      "hearts": 4659,
+      "hearts": 4674,
       "rating": "",
       "pairing": "Annabeth Chase/Percy Jackson",
       "status": "Finished",
@@ -6702,7 +6711,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T20:52:06.310Z",
+      "_modAt": "2026-06-29T13:44:36.671Z",
       "favorite": false
     },
     {
@@ -6712,7 +6721,7 @@
       "author": "LyraLee33",
       "fandom": "Percy Jackson",
       "words": 190395,
-      "hearts": 5322,
+      "hearts": 5342,
       "rating": "Explicit",
       "pairing": "Annabeth Chase/Percy Jackson",
       "status": "Finished",
@@ -6732,7 +6741,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T20:53:43.491Z"
+      "_modAt": "2026-06-29T13:44:38.187Z"
     },
     {
       "id": "ff_252",
@@ -6741,7 +6750,7 @@
       "author": "TheLonelyBarricade",
       "fandom": "A Court of Thorns and Roses Series - Sarah J. Maas",
       "words": 193886,
-      "hearts": 3992,
+      "hearts": 4001,
       "rating": "Explicit",
       "pairing": "Feyre Archeron/Rhysand",
       "status": "Finished",
@@ -6764,7 +6773,7 @@
         "2026-06-05T11:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-16T21:22:24.847Z"
+      "_modAt": "2026-06-29T13:46:28.269Z"
     },
     {
       "id": "ff_253",
@@ -6773,7 +6782,7 @@
       "author": "moonsblue",
       "fandom": "The Summer I Turned Pretty",
       "words": 19839,
-      "hearts": 989,
+      "hearts": 994,
       "rating": "Mature",
       "pairing": "Isabel",
       "status": "Finished",
@@ -6796,7 +6805,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T20:41:19.363Z"
+      "_modAt": "2026-06-29T13:44:39.539Z"
     },
     {
       "id": "ff_254",
@@ -6805,7 +6814,7 @@
       "author": "poetic_emrys",
       "fandom": "Merlin (TV)",
       "words": 8112,
-      "hearts": 1467,
+      "hearts": 1479,
       "rating": "Mature",
       "pairing": "Merlin/Arthur Pendragon (Merlin)",
       "status": "Finished",
@@ -6823,7 +6832,7 @@
       "oneshot": false,
       "favorite": false,
       "readCount": 1,
-      "_modAt": "2026-06-16T20:13:34.524Z",
+      "_modAt": "2026-06-29T13:46:27.367Z",
       "readDates": [
         "2026-06-05T11:00:00.000Z"
       ]
@@ -6835,7 +6844,7 @@
       "author": "Obsessionist",
       "fandom": "Merlin (TV)",
       "words": 76857,
-      "hearts": 1403,
+      "hearts": 1411,
       "rating": "Explicit",
       "pairing": "Merlin/Arthur Pendragon (Merlin)",
       "status": "Finished",
@@ -6855,7 +6864,7 @@
       "oneshot": false,
       "favorite": false,
       "readCount": 1,
-      "_modAt": "2026-06-16T20:13:42.206Z",
+      "_modAt": "2026-06-29T13:46:25.655Z",
       "readDates": [
         "2026-06-05T11:00:00.000Z"
       ]
@@ -12819,7 +12828,7 @@
       "rating": "",
       "status": "Finished",
       "words": 191744,
-      "hearts": null,
+      "hearts": 5571,
       "pages": null,
       "userRating": 0,
       "notes": "",
@@ -12833,7 +12842,7 @@
       "_addedAt": 612,
       "genre": "",
       "section": "",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:44:50.764Z"
     },
     {
       "type": "ff",
@@ -12843,8 +12852,8 @@
       "pairing": "",
       "rating": "",
       "status": "Finished",
-      "words": 21654,
-      "hearts": 250,
+      "words": 21423,
+      "hearts": 3096,
       "pages": null,
       "userRating": 0,
       "notes": "",
@@ -12864,7 +12873,7 @@
         "2026-06-05T11:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:46:22.247Z"
     },
     {
       "type": "ff",
@@ -12926,7 +12935,7 @@
       "rating": "",
       "status": "Finished",
       "words": 65771,
-      "hearts": 6753,
+      "hearts": 6777,
       "pages": null,
       "userRating": 0,
       "notes": "",
@@ -12940,7 +12949,7 @@
       "_addedAt": 616,
       "genre": "",
       "section": "",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:44:48.347Z"
     },
     {
       "type": "ff",
@@ -13026,7 +13035,7 @@
       "author": "cheddarplums",
       "fandom": "The Summer I Turned Pretty",
       "words": 12364,
-      "hearts": 768,
+      "hearts": 776,
       "rating": "Explicit",
       "pairing": "Isabel",
       "tags": [
@@ -13049,14 +13058,14 @@
       "oneshot": false,
       "finishedAt": "2026-06-16T11:00:00.000Z",
       "_addedAt": 634,
-      "_modAt": "2026-06-16T20:41:27.097Z"
+      "_modAt": "2026-06-29T13:42:32.970Z"
     },
     {
       "title": "By the Fireplace",
       "author": "FN70000",
       "fandom": "The Summer I Turned Pretty",
       "words": 27803,
-      "hearts": 372,
+      "hearts": 374,
       "rating": "",
       "pairing": "Isabel",
       "tags": [
@@ -13079,7 +13088,7 @@
       "oneshot": false,
       "finishedAt": "2026-06-16T11:00:00.000Z",
       "_addedAt": 633,
-      "_modAt": "2026-06-16T20:35:24.065Z"
+      "_modAt": "2026-06-29T13:42:34.409Z"
     },
     {
       "tags": [
@@ -13102,20 +13111,20 @@
       "genre": "",
       "section": "",
       "words": 55787,
-      "hearts": 7856,
+      "hearts": 7890,
       "pages": null,
       "userRating": 3,
       "oneshot": false,
       "finishedAt": "2026-06-22T11:00:00.000Z",
       "_addedAt": 640,
-      "_modAt": "2026-06-21T23:28:09.149Z"
+      "_modAt": "2026-06-29T13:42:25.400Z"
     },
     {
       "title": "Counting Bodies Like Sheep",
       "author": "rightonthelimit",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 70941,
-      "hearts": 2976,
+      "hearts": 2981,
       "rating": "Explicit",
       "pairing": "Harry Potter/Tom Riddle",
       "tags": [
@@ -13139,14 +13148,14 @@
       "finishedAt": null,
       "readCount": 0,
       "_addedAt": 639,
-      "_modAt": "2026-06-20T19:02:02.869Z"
+      "_modAt": "2026-06-29T13:42:26.973Z"
     },
     {
       "title": "I've crossed oceans of time to find you",
       "author": "Lamila",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 158086,
-      "hearts": 1885,
+      "hearts": 1892,
       "rating": "Mature",
       "pairing": "Harry Potter/Tom Riddle | Voldemort",
       "tags": [
@@ -13170,7 +13179,7 @@
       "oneshot": false,
       "finishedAt": null,
       "_addedAt": 638,
-      "_modAt": "2026-06-29T13:11:36.314Z",
+      "_modAt": "2026-06-29T13:42:28.566Z",
       "waitingOnChap": true,
       "readingStartedAt": "2026-06-29T13:11:36.314Z"
     },
@@ -13179,7 +13188,7 @@
       "author": "hoboheartache",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 419170,
-      "hearts": 15470,
+      "hearts": 15596,
       "rating": "Explicit",
       "pairing": "Harry Potter & Tom Riddle | Voldemort",
       "tags": [
@@ -13202,14 +13211,14 @@
       "oneshot": false,
       "finishedAt": null,
       "_addedAt": 637,
-      "_modAt": "2026-06-20T18:42:15.313Z"
+      "_modAt": "2026-06-29T13:42:29.897Z"
     },
     {
       "title": "Baby, I've been running",
       "author": "freakydeakymoonmagic",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 72000,
-      "hearts": 14221,
+      "hearts": 14284,
       "rating": "Explicit",
       "pairing": "Harry Potter/Tom Riddle | Voldemort",
       "tags": [
@@ -13232,7 +13241,7 @@
       "oneshot": false,
       "finishedAt": "2026-06-20T11:00:00.000Z",
       "_addedAt": 636,
-      "_modAt": "2026-06-20T12:48:42.819Z",
+      "_modAt": "2026-06-29T13:42:31.133Z",
       "coverIcon": "https://64.media.tumblr.com/c9630b103accf8a80aab9779609cd6c9/e3852dfd5696da2e-41/s1280x1920/70db7b848f13719e98183b89ff2f3a3f1aa2f10b.jpg"
     },
     {
@@ -13268,7 +13277,7 @@
       "author": "mo11",
       "fandom": "Percy Jackson",
       "words": 1201,
-      "hearts": 90,
+      "hearts": 91,
       "rating": "",
       "pairing": "Apollo/Percy Jackson",
       "tags": [
@@ -13289,7 +13298,7 @@
       "oneshot": false,
       "finishedAt": "2026-06-28T11:00:00.000Z",
       "_addedAt": 641,
-      "_modAt": "2026-06-29T12:22:35.272Z"
+      "_modAt": "2026-06-29T13:42:23.389Z"
     }
   ],
   "folderConfig": {
