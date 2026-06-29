@@ -1261,9 +1261,9 @@ function render() {
         <button class="btn btn-backup btn-sm btn-icon" id="btn-backup" title="Back up — save all changes to GitHub">☁️ Back up</button>
         <button class="btn ${state.view==='stats'?'btn-primary':'btn-secondary'} btn-sm btn-icon" id="btn-stats">${state.view==='stats'?'📚 Library':'📈 Stats'}</button>
         <div class="view-seg">
-          <button class="vseg-btn${state.viewMode==='list'?' active':''}" id="btn-view-list" title="List view">☰</button>
           <button class="vseg-btn${state.viewMode==='folder'?' active':''}" id="btn-view-folder" title="Folder view">⊞</button>
           <button class="vseg-btn${state.viewMode==='myspace'?' active':''}" id="btn-view-myspace" title="MySpace — reading board">🗂️</button>
+          <button class="vseg-btn${state.viewMode==='list'?' active':''}" id="btn-view-list" title="List view">☰</button>
         </div>
         <button class="btn btn-primary btn-sm btn-icon" id="btn-add">＋ Add entry</button>
       </div>
