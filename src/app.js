@@ -431,6 +431,7 @@ function cardHtml(item) {
         <div class="card-actions">
           <button class="icon-btn${item.favorite ? ' fav-active' : ''}" data-toggle-fav="${item.id}" title="${item.favorite ? 'Remove from favorites' : 'Add to favorites'}">⭐</button>
           ${item.url ? `<button class="icon-btn" data-open-url="${item.url}" title="Open link">🔗</button>` : ''}
+          ${isFf && /archiveofourown|fanfiction\.net|transformativeworks/.test(item.url||'') ? `<button class="icon-btn" data-refresh-words="${item.id}" title="Refresh word count from the link">↻</button>` : ''}
           <button class="icon-btn" data-edit="${item.id}" title="Edit">✏️</button>
           <button class="icon-btn danger" data-delete="${item.id}" title="Delete">🗑</button>
         </div>
@@ -1852,6 +1853,22 @@ function bindEvents() {
     el.addEventListener('click', e => {
       e.stopPropagation();
       window.api.openExternal(el.dataset.openUrl);
+    });
+  });
+
+  // Refresh word count from the link (list & folder cards)
+  document.querySelectorAll('[data-refresh-words]').forEach(btn => {
+    btn.addEventListener('click', async e => {
+      e.stopPropagation();
+      const item = state.items.find(x => x.id === btn.dataset.refreshWords);
+      if (!item) return;
+      btn.textContent = '…'; btn.disabled = true;
+      showToast('Refreshing word count…', 'loading');
+      const res = await refreshWordCount(item);
+      if (res && res.ok && res.new !== res.old) { saveData(); render(); showToast(`${item.title || 'Fic'}: ${fmtNum(res.old)} → ${fmtNum(res.new)} words`, 'success'); }
+      else if (res && res.ok) { showToast('Word count already up to date ✓', 'success'); btn.textContent = '↻'; btn.disabled = false; }
+      else if (res && res.needsLogin) { showToast('🔒 Locked work — use “🔑 AO3 login” (top bar), then retry.', 'info'); btn.textContent = '↻'; btn.disabled = false; }
+      else { showToast('Couldn’t refresh — check the link.', 'error'); btn.textContent = '↻'; btn.disabled = false; }
     });
   });
 
