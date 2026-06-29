@@ -716,6 +716,7 @@ function mySpaceCard(x) {
     tags.push(`<span class="ms-badge">▶ ${fmtDateShort(x.readingStartedAt)} · ${daysBetween(x.readingStartedAt, new Date().toISOString())}d</span>`);
   }
   if (x.words) tags.push(`<span class="ms-wc">${fmtNum(x.words)}w</span>`);
+  if (/archiveofourown|fanfiction\.net|transformativeworks/.test(x.url || '')) tags.push(`<button class="ms-refresh" data-ms-refresh="${esc(x.id)}" draggable="false" title="Refresh word count from the link">↻</button>`);
   return `<div class="ms-card" draggable="true" data-ms-id="${esc(x.id)}" title="${esc(x.title || '')}">
     <div class="ms-cover" style="background:linear-gradient(135deg,${c1},${c2})">${cover}<button class="ms-cover-edit cover-edit-btn" data-edit-item-icon="${esc(x.id)}" draggable="false" title="Change cover">✏️</button></div>
     <div class="ms-meta">
@@ -758,7 +759,28 @@ function mySpaceHtml() {
   </div>`;
 }
 
-function moveMsCard(id, target) {
+// Re-fetch the live word count from a fic's AO3 / FF.net link (mutates item in place).
+// Returns { ok, old, new } on success, { ok:false } on failure, or null if there's no usable URL.
+async function refreshWordCount(item) {
+  if (!item) return null;
+  const url = (item.url || '').replace('archive.transformativeworks.org', 'archiveofourown.org');
+  const isAO3 = url.includes('archiveofourown');
+  const isFFNet = url.includes('fanfiction.net');
+  if (!url || (!isAO3 && !isFFNet)) return null;
+  try {
+    const data = isAO3 ? await window.api.fetchAO3(url) : await window.api.fetchFFNet(url);
+    if (data && !data.error && data.words) {
+      const old = item.words || 0;
+      item.words = data.words;
+      if (data.hearts) item.hearts = data.hearts;
+      item._modAt = new Date().toISOString();
+      return { ok: true, old, new: data.words };
+    }
+  } catch (e) {}
+  return { ok: false };
+}
+
+async function moveMsCard(id, target) {
   const item = state.items.find(x => x.id === id);
   if (!item) return;
   const now = new Date().toISOString();
@@ -771,8 +793,19 @@ function moveMsCard(id, target) {
     item.status = 'Reading'; item.waitingOnChap = true;
     if (!item.readingStartedAt) item.readingStartedAt = now;
   } else if (target === 'Finished') {
+    // Capture the final word count from the source so stats & pace reflect the
+    // complete work you actually read (WIP counts grow while you're reading).
+    showToast('Marking finished — refreshing word count…', 'loading');
+    const res = await refreshWordCount(item);
     item.status = 'Finished'; item.waitingOnChap = false; item.finishedAt = now;
     if (!(timesRead(item) > 0)) { item.readDates = [now]; item.readCount = 1; }
+    item._modAt = now;
+    saveData(); render();
+    if (res && res.ok && res.new !== res.old) showToast(`Finished ✓ — word count updated ${fmtNum(res.old)} → ${fmtNum(res.new)}`, 'success');
+    else if (res && res.ok) showToast('Finished ✓ — word count already current', 'success');
+    else if (res === null) showToast('Finished ✓ (add the AO3/FF.net link to auto-update word count)', 'info');
+    else showToast('Finished ✓ — couldn’t reach the link to refresh word count', 'info');
+    return;
   } else return;
   item._modAt = now;
   saveData();
@@ -1441,6 +1474,19 @@ function bindEvents() {
       if (_msDragged) return;
       const item = state.items.find(x => x.id === c.dataset.msId);
       if (item) { state.editItem = { ...item }; state.modalOpen = true; render(); }
+    });
+  });
+  document.querySelectorAll('[data-ms-refresh]').forEach(btn => {
+    btn.addEventListener('click', async e => {
+      e.stopPropagation();
+      const item = state.items.find(x => x.id === btn.dataset.msRefresh);
+      if (!item) return;
+      btn.textContent = '…'; btn.disabled = true;
+      showToast('Refreshing word count…', 'loading');
+      const res = await refreshWordCount(item);
+      if (res && res.ok && res.new !== res.old) { saveData(); render(); showToast(`Word count updated ${fmtNum(res.old)} → ${fmtNum(res.new)}`, 'success'); }
+      else if (res && res.ok) { showToast('Already up to date ✓', 'success'); btn.textContent = '↻'; btn.disabled = false; }
+      else { showToast('Couldn’t refresh — check the link', 'error'); btn.textContent = '↻'; btn.disabled = false; }
     });
   });
   document.querySelectorAll('#myspace [data-ms-drop]').forEach(zone => {

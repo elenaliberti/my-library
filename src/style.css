@@ -387,3 +387,6 @@ textarea { min-height: 70px; resize: vertical; }
 .ms-cover-edit { position: absolute; top: 2px; right: 2px; opacity: 0; background: rgba(0,0,0,0.5); color: #fff; border: none; border-radius: 6px; padding: 1px 5px; font-size: 10px; cursor: pointer; transition: opacity 0.12s, background 0.12s; line-height: 1.4; }
 .ms-card:hover .ms-cover-edit { opacity: 1; }
 .ms-cover-edit:hover { background: rgba(0,0,0,0.78); }
+.ms-refresh { background: var(--gray-100); border: none; border-radius: 6px; color: var(--gray-600); font-size: 11px; font-weight: 700; cursor: pointer; padding: 0 6px; line-height: 1.7; transition: background 0.12s, color 0.12s; }
+.ms-refresh:hover { background: var(--purple-light); color: var(--purple-dark); }
+.ms-refresh:disabled { opacity: 0.6; cursor: default; }
