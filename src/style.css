@@ -21,6 +21,7 @@
   --radius-lg: 14px;
   --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-serif: Georgia, 'Times New Roman', serif;
+  --font-mono: ui-monospace, 'SF Mono', 'Menlo', 'Consolas', monospace;
 }
 
 html, body { height: 100%; background: var(--gray-50); font-family: var(--font); color: var(--gray-900); font-size: 14px; line-height: 1.5; }
@@ -171,15 +172,15 @@ select.filter-select:focus { border-color: var(--purple); }
 #list { flex: 1; overflow-y: auto; padding: 0 20px 40px; display: flex; flex-direction: column; gap: 8px; }
 
 /* ── Card ── */
-.card { background: #fff; border: 1px solid var(--gray-200); border-radius: var(--radius-lg); padding: 14px 16px; cursor: pointer; transition: box-shadow 0.15s, border-color 0.15s; }
-.card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); border-color: #e0e0f0; }
+.card { background: #fffdf8; border: 1px solid #ece6da; border-radius: 16px; padding: 15px 17px; cursor: pointer; transition: box-shadow 0.15s, border-color 0.15s, transform 0.15s; }
+.card:hover { box-shadow: 0 6px 20px rgba(125,157,106,0.13); border-color: #c8d8b4; transform: translateY(-1px); }
 .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
 .card-main { flex: 1; min-width: 0; }
 .card-title-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .card-title { font-size: 15px; font-weight: 600; color: var(--gray-900); font-family: var(--font-serif); line-height: 1.3; }
 .card-sub { font-size: 12px; color: var(--gray-400); margin-top: 3px; }
 .card-sub b { color: var(--gray-700); }
-.card-meta { display: flex; gap: 12px; margin-top: 6px; font-size: 12px; color: var(--gray-400); flex-wrap: wrap; align-items: center; }
+.card-meta { display: flex; gap: 12px; margin-top: 7px; font-size: 11.5px; color: var(--gray-400); flex-wrap: wrap; align-items: center; font-family: var(--font-mono); letter-spacing: -0.01em; }
 .card-actions { display: flex; gap: 4px; flex-shrink: 0; margin-top: 2px; }
 .icon-btn { background: none; border: none; cursor: pointer; font-size: 16px; padding: 4px 6px; border-radius: 6px; color: var(--gray-400); transition: background 0.12s, color 0.12s; line-height: 1; }
 
@@ -217,7 +218,7 @@ select.filter-select:focus { border-color: var(--purple); }
 .stars.readonly .star { cursor: default; }
 
 /* ── Tags ── */
-.tag { background: var(--gray-100); color: var(--gray-700); font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 500; display: inline-flex; align-items: center; gap: 4px; }
+.tag { background: var(--purple-light); color: var(--purple-dark); font-size: 11px; padding: 2px 9px; border-radius: 20px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
 .tag .tag-remove { cursor: pointer; color: var(--gray-400); font-size: 13px; line-height: 1; }
 .tag .tag-remove:hover { color: var(--red); }
 
@@ -434,38 +435,24 @@ textarea { min-height: 70px; resize: vertical; }
 .ms-link { background: var(--gray-100); border: none; border-radius: 6px; color: var(--gray-600); font-size: 11px; cursor: pointer; padding: 0 6px; line-height: 1.7; transition: background 0.12s; }
 .ms-link:hover { background: var(--purple-light); }
 
-/* ── Harry Potter folder mascot: wizard cat ── */
-.hp-cat { position: fixed; bottom: 26px; width: 118px; height: 138px; cursor: pointer; z-index: 60; filter: drop-shadow(0 8px 10px rgba(0,0,0,0.18)); transition: left 1.05s cubic-bezier(0.5,0.05,0.25,1); }
-.hp-cat.face-left { transform: scaleX(-1); }
-.hp-cat svg { width: 100%; height: 100%; overflow: visible; display: block; }
-.cat-body, .cat-face, .cat-ear, .cat-foot, .cat-paw { fill: #3a3a42; }
-.cat-ear-in { fill: #c98b8b; }
-.eye-white { fill: #fbf7ef; } .pupil { fill: #1c1c22; }
-.cat-nose { fill: #e58b9a; } .cat-tongue { fill: #f29bb0; }
-.cat-whisker { stroke: #e9e4da; stroke-width: 1.4; fill: none; stroke-linecap: round; opacity: 0.85; }
-.cat-scar { stroke: #d23b3b; stroke-width: 2.2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
-.hat-cone { fill: #5b3aa6; } .hat-brim { fill: #4a2e88; } .hat-band { stroke: #caa64a; stroke-width: 3; fill: none; stroke-linecap: round; } .hat-star { fill: #f2d27a; }
-.cat-tail { fill: none; stroke: #3a3a42; stroke-width: 12; stroke-linecap: round; transform-origin: 30px 96px; animation: cat-tail 3.2s ease-in-out infinite; }
-@keyframes cat-tail { 0%,100% { transform: rotate(-6deg); } 50% { transform: rotate(10deg); } }
-.cat-paw { transform-origin: 58px 102px; animation: cat-lick 2.6s ease-in-out infinite; }
-@keyframes cat-lick { 0%,40%,100% { transform: translate(0,0) rotate(0); } 55%,75% { transform: translate(2px,-26px) rotate(-12deg); } }
-.cat-head { transform-origin: 60px 70px; animation: cat-dip 2.6s ease-in-out infinite; }
-@keyframes cat-dip { 0%,40%,100% { transform: translateY(0) rotate(0); } 55%,75% { transform: translateY(4px) rotate(2deg); } }
-.cat-tongue { opacity: 0; animation: cat-tongue 2.6s ease-in-out infinite; }
-@keyframes cat-tongue { 0%,50%,100% { opacity: 0; } 58%,72% { opacity: 1; } }
-.cat-eye { transform: translate(var(--lx,0px), var(--ly,0px)); animation: cat-blink 5s infinite; }
-@keyframes cat-blink { 0%,95%,100% { transform: translate(var(--lx,0px), var(--ly,0px)) scaleY(1); } 97.5% { transform: translate(var(--lx,0px), var(--ly,0px)) scaleY(0.1); } }
-.cat-ear { transition: transform 0.2s; }
-/* alert: stop grooming, perk up, watch the cursor */
-.hp-cat.is-alert .cat-paw, .hp-cat.is-alert .cat-head { animation: none; transform: none; }
-.hp-cat.is-alert .cat-tongue { animation: none; opacity: 0; }
-.hp-cat.is-alert .cat-ear { transform: translateY(-3px); }
-.hp-cat.is-alert .pupil { r: 3.6; }
-/* running: lean & scamper */
-.hp-cat.is-running svg { animation: cat-run 0.24s linear infinite; }
-@keyframes cat-run { 0%,100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-5px) rotate(4deg); } }
-.hp-cat.is-running .cat-head { animation: none; transform: none; }
-.hp-cat.is-running .cat-paw, .hp-cat.is-running .cat-tongue { animation: none; opacity: 0; }
-.hp-cat.is-running .cat-tail { animation: cat-tail 0.4s ease-in-out infinite; }
-.hp-cat-hint { position: fixed; bottom: 150px; right: 30px; z-index: 60; font-size: 11px; color: var(--gray-400); background: #fff; border: 1px solid var(--gray-200); border-radius: 12px; padding: 3px 9px; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
-.hp-cat:hover ~ .hp-cat-hint { opacity: 1; }
+/* ── Harry Potter folder mascot: Pusheen-style Gryffindor cat on a broom ── */
+.hp-cat { position: fixed; bottom: 30px; width: 232px; height: 150px; cursor: pointer; z-index: 60; filter: drop-shadow(0 9px 12px rgba(0,0,0,0.16)); transition: left 3.8s cubic-bezier(0.45,0,0.25,1); }
+.hp-cat.facing-right { transform: scaleX(-1); }
+.hp-cat svg { width: 100%; height: 100%; overflow: visible; display: block; transform-origin: center; animation: hpcat-float 4s ease-in-out infinite; }
+@keyframes hpcat-float { 0%,100% { transform: translateY(0) rotate(-1.5deg); } 50% { transform: translateY(-7px) rotate(1.5deg); } }
+.hp-cat.is-flying svg { animation: hpcat-flap 0.7s ease-in-out infinite; }
+@keyframes hpcat-flap { 0%,100% { transform: translateY(0) rotate(-3.5deg); } 50% { transform: translateY(-13px) rotate(3.5deg); } }
+.pcat-body { fill: #bdb8b0; stroke: #8f8a82; stroke-width: 3; stroke-linejoin: round; }
+.pcat-stripe { fill: none; stroke: #8f8a82; stroke-width: 3; stroke-linecap: round; }
+.pcat-ear-in { fill: #a59f97; }
+.pcat-eye { fill: #3a352f; }
+.pcat-glass { fill: none; stroke: #2e2a26; stroke-width: 2.6; }
+.pcat-nose { fill: #8f8a82; }
+.pcat-mouth { fill: none; stroke: #8f8a82; stroke-width: 2; stroke-linecap: round; }
+.pcat-whisker { fill: none; stroke: #a8a39b; stroke-width: 1.6; stroke-linecap: round; }
+.scarf-red { fill: #8c2f2f; } .scarf-gold { fill: #e3b23c; }
+.broom-handle { fill: #a9743f; stroke: #7d5430; stroke-width: 2; }
+.broom-band { fill: #b98a45; stroke: #7d5430; stroke-width: 2; }
+.broom-straw { fill: #edc451; stroke: #caa23a; stroke-width: 2; stroke-linejoin: round; }
+.broom-straw-l { stroke: #caa23a; stroke-width: 1.6; fill: none; stroke-linecap: round; }
+.tail { fill: #bdb8b0; stroke: #8f8a82; stroke-width: 3; stroke-linejoin: round; }

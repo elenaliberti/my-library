@@ -891,69 +891,57 @@ async function moveMsCard(id, target) {
   render();
 }
 
-// ── Harry Potter folder mascot: a wizard cat that grooms, watches the cursor, and bolts when clicked ──
+// ── Harry Potter folder mascot: a Pusheen-style Gryffindor cat that floats on a broom and flies across when touched ──
 function hpCatHtml() {
-  return `<div id="hp-cat" class="hp-cat" title="mrrp!">
-    <svg viewBox="0 0 120 140">
-      <path class="cat-tail" d="M30 96 q-26 4 -16 -30"/>
-      <ellipse class="cat-body" cx="60" cy="104" rx="32" ry="26"/>
-      <ellipse class="cat-foot" cx="45" cy="126" rx="10" ry="6"/>
-      <ellipse class="cat-foot" cx="75" cy="126" rx="10" ry="6"/>
-      <g class="cat-head">
-        <path class="cat-ear" d="M40 58 L35 34 L56 50 Z"/>
-        <path class="cat-ear" d="M80 58 L85 34 L64 50 Z"/>
-        <path class="cat-ear-in" d="M42 54 L39 41 L51 50 Z"/>
-        <path class="cat-ear-in" d="M78 54 L81 41 L69 50 Z"/>
-        <circle class="cat-face" cx="60" cy="66" r="27"/>
-        <path class="cat-scar" d="M55 52 l4 4 l-3 4 l4 4"/>
-        <path class="cat-whisker" d="M30 68 h14 M30 74 h14 M90 68 h-14 M90 74 h-14"/>
-        <g class="cat-eye"><ellipse class="eye-white" cx="50" cy="66" rx="6" ry="7"/><circle class="pupil" cx="50" cy="67" r="3.2"/></g>
-        <g class="cat-eye"><ellipse class="eye-white" cx="70" cy="66" rx="6" ry="7"/><circle class="pupil" cx="70" cy="67" r="3.2"/></g>
-        <path class="cat-nose" d="M57 74 h6 l-3 4 Z"/>
-        <path class="cat-tongue" d="M57 79 q3 7 6 0 Z"/>
-        <g class="cat-hat">
-          <path class="hat-cone" d="M60 0 C 52 20 48 34 45 41 L75 41 C 72 34 68 20 60 0 Z"/>
-          <ellipse class="hat-brim" cx="60" cy="42" rx="31" ry="7"/>
-          <path class="hat-band" d="M50 36 q10 4 20 0"/>
-          <circle class="hat-star" cx="57" cy="16" r="2.4"/>
-        </g>
-      </g>
-      <ellipse class="cat-paw" cx="58" cy="102" rx="9" ry="6"/>
+  return `<div id="hp-cat" class="hp-cat" title="touch me to fly!">
+    <svg viewBox="0 0 240 150">
+      <rect class="broom-handle" x="14" y="118" width="168" height="8" rx="4"/>
+      <path class="tail" d="M150 96 q26 6 30 30 q1 10 -8 12 q-9 1 -10 -8 q-2 -16 -16 -22 z"/>
+      <path class="pcat-stripe" d="M168 122 h8 M170 130 h8"/>
+      <rect class="broom-band" x="178" y="112" width="13" height="20" rx="3"/>
+      <path class="broom-straw" d="M188 110 q40 -4 46 6 q4 12 0 24 q-8 8 -46 4 z"/>
+      <path class="broom-straw-l" d="M196 112 v34 M206 110 v38 M216 111 v36 M226 114 v30"/>
+      <path class="pcat-body" d="M44 118 C 26 118 22 86 30 66 C 40 40 74 34 108 38 C 150 34 178 50 180 86 C 181 104 172 118 154 118 Z"/>
+      <path class="pcat-body" d="M52 46 L48 22 L74 40 Z"/>
+      <path class="pcat-body" d="M104 40 L114 18 L84 36 Z"/>
+      <path class="pcat-ear-in" d="M55 43 L53 30 L67 40 Z"/>
+      <path class="pcat-ear-in" d="M101 38 L108 26 L90 36 Z"/>
+      <path class="pcat-stripe" d="M70 40 v10 M80 38 v11 M90 39 v10"/>
+      <circle class="pcat-glass" cx="62" cy="68" r="15"/>
+      <circle class="pcat-glass" cx="98" cy="66" r="15"/>
+      <path class="pcat-glass" d="M77 67 q3 -3 6 0"/>
+      <path class="pcat-glass" d="M47 64 l-9 -3"/>
+      <circle class="pcat-eye" cx="62" cy="69" r="4.2"/>
+      <circle class="pcat-eye" cx="98" cy="67" r="4.2"/>
+      <path class="pcat-nose" d="M77 78 h6 l-3 4 Z"/>
+      <path class="pcat-mouth" d="M80 82 q-5 6 -10 1 M80 82 q5 6 10 1"/>
+      <path class="pcat-whisker" d="M44 74 l-22 -4 M45 80 l-22 2 M116 72 l20 -5 M116 78 l20 2"/>
+      <path class="scarf-red" d="M40 92 q44 22 96 4 l0 14 q-52 18 -96 -4 z"/>
+      <rect class="scarf-red" x="58" y="108" width="20" height="40" rx="3"/>
+      <rect class="scarf-gold" x="58" y="118" width="20" height="9"/>
+      <rect class="scarf-gold" x="58" y="136" width="20" height="9"/>
     </svg>
-  </div>
-  <div class="hp-cat-hint">click me!</div>`;
+  </div>`;
 }
 
 function mountHpCat() {
   const cat = document.getElementById('hp-cat');
   if (!cat) return;
-  const W = 118;
-  const place = side => { cat.dataset.side = side; cat.style.left = (side === 'left' ? 24 : Math.max(40, window.innerWidth - W - 40)) + 'px'; };
-  place(cat.dataset.side === 'left' ? 'left' : 'right');
-  // cursor proximity → perk up & track the cursor with the eyes
-  if (window._hpCatMove) document.removeEventListener('mousemove', window._hpCatMove);
-  window._hpCatMove = e => {
-    const c = document.getElementById('hp-cat');
-    if (!c) { document.removeEventListener('mousemove', window._hpCatMove); window._hpCatMove = null; return; }
-    if (c.classList.contains('is-running')) return;
-    const r = c.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-    const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
-    c.classList.toggle('is-alert', dist < 260);
-    const ang = Math.atan2(e.clientY - cy, e.clientX - cx);
-    c.style.setProperty('--lx', (Math.cos(ang) * 2.6).toFixed(1) + 'px');
-    c.style.setProperty('--ly', (Math.sin(ang) * 2).toFixed(1) + 'px');
+  const W = 232;
+  const xFor = side => (side === 'left' ? 20 : Math.max(40, window.innerWidth - W - 30)) + 'px';
+  if (!cat.dataset.side) cat.dataset.side = 'right';
+  cat.style.left = xFor(cat.dataset.side);
+  const fly = () => {
+    if (cat.classList.contains('is-flying')) return;
+    const to = cat.dataset.side === 'left' ? 'right' : 'left';
+    cat.classList.add('is-flying');
+    cat.classList.toggle('facing-right', to === 'right'); // mirror so it faces the way it's going
+    cat.style.left = xFor(to);
+    cat.dataset.side = to;
+    setTimeout(() => cat.classList.remove('is-flying'), 3850);
   };
-  document.addEventListener('mousemove', window._hpCatMove);
-  // click → scamper to the opposite side of the screen
-  cat.addEventListener('click', () => {
-    if (cat.classList.contains('is-running')) return;
-    const to = (cat.dataset.side === 'right' || !cat.dataset.side) ? 'left' : 'right';
-    cat.classList.remove('is-alert');
-    cat.classList.add('is-running');
-    cat.classList.toggle('face-left', to === 'left');
-    place(to);
-    setTimeout(() => { cat.classList.remove('is-running'); cat.classList.remove('face-left'); }, 1150);
-  });
+  cat.addEventListener('mouseenter', fly);
+  cat.addEventListener('click', fly);
 }
 
 // ── Folder view ───────────────────────────────────────────────────────────────
