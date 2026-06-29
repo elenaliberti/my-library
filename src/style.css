@@ -433,3 +433,39 @@ textarea { min-height: 70px; resize: vertical; }
 .wc-row .btn { flex-shrink: 0; padding: 8px 11px; }
 .ms-link { background: var(--gray-100); border: none; border-radius: 6px; color: var(--gray-600); font-size: 11px; cursor: pointer; padding: 0 6px; line-height: 1.7; transition: background 0.12s; }
 .ms-link:hover { background: var(--purple-light); }
+
+/* ── Harry Potter folder mascot: wizard cat ── */
+.hp-cat { position: fixed; bottom: 26px; width: 118px; height: 138px; cursor: pointer; z-index: 60; filter: drop-shadow(0 8px 10px rgba(0,0,0,0.18)); transition: left 1.05s cubic-bezier(0.5,0.05,0.25,1); }
+.hp-cat.face-left { transform: scaleX(-1); }
+.hp-cat svg { width: 100%; height: 100%; overflow: visible; display: block; }
+.cat-body, .cat-face, .cat-ear, .cat-foot, .cat-paw { fill: #3a3a42; }
+.cat-ear-in { fill: #c98b8b; }
+.eye-white { fill: #fbf7ef; } .pupil { fill: #1c1c22; }
+.cat-nose { fill: #e58b9a; } .cat-tongue { fill: #f29bb0; }
+.cat-whisker { stroke: #e9e4da; stroke-width: 1.4; fill: none; stroke-linecap: round; opacity: 0.85; }
+.cat-scar { stroke: #d23b3b; stroke-width: 2.2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.hat-cone { fill: #5b3aa6; } .hat-brim { fill: #4a2e88; } .hat-band { stroke: #caa64a; stroke-width: 3; fill: none; stroke-linecap: round; } .hat-star { fill: #f2d27a; }
+.cat-tail { fill: none; stroke: #3a3a42; stroke-width: 12; stroke-linecap: round; transform-origin: 30px 96px; animation: cat-tail 3.2s ease-in-out infinite; }
+@keyframes cat-tail { 0%,100% { transform: rotate(-6deg); } 50% { transform: rotate(10deg); } }
+.cat-paw { transform-origin: 58px 102px; animation: cat-lick 2.6s ease-in-out infinite; }
+@keyframes cat-lick { 0%,40%,100% { transform: translate(0,0) rotate(0); } 55%,75% { transform: translate(2px,-26px) rotate(-12deg); } }
+.cat-head { transform-origin: 60px 70px; animation: cat-dip 2.6s ease-in-out infinite; }
+@keyframes cat-dip { 0%,40%,100% { transform: translateY(0) rotate(0); } 55%,75% { transform: translateY(4px) rotate(2deg); } }
+.cat-tongue { opacity: 0; animation: cat-tongue 2.6s ease-in-out infinite; }
+@keyframes cat-tongue { 0%,50%,100% { opacity: 0; } 58%,72% { opacity: 1; } }
+.cat-eye { transform: translate(var(--lx,0px), var(--ly,0px)); animation: cat-blink 5s infinite; }
+@keyframes cat-blink { 0%,95%,100% { transform: translate(var(--lx,0px), var(--ly,0px)) scaleY(1); } 97.5% { transform: translate(var(--lx,0px), var(--ly,0px)) scaleY(0.1); } }
+.cat-ear { transition: transform 0.2s; }
+/* alert: stop grooming, perk up, watch the cursor */
+.hp-cat.is-alert .cat-paw, .hp-cat.is-alert .cat-head { animation: none; transform: none; }
+.hp-cat.is-alert .cat-tongue { animation: none; opacity: 0; }
+.hp-cat.is-alert .cat-ear { transform: translateY(-3px); }
+.hp-cat.is-alert .pupil { r: 3.6; }
+/* running: lean & scamper */
+.hp-cat.is-running svg { animation: cat-run 0.24s linear infinite; }
+@keyframes cat-run { 0%,100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-5px) rotate(4deg); } }
+.hp-cat.is-running .cat-head { animation: none; transform: none; }
+.hp-cat.is-running .cat-paw, .hp-cat.is-running .cat-tongue { animation: none; opacity: 0; }
+.hp-cat.is-running .cat-tail { animation: cat-tail 0.4s ease-in-out infinite; }
+.hp-cat-hint { position: fixed; bottom: 150px; right: 30px; z-index: 60; font-size: 11px; color: var(--gray-400); background: #fff; border: 1px solid var(--gray-200); border-radius: 12px; padding: 3px 9px; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
+.hp-cat:hover ~ .hp-cat-hint { opacity: 1; }

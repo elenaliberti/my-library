@@ -891,6 +891,71 @@ async function moveMsCard(id, target) {
   render();
 }
 
+// ── Harry Potter folder mascot: a wizard cat that grooms, watches the cursor, and bolts when clicked ──
+function hpCatHtml() {
+  return `<div id="hp-cat" class="hp-cat" title="mrrp!">
+    <svg viewBox="0 0 120 140">
+      <path class="cat-tail" d="M30 96 q-26 4 -16 -30"/>
+      <ellipse class="cat-body" cx="60" cy="104" rx="32" ry="26"/>
+      <ellipse class="cat-foot" cx="45" cy="126" rx="10" ry="6"/>
+      <ellipse class="cat-foot" cx="75" cy="126" rx="10" ry="6"/>
+      <g class="cat-head">
+        <path class="cat-ear" d="M40 58 L35 34 L56 50 Z"/>
+        <path class="cat-ear" d="M80 58 L85 34 L64 50 Z"/>
+        <path class="cat-ear-in" d="M42 54 L39 41 L51 50 Z"/>
+        <path class="cat-ear-in" d="M78 54 L81 41 L69 50 Z"/>
+        <circle class="cat-face" cx="60" cy="66" r="27"/>
+        <path class="cat-scar" d="M55 52 l4 4 l-3 4 l4 4"/>
+        <path class="cat-whisker" d="M30 68 h14 M30 74 h14 M90 68 h-14 M90 74 h-14"/>
+        <g class="cat-eye"><ellipse class="eye-white" cx="50" cy="66" rx="6" ry="7"/><circle class="pupil" cx="50" cy="67" r="3.2"/></g>
+        <g class="cat-eye"><ellipse class="eye-white" cx="70" cy="66" rx="6" ry="7"/><circle class="pupil" cx="70" cy="67" r="3.2"/></g>
+        <path class="cat-nose" d="M57 74 h6 l-3 4 Z"/>
+        <path class="cat-tongue" d="M57 79 q3 7 6 0 Z"/>
+        <g class="cat-hat">
+          <path class="hat-cone" d="M60 0 C 52 20 48 34 45 41 L75 41 C 72 34 68 20 60 0 Z"/>
+          <ellipse class="hat-brim" cx="60" cy="42" rx="31" ry="7"/>
+          <path class="hat-band" d="M50 36 q10 4 20 0"/>
+          <circle class="hat-star" cx="57" cy="16" r="2.4"/>
+        </g>
+      </g>
+      <ellipse class="cat-paw" cx="58" cy="102" rx="9" ry="6"/>
+    </svg>
+  </div>
+  <div class="hp-cat-hint">click me!</div>`;
+}
+
+function mountHpCat() {
+  const cat = document.getElementById('hp-cat');
+  if (!cat) return;
+  const W = 118;
+  const place = side => { cat.dataset.side = side; cat.style.left = (side === 'left' ? 24 : Math.max(40, window.innerWidth - W - 40)) + 'px'; };
+  place(cat.dataset.side === 'left' ? 'left' : 'right');
+  // cursor proximity → perk up & track the cursor with the eyes
+  if (window._hpCatMove) document.removeEventListener('mousemove', window._hpCatMove);
+  window._hpCatMove = e => {
+    const c = document.getElementById('hp-cat');
+    if (!c) { document.removeEventListener('mousemove', window._hpCatMove); window._hpCatMove = null; return; }
+    if (c.classList.contains('is-running')) return;
+    const r = c.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    const dist = Math.hypot(e.clientX - cx, e.clientY - cy);
+    c.classList.toggle('is-alert', dist < 260);
+    const ang = Math.atan2(e.clientY - cy, e.clientX - cx);
+    c.style.setProperty('--lx', (Math.cos(ang) * 2.6).toFixed(1) + 'px');
+    c.style.setProperty('--ly', (Math.sin(ang) * 2).toFixed(1) + 'px');
+  };
+  document.addEventListener('mousemove', window._hpCatMove);
+  // click → scamper to the opposite side of the screen
+  cat.addEventListener('click', () => {
+    if (cat.classList.contains('is-running')) return;
+    const to = (cat.dataset.side === 'right' || !cat.dataset.side) ? 'left' : 'right';
+    cat.classList.remove('is-alert');
+    cat.classList.add('is-running');
+    cat.classList.toggle('face-left', to === 'left');
+    place(to);
+    setTimeout(() => { cat.classList.remove('is-running'); cat.classList.remove('face-left'); }, 1150);
+  });
+}
+
 // ── Folder view ───────────────────────────────────────────────────────────────
 const FOLDER_DEFAULTS = {
   'ff|Harry Potter - J. K. Rowling':                         { displayName: 'Harry Potter', icon: '⚡' },
@@ -1350,10 +1415,12 @@ function render() {
   }
 
   if (state.viewMode === 'folder') {
-    document.getElementById('app').innerHTML = titlebarHtml + folderViewHtml() + folderEditModalHtml() + folderCreateModalHtml() + itemIconModalHtml() + (state.modalOpen ? modalHtml() : '');
+    const inHp = state.folderPath[0] === 'ff' && state.folderPath[1] === 'Harry Potter - J. K. Rowling';
+    document.getElementById('app').innerHTML = titlebarHtml + folderViewHtml() + folderEditModalHtml() + folderCreateModalHtml() + itemIconModalHtml() + (state.modalOpen ? modalHtml() : '') + (inHp ? hpCatHtml() : '');
     const newFolderView = document.getElementById('folder-view');
     if (newFolderView) newFolderView.scrollTop = folderScrollTop;
     bindEvents();
+    if (inHp) mountHpCat();
     return;
   }
 
