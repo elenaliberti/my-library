@@ -500,3 +500,17 @@ textarea { min-height: 70px; resize: vertical; }
 .stats-section-ttl { display: inline-block; background: #3c5429; color: #fff; padding: 4px 13px; border-radius: 8px; }
 /* bigger flanking plants */
 .ms-plant { width: 70px; }
+
+/* ── Sage-green toolbar bars; pills stay white ── */
+.stat-row { background: #7d9d6a; border-bottom: none; }
+.stat-pill { background: #fff; border-color: rgba(255,255,255,0.55); }
+.stat-words { color: rgba(255,255,255,0.95); }
+.stat-divider { background: rgba(255,255,255,0.4); }
+.filter-bar { background: #7d9d6a; padding: 11px 20px; }
+.folder-filter-row { background: #7d9d6a; border-bottom: none; }
+.fpill { background: #fff; }
+.fpill.active { background: #3c5429; border-color: #3c5429; color: #fff; }
+.fpill.active-fav { background: #fffbeb; }
+.dd-btn { background: #fff; }
+.dd-on .dd-btn { background: #3c5429; border-color: #3c5429; color: #fff; }
+.dd-on .dd-chev { color: rgba(255,255,255,0.7); }
