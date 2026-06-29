@@ -383,3 +383,7 @@ textarea { min-height: 70px; resize: vertical; }
 .ms-finish-ttl { font-weight: 800; font-size: 15px; }
 .ms-finish-sub { font-size: 11px; color: #047857; max-width: 200px; line-height: 1.35; }
 .ms-finish.ms-drop-over { background: #d1fae5; border-color: #10b981; border-style: solid; }
+.ms-cover { position: relative; }
+.ms-cover-edit { position: absolute; top: 2px; right: 2px; opacity: 0; background: rgba(0,0,0,0.5); color: #fff; border: none; border-radius: 6px; padding: 1px 5px; font-size: 10px; cursor: pointer; transition: opacity 0.12s, background 0.12s; line-height: 1.4; }
+.ms-card:hover .ms-cover-edit { opacity: 1; }
+.ms-cover-edit:hover { background: rgba(0,0,0,0.78); }

@@ -717,7 +717,7 @@ function mySpaceCard(x) {
   }
   if (x.words) tags.push(`<span class="ms-wc">${fmtNum(x.words)}w</span>`);
   return `<div class="ms-card" draggable="true" data-ms-id="${esc(x.id)}" title="${esc(x.title || '')}">
-    <div class="ms-cover" style="background:linear-gradient(135deg,${c1},${c2})">${cover}</div>
+    <div class="ms-cover" style="background:linear-gradient(135deg,${c1},${c2})">${cover}<button class="ms-cover-edit cover-edit-btn" data-edit-item-icon="${esc(x.id)}" draggable="false" title="Change cover">✏️</button></div>
     <div class="ms-meta">
       <div class="ms-title">${esc(x.title || 'Untitled')}</div>
       <div class="ms-author">${esc(x.author || '')}${x.fandom ? ' · ' + esc(x.fandom) : ''}</div>
