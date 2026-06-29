@@ -152,6 +152,9 @@ function fmtNum(n) {
   return n.toLocaleString();
 }
 
+function fmtDateShort(iso) { return iso ? new Date(iso).toLocaleDateString('en-GB', { day:'numeric', month:'short' }) : ''; }
+function daysBetween(a, b) { return Math.max(1, Math.round((Date.parse(b) - Date.parse(a)) / 86400000)); }
+
 function getFandoms() {
   const s = new Set();
   state.items.filter(x => x.type === 'ff' && x.fandom).forEach(x => s.add(x.fandom));
@@ -650,6 +653,32 @@ function statsViewHtml() {
   const mBtn = (id, lbl) =>
     `<button class="smetric-btn${state.statsMetric===id?' active':''}" data-smetric="${id}">${lbl}</button>`;
 
+  // Reading pace — fics tracked through the MySpace board (have both a start and finish date).
+  const pacedReads = state.items
+    .filter(x => x.type === 'ff' && x.readingStartedAt && x.finishedAt && x.words > 0 && Date.parse(x.finishedAt) >= Date.parse(x.readingStartedAt))
+    .map(x => { const days = daysBetween(x.readingStartedAt, x.finishedAt); return { title: x.title, words: x.words, days, pace: Math.round(x.words / days), end: x.finishedAt }; })
+    .sort((a, b) => Date.parse(a.end) - Date.parse(b.end));
+  let paceHtml = '';
+  if (pacedReads.length) {
+    const avg = Math.round(pacedReads.reduce((s, r) => s + r.pace, 0) / pacedReads.length);
+    const maxPace = Math.max(...pacedReads.map(r => r.pace), 1);
+    const paceBars = pacedReads.map(r => {
+      const h = Math.max(r.pace / maxPace * 100, 4);
+      return `<div class="chart-col">
+        <div class="chart-bar-wrap"><div class="chart-bar" style="height:${h}%" title="${esc(r.title || '')} — ${fmtNum(r.pace)} words/day (${fmtNum(r.words)}w in ${r.days}d)"><span class="chart-bar-val">${fmtNum(r.pace)}</span></div></div>
+        <div class="chart-bar-lbl">${fmtDateShort(r.end)}</div>
+      </div>`;
+    }).join('');
+    paceHtml = `
+      <div class="stats-trend-hdr" style="margin-top:24px">
+        <span class="stats-section-ttl">📖 Reading pace</span>
+        <span class="stats-note" style="margin:0">avg <b>${fmtNum(avg)}</b> words/day · ${pacedReads.length} tracked read${pacedReads.length === 1 ? '' : 's'}</span>
+      </div>
+      <div class="stats-chart">${paceBars}</div>
+      <div class="stats-chart-base"></div>
+      <p class="stats-note" style="margin-top:6px">Pace = word count ÷ days from start to finish. Reads are tracked by dragging fics through the <b>MySpace</b> board (TBR → Reading → Finished).</p>`;
+  }
+
   return `<div id="stats-view">
     <div class="stats-cats">
       ${tab('all','All')}${tab('books','📚 Books')}${tab('ff','📖 Fanfiction')}${tab('oneshot','📄 One-shots')}
@@ -671,7 +700,83 @@ function statsViewHtml() {
     <div class="stats-chart-base"></div>
     ${noteHtml}
     <p class="stats-note" style="margin-top:6px">* estimated at 250 words/min; books without word count use 250 words/page</p>
+    ${paceHtml}
   </div>`;
+}
+
+// ── MySpace — reading board ─────────────────────────────────────────────────────
+function mySpaceCard(x) {
+  const [c1, c2] = folderGradient(x.id);
+  const coverIsUrl = (x.coverIcon || '').startsWith('http');
+  const cover = coverIsUrl
+    ? `<img class="ms-cover-img" src="${esc(x.coverIcon)}" />`
+    : `<span class="ms-cover-emoji">${x.coverIcon || '✍️'}</span>`;
+  const tags = [];
+  if (x.status === 'Reading' && x.readingStartedAt) {
+    tags.push(`<span class="ms-badge">▶ ${fmtDateShort(x.readingStartedAt)} · ${daysBetween(x.readingStartedAt, new Date().toISOString())}d</span>`);
+  }
+  if (x.words) tags.push(`<span class="ms-wc">${fmtNum(x.words)}w</span>`);
+  return `<div class="ms-card" draggable="true" data-ms-id="${esc(x.id)}" title="${esc(x.title || '')}">
+    <div class="ms-cover" style="background:linear-gradient(135deg,${c1},${c2})">${cover}</div>
+    <div class="ms-meta">
+      <div class="ms-title">${esc(x.title || 'Untitled')}</div>
+      <div class="ms-author">${esc(x.author || '')}${x.fandom ? ' · ' + esc(x.fandom) : ''}</div>
+      ${tags.length ? `<div class="ms-tags">${tags.join('')}</div>` : ''}
+    </div>
+  </div>`;
+}
+
+function mySpaceHtml() {
+  const ffs = state.items.filter(x => x.type === 'ff');
+  const tbr = ffs.filter(x => (x.status || 'TBR') === 'TBR');
+  const reading = ffs.filter(x => x.status === 'Reading' && !x.waitingOnChap);
+  const waiting = ffs.filter(x => x.status === 'Reading' && x.waitingOnChap);
+  const byAdded = (a, b) => (b._addedAt || 0) - (a._addedAt || 0);
+  const byStarted = (a, b) => ((Date.parse(b.readingStartedAt) || 0) - (Date.parse(a.readingStartedAt) || 0)) || byAdded(a, b);
+  tbr.sort(byAdded); reading.sort(byStarted); waiting.sort(byStarted);
+  const body = (items, empty) => items.length ? items.map(mySpaceCard).join('') : `<div class="ms-empty">${empty}</div>`;
+  return `<div id="myspace">
+    <div class="ms-col" data-ms-drop="TBR">
+      <div class="ms-col-hdr"><span>📚 To Be Read</span><span class="ms-count">${tbr.length}</span></div>
+      <div class="ms-col-body">${body(tbr, 'Your to-read fics live here')}</div>
+    </div>
+    <div class="ms-col ms-col-reading" data-ms-drop="Reading">
+      <div class="ms-col-hdr"><span>📖 Reading</span><span class="ms-count">${reading.length}</span></div>
+      <div class="ms-col-body">${body(reading, 'Drag a fic here when you start reading — the date is logged')}</div>
+    </div>
+    <div class="ms-col-right">
+      <div class="ms-col ms-col-waiting" data-ms-drop="Waiting">
+        <div class="ms-col-hdr"><span>⏳ Waiting on chap</span><span class="ms-count">${waiting.length}</span></div>
+        <div class="ms-col-body">${body(waiting, 'WIPs you’re caught up on — waiting for new chapters')}</div>
+      </div>
+      <div class="ms-finish" data-ms-drop="Finished">
+        <div class="ms-finish-icon">✅</div>
+        <div class="ms-finish-ttl">Finished</div>
+        <div class="ms-finish-sub">Drop here to mark finished today &amp; log your reading pace</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function moveMsCard(id, target) {
+  const item = state.items.find(x => x.id === id);
+  if (!item) return;
+  const now = new Date().toISOString();
+  if (target === 'TBR') {
+    item.status = 'TBR'; item.waitingOnChap = false; item.readingStartedAt = null;
+  } else if (target === 'Reading') {
+    item.status = 'Reading'; item.waitingOnChap = false;
+    if (!item.readingStartedAt) item.readingStartedAt = now;
+  } else if (target === 'Waiting') {
+    item.status = 'Reading'; item.waitingOnChap = true;
+    if (!item.readingStartedAt) item.readingStartedAt = now;
+  } else if (target === 'Finished') {
+    item.status = 'Finished'; item.waitingOnChap = false; item.finishedAt = now;
+    if (!(timesRead(item) > 0)) { item.readDates = [now]; item.readCount = 1; }
+  } else return;
+  item._modAt = now;
+  saveData();
+  render();
 }
 
 // ── Folder view ───────────────────────────────────────────────────────────────
@@ -1117,6 +1222,7 @@ function render() {
         <div class="view-seg">
           <button class="vseg-btn${state.viewMode==='list'?' active':''}" id="btn-view-list" title="List view">☰</button>
           <button class="vseg-btn${state.viewMode==='folder'?' active':''}" id="btn-view-folder" title="Folder view">⊞</button>
+          <button class="vseg-btn${state.viewMode==='myspace'?' active':''}" id="btn-view-myspace" title="MySpace — reading board">🗂️</button>
         </div>
         <button class="btn btn-primary btn-sm btn-icon" id="btn-add">＋ Add entry</button>
       </div>
@@ -1134,6 +1240,12 @@ function render() {
     document.getElementById('app').innerHTML = titlebarHtml + folderViewHtml() + folderEditModalHtml() + folderCreateModalHtml() + itemIconModalHtml() + (state.modalOpen ? modalHtml() : '');
     const newFolderView = document.getElementById('folder-view');
     if (newFolderView) newFolderView.scrollTop = folderScrollTop;
+    bindEvents();
+    return;
+  }
+
+  if (state.viewMode === 'myspace') {
+    document.getElementById('app').innerHTML = titlebarHtml + mySpaceHtml() + (state.modalOpen ? modalHtml() : '') + itemIconModalHtml();
     bindEvents();
     return;
   }
@@ -1306,6 +1418,41 @@ function bindEvents() {
   });
   document.getElementById('btn-view-folder')?.addEventListener('click', () => {
     state.viewMode = 'folder'; render();
+  });
+  document.getElementById('btn-view-myspace')?.addEventListener('click', () => {
+    state.viewMode = 'myspace'; state.view = 'library'; render();
+  });
+
+  // ── MySpace board: drag & drop ──
+  let _msDrag = null, _msDragged = false;
+  document.querySelectorAll('.ms-card').forEach(c => {
+    c.addEventListener('dragstart', e => {
+      _msDrag = c.dataset.msId; _msDragged = true;
+      c.classList.add('ms-dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      try { e.dataTransfer.setData('text/plain', c.dataset.msId); } catch (err) {}
+    });
+    c.addEventListener('dragend', () => {
+      c.classList.remove('ms-dragging');
+      document.querySelectorAll('.ms-drop-over').forEach(z => z.classList.remove('ms-drop-over'));
+      setTimeout(() => { _msDragged = false; }, 0);
+    });
+    c.addEventListener('click', () => {
+      if (_msDragged) return;
+      const item = state.items.find(x => x.id === c.dataset.msId);
+      if (item) { state.editItem = { ...item }; state.modalOpen = true; render(); }
+    });
+  });
+  document.querySelectorAll('#myspace [data-ms-drop]').forEach(zone => {
+    zone.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; zone.classList.add('ms-drop-over'); });
+    zone.addEventListener('dragleave', e => { if (!zone.contains(e.relatedTarget)) zone.classList.remove('ms-drop-over'); });
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('ms-drop-over');
+      const id = _msDrag || (e.dataTransfer && e.dataTransfer.getData('text/plain'));
+      _msDrag = null;
+      if (id) moveMsCard(id, zone.dataset.msDrop);
+    });
   });
 
   // Folder search & sort
