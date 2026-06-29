@@ -800,9 +800,12 @@ function mySpaceShelfBook(x) {
     ? `<div class="ms-shelf-since">▶ ${fmtDateShort(x.readingStartedAt)} · ${daysBetween(x.readingStartedAt, new Date().toISOString())}d</div>` : '';
   return `<div class="ms-shelf-book" draggable="true" data-ms-id="${esc(x.id)}" title="${esc(x.title || '')}">
     <div class="ms-shelf-cover" style="background:linear-gradient(135deg,${c1},${c2})">${cover}<button class="ms-cover-edit cover-edit-btn" data-edit-item-icon="${esc(x.id)}" draggable="false" title="Change cover">✏️</button></div>
-    <div class="ms-shelf-ttl">${esc(x.title || 'Untitled')}</div>
-    <div class="ms-shelf-author">${esc(x.author || '')}</div>
-    ${started}
+    <div class="ms-shelf-plank"></div>
+    <div class="ms-shelf-cap">
+      <div class="ms-shelf-ttl">${esc(x.title || 'Untitled')}</div>
+      <div class="ms-shelf-author">${esc(x.author || '')}</div>
+      ${started}
+    </div>
   </div>`;
 }
 
@@ -815,8 +818,8 @@ function mySpaceBooksHtml() {
   tbr.sort(byAdded); reading.sort(byStarted);
   const tbrBody = tbr.length ? tbr.map(mySpaceCard).join('') : `<div class="ms-empty">Your to-read books live here</div>`;
   const shelf = reading.length
-    ? `<div class="ms-shelf-books">${reading.map(mySpaceShelfBook).join('')}</div><div class="ms-shelf-plank"></div>`
-    : `<div class="ms-shelf-empty"><div class="ms-shelf-empty-ico">📖</div><div>Drag a book here when you start reading it</div></div><div class="ms-shelf-plank"></div>`;
+    ? `<div class="ms-shelf-books">${reading.map(mySpaceShelfBook).join('')}</div>`
+    : `<div class="ms-shelf-empty"><div class="ms-shelf-empty-ico">📖</div><div>Drag a book here when you start reading it</div><div class="ms-shelf-plank ms-shelf-plank-empty"></div></div>`;
   return `<div class="ms-board ms-board-books">
     <div class="ms-col" data-ms-drop="TBR">
       <div class="ms-col-hdr"><span>📚 To Be Read</span><span class="ms-count">${tbr.length}</span></div>
