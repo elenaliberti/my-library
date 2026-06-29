@@ -8210,8 +8210,9 @@
         "2015-05-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-06-29T23:27:01.910Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/I/81dw-4rCagL._UF1000,1000_QL80_.jpg"
     },
     {
       "id": "book_29",
@@ -8233,8 +8234,9 @@
         "2016-01-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-06-29T23:26:19.794Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/I/71QglqKqNiL._AC_UF1000,1000_QL80_.jpg"
     },
     {
       "id": "book_30",
@@ -16293,24 +16295,34 @@
       "id": "book_1782756764570_0",
       "type": "book",
       "title": "Shadowhunters: Città di ossa",
-      "author": "",
+      "author": "Cassandra Clare",
       "genre": "Fantasy",
       "status": "Finished",
       "words": 110000,
       "userRating": 0,
       "_addedAt": 642,
-      "finishedAt": "2015-08-14T12:00:00.000Z",
+      "finishedAt": "2015-08-14T11:00:00.000Z",
       "readDates": [
         "2015-08-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-06-29T23:21:51.096Z",
+      "coverIcon": "https://m.media-amazon.com/images/I/71lcxSXGrGL._AC_UF894,1000_QL80_.jpg",
+      "fandom": "",
+      "section": "",
+      "pairing": "",
+      "rating": "",
+      "hearts": null,
+      "pages": null,
+      "notes": "",
+      "tags": [],
+      "url": ""
     },
     {
       "id": "book_1782756764570_1",
       "type": "book",
       "title": "Shadowhunters: Città di cenere",
-      "author": "",
+      "author": "Cassandra Clare",
       "genre": "Fantasy",
       "status": "Finished",
       "words": 110000,
@@ -16321,7 +16333,17 @@
         "2015-11-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-06-29T23:21:26.431Z",
+      "coverIcon": "https://m.media-amazon.com/images/I/61kd4sTOibL._AC_UF1000,1000_QL80_.jpg",
+      "fandom": "",
+      "section": "",
+      "pairing": "",
+      "rating": "",
+      "hearts": null,
+      "pages": null,
+      "notes": "",
+      "tags": [],
+      "url": ""
     },
     {
       "id": "book_1782756764570_2",
