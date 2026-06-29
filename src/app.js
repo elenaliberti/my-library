@@ -895,6 +895,8 @@ async function moveMsCard(id, target) {
 function hpCatHtml() {
   return `<div id="hp-cat" class="hp-cat" title="touch me to fly!">
     <img class="hp-cat-img" src="hp_cat.png" alt="Gryffindor cat on a broom" draggable="false" />
+    <span class="hp-eye" style="left:25%;top:46.5%"><span class="hp-pupil"></span></span>
+    <span class="hp-eye" style="left:37%;top:45.5%"><span class="hp-pupil"></span></span>
   </div>`;
 }
 
@@ -905,14 +907,54 @@ function mountHpCat() {
   const xFor = side => (side === 'left' ? 20 : Math.max(40, window.innerWidth - W - 30)) + 'px';
   if (!cat.dataset.side) cat.dataset.side = 'right';
   cat.style.left = xFor(cat.dataset.side);
+
+  // a fixed layer to host the little star particles
+  let layer = document.getElementById('hp-star-layer');
+  if (!layer) { layer = document.createElement('div'); layer.id = 'hp-star-layer'; document.body.appendChild(layer); }
+  const sparkle = (x, y, big) => {
+    const s = document.createElement('div');
+    s.className = 'hp-star';
+    s.textContent = '★';
+    s.style.left = x + 'px'; s.style.top = y + 'px';
+    s.style.fontSize = ((big ? 12 : 8) + Math.random() * 7) + 'px';
+    s.style.setProperty('--dx', ((Math.random() * 2 - 1) * 22).toFixed(0) + 'px');
+    s.style.setProperty('--dy', ((big ? 16 : 8) + Math.random() * 14).toFixed(0) + 'px');
+    s.style.setProperty('--rot', ((Math.random() * 2 - 1) * 70).toFixed(0) + 'deg');
+    layer.appendChild(s);
+    setTimeout(() => s.remove(), 850);
+  };
+
+  // eyes follow the cursor + a trail of yellow stars from the pointer (HP folder only)
+  if (window._hpMove) document.removeEventListener('mousemove', window._hpMove);
+  let lastTrail = 0;
+  window._hpMove = e => {
+    const c = document.getElementById('hp-cat');
+    if (!c) { document.removeEventListener('mousemove', window._hpMove); window._hpMove = null; return; }
+    if (!c.classList.contains('is-flying')) {
+      const r = c.getBoundingClientRect();
+      const ang = Math.atan2(e.clientY - (r.top + r.height * 0.46), e.clientX - (r.left + r.width * 0.32));
+      c.style.setProperty('--ex', (Math.cos(ang) * 2.4).toFixed(1) + 'px');
+      c.style.setProperty('--ey', (Math.sin(ang) * 2.2).toFixed(1) + 'px');
+    }
+    const now = Date.now();
+    if (now - lastTrail > 45) { lastTrail = now; sparkle(e.clientX, e.clientY, false); }
+  };
+  document.addEventListener('mousemove', window._hpMove);
+
+  // touch → slowly fly across, leaving a star trail from the broom
   const fly = () => {
     if (cat.classList.contains('is-flying')) return;
     const to = cat.dataset.side === 'left' ? 'right' : 'left';
     cat.classList.add('is-flying');
-    cat.classList.toggle('facing-right', to === 'right'); // mirror so it faces the way it's going
+    cat.classList.toggle('facing-right', to === 'right'); // face the way it's going
     cat.style.left = xFor(to);
     cat.dataset.side = to;
-    setTimeout(() => cat.classList.remove('is-flying'), 3850);
+    const trail = setInterval(() => {
+      const r = cat.getBoundingClientRect();
+      const broomX = cat.classList.contains('facing-right') ? r.left + r.width * 0.16 : r.right - r.width * 0.16;
+      sparkle(broomX + (Math.random() * 16 - 8), r.top + r.height * 0.6, true);
+    }, 85);
+    setTimeout(() => { cat.classList.remove('is-flying'); clearInterval(trail); }, 3850);
   };
   cat.addEventListener('mouseenter', fly);
   cat.addEventListener('click', fly);
@@ -1459,16 +1501,26 @@ function render() {
       </select>
     </div>
 
-    <div class="filter-pills">
+    <div class="filter-bar">
       <span class="fpill${state.filterFavorite ? ' active-fav' : ''}" data-fav-filter="true">⭐ Favorites</span>
-      <span class="fpill divider">|</span>
-      ${fpill('All', state.filterType==='all', 'type="all"')}
-      ${fpill('📖 Fanfiction', state.filterType==='ff', 'type="ff"')}
-      ${fpill('📚 Books', state.filterType==='book', 'type="book"')}
-      ${fpill('📄 One-shots', state.filterType==='oneshot', 'type="oneshot"')}
-      <span class="fpill divider">|</span>
-      ${(state.filterType==='all'||state.filterType==='ff'||state.filterType==='oneshot') ? fandomPills : ''}
-      ${(state.filterType==='all'||state.filterType==='book') ? genrePills : ''}
+      <span class="fpill${state.filterType==='all'&&state.filterFandom==='all'&&state.filterGenre==='all'&&state.filterSection==='all'?' active':''}" data-type="all">All</span>
+      <div class="dd${(state.filterType==='ff'||state.filterType==='oneshot'||state.filterFandom!=='all')?' dd-on':''}">
+        <button class="dd-btn">📖 Fanfiction <span class="dd-chev">▾</span></button>
+        <div class="dd-menu">
+          <div class="dd-item${state.filterType==='ff'?' sel':''}" data-type="ff">All fanfiction</div>
+          <div class="dd-item${state.filterType==='oneshot'?' sel':''}" data-type="oneshot">📄 One-shots</div>
+          ${fandoms.length ? '<div class="dd-sep"></div>' : ''}
+          ${fandoms.map(f => `<div class="dd-item${state.filterFandom===f?' sel':''}" data-fandom="${esc(f).replace(/"/g,'&quot;')}">${esc(f)}</div>`).join('')}
+        </div>
+      </div>
+      <div class="dd${(state.filterType==='book'||state.filterGenre!=='all')?' dd-on':''}">
+        <button class="dd-btn">📚 Books <span class="dd-chev">▾</span></button>
+        <div class="dd-menu">
+          <div class="dd-item${state.filterType==='book'?' sel':''}" data-type="book">All books</div>
+          ${getGenres().length ? '<div class="dd-sep"></div>' : ''}
+          ${getGenres().map(g => `<div class="dd-item${state.filterGenre===g?' sel':''}" data-genre="${esc(g).replace(/"/g,'&quot;')}">${esc(g)}</div>`).join('')}
+        </div>
+      </div>
     </div>
 
     ${state.filterFandom !== 'all' ? (() => {
