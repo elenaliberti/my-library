@@ -24,6 +24,7 @@ let state = {
   folderSearch: '',
   folderItemFilter: null,
   folderSortBy: 'count',
+  mySpaceTab: 'ff',
   editingItemIcon: null,
   statsCategory: 'all',
   statsPeriod: 'year',
@@ -1354,12 +1355,14 @@ function render() {
   }
 
   if (state.viewMode === 'myspace') {
+    const msTab = state.mySpaceTab === 'books' ? 'books' : 'ff';
     document.getElementById('app').innerHTML = titlebarHtml +
       `<div id="myspace-page">
-        <div class="ms-section-ttl">📖 Fanfiction</div>
-        ${mySpaceHtml()}
-        <div class="ms-section-ttl">📚 Books</div>
-        ${mySpaceBooksHtml()}
+        <div class="ms-tabs">
+          <button class="ms-tab${msTab==='ff'?' active':''}" data-ms-tab="ff">📖 Fanfiction</button>
+          <button class="ms-tab${msTab==='books'?' active':''}" data-ms-tab="books">📚 Books</button>
+        </div>
+        ${msTab==='books' ? mySpaceBooksHtml() : mySpaceHtml()}
       </div>` +
       (state.modalOpen ? modalHtml() : '') + itemIconModalHtml();
     bindEvents();
@@ -1537,6 +1540,11 @@ function bindEvents() {
   });
   document.getElementById('btn-view-myspace')?.addEventListener('click', () => {
     state.viewMode = 'myspace'; state.view = 'library'; render();
+  });
+
+  // ── MySpace: Fanfiction / Books tab switch ──
+  document.querySelectorAll('[data-ms-tab]').forEach(btn => {
+    btn.addEventListener('click', () => { state.mySpaceTab = btn.dataset.msTab; render(); });
   });
 
   // ── MySpace board: drag & drop ──
