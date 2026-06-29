@@ -190,7 +190,7 @@
       ],
       "url": "https://archiveofourown.org/works/36528937/chapters/91094224",
       "notes": "",
-      "status": "Reading",
+      "status": "TBR",
       "id": "1781405492446_r3ejxklbcu",
       "type": "ff",
       "genre": "",
@@ -203,7 +203,9 @@
       "favorite": false,
       "readCount": 0,
       "readDates": [],
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-29T13:13:21.845Z",
+      "waitingOnChap": false,
+      "readingStartedAt": null
     },
     {
       "title": "Twice in One Lifetime",
@@ -228,11 +230,15 @@
       "genre": "",
       "section": "",
       "pages": null,
-      "userRating": 0,
+      "userRating": 5,
       "oneshot": false,
       "finishedAt": null,
       "_addedAt": 626,
-      "coverIcon": "https://i.pinimg.com/webp87/736x/30/e8/e0/30e8e0c4e8d56595c3b083011de1436e.webp"
+      "coverIcon": "https://i.pinimg.com/webp87/736x/30/e8/e0/30e8e0c4e8d56595c3b083011de1436e.webp",
+      "favorite": false,
+      "_modAt": "2026-06-29T13:11:43.662Z",
+      "waitingOnChap": true,
+      "readingStartedAt": "2026-06-29T13:11:43.662Z"
     },
     {
       "title": "Make A Wish",
@@ -436,7 +442,8 @@
         "Tomarry",
         "Alive James and Lily",
         "Political Tom Riddle",
-        "Time/Dimension Travel HP"
+        "Time/Dimension Travel HP",
+        "Magic Theory"
       ],
       "url": "https://archiveofourown.org/works/79878656/chapters/226690741#workskin",
       "id": "1780653039126_22v0d7qj6pm",
@@ -450,10 +457,12 @@
       "_addedAt": 611,
       "oneshot": false,
       "finishedAt": "2026-06-01T11:00:00.000Z",
-      "_modAt": "2026-06-17T12:01:47.114Z",
+      "_modAt": "2026-06-29T13:14:36.428Z",
       "readDates": [],
       "readCount": 0,
-      "coverIcon": "https://i.pinimg.com/1200x/f4/3a/3b/f43a3b7e6d7a7c4295701b92be50efae.jpg"
+      "coverIcon": "https://i.pinimg.com/1200x/f4/3a/3b/f43a3b7e6d7a7c4295701b92be50efae.jpg",
+      "waitingOnChap": true,
+      "readingStartedAt": "2026-06-29T13:14:36.428Z"
     },
     {
       "id": "ff_1",
@@ -3590,7 +3599,7 @@
         "Aberforth Mentor",
         "Harry/Gideon"
       ],
-      "url": "",
+      "url": "https://archiveofourown.org/works/15465966/chapters/35902410",
       "_addedAt": 122,
       "favorite": true,
       "finishedAt": "2026-06-05T11:00:00.000Z",
@@ -3603,7 +3612,7 @@
         "2026-06-05T11:00:00.000Z"
       ],
       "coverIcon": "https://i.pinimg.com/1200x/cd/a8/3b/cda83b0cfea68bf959bce49f7a82f598.jpg",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-28T15:18:44.603Z"
     },
     {
       "id": "ff_124",
@@ -6530,7 +6539,7 @@
       "hearts": null,
       "rating": "",
       "pairing": "",
-      "status": "Finished",
+      "status": "Dropped",
       "userRating": 5,
       "notes": "",
       "tags": [
@@ -6544,7 +6553,7 @@
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-28T15:19:44.902Z"
     },
     {
       "id": "ff_245",
@@ -13095,11 +13104,11 @@
       "words": 55787,
       "hearts": 7856,
       "pages": null,
-      "userRating": 0,
+      "userRating": 3,
       "oneshot": false,
       "finishedAt": "2026-06-22T11:00:00.000Z",
       "_addedAt": 640,
-      "_modAt": "2026-06-21T23:25:15.999Z"
+      "_modAt": "2026-06-21T23:28:09.149Z"
     },
     {
       "title": "Counting Bodies Like Sheep",
@@ -13149,7 +13158,7 @@
       ],
       "url": "https://archiveofourown.org/works/54330823/chapters/137605831",
       "notes": "",
-      "status": "TBR",
+      "status": "Reading",
       "readDates": [],
       "readCount": 0,
       "id": "1781980871201_4984p9r2khh",
@@ -13157,11 +13166,13 @@
       "genre": "",
       "section": "",
       "pages": null,
-      "userRating": 0,
+      "userRating": 4,
       "oneshot": false,
       "finishedAt": null,
       "_addedAt": 638,
-      "_modAt": "2026-06-20T18:42:02.780Z"
+      "_modAt": "2026-06-29T13:11:36.314Z",
+      "waitingOnChap": true,
+      "readingStartedAt": "2026-06-29T13:11:36.314Z"
     },
     {
       "title": "How Fate Intended",
@@ -13251,6 +13262,34 @@
       "readDates": [
         "2024-04-29T11:00:00.000Z"
       ]
+    },
+    {
+      "title": "Dizzy Kisses (You Challenge Me)",
+      "author": "mo11",
+      "fandom": "Percy Jackson",
+      "words": 1201,
+      "hearts": 90,
+      "rating": "",
+      "pairing": "Apollo/Percy Jackson",
+      "tags": [
+        "Fluff",
+        "Apollo/Percy Jackson"
+      ],
+      "url": "https://archiveofourown.org/works/84076816",
+      "notes": "",
+      "status": "Finished",
+      "readDates": [],
+      "readCount": 1,
+      "id": "1782660574063_dcdgqlhi8pd",
+      "type": "ff",
+      "genre": "",
+      "section": "",
+      "pages": null,
+      "userRating": 2,
+      "oneshot": false,
+      "finishedAt": "2026-06-28T11:00:00.000Z",
+      "_addedAt": 641,
+      "_modAt": "2026-06-29T12:22:35.272Z"
     }
   ],
   "folderConfig": {
