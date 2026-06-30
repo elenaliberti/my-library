@@ -2176,6 +2176,37 @@ function bindEvents() {
     });
   });
 
+  // ── Settings: per-page banner customization (bound on every render) ──
+  document.getElementById('btn-settings')?.addEventListener('click', () => { state.settingsOpen = true; render(); });
+  const closeSettings = () => { state.settingsOpen = false; render(); };
+  document.getElementById('settings-close')?.addEventListener('click', closeSettings);
+  document.getElementById('settings-done')?.addEventListener('click', closeSettings);
+  const sb = document.getElementById('settings-backdrop');
+  if (sb) sb.addEventListener('click', e => { if (e.target === sb) closeSettings(); });
+  // live text edit (no re-render, keeps focus)
+  document.querySelectorAll('.banner-in').forEach(inp => {
+    inp.addEventListener('input', () => {
+      const key = inp.dataset.banner;
+      state.bannerConfig[key] = inp.value.trim();
+      saveBannerConfig();
+      const prevEl = document.querySelector(`[data-banner-prev="${key}"]`);
+      if (prevEl) prevEl.style.background = resolveBanner(inp.value) || '#7d9d6a';
+      if (key === currentPageKey()) applyBanner();
+    });
+  });
+  document.querySelectorAll('[data-banner-set]').forEach(sw => {
+    sw.addEventListener('click', () => {
+      const [key, color] = sw.dataset.bannerSet.split('|');
+      state.bannerConfig[key] = color; saveBannerConfig(); render();
+    });
+  });
+  document.querySelectorAll('[data-banner-reset]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.bannerConfig[btn.dataset.bannerReset] = ''; saveBannerConfig(); render();
+    });
+  });
+  applyBanner();
+
   // ── Modal events ────────────────────────────────────────────────────────────
   if (!state.modalOpen) return;
 
@@ -2432,38 +2463,6 @@ function bindEvents() {
     state.modalOpen = false; state.editItem = null;
     saveData(); render();
   });
-
-  // ── Settings: per-page banner customization ──
-  document.getElementById('btn-settings')?.addEventListener('click', () => { state.settingsOpen = true; render(); });
-  const closeSettings = () => { state.settingsOpen = false; render(); };
-  document.getElementById('settings-close')?.addEventListener('click', closeSettings);
-  document.getElementById('settings-done')?.addEventListener('click', closeSettings);
-  const sb = document.getElementById('settings-backdrop');
-  if (sb) sb.addEventListener('click', e => { if (e.target === sb) closeSettings(); });
-  // live text edit (no re-render, keeps focus)
-  document.querySelectorAll('.banner-in').forEach(inp => {
-    inp.addEventListener('input', () => {
-      const key = inp.dataset.banner;
-      state.bannerConfig[key] = inp.value.trim();
-      saveBannerConfig();
-      const prevEl = document.querySelector(`[data-banner-prev="${key}"]`);
-      if (prevEl) prevEl.style.background = resolveBanner(inp.value) || '#7d9d6a';
-      if (key === currentPageKey()) applyBanner();
-    });
-  });
-  document.querySelectorAll('[data-banner-set]').forEach(sw => {
-    sw.addEventListener('click', () => {
-      const [key, color] = sw.dataset.bannerSet.split('|');
-      state.bannerConfig[key] = color; saveBannerConfig(); render();
-    });
-  });
-  document.querySelectorAll('[data-banner-reset]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      state.bannerConfig[btn.dataset.bannerReset] = ''; saveBannerConfig(); render();
-    });
-  });
-
-  applyBanner();
 }
 
 // ── Toast notifications ───────────────────────────────────────────────────────

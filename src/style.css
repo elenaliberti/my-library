@@ -50,12 +50,12 @@ html, body { height: 100%; background: var(--gray-50); font-family: var(--font);
 .stat-row { display: flex; gap: 10px; padding: 12px 20px; background: #fff; border-bottom: 1px solid var(--gray-200); flex-shrink: 0; flex-wrap: wrap; align-items: center; }
 .stat-pill { display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 12px; border: 1px solid var(--gray-200); cursor: pointer; transition: all 0.12s; user-select: none; }
 .stat-pill:hover { border-color: var(--purple); }
-.stat-pill.active-tbr    { background: var(--purple-light); border-color: #c8d8b4; }
+.stat-pill.active-tbr    { background: #d7f0ec; border-color: #a9ddd5; }
 .stat-pill.active-reading { background: var(--amber-light);  border-color: #fde68a; }
 .stat-pill.active-finished { background: var(--green-light);  border-color: #a7f3d0; }
 .stat-pill.active-dropped  { background: var(--red-light);    border-color: #fecaca; }
 .stat-num { font-size: 18px; font-weight: 600; }
-.stat-num.tbr     { color: var(--purple); }
+.stat-num.tbr     { color: #14958a; }
 .stat-num.reading { color: var(--amber); }
 .stat-num.finished{ color: var(--green); }
 .stat-num.dropped { color: var(--red); }
@@ -218,7 +218,7 @@ select.filter-select:focus { border-color: var(--purple); }
 .stars.readonly .star { cursor: default; }
 
 /* ── Tags ── */
-.tag { background: var(--purple-light); color: var(--purple-dark); font-size: 11px; padding: 2px 9px; border-radius: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
+.tag { background: #d7f0ec; color: #0f6e63; font-size: 11px; padding: 2px 9px; border-radius: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; }
 .tag .tag-remove { cursor: pointer; color: var(--gray-400); font-size: 13px; line-height: 1; }
 .tag .tag-remove:hover { color: var(--red); }
 
