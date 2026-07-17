@@ -1234,11 +1234,71 @@ function isPairingTag(rawLabel, navPath) {
 // A manually-typed Pairing value like "Harry/Ginny" is a real ship name and should act as a
 // tag (so it gets its own folder). AO3-style relationship-category shorthand isn't a ship.
 const PAIRING_CATEGORY_WORDS = new Set(['gen','m/m','f/f','f/m','m/f','multi','other','various','none','poly']);
-function isShipPairing(s) {
-  const v = (s || '').trim();
-  if (!v || PAIRING_CATEGORY_WORDS.has(v.toLowerCase())) return false;
-  return v.includes('/') || v.includes(' & ');
+
+// Alternate names for the same character — so "Harry", "Harry Potter", "Tom", "Voldemort" etc.
+// all resolve to one canonical form when comparing ships. Extend this as new fandoms come up.
+const CHARACTER_ALIASES = {
+  'harry': 'Harry Potter', 'harry potter': 'Harry Potter',
+  'tom': 'Tom Riddle', 'tom riddle': 'Tom Riddle', 'voldemort': 'Tom Riddle',
+  'lord voldemort': 'Tom Riddle', 'you-know-who': 'Tom Riddle', 'riddle': 'Tom Riddle',
+  'draco': 'Draco Malfoy', 'draco malfoy': 'Draco Malfoy',
+  'hermione': 'Hermione Granger', 'hermione granger': 'Hermione Granger',
+  'ron': 'Ron Weasley', 'ron weasley': 'Ron Weasley',
+  'ginny': 'Ginny Weasley', 'ginny weasley': 'Ginny Weasley',
+  'severus': 'Severus Snape', 'severus snape': 'Severus Snape', 'snape': 'Severus Snape',
+  'sirius': 'Sirius Black', 'sirius black': 'Sirius Black', 'padfoot': 'Sirius Black',
+  'remus': 'Remus Lupin', 'remus lupin': 'Remus Lupin', 'moony': 'Remus Lupin', 'lupin': 'Remus Lupin',
+  'james': 'James Potter', 'james potter': 'James Potter',
+  'lily': 'Lily Evans', 'lily evans': 'Lily Evans', 'lily potter': 'Lily Evans',
+  'neville': 'Neville Longbottom', 'neville longbottom': 'Neville Longbottom',
+  'luna': 'Luna Lovegood', 'luna lovegood': 'Luna Lovegood',
+  'blaise': 'Blaise Zabini', 'blaise zabini': 'Blaise Zabini',
+  'pansy': 'Pansy Parkinson', 'pansy parkinson': 'Pansy Parkinson',
+  'charlie': 'Charlie Weasley', 'charlie weasley': 'Charlie Weasley',
+  'bill': 'Bill Weasley', 'bill weasley': 'Bill Weasley',
+  'fred': 'Fred Weasley', 'fred weasley': 'Fred Weasley',
+  'george': 'George Weasley', 'george weasley': 'George Weasley',
+  'cedric': 'Cedric Diggory', 'cedric diggory': 'Cedric Diggory',
+  'theo': 'Theodore Nott', 'theodore': 'Theodore Nott', 'theodore nott': 'Theodore Nott',
+  'daphne': 'Daphne Greengrass', 'daphne greengrass': 'Daphne Greengrass',
+};
+
+// Known ship portmanteaus (no separator, so name-splitting can't parse them) mapped to the
+// canonical "Name/Name" pair they stand for. Extend this list as new ship nicknames come up.
+const SHIP_PORTMANTEAUS = {
+  'tomarry': 'Harry Potter/Tom Riddle',
+  'harrymort': 'Harry Potter/Tom Riddle',
+  'drarry': 'Draco Malfoy/Harry Potter',
+  'dramione': 'Draco Malfoy/Hermione Granger',
+  'romione': 'Hermione Granger/Ron Weasley',
+  'harmony': 'Harry Potter/Hermione Granger',
+  'wolfstar': 'Remus Lupin/Sirius Black',
+  'jily': 'James Potter/Lily Evans',
+  'blarry': 'Blaise Zabini/Harry Potter',
+  'drapansy': 'Draco Malfoy/Pansy Parkinson',
+  'theodaphne': 'Daphne Greengrass/Theodore Nott',
+};
+
+function canonicalizeName(n) {
+  const key = (n || '').trim().toLowerCase();
+  return CHARACTER_ALIASES[key] || (n || '').trim();
 }
+
+// Turn a pairing string into a fandom-agnostic, order-independent key so equivalent ships
+// (different name order, nicknames, or a known portmanteau) compare equal — e.g.
+// "Tom Riddle/Harry Potter", "Harry/Tom", and "Tomarry" all produce the same key.
+// Returns null for anything that isn't a recognizable ship (AO3 category shorthand, plain tropes).
+function shipKey(raw) {
+  const v = (raw || '').trim();
+  if (!v || PAIRING_CATEGORY_WORDS.has(v.toLowerCase())) return null;
+  const portmanteau = SHIP_PORTMANTEAUS[v.toLowerCase()];
+  if (portmanteau) return portmanteau;
+  if (!/\/|\s&\s/.test(v)) return null;
+  const parts = [...new Set(v.split(/\s*\/\s*|\s+&\s+/).map(canonicalizeName).filter(Boolean))];
+  if (parts.length < 2) return null;
+  return parts.sort((a, b) => a.localeCompare(b)).join('/');
+}
+function isShipPairing(s) { return shipKey(s) !== null; }
 
 function folderCrumbs(crumbs) {
   return `<div class="folder-breadcrumb">
@@ -2650,13 +2710,24 @@ function bindEvents() {
 
     const pairing = isFf ? (document.getElementById('m-pairing')?.value?.trim() || '') : '';
 
-    // A ship typed into Pairing (e.g. "Harry/Ginny") also becomes a tag, so it gets its own folder.
+    // A ship typed into Pairing (e.g. "Harry/Ginny", "Tomarry", "Tom Riddle/Harry Potter") also
+    // becomes a tag. If an equivalent ship already has a tag somewhere in the library — same
+    // pair under a different name order, nickname, or portmanteau — reuse that exact tag string
+    // so this entry joins the existing folder instead of splintering off a near-duplicate one.
     const tags = (() => {
       const base = state.editItem?.tags || [];
       if (!pairing) return base;
-      const shipTags = pairing.split(',').map(s => s.trim()).filter(isShipPairing);
-      if (!shipTags.length) return base;
-      return [...new Set([...base, ...shipTags])];
+      const shipStrings = pairing.split(',').map(s => s.trim()).filter(Boolean);
+      const allTags = [...new Set(state.items.flatMap(x => x.tags || []))];
+      const resolved = [];
+      for (const s of shipStrings) {
+        const key = shipKey(s);
+        if (!key) continue;
+        const existing = allTags.find(t => shipKey(t) === key);
+        resolved.push(existing || s);
+      }
+      if (!resolved.length) return base;
+      return [...new Set([...base, ...resolved])];
     })();
 
     const item = {
