@@ -688,7 +688,7 @@
     {
       "id": "ff_7",
       "type": "ff",
-      "title": "Synkardi\u00e1s",
+      "title": "Synkardiás",
       "author": "00Q_Magnus",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 90949,
@@ -7365,7 +7365,7 @@
       "pairing": "Annabeth Chase/Percy Jackson",
       "status": "Finished",
       "userRating": 5,
-      "notes": "percy jackson will graduate so help me rick \u00c3\u0097 the camp squads up to save percy's gpa",
+      "notes": "percy jackson will graduate so help me rick Ã the camp squads up to save percy's gpa",
       "tags": [
         "Crack Treated Seriously",
         "Post-Canon",
@@ -8877,7 +8877,7 @@
     {
       "id": "book_62",
       "type": "book",
-      "title": "Non \u00e8 ancora finita",
+      "title": "Non è ancora finita",
       "author": "S. Marty",
       "genre": "Trash Fantasy",
       "section": "Fantasy",
@@ -9320,7 +9320,7 @@
     {
       "id": "book_81",
       "type": "book",
-      "title": "Citt\u00e0 di carta",
+      "title": "Città di carta",
       "author": "John Green",
       "genre": "YA / Romance",
       "section": "Fantasy",
@@ -9654,7 +9654,7 @@
     {
       "id": "book_95",
       "type": "book",
-      "title": "Il ragazzo che entr\u00f2 dalla finestra e si infil\u00f2 nel mio letto",
+      "title": "Il ragazzo che entrò dalla finestra e si infilò nel mio letto",
       "author": "Kirsty Moseley",
       "genre": "Romance",
       "section": "Fantasy",
@@ -9920,7 +9920,7 @@
     {
       "id": "book_106",
       "type": "book",
-      "title": "Un disastro \u00e8 per sempre",
+      "title": "Un disastro è per sempre",
       "author": "Jamie McGuire",
       "genre": "Romance / New Adult",
       "section": "Fantasy",
@@ -10015,7 +10015,7 @@
     {
       "id": "book_110",
       "type": "book",
-      "title": "L'assistente del capo: Chi \u00e8 ora il boss?",
+      "title": "L'assistente del capo: Chi è ora il boss?",
       "author": "Lexy Timms",
       "genre": "Romance",
       "section": "Fantasy",
@@ -10295,7 +10295,7 @@
     {
       "id": "book_122",
       "type": "book",
-      "title": "Siamo amici solo il mercoled\u00ec",
+      "title": "Siamo amici solo il mercoledì",
       "author": "Tania Paxia",
       "genre": "Romance",
       "section": "Fantasy",
@@ -13362,7 +13362,7 @@
     {
       "id": "book_257",
       "type": "book",
-      "title": "Sposa a met\u00c3\u0083\u00c2\u0083\u00c3\u0082\u00c2\u00a0",
+      "title": "Sposa a metÃÂÃÂ ",
       "author": "Mary Balogh",
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
@@ -15283,7 +15283,7 @@
     {
       "id": "book_342",
       "type": "book",
-      "title": "Verso la maturit\u00c3\u0083\u00c2\u0083\u00c3\u0082\u00c2\u00a0",
+      "title": "Verso la maturitÃÂÃÂ ",
       "author": "",
       "genre": "Wattpad / YA",
       "section": "Fantasy",
@@ -15707,7 +15707,7 @@
       "words": 65000,
       "status": "Finished",
       "userRating": 0,
-      "notes": "Bellissimo\u00c3\u0083\u00c2\u00a2\u00c3\u0082\u00c2\u0080\u00c3\u0082\u00c2\u00a6 mi ha fatta piangere",
+      "notes": "BellissimoÃÂ¢ÃÂÃÂ¦ mi ha fatta piangere",
       "tags": [],
       "url": "",
       "_addedAt": 605,
@@ -16352,7 +16352,7 @@
     {
       "id": "book_1782756764570_0",
       "type": "book",
-      "title": "Shadowhunters: Citt\u00e0 di ossa",
+      "title": "Shadowhunters: Città di ossa",
       "author": "Cassandra Clare",
       "genre": "Fantasy",
       "status": "Finished",
@@ -16379,7 +16379,7 @@
     {
       "id": "book_1782756764570_1",
       "type": "book",
-      "title": "Shadowhunters: Citt\u00e0 di cenere",
+      "title": "Shadowhunters: Città di cenere",
       "author": "Cassandra Clare",
       "genre": "Fantasy",
       "status": "Finished",
@@ -16423,7 +16423,7 @@
     {
       "id": "book_1782756764570_9",
       "type": "book",
-      "title": "Vicini\u2026 anche troppo",
+      "title": "Vicini… anche troppo",
       "author": "",
       "genre": "Romance",
       "status": "Finished",
@@ -17918,7 +17918,7 @@
     },
     "ff|Harry Potter - J. K. Rowling|group_bashing": {
       "displayName": "Character Bashing",
-      "icon": "\ud83d\udca5",
+      "icon": "💥",
       "pinned": false,
       "isCustom": true,
       "isGroup": true,
@@ -17934,7 +17934,7 @@
     },
     "ff|Harry Potter - J. K. Rowling|group_crossovers": {
       "displayName": "Crossovers",
-      "icon": "\ud83c\udf00",
+      "icon": "🌀",
       "pinned": false,
       "isCustom": true,
       "isGroup": true,
@@ -17949,7 +17949,7 @@
     },
     "ff|Harry Potter - J. K. Rowling|group_harry_au_roles": {
       "displayName": "Harry AU Roles",
-      "icon": "\ud83c\udfad",
+      "icon": "🎭",
       "pinned": false,
       "isCustom": true,
       "isGroup": true,
