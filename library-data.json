@@ -3493,36 +3493,6 @@
       "readCount": 1
     },
     {
-      "id": "ff_109",
-      "type": "ff",
-      "title": "Argenti Vulpi",
-      "author": "KaedeRavensdale",
-      "fandom": "Harry Potter - J. K. Rowling",
-      "words": 96761,
-      "hearts": 2756,
-      "rating": "Mature",
-      "pairing": "M/M",
-      "status": "Finished",
-      "userRating": 0,
-      "notes": "",
-      "tags": [
-        "Time/Dimension Travel HP",
-        "Tomarry"
-      ],
-      "url": "",
-      "_addedAt": 108,
-      "finishedAt": "2021-01-06T12:00:00.000Z",
-      "genre": "",
-      "section": "",
-      "pages": null,
-      "oneshot": false,
-      "_modAt": "2026-06-29T18:29:30.554Z",
-      "readDates": [
-        "2021-01-06T12:00:00.000Z"
-      ],
-      "readCount": 1
-    },
-    {
       "id": "ff_110",
       "type": "ff",
       "title": "Praeclarus Anguis",
@@ -5960,31 +5930,6 @@
       "readCount": 1
     },
     {
-      "id": "ff_199",
-      "type": "ff",
-      "title": "Eclipse",
-      "author": "Mijan",
-      "fandom": "Harry Potter - J. K. Rowling",
-      "words": 287239,
-      "hearts": 11028,
-      "rating": "Teen+",
-      "pairing": "M/M",
-      "status": "Finished",
-      "userRating": 0,
-      "notes": "",
-      "tags": [
-        "Drarry"
-      ],
-      "url": "",
-      "_addedAt": 198,
-      "finishedAt": "2014-06-17T12:00:00.000Z",
-      "_modAt": "2026-06-29T18:29:30.554Z",
-      "readDates": [
-        "2014-06-17T12:00:00.000Z"
-      ],
-      "readCount": 1
-    },
-    {
       "id": "ff_200",
       "type": "ff",
       "title": "Any Instrument",
@@ -7295,39 +7240,6 @@
       "readCount": 1
     },
     {
-      "id": "ff_245",
-      "type": "ff",
-      "title": "Sorcerer's Bane",
-      "author": "BeautifulFiction",
-      "fandom": "Merlin (TV)",
-      "words": 264596,
-      "hearts": 14399,
-      "rating": "Explicit",
-      "pairing": "Merlin/Arthur Pendragon (Merlin)",
-      "status": "Finished",
-      "userRating": 0,
-      "notes": "",
-      "tags": [
-        "Rescue",
-        "BAMF Merlin (Merlin)",
-        "Hurt/Comfort",
-        "Magic Revealed"
-      ],
-      "url": "https://archiveofourown.org/works/28939431/chapters/71007483",
-      "_addedAt": 244,
-      "genre": "",
-      "section": "",
-      "pages": null,
-      "oneshot": false,
-      "finishedAt": "2022-12-09T12:00:00.000Z",
-      "favorite": false,
-      "readCount": 1,
-      "_modAt": "2026-06-29T18:29:30.554Z",
-      "readDates": [
-        "2022-12-09T12:00:00.000Z"
-      ]
-    },
-    {
       "id": "ff_246",
       "type": "ff",
       "title": "Shattered Souls",
@@ -7545,36 +7457,6 @@
       "pages": null,
       "oneshot": false,
       "_modAt": "2026-06-29T18:29:30.554Z"
-    },
-    {
-      "id": "ff_254",
-      "type": "ff",
-      "title": "Inhuman",
-      "author": "poetic_emrys",
-      "fandom": "Merlin (TV)",
-      "words": 8112,
-      "hearts": 1479,
-      "rating": "Mature",
-      "pairing": "Merlin/Arthur Pendragon (Merlin)",
-      "status": "Finished",
-      "userRating": 0,
-      "notes": "",
-      "tags": [
-        "Arthur/Merlin"
-      ],
-      "url": "https://archiveofourown.org/works/54860815",
-      "_addedAt": 253,
-      "finishedAt": "2023-03-18T12:00:00.000Z",
-      "genre": "",
-      "section": "",
-      "pages": null,
-      "oneshot": false,
-      "favorite": false,
-      "readCount": 1,
-      "_modAt": "2026-06-29T18:29:30.554Z",
-      "readDates": [
-        "2023-03-18T12:00:00.000Z"
-      ]
     },
     {
       "id": "ff_255",
@@ -8172,60 +8054,6 @@
       "pairing": "",
       "rating": "",
       "hearts": null
-    },
-    {
-      "id": "book_25",
-      "type": "book",
-      "title": "Shadowhunters: Città di ossa",
-      "author": "Cassandra Clare",
-      "genre": "Fantasy / Urban Fantasy",
-      "section": "Fantasy",
-      "pages": 485,
-      "words": 130000,
-      "status": "Finished",
-      "userRating": 0,
-      "notes": "",
-      "tags": [],
-      "url": "",
-      "_addedAt": 278,
-      "coverIcon": "https://covers.openlibrary.org/b/id/10121449-L.jpg",
-      "fandom": "",
-      "pairing": "",
-      "rating": "",
-      "hearts": null,
-      "finishedAt": "2017-07-29T11:00:00.000Z",
-      "readCount": 1,
-      "_modAt": "2026-07-17T21:43:11.435Z",
-      "readDates": [
-        "2017-07-29T11:00:00.000Z"
-      ]
-    },
-    {
-      "id": "book_26",
-      "type": "book",
-      "title": "Shadowhunters: Città di cenere",
-      "author": "Cassandra Clare",
-      "genre": "Fantasy / Urban Fantasy",
-      "section": "Fantasy",
-      "pages": 453,
-      "words": 120000,
-      "status": "Finished",
-      "userRating": 0,
-      "notes": "",
-      "tags": [],
-      "url": "",
-      "_addedAt": 279,
-      "coverIcon": "https://covers.openlibrary.org/b/id/1787130-L.jpg",
-      "fandom": "",
-      "pairing": "",
-      "rating": "",
-      "hearts": null,
-      "finishedAt": "2016-07-29T11:00:00.000Z",
-      "readCount": 1,
-      "_modAt": "2026-07-17T21:42:55.604Z",
-      "readDates": [
-        "2016-07-29T11:00:00.000Z"
-      ]
     },
     {
       "id": "book_27",
@@ -16552,23 +16380,6 @@
       "url": ""
     },
     {
-      "id": "book_1782756764570_2",
-      "type": "book",
-      "title": "Non è ancora finita",
-      "author": "",
-      "genre": "Trash fantasy",
-      "status": "Finished",
-      "words": 55000,
-      "userRating": 0,
-      "_addedAt": 644,
-      "finishedAt": "2025-11-14T12:00:00.000Z",
-      "readDates": [
-        "2025-11-14T12:00:00.000Z"
-      ],
-      "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
-    },
-    {
       "id": "book_1782756764570_3",
       "type": "book",
       "title": "Storie d'amore",
@@ -16578,74 +16389,6 @@
       "words": 80000,
       "userRating": 0,
       "_addedAt": 645,
-      "finishedAt": "2016-12-14T12:00:00.000Z",
-      "readDates": [
-        "2016-12-14T12:00:00.000Z"
-      ],
-      "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
-    },
-    {
-      "id": "book_1782756764570_4",
-      "type": "book",
-      "title": "Città di carta",
-      "author": "",
-      "genre": "Romance",
-      "status": "Finished",
-      "words": 80000,
-      "userRating": 0,
-      "_addedAt": 646,
-      "finishedAt": "2018-05-21T12:00:00.000Z",
-      "readDates": [
-        "2018-05-21T12:00:00.000Z"
-      ],
-      "readCount": 1,
-      "_modAt": "2026-07-17T23:10:00.000Z"
-    },
-    {
-      "id": "book_1782756764570_5",
-      "type": "book",
-      "title": "Il ragazzo che entrò dalla finestra e si infilò nel mio letto",
-      "author": "",
-      "genre": "Romance",
-      "status": "Finished",
-      "words": 80000,
-      "userRating": 0,
-      "_addedAt": 647,
-      "finishedAt": "2016-12-14T12:00:00.000Z",
-      "readDates": [
-        "2016-12-14T12:00:00.000Z"
-      ],
-      "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
-    },
-    {
-      "id": "book_1782756764570_6",
-      "type": "book",
-      "title": "Un disastro è per sempre",
-      "author": "",
-      "genre": "Romance",
-      "status": "Finished",
-      "words": 80000,
-      "userRating": 0,
-      "_addedAt": 648,
-      "finishedAt": "2016-12-14T12:00:00.000Z",
-      "readDates": [
-        "2016-12-14T12:00:00.000Z"
-      ],
-      "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
-    },
-    {
-      "id": "book_1782756764570_7",
-      "type": "book",
-      "title": "L'assistente del capo: Chi è ora il boss?",
-      "author": "",
-      "genre": "Romance",
-      "status": "Finished",
-      "words": 80000,
-      "userRating": 0,
-      "_addedAt": 649,
       "finishedAt": "2016-12-14T12:00:00.000Z",
       "readDates": [
         "2016-12-14T12:00:00.000Z"
@@ -16918,39 +16661,6 @@
       "finishedAt": "2026-04-08T11:00:00.000Z",
       "_addedAt": 657,
       "_modAt": "2026-06-29T18:39:44.187Z"
-    },
-    {
-      "title": "Of Kings, of Pawns, and of Men",
-      "author": "mads999",
-      "fandom": "Harry Potter - J. K. Rowling",
-      "words": 189783,
-      "hearts": 7313,
-      "rating": "Explicit",
-      "pairing": "Harry Potter/Tom Riddle",
-      "tags": [
-        "Non-crack body swap",
-        "Possessive Tom Riddle",
-        "Prophecies",
-        "are monsters born or made?",
-        "equally possessive (if in denial) Harry",
-        "Explicit Sexual Content"
-      ],
-      "url": "https://archiveofourown.org/works/8323864/chapters/19064092#workskin",
-      "id": "1783463221676_zy3env22a4",
-      "type": "ff",
-      "genre": "",
-      "section": "",
-      "status": "Reading",
-      "pages": null,
-      "userRating": 0,
-      "notes": "",
-      "oneshot": false,
-      "finishedAt": null,
-      "readCount": 0,
-      "_addedAt": 663,
-      "_modAt": "2026-07-07T22:27:09.877Z",
-      "waitingOnChap": false,
-      "readingStartedAt": "2026-07-07T22:27:09.877Z"
     },
     {
       "title": "A Moment of Truth",
@@ -18218,6 +17928,18 @@
     }
   },
   "deletedIds": {
-    "book_1782756764570_8": "2026-07-17T22:33:40.692Z"
+    "book_1782756764570_8": "2026-07-17T22:33:40.692Z",
+    "ff_109": "2026-07-17T22:34:27.525Z",
+    "book_1782756764570_4": "2026-07-17T22:34:46.252Z",
+    "ff_199": "2026-07-17T22:34:53.046Z",
+    "book_1782756764570_5": "2026-07-17T22:35:02.980Z",
+    "ff_254": "2026-07-17T22:35:16.066Z",
+    "book_1782756764570_7": "2026-07-17T22:35:23.657Z",
+    "book_1782756764570_2": "2026-07-17T22:35:36.491Z",
+    "1783463221676_zy3env22a4": "2026-07-17T22:35:42.190Z",
+    "book_25": "2026-07-17T22:36:06.040Z",
+    "book_26": "2026-07-17T22:36:10.140Z",
+    "ff_245": "2026-07-17T22:36:26.989Z",
+    "book_1782756764570_6": "2026-07-17T22:36:37.223Z"
   }
 }
