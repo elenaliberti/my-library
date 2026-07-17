@@ -47,7 +47,10 @@ html, body { height: 100%; background: var(--gray-50); font-family: var(--font);
 #titlebar-actions { -webkit-app-region: no-drag; display: flex; gap: 8px; }
 
 /* ── Stat pills ── */
-.stat-row { display: flex; gap: 10px; padding: 12px 20px; background: #fff; border-bottom: 1px solid var(--gray-200); flex-shrink: 0; flex-wrap: wrap; align-items: center; }
+.stat-row { position: relative; display: flex; gap: 10px; padding: 12px 20px; background: #fff; border-bottom: 1px solid var(--gray-200); flex-shrink: 0; flex-wrap: wrap; align-items: center; justify-content: center; }
+.calc-stats-fab { position: absolute; top: -28px; right: 24px; width: 64px; height: 64px; border-radius: 50%; border: 1px solid var(--gray-200); background: #fff; font-size: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,0.16); transition: transform 0.12s, box-shadow 0.12s; z-index: 5; }
+.calc-stats-fab:hover { transform: translateY(-2px) scale(1.06); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+.calc-stats-fab:active { transform: translateY(0) scale(0.98); }
 .stat-pill { display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 8px; border: 1px solid var(--gray-200); cursor: pointer; transition: all 0.12s; user-select: none; }
 .stat-pill:hover { border-color: var(--purple); }
 .stat-pill.active-tbr    { background: var(--purple-light); border-color: #c8d8b4; }
@@ -94,7 +97,7 @@ select.filter-select:focus { border-color: var(--purple); }
 .fcrumb-sep { color: var(--gray-300); font-size: 14px; }
 
 .folder-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 16px; padding: 22px; align-content: start; }
-.folder-grid-root { grid-template-columns: repeat(2, 200px); justify-content: center; padding-top: 52px; gap: 20px; }
+.folder-grid-root { grid-template-columns: repeat(2, 200px); justify-content: center; padding-top: 52px; padding-bottom: 32px; gap: 20px; }
 
 /* Card shell */
 .folder-card { display: flex; flex-direction: column; border-radius: 7px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 12px rgba(0,0,0,0.04); cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; user-select: none; overflow: hidden; position: relative; }
@@ -476,6 +479,7 @@ textarea { min-height: 70px; resize: vertical; }
 .dd-on .dd-btn { background: var(--purple-light); border-color: #c8d8b4; color: var(--purple-dark); }
 .dd-chev { font-size: 10px; color: var(--gray-400); }
 .dd-menu { position: absolute; top: calc(100% + 6px); left: 0; min-width: 196px; max-height: 340px; overflow-y: auto; background: #fff; border: 1px solid var(--gray-200); border-radius: 5px; box-shadow: 0 14px 34px rgba(0,0,0,0.13); padding: 6px; z-index: 40; opacity: 0; visibility: hidden; transform: translateY(-4px); transition: opacity 0.14s, transform 0.14s, visibility 0.14s; }
+.dd-menu-right { left: auto; right: 0; }
 .dd-menu::before { content: ''; position: absolute; top: -8px; left: 0; right: 0; height: 8px; } /* hover bridge across the gap */
 .dd:hover .dd-menu { opacity: 1; visibility: visible; transform: translateY(0); }
 .dd-item { padding: 8px 12px 8px 30px; border-radius: 4px; font-size: 13px; color: var(--gray-700); cursor: pointer; position: relative; white-space: nowrap; }

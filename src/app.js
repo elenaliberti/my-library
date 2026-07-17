@@ -31,6 +31,7 @@ let state = {
   statsMetric: 'words',
   settingsOpen: false,
   bannerConfig: {},
+  folderUndoStack: [],
 };
 
 const STATUS = ['TBR','Reading','Finished','Dropped'];
@@ -563,9 +564,10 @@ function modalHtml() {
             <input type="text" id="m-fandom" value="${item.fandom||''}" placeholder="e.g. Harry Potter" />
             <div class="field-suggest" id="sug-fandom"></div>
           </div>
-          <div>
+          <div class="ac-wrap">
             <label class="field-label">Pairing</label>
-            <input type="text" id="m-pairing" value="${item.pairing||''}" placeholder="e.g. M/M" />
+            <input type="text" id="m-pairing" value="${item.pairing||''}" placeholder="e.g. M/M or Harry/Ginny" />
+            <div class="field-suggest" id="sug-pairing"></div>
           </div>` : `
           <div>
             <label class="field-label">Genre</label>
@@ -1059,6 +1061,22 @@ function saveFolderConfig() {
   localStorage.setItem('folderConfig', JSON.stringify(state.folderConfig));
   saveData(); // also persist to JSON file so git backup pushes it to GitHub
 }
+
+// Undo (⌘Z / Ctrl+Z) for folder structure changes — merges, renames, deletes, creates.
+// Snapshot the whole folderConfig before each mutation so undo is a simple pop+restore.
+const FOLDER_UNDO_LIMIT = 20;
+function pushFolderUndo() {
+  state.folderUndoStack.push(JSON.stringify(state.folderConfig));
+  if (state.folderUndoStack.length > FOLDER_UNDO_LIMIT) state.folderUndoStack.shift();
+}
+function undoFolderChange() {
+  const snapshot = state.folderUndoStack.pop();
+  if (snapshot === undefined) { showToast('Nothing to undo', 'info'); return; }
+  state.folderConfig = JSON.parse(snapshot);
+  saveFolderConfig();
+  render();
+  showToast('Undid last folder change ↩️', 'info');
+}
 function getCfg(key) {
   return { ...(FOLDER_DEFAULTS[key] || {}), ...(state.folderConfig[key] || {}) };
 }
@@ -1126,6 +1144,7 @@ function mergeFoldersIntoGroup(sourceKey, targetKey) {
   const sourceCfg = state.folderConfig[sourceKey];
   const targetCfg = state.folderConfig[targetKey];
   const sourceTags = folderTagsOf(sourceKey);
+  pushFolderUndo();
 
   if (targetCfg && targetCfg.isGroup) {
     // Drop into an existing group — just add the source's tag(s), keep the group's identity.
@@ -1186,6 +1205,15 @@ function isPairingTag(rawLabel, navPath) {
   if (cfg.section === 'pairing') return true;
   const display = cfg.displayName || rawLabel;
   return rawLabel.includes('/') || display.includes('/') || display.includes(' & ');
+}
+
+// A manually-typed Pairing value like "Harry/Ginny" is a real ship name and should act as a
+// tag (so it gets its own folder). AO3-style relationship-category shorthand isn't a ship.
+const PAIRING_CATEGORY_WORDS = new Set(['gen','m/m','f/f','f/m','m/f','multi','other','various','none','poly']);
+function isShipPairing(s) {
+  const v = (s || '').trim();
+  if (!v || PAIRING_CATEGORY_WORDS.has(v.toLowerCase())) return false;
+  return v.includes('/') || v.includes(' & ');
 }
 
 function folderCrumbs(crumbs) {
@@ -1386,7 +1414,7 @@ function folderViewHtml() {
   pruneEmptyFolderPath();
   const [type, sub, tag, childTag] = state.folderPath;
 
-  // Root — two big tiles
+  // Root — two big tiles, with the full list view underneath
   if (!type) {
     const ffN = state.items.filter(x=>x.type==='ff').length;
     const bkN = state.items.filter(x=>x.type==='book').length;
@@ -1395,6 +1423,7 @@ function folderViewHtml() {
         ${folderCard(['ff'],'📖','Fanfiction',ffN)}
         ${folderCard(['book'],'📚','Books',bkN)}
       </div>
+      ${listViewContentHtml()}
     </div>`;
   }
 
@@ -1541,70 +1570,10 @@ function folderViewHtml() {
   return `<div id="folder-view"></div>`;
 }
 
-// ── Render ────────────────────────────────────────────────────────────────────
-function render() {
-  const scrollable = document.getElementById('list') || document.getElementById('stats-view');
-  const scrollTop = scrollable ? scrollable.scrollTop : 0;
-  const folderViewEl = document.getElementById('folder-view');
-  const folderScrollTop = folderViewEl ? folderViewEl.scrollTop : 0;
+// The stat banner + search/filter controls + item list — used standalone in List view,
+// and appended below the Fanfiction/Books tiles on the folder-view home screen.
+function listViewContentHtml() {
   const stats = getStats();
-
-  const titlebarHtml = `
-    <div id="titlebar">
-      <div>
-        <div id="titlebar-title">My Library</div>
-        <div class="subtitle">${stats.ff} fics · ${stats.books} books · ${stats.totalWords.toLocaleString()} words read</div>
-      </div>
-      <div id="titlebar-actions">
-        <button class="btn btn-secondary btn-sm btn-icon" id="btn-export" title="Export to Excel">📊 Export</button>
-        <button class="btn btn-secondary btn-sm btn-icon" id="btn-data-folder" title="Open data folder">📁</button>
-        <button class="btn btn-secondary btn-sm btn-icon" id="btn-ao3-login" title="Log in to AO3 — needed to fetch locked / restricted works">🔑 AO3</button>
-        <button class="btn btn-secondary btn-sm btn-icon" id="btn-sync" title="Sync — get the latest from GitHub">🔄 Sync</button>
-        <button class="btn btn-backup btn-sm btn-icon" id="btn-backup" title="Back up — save all changes to GitHub">☁️ Back up</button>
-        <button class="btn ${state.view==='stats'?'btn-primary':'btn-secondary'} btn-sm btn-icon" id="btn-stats">${state.view==='stats'?'📚 Library':'📈 Stats'}</button>
-        <button class="btn btn-secondary btn-sm btn-icon" id="btn-settings" title="Settings — customise page banners">⚙️</button>
-        <div class="view-seg">
-          <button class="vseg-btn${state.viewMode==='folder'?' active':''}" id="btn-view-folder" title="Folder view">⊞</button>
-          <button class="vseg-btn${state.viewMode==='myspace'?' active':''}" id="btn-view-myspace" title="MySpace — reading board">🗂️</button>
-          <button class="vseg-btn${state.viewMode==='list'?' active':''}" id="btn-view-list" title="List view">☰</button>
-        </div>
-        <button class="btn btn-primary btn-sm btn-icon" id="btn-add">＋ Add entry</button>
-      </div>
-    </div>`;
-
-  if (state.view === 'stats') {
-    document.getElementById('app').innerHTML = titlebarHtml + statsViewHtml() + (state.modalOpen ? modalHtml() : '') + settingsModalHtml();
-    const newScrollable = document.getElementById('stats-view');
-    if (newScrollable) newScrollable.scrollTop = scrollTop;
-    bindEvents();
-    return;
-  }
-
-  if (state.viewMode === 'folder') {
-    const inHp = state.folderPath[0] === 'ff' && state.folderPath[1] === 'Harry Potter - J. K. Rowling';
-    document.getElementById('app').innerHTML = titlebarHtml + folderViewHtml() + folderEditModalHtml() + folderCreateModalHtml() + itemIconModalHtml() + (state.modalOpen ? modalHtml() : '') + settingsModalHtml() + (inHp ? hpCatHtml() : '');
-    const newFolderView = document.getElementById('folder-view');
-    if (newFolderView) newFolderView.scrollTop = folderScrollTop;
-    bindEvents();
-    if (inHp) mountHpCat();
-    return;
-  }
-
-  if (state.viewMode === 'myspace') {
-    const msTab = state.mySpaceTab === 'books' ? 'books' : 'ff';
-    document.getElementById('app').innerHTML = titlebarHtml +
-      `<div id="myspace-page">
-        <div class="ms-tabs">
-          <button class="ms-tab${msTab==='ff'?' active':''}" data-ms-tab="ff">📖 Fanfiction</button>
-          <button class="ms-tab${msTab==='books'?' active':''}" data-ms-tab="books">📚 Books</button>
-        </div>
-        ${msTab==='books' ? mySpaceBooksHtml() : mySpaceHtml()}
-      </div>` +
-      (state.modalOpen ? modalHtml() : '') + itemIconModalHtml() + settingsModalHtml();
-    bindEvents();
-    return;
-  }
-
   const filtered = getFiltered();
   const fandoms = getFandoms();
   const sections = getSections();
@@ -1628,9 +1597,9 @@ function render() {
     fpill(g, state.filterGenre===g, `genre="${g.replace(/"/g,'&quot;')}"`)
   ).join('');
 
-  document.getElementById('app').innerHTML = titlebarHtml + `
-
+  return `
     <div class="stat-row">
+      <button class="calc-stats-fab" id="btn-stats-fab" title="Stats">🧮</button>
       <div class="stat-pill ${statPillClass('TBR')}" data-stat="TBR">
         <span class="stat-num tbr">${stats.tbr}</span>
         <span class="stat-label">TBR</span>
@@ -1647,8 +1616,6 @@ function render() {
         <span class="stat-num dropped">${stats.dropped}</span>
         <span class="stat-label">Dropped</span>
       </div>
-      <div class="stat-divider"></div>
-      <span class="stat-words">📚 ${stats.books} books &nbsp;·&nbsp; 📖 ${stats.ff} fics</span>
     </div>
 
     <div class="controls">
@@ -1709,7 +1676,75 @@ function render() {
           <p>${state.search ? 'No entries match your search.' : 'No entries yet — add your first one!'}</p>
         </div>` : filtered.map(cardHtml).join('')}
     </div>
+  `;
+}
 
+// ── Render ────────────────────────────────────────────────────────────────────
+function render() {
+  const scrollable = document.getElementById('list') || document.getElementById('stats-view');
+  const scrollTop = scrollable ? scrollable.scrollTop : 0;
+  const folderViewEl = document.getElementById('folder-view');
+  const folderScrollTop = folderViewEl ? folderViewEl.scrollTop : 0;
+  const stats = getStats();
+
+  const titlebarHtml = `
+    <div id="titlebar">
+      <div>
+        <div id="titlebar-title">My Library</div>
+        <div class="subtitle">${stats.ff} fics · ${stats.books} books · ${stats.totalWords.toLocaleString()} words read</div>
+      </div>
+      <div id="titlebar-actions">
+        <div class="dd">
+          <button class="btn btn-secondary btn-sm btn-icon dd-btn">⚙️ Settings <span class="dd-chev">▾</span></button>
+          <div class="dd-menu dd-menu-right">
+            <div class="dd-item" id="btn-export">📊 Export to Excel</div>
+            <div class="dd-item" id="btn-data-folder">📁 Open data folder</div>
+            <div class="dd-item" id="btn-ao3-login">🔑 Log in to AO3</div>
+            <div class="dd-item" id="btn-sync">🔄 Sync — get latest from GitHub</div>
+            <div class="dd-sep"></div>
+            <div class="dd-item" id="btn-stats">${state.view==='stats'?'📚 Back to Library':'📈 Stats'}</div>
+            <div class="dd-item" id="btn-settings">🎨 Page banners</div>
+          </div>
+        </div>
+        <button class="btn btn-backup btn-sm btn-icon" id="btn-backup" title="Back up — save all changes to GitHub">☁️ Back up</button>
+        <button class="btn btn-primary btn-sm btn-icon" id="btn-add">＋ Add entry</button>
+      </div>
+    </div>`;
+
+  if (state.view === 'stats') {
+    document.getElementById('app').innerHTML = titlebarHtml + statsViewHtml() + (state.modalOpen ? modalHtml() : '') + settingsModalHtml();
+    const newScrollable = document.getElementById('stats-view');
+    if (newScrollable) newScrollable.scrollTop = scrollTop;
+    bindEvents();
+    return;
+  }
+
+  if (state.viewMode === 'folder') {
+    const inHp = state.folderPath[0] === 'ff' && state.folderPath[1] === 'Harry Potter - J. K. Rowling';
+    document.getElementById('app').innerHTML = titlebarHtml + folderViewHtml() + folderEditModalHtml() + folderCreateModalHtml() + itemIconModalHtml() + (state.modalOpen ? modalHtml() : '') + settingsModalHtml() + (inHp ? hpCatHtml() : '');
+    const newFolderView = document.getElementById('folder-view');
+    if (newFolderView) newFolderView.scrollTop = folderScrollTop;
+    bindEvents();
+    if (inHp) mountHpCat();
+    return;
+  }
+
+  if (state.viewMode === 'myspace') {
+    const msTab = state.mySpaceTab === 'books' ? 'books' : 'ff';
+    document.getElementById('app').innerHTML = titlebarHtml +
+      `<div id="myspace-page">
+        <div class="ms-tabs">
+          <button class="ms-tab${msTab==='ff'?' active':''}" data-ms-tab="ff">📖 Fanfiction</button>
+          <button class="ms-tab${msTab==='books'?' active':''}" data-ms-tab="books">📚 Books</button>
+        </div>
+        ${msTab==='books' ? mySpaceBooksHtml() : mySpaceHtml()}
+      </div>` +
+      (state.modalOpen ? modalHtml() : '') + itemIconModalHtml() + settingsModalHtml();
+    bindEvents();
+    return;
+  }
+
+  document.getElementById('app').innerHTML = titlebarHtml + listViewContentHtml() + `
     ${state.modalOpen ? modalHtml() : ''}
     ${itemIconModalHtml()}
     ${settingsModalHtml()}
@@ -1771,12 +1806,13 @@ function bindEvents() {
   if (sortEl) sortEl.addEventListener('change', e => { state.sortBy = e.target.value; render(); });
 
   // Stats toggle
-  const statsBtn = document.getElementById('btn-stats');
-  if (statsBtn) statsBtn.addEventListener('click', () => {
+  const toggleStatsView = () => {
     state.view = state.view === 'stats' ? 'library' : 'stats';
     state.modalOpen = false; state.editItem = null;
     render();
-  });
+  };
+  document.getElementById('btn-stats')?.addEventListener('click', toggleStatsView);
+  document.getElementById('btn-stats-fab')?.addEventListener('click', toggleStatsView);
 
   // View mode toggle (list / folder)
   document.getElementById('btn-view-list')?.addEventListener('click', () => {
@@ -1949,6 +1985,7 @@ function bindEvents() {
       const icon = document.getElementById('fem-icon')?.value.trim();
       const pinned = document.getElementById('fem-pin')?.checked || false;
       const existing = state.folderConfig[key] || {};
+      pushFolderUndo();
       state.folderConfig[key] = { ...existing };
       if (name) state.folderConfig[key].displayName = name;
       else delete state.folderConfig[key].displayName;
@@ -1971,6 +2008,7 @@ function bindEvents() {
       const key = state.editingFolder;
       if (!key) return;
       if (!confirm('Delete this folder? The items inside keep their tags — only this custom folder is removed.')) return;
+      pushFolderUndo();
       delete state.folderConfig[key];
       saveFolderConfig();
       state.editingFolder = null;
@@ -2005,6 +2043,7 @@ function bindEvents() {
       const id = 'custom_' + Date.now();
       const newPath = [...parentPath, id];
       const key = newPath.join('|');
+      pushFolderUndo();
       state.folderConfig[key] = { displayName: name, isCustom: true, _modAt: new Date().toISOString() };
       if (icon) state.folderConfig[key].icon = icon;
       if (filterTag) state.folderConfig[key].filterTag = filterTag;
@@ -2357,6 +2396,19 @@ function bindEvents() {
     });
   });
 
+  // Marking Finished should visibly default Times Read to 1 right away, rather than leaving
+  // a stale 0 sitting in the field until Save silently corrects it behind the scenes.
+  const statusSelectEl = document.getElementById('m-status');
+  if (statusSelectEl) {
+    statusSelectEl.addEventListener('change', () => {
+      if (statusSelectEl.value !== 'Finished') return;
+      const rcInput = document.getElementById('m-readcount');
+      if (rcInput && (!rcInput.value || parseInt(rcInput.value) < 1)) rcInput.value = '1';
+      const finishedInput = document.getElementById('m-finished');
+      if (finishedInput && !finishedInput.value) finishedInput.value = new Date().toISOString().slice(0, 10);
+    });
+  }
+
   // Star picker in modal
   let modalRating = state.editItem?.userRating || 0;
   const pickerEl = document.getElementById('star-picker');
@@ -2436,6 +2488,9 @@ function bindEvents() {
   attachAutocomplete('m-fandom', 'sug-fandom', distinctVals('fandom'));
   attachAutocomplete('m-author', 'sug-author', distinctVals('author'));
   attachAutocomplete('m-title',  'sug-title',  distinctVals('title'));
+  // Pairing suggestions pool both past Pairing values (M/M, F/F…) and ship-name tags already in use.
+  const shipTagPool = [...new Set(state.items.flatMap(x => x.tags || []).filter(isShipPairing))];
+  attachAutocomplete('m-pairing', 'sug-pairing', [...new Set([...distinctVals('pairing'), ...shipTagPool])].sort((a,b)=>a.localeCompare(b)));
 
   // Duplicate title warning (live, on blur)
   const titleEl = document.getElementById('m-title');
@@ -2540,6 +2595,44 @@ function bindEvents() {
     const hearts = document.getElementById('m-hearts')?.value;
     const pages = document.getElementById('m-pages')?.value;
 
+    const status = document.getElementById('m-status')?.value || 'TBR';
+
+    const finishedAt = (() => {
+      const d = document.getElementById('m-finished')?.value;
+      if (d) return new Date(d + 'T12:00:00').toISOString();
+      if (status === 'Finished' && !state.editItem?.finishedAt) return new Date().toISOString();
+      return state.editItem?.finishedAt || null;
+    })();
+
+    // Finished always means "read at least once" — trust an explicit higher count, but
+    // never let a stale/untouched Times-Read field (still showing its pre-Finished default) win.
+    const readCount = (() => {
+      const rc = document.getElementById('m-readcount')?.value;
+      let n = (rc !== null && rc !== undefined && rc !== '') ? (parseInt(rc) || 0) : (state.editItem?.readCount || 0);
+      if (status === 'Finished' && n < 1) n = 1;
+      return n;
+    })();
+
+    // Keep readDates in lockstep with readCount — timesRead()/stats trust readDates.length
+    // first, so letting it drift out of sync (e.g. a stale empty array) hides finished reads.
+    const readDates = (() => {
+      const existing = Array.isArray(state.editItem?.readDates) ? state.editItem.readDates.slice() : [];
+      if (readCount > existing.length) { while (existing.length < readCount) existing.push(finishedAt); }
+      else existing.length = readCount;
+      return existing;
+    })();
+
+    const pairing = isFf ? (document.getElementById('m-pairing')?.value?.trim() || '') : '';
+
+    // A ship typed into Pairing (e.g. "Harry/Ginny") also becomes a tag, so it gets its own folder.
+    const tags = (() => {
+      const base = state.editItem?.tags || [];
+      if (!pairing) return base;
+      const shipTags = pairing.split(',').map(s => s.trim()).filter(isShipPairing);
+      if (!shipTags.length) return base;
+      return [...new Set([...base, ...shipTags])];
+    })();
+
     const item = {
       ...(state.editItem||{}),
       id: state.editItem?.id || genId(),
@@ -2549,31 +2642,20 @@ function bindEvents() {
       fandom: isFf ? (document.getElementById('m-fandom')?.value?.trim() || '') : '',
       genre: !isFf ? (document.getElementById('m-genre')?.value?.trim() || '') : '',
       section: !isFf ? (document.getElementById('m-section')?.value?.trim() || state.editItem?.section || '') : '',
-      pairing: isFf ? (document.getElementById('m-pairing')?.value?.trim() || '') : '',
+      pairing,
       rating: isFf ? (document.getElementById('m-rating')?.value || '') : '',
-      status: document.getElementById('m-status')?.value || 'TBR',
+      status,
       words: words ? parseInt(words) : null,
       hearts: hearts ? parseInt(hearts) : null,
       pages: pages ? parseInt(pages) : null,
       userRating: modalRating,
       notes: document.getElementById('m-notes')?.value?.trim() || '',
-      tags: state.editItem?.tags || [],
+      tags,
       url: document.getElementById('m-url')?.value?.trim() || state.editItem?.url || '',
       oneshot: isFf ? (state.editItem?.oneshot || false) : undefined,
-      finishedAt: (() => {
-        const d = document.getElementById('m-finished')?.value;
-        const s = document.getElementById('m-status')?.value || 'TBR';
-        if (d) return new Date(d + 'T12:00:00').toISOString();
-        if (s === 'Finished' && !state.editItem?.finishedAt) return new Date().toISOString();
-        return state.editItem?.finishedAt || null;
-      })(),
-      readCount: (() => {
-        const rc = document.getElementById('m-readcount')?.value;
-        if (rc !== null && rc !== undefined && rc !== '') return parseInt(rc) || 0;
-        const s = document.getElementById('m-status')?.value || 'TBR';
-        if (s === 'Finished' && !state.editItem?.readCount) return 1;
-        return state.editItem?.readCount || 0;
-      })(),
+      finishedAt,
+      readCount,
+      readDates,
       _addedAt: state.editItem?._addedAt ?? state.items.length,
       _modAt: new Date().toISOString(),
     };
@@ -2728,20 +2810,63 @@ window.addEventListener('keydown', e => {
     e.preventDefault();
     document.getElementById('search-input')?.focus();
   }
+  // ⌘Z / Ctrl+Z undoes the last folder change (merge, rename, delete, create) — but not
+  // while typing in a text field, where it should do normal text-undo instead.
+  if ((e.metaKey || e.ctrlKey) && !e.shiftKey && e.key.toLowerCase() === 'z') {
+    const tag = e.target && e.target.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || e.target?.isContentEditable) return;
+    if (state.folderUndoStack.length) {
+      e.preventDefault();
+      undoFolderChange();
+    }
+  }
 });
 
-// Trackpad swipe-back in the folder grid: two-finger swipe right (macOS "back") goes up a level
+// Trackpad swipe navigation, now that the view-mode buttons are gone:
+//  - in Stats: swipe right (macOS "back") returns to the library
+//  - inside a folder: swipe right (macOS "back") steps up a level
+//  - on the home screen: swipe left opens MySpace; swipe right from MySpace returns home
+//
+// Accumulates deltaX across the whole gesture (instead of reacting to a single wheel tick) so
+// both directions trigger at the same true swipe distance — trackpads don't always deliver the
+// first tick of a gesture at the same size in both directions, which made "back" feel laggier.
 let _navSwipeAt = 0;
+let _swipeAccumX = 0;
+let _swipeResetTimer = null;
+const SWIPE_THRESHOLD = 14;
+const SWIPE_COOLDOWN = 280;
+const SWIPE_IDLE_RESET = 120;
+
+function fireSwipe(action) {
+  _navSwipeAt = Date.now();
+  _swipeAccumX = 0;
+  action();
+}
+
 window.addEventListener('wheel', e => {
-  if (state.view === 'stats' || state.viewMode !== 'folder') return;     // only in the folder grid
-  if (!state.folderPath || !state.folderPath.length) return;             // already at the root
-  if (Math.abs(e.deltaX) <= Math.abs(e.deltaY) + 4) return;              // must be a horizontal swipe
-  if (e.deltaX < -30) {                                                  // swipe right = go back
-    const now = Date.now();
-    if (now - _navSwipeAt < 700) return;                                 // one step per swipe
-    _navSwipeAt = now;
-    state.folderPath = state.folderPath.slice(0, -1);
-    render();
+  if (Math.abs(e.deltaX) <= Math.abs(e.deltaY) + 4) { _swipeAccumX = 0; return; }  // must be a horizontal swipe
+
+  _swipeAccumX += e.deltaX;
+  clearTimeout(_swipeResetTimer);
+  _swipeResetTimer = setTimeout(() => { _swipeAccumX = 0; }, SWIPE_IDLE_RESET);
+
+  const now = Date.now();
+  if (now - _navSwipeAt < SWIPE_COOLDOWN) return;                        // one step per swipe
+
+  if (state.view === 'stats') {
+    if (_swipeAccumX < -SWIPE_THRESHOLD) fireSwipe(() => { state.view = 'library'; render(); });
+    return;
+  }
+  if (state.viewMode !== 'folder' && state.viewMode !== 'myspace') return;
+
+  if (state.viewMode === 'folder') {
+    if (state.folderPath && state.folderPath.length) {
+      if (_swipeAccumX < -SWIPE_THRESHOLD) fireSwipe(() => { state.folderPath = state.folderPath.slice(0, -1); render(); });
+    } else if (_swipeAccumX > SWIPE_THRESHOLD) {
+      fireSwipe(() => { state.viewMode = 'myspace'; render(); });
+    }
+  } else if (state.viewMode === 'myspace' && _swipeAccumX < -SWIPE_THRESHOLD) {
+    fireSwipe(() => { state.viewMode = 'folder'; render(); });
   }
 }, { passive: true });
 

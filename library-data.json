@@ -898,7 +898,8 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-13T20:34:01.650Z",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-16T22:29:18.471Z",
+      "readCount": 1
     },
     {
       "id": "ff_14",
@@ -1120,7 +1121,8 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-13T20:36:50.849Z",
-      "_modAt": "2026-06-29T13:44:21.086Z"
+      "_modAt": "2026-06-29T13:44:21.086Z",
+      "readCount": 1
     },
     {
       "id": "ff_21",
@@ -1788,7 +1790,8 @@
       "section": "",
       "pages": null,
       "finishedAt": "2026-06-13T21:02:21.239Z",
-      "_modAt": "2026-06-29T13:44:22.655Z"
+      "_modAt": "2026-06-29T13:44:22.655Z",
+      "readCount": 1
     },
     {
       "id": "ff_47",
@@ -2190,7 +2193,8 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-13T21:06:05.438Z",
-      "_modAt": "2026-06-29T13:44:24.747Z"
+      "_modAt": "2026-06-29T13:44:24.747Z",
+      "readCount": 1
     },
     {
       "id": "ff_62",
@@ -2747,7 +2751,8 @@
       "section": "",
       "pages": null,
       "finishedAt": "2026-06-13T21:09:36.020Z",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-16T22:29:18.471Z",
+      "readCount": 1
     },
     {
       "id": "ff_83",
@@ -2770,7 +2775,8 @@
       "section": "",
       "pages": null,
       "finishedAt": "2026-06-13T21:10:15.936Z",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-16T22:29:18.471Z",
+      "readCount": 1
     },
     {
       "id": "ff_84",
@@ -2885,7 +2891,8 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-13T21:11:49.469Z",
-      "_modAt": "2026-06-29T13:43:49.056Z"
+      "_modAt": "2026-06-29T13:43:49.056Z",
+      "readCount": 1
     },
     {
       "id": "ff_88",
@@ -3088,7 +3095,8 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-13T21:13:23.269Z",
-      "_modAt": "2026-06-29T13:43:21.474Z"
+      "_modAt": "2026-06-29T13:43:21.474Z",
+      "readCount": 1
     },
     {
       "id": "ff_95",
@@ -3113,7 +3121,8 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-13T21:13:57.953Z",
-      "_modAt": "2026-06-29T13:43:17.266Z"
+      "_modAt": "2026-06-29T13:43:17.266Z",
+      "readCount": 1
     },
     {
       "id": "ff_96",
@@ -3364,7 +3373,8 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-13T21:17:25.349Z",
-      "_modAt": "2026-06-29T13:43:15.812Z"
+      "_modAt": "2026-06-29T13:43:15.812Z",
+      "readCount": 1
     },
     {
       "id": "ff_105",
@@ -3838,6 +3848,8 @@
       "readCount": 3,
       "_modAt": "2026-06-29T18:29:30.554Z",
       "readDates": [
+        "2020-08-19T12:00:00.000Z",
+        "2020-08-19T12:00:00.000Z",
         "2020-08-19T12:00:00.000Z"
       ]
     },
@@ -4218,7 +4230,8 @@
       "section": "",
       "pages": null,
       "finishedAt": "2026-06-13T21:20:23.832Z",
-      "_modAt": "2026-06-29T13:43:11.595Z"
+      "_modAt": "2026-06-29T13:43:11.595Z",
+      "readCount": 1
     },
     {
       "id": "ff_135",
@@ -4493,7 +4506,8 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-13T21:21:30.081Z",
-      "_modAt": "2026-06-29T13:43:12.973Z"
+      "_modAt": "2026-06-29T13:43:12.973Z",
+      "readCount": 1
     },
     {
       "id": "ff_145",
@@ -4548,7 +4562,8 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-13T21:22:42.031Z",
-      "_modAt": "2026-06-29T13:43:09.834Z"
+      "_modAt": "2026-06-29T13:43:09.834Z",
+      "readCount": 1
     },
     {
       "id": "ff_147",
@@ -4753,7 +4768,8 @@
       "pages": null,
       "oneshot": false,
       "finishedAt": "2026-06-13T21:23:45.115Z",
-      "_modAt": "2026-06-16T22:29:18.471Z"
+      "_modAt": "2026-06-16T22:29:18.471Z",
+      "readCount": 1
     },
     {
       "id": "ff_154",
@@ -6388,6 +6404,7 @@
       "readCount": 2,
       "_modAt": "2026-06-29T18:29:30.554Z",
       "readDates": [
+        "2013-01-11T12:00:00.000Z",
         "2013-01-11T12:00:00.000Z"
       ]
     },
@@ -6415,6 +6432,7 @@
       "readCount": 2,
       "_modAt": "2026-06-29T18:29:30.554Z",
       "readDates": [
+        "2022-02-25T12:00:00.000Z",
         "2022-02-25T12:00:00.000Z"
       ]
     },
@@ -6442,6 +6460,7 @@
       "readCount": 2,
       "_modAt": "2026-06-29T18:29:30.554Z",
       "readDates": [
+        "2022-06-08T12:00:00.000Z",
         "2022-06-08T12:00:00.000Z"
       ]
     },
@@ -6469,6 +6488,7 @@
       "readCount": 2,
       "_modAt": "2026-06-29T18:29:30.554Z",
       "readDates": [
+        "2013-04-03T12:00:00.000Z",
         "2013-04-03T12:00:00.000Z"
       ]
     },
@@ -6496,6 +6516,7 @@
       "readCount": 2,
       "_modAt": "2026-06-29T18:29:30.554Z",
       "readDates": [
+        "2013-03-20T12:00:00.000Z",
         "2013-03-20T12:00:00.000Z"
       ]
     },
@@ -6524,6 +6545,7 @@
       "readCount": 2,
       "_modAt": "2026-06-29T18:29:30.554Z",
       "readDates": [
+        "2013-01-02T12:00:00.000Z",
         "2013-01-02T12:00:00.000Z"
       ]
     },
@@ -7481,7 +7503,7 @@
       ],
       "url": "https://archiveofourown.org/works/33475549",
       "_addedAt": 251,
-      "finishedAt": "2026-01-09T12:00:00.000Z",
+      "finishedAt": "2022-07-28T11:00:00.000Z",
       "genre": "",
       "section": "",
       "pages": null,
@@ -7490,7 +7512,7 @@
         "2026-01-09T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:29:30.554Z"
+      "_modAt": "2026-07-17T21:54:01.013Z"
     },
     {
       "id": "ff_253",
@@ -7610,6 +7632,9 @@
       "readCount": 4,
       "finishedAt": "2012-01-14T12:00:00.000Z",
       "readDates": [
+        "2012-01-14T12:00:00.000Z",
+        "2012-01-14T12:00:00.000Z",
+        "2012-01-14T12:00:00.000Z",
         "2012-01-14T12:00:00.000Z"
       ],
       "_modAt": "2026-06-29T18:12:44.570Z"
@@ -8168,9 +8193,12 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-06-29T23:29:33.775Z",
+      "finishedAt": "2017-07-29T11:00:00.000Z",
       "readCount": 1,
-      "_modAt": "2026-06-29T23:29:33.775Z"
+      "_modAt": "2026-07-17T21:43:11.435Z",
+      "readDates": [
+        "2017-07-29T11:00:00.000Z"
+      ]
     },
     {
       "id": "book_26",
@@ -8192,9 +8220,12 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-06-29T23:29:25.825Z",
+      "finishedAt": "2016-07-29T11:00:00.000Z",
       "readCount": 1,
-      "_modAt": "2026-06-29T23:29:25.825Z"
+      "_modAt": "2026-07-17T21:42:55.604Z",
+      "readDates": [
+        "2016-07-29T11:00:00.000Z"
+      ]
     },
     {
       "id": "book_27",
@@ -8939,7 +8970,8 @@
       "rating": "",
       "hearts": null,
       "finishedAt": "2026-06-14T01:01:43.526Z",
-      "coverIcon": "https://covers.openlibrary.org/b/id/14407898-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/14407898-L.jpg",
+      "readCount": 1
     },
     {
       "id": "book_59",
@@ -9032,7 +9064,8 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-06-14T02:29:37.409Z"
+      "finishedAt": "2026-06-14T02:29:37.409Z",
+      "readCount": 1
     },
     {
       "id": "book_64",
@@ -9054,7 +9087,8 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-06-14T02:29:41.671Z"
+      "finishedAt": "2026-06-14T02:29:41.671Z",
+      "readCount": 1
     },
     {
       "id": "book_65",
@@ -9076,7 +9110,8 @@
       "rating": "",
       "hearts": null,
       "finishedAt": "2026-06-14T02:29:51.821Z",
-      "coverIcon": "https://m.media-amazon.com/images/I/71wb-fYT-ML._AC_UF894,1000_QL80_.jpg"
+      "coverIcon": "https://m.media-amazon.com/images/I/71wb-fYT-ML._AC_UF894,1000_QL80_.jpg",
+      "readCount": 1
     },
     {
       "id": "book_66",
@@ -9098,7 +9133,8 @@
       "rating": "",
       "hearts": null,
       "finishedAt": "2026-06-14T02:30:16.088Z",
-      "coverIcon": "https://m.media-amazon.com/images/I/418iocF-glL.null_SY250_.jpg"
+      "coverIcon": "https://m.media-amazon.com/images/I/418iocF-glL.null_SY250_.jpg",
+      "readCount": 1
     },
     {
       "id": "book_67",
@@ -9120,7 +9156,8 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-06-14T02:31:54.721Z"
+      "finishedAt": "2026-06-14T02:31:54.721Z",
+      "readCount": 1
     },
     {
       "id": "book_68",
@@ -9142,7 +9179,8 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-06-14T02:32:01.073Z"
+      "finishedAt": "2026-06-14T02:32:01.073Z",
+      "readCount": 1
     },
     {
       "id": "book_69",
@@ -9164,7 +9202,8 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-06-14T02:33:31.003Z"
+      "finishedAt": "2026-06-14T02:33:31.003Z",
+      "readCount": 1
     },
     {
       "id": "book_70",
@@ -9209,7 +9248,8 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-06-14T02:35:00.735Z"
+      "finishedAt": "2026-06-14T02:35:00.735Z",
+      "readCount": 1
     },
     {
       "id": "book_73",
@@ -9254,7 +9294,8 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-06-14T02:35:58.875Z"
+      "finishedAt": "2026-06-14T02:35:58.875Z",
+      "readCount": 1
     },
     {
       "id": "book_75",
@@ -9352,7 +9393,8 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-06-14T02:37:30.718Z"
+      "finishedAt": "2026-06-14T02:37:30.718Z",
+      "readCount": 1
     },
     {
       "id": "book_80",
@@ -9381,7 +9423,7 @@
     {
       "id": "book_81",
       "type": "book",
-      "title": "CittÃÂÃÂ  di carta",
+      "title": "Città di carta",
       "author": "John Green",
       "genre": "YA / Romance",
       "section": "Fantasy",
@@ -9393,7 +9435,17 @@
       "tags": [],
       "url": "",
       "_addedAt": 331,
-      "coverIcon": "https://m.media-amazon.com/images/I/81xXvkMyEgL._AC_UF894,1000_QL80_.jpg"
+      "coverIcon": "https://m.media-amazon.com/images/I/81xXvkMyEgL._AC_UF894,1000_QL80_.jpg",
+      "readCount": 1,
+      "fandom": "",
+      "pairing": "",
+      "rating": "",
+      "hearts": null,
+      "finishedAt": "2026-07-17T21:19:15.724Z",
+      "readDates": [
+        "2026-07-17T21:19:15.724Z"
+      ],
+      "_modAt": "2026-07-17T21:19:15.725Z"
     },
     {
       "id": "book_82",
@@ -9705,7 +9757,7 @@
     {
       "id": "book_95",
       "type": "book",
-      "title": "Il ragazzo che entrÃÂÃÂ² dalla finestra e si infilÃÂÃÂ² nel mio letto",
+      "title": "Il ragazzo che entrò dalla finestra e si infilò nel mio letto",
       "author": "Kirsty Moseley",
       "genre": "Romance",
       "section": "Fantasy",
@@ -9719,7 +9771,18 @@
       "_addedAt": 345,
       "favorite": true,
       "coverIcon": "https://m.media-amazon.com/images/I/61whefI+L8L._AC_UF1000,1000_QL80_.jpg",
-      "readCount": 3
+      "readCount": 3,
+      "fandom": "",
+      "pairing": "",
+      "rating": "",
+      "hearts": null,
+      "finishedAt": "2026-07-17T21:19:32.057Z",
+      "readDates": [
+        "2026-07-17T21:19:32.057Z",
+        "2026-07-17T21:19:32.057Z",
+        "2026-07-17T21:19:32.057Z"
+      ],
+      "_modAt": "2026-07-17T21:19:32.057Z"
     },
     {
       "id": "book_96",
@@ -9960,7 +10023,7 @@
     {
       "id": "book_106",
       "type": "book",
-      "title": "Un disastro ÃÂÃÂ¨ per sempre",
+      "title": "Un disastro è per sempre",
       "author": "Jamie McGuire",
       "genre": "Romance / New Adult",
       "section": "Fantasy",
@@ -9971,7 +10034,17 @@
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 356
+      "_addedAt": 356,
+      "readCount": 1,
+      "fandom": "",
+      "pairing": "",
+      "rating": "",
+      "hearts": null,
+      "finishedAt": "2026-07-17T21:19:41.822Z",
+      "readDates": [
+        "2026-07-17T21:19:41.822Z"
+      ],
+      "_modAt": "2026-07-17T21:19:41.822Z"
     },
     {
       "id": "book_107",
@@ -10045,7 +10118,7 @@
     {
       "id": "book_110",
       "type": "book",
-      "title": "L'assistente del capo: Chi ÃÂÃÂ¨ ora il boss?",
+      "title": "L'assistente del capo: Chi è ora il boss?",
       "author": "Lexy Timms",
       "genre": "Romance",
       "section": "Fantasy",
@@ -10056,7 +10129,17 @@
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 360
+      "_addedAt": 360,
+      "readCount": 1,
+      "fandom": "",
+      "pairing": "",
+      "rating": "",
+      "hearts": null,
+      "finishedAt": "2026-07-17T21:19:50.222Z",
+      "readDates": [
+        "2026-07-17T21:19:50.222Z"
+      ],
+      "_modAt": "2026-07-17T21:19:50.222Z"
     },
     {
       "id": "book_111",
@@ -10315,7 +10398,7 @@
     {
       "id": "book_122",
       "type": "book",
-      "title": "Siamo amici solo il mercoledÃÂÃÂ¬",
+      "title": "Siamo amici solo il mercoledì",
       "author": "Tania Paxia",
       "genre": "Romance",
       "section": "Fantasy",
@@ -10326,7 +10409,17 @@
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 372
+      "_addedAt": 372,
+      "readCount": 1,
+      "fandom": "",
+      "pairing": "",
+      "rating": "",
+      "hearts": null,
+      "finishedAt": "2026-07-17T21:19:58.523Z",
+      "readDates": [
+        "2026-07-17T21:19:58.523Z"
+      ],
+      "_modAt": "2026-07-17T21:19:58.523Z"
     },
     {
       "id": "book_123",
@@ -10370,8 +10463,13 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-06-05T11:00:00.000Z",
-      "coverIcon": "https://covers.openlibrary.org/b/id/11762076-L.jpg"
+      "finishedAt": "2023-03-10T12:00:00.000Z",
+      "coverIcon": "https://covers.openlibrary.org/b/id/11762076-L.jpg",
+      "readCount": 1,
+      "readDates": [
+        "2023-03-10T12:00:00.000Z"
+      ],
+      "_modAt": "2026-07-17T21:53:25.947Z"
     },
     {
       "id": "book_125",
@@ -10699,7 +10797,7 @@
     {
       "id": "book_139",
       "type": "book",
-      "title": "ViciniÃÂ¢ÃÂÃÂ¦ anche troppo",
+      "title": "Vicini anche troppo",
       "author": "Scarlett Reese",
       "genre": "Romance",
       "section": "Fantasy",
@@ -10711,7 +10809,17 @@
       "tags": [],
       "url": "",
       "_addedAt": 389,
-      "coverIcon": "https://covers.openlibrary.org/b/id/14174181-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/14174181-L.jpg",
+      "readCount": 1,
+      "fandom": "",
+      "pairing": "",
+      "rating": "",
+      "hearts": null,
+      "finishedAt": "2026-07-17T21:20:08.672Z",
+      "readDates": [
+        "2026-07-17T21:20:08.672Z"
+      ],
+      "_modAt": "2026-07-17T21:20:08.672Z"
     },
     {
       "id": "book_140",
@@ -11783,7 +11891,8 @@
       "notes": "Rush 1",
       "tags": [],
       "url": "",
-      "_addedAt": 436
+      "_addedAt": 436,
+      "readCount": 1
     },
     {
       "id": "book_187",
@@ -12219,7 +12328,8 @@
       "notes": "",
       "tags": [],
       "url": "",
-      "_addedAt": 455
+      "_addedAt": 455,
+      "readCount": 1
     },
     {
       "id": "book_206",
@@ -13206,12 +13316,22 @@
       "words": 112000,
       "status": "Finished",
       "userRating": 0,
-      "notes": "Un fottuto capolavoroÃÂ¢ÃÂÃÂ¦ solo wow",
+      "notes": "Un fottuto capolavoro solo wow",
       "tags": [],
       "url": "",
       "_addedAt": 498,
       "favorite": true,
-      "coverIcon": "https://covers.openlibrary.org/b/id/8184999-L.jpg"
+      "coverIcon": "https://covers.openlibrary.org/b/id/8184999-L.jpg",
+      "readCount": 1,
+      "fandom": "",
+      "pairing": "",
+      "rating": "",
+      "hearts": null,
+      "finishedAt": "2018-12-17T12:00:00.000Z",
+      "readDates": [
+        "2018-12-17T12:00:00.000Z"
+      ],
+      "_modAt": "2026-07-17T21:32:40.528Z"
     },
     {
       "id": "book_251",
@@ -16744,8 +16864,10 @@
       "url": "https://archiveofourown.org/works/38648622/chapters/96619968",
       "notes": "tough read",
       "status": "Finished",
-      "readDates": [],
-      "readCount": 0,
+      "readDates": [
+        "2026-04-08T11:00:00.000Z"
+      ],
+      "readCount": 1,
       "id": "1782758220673_tmlp9kptpx",
       "type": "ff",
       "genre": "",
@@ -16809,8 +16931,10 @@
       "url": "https://archiveofourown.org/works/35432824",
       "notes": "",
       "status": "Finished",
-      "readDates": [],
-      "readCount": 0,
+      "readDates": [
+        "2026-07-02T11:00:00.000Z"
+      ],
+      "readCount": 1,
       "oneshot": true,
       "id": "1782949904814_8kc40i1520s",
       "type": "ff",
@@ -16840,8 +16964,10 @@
       "url": "https://archiveofourown.org/works/65868631/chapters/172209691#workskin",
       "notes": "",
       "status": "Finished",
-      "readDates": [],
-      "readCount": 0,
+      "readDates": [
+        "2026-07-16T11:00:00.000Z"
+      ],
+      "readCount": 1,
       "id": "1784238326911_3o7kcuoaiuw",
       "type": "ff",
       "genre": "",
@@ -16851,7 +16977,7 @@
       "oneshot": false,
       "finishedAt": "2026-07-16T11:00:00.000Z",
       "_addedAt": 670,
-      "_modAt": "2026-07-16T22:52:55.545Z",
+      "_modAt": "2026-07-17T21:20:21.670Z",
       "coverIcon": "https://i.pinimg.com/736x/c6/76/7e/c6767e66f7a7957250ac39ff41069c8c.jpg"
     },
     {
@@ -16863,8 +16989,10 @@
       "notes": "very nice one",
       "status": "Finished",
       "rating": "Mature",
-      "readDates": [],
-      "readCount": 0,
+      "readDates": [
+        "2026-07-15T11:00:00.000Z"
+      ],
+      "readCount": 1,
       "oneshot": true,
       "words": 14877,
       "hearts": 1654,
@@ -16880,7 +17008,7 @@
       "userRating": 0,
       "finishedAt": "2026-07-15T11:00:00.000Z",
       "_addedAt": 669,
-      "_modAt": "2026-07-16T22:51:22.614Z",
+      "_modAt": "2026-07-17T21:20:27.770Z",
       "coverIcon": "https://i.pinimg.com/736x/58/5f/f9/585ff91e733bd8c11a84750fdb669868.jpg"
     },
     {
@@ -16907,10 +17035,12 @@
       "notes": "",
       "oneshot": false,
       "finishedAt": "2026-07-13T11:00:00.000Z",
-      "readCount": 0,
+      "readCount": 1,
       "_addedAt": 668,
       "_modAt": "2026-07-16T22:52:03.079Z",
-      "readDates": []
+      "readDates": [
+        "2026-07-13T11:00:00.000Z"
+      ]
     },
     {
       "title": "The Badge Stays On!",
@@ -16934,10 +17064,12 @@
       "notes": "",
       "oneshot": false,
       "finishedAt": "2026-07-02T11:00:00.000Z",
-      "readCount": 0,
+      "readCount": 1,
       "_addedAt": 667,
       "_modAt": "2026-07-16T23:05:31.321Z",
-      "readDates": []
+      "readDates": [
+        "2026-07-02T11:00:00.000Z"
+      ]
     },
     {
       "title": "Harry James [Redacted]",
@@ -16984,8 +17116,10 @@
       "url": "https://archiveofourown.org/works/28694829",
       "notes": "",
       "status": "Finished",
-      "readDates": [],
-      "readCount": 0,
+      "readDates": [
+        "2026-07-12T11:00:00.000Z"
+      ],
+      "readCount": 1,
       "oneshot": true,
       "id": "1783816357494_biu4pjdwt8p",
       "type": "ff",
@@ -17012,9 +17146,11 @@
       ],
       "url": "https://archiveofourown.org/works/46588483/chapters/143654383#workskin",
       "notes": "chap 17 to read",
-      "status": "Reading",
-      "readDates": [],
-      "readCount": 0,
+      "status": "Dropped",
+      "readDates": [
+        "2026-07-17T21:31:44.028Z"
+      ],
+      "readCount": 1,
       "id": "1783816110214_9ee8ga0bea",
       "type": "ff",
       "genre": "",
@@ -17024,7 +17160,7 @@
       "oneshot": false,
       "finishedAt": null,
       "_addedAt": 664,
-      "_modAt": "2026-07-12T00:28:30.215Z"
+      "_modAt": "2026-07-17T21:31:44.028Z"
     },
     {
       "url": "https://archiveofourown.org/works/37903933",
@@ -17035,8 +17171,10 @@
       "notes": "",
       "status": "Finished",
       "rating": "",
-      "readDates": [],
-      "readCount": 0,
+      "readDates": [
+        "2026-07-09T11:00:00.000Z"
+      ],
+      "readCount": 1,
       "oneshot": true,
       "words": 14325,
       "hearts": 6969,
