@@ -1300,7 +1300,7 @@ function folderControlBar(isItemList) {
 // If the current folder has become empty (e.g. after removing the last item's tag), step back out of it.
 function pruneEmptyFolderPath() {
   const countAt = p => {
-    const [type, sub, tag] = p;
+    const [type, sub, tag, childTag] = p;
     if (!type) return 1;
     if (type === 'ff') {
       if (!sub) return 1;
@@ -1309,6 +1309,10 @@ function pruneEmptyFolderPath() {
       if (tag === '__all__') return base.length;
       if (tag === '__untagged__') return base.filter(x=>!(x.tags||[]).length).length;
       const cfg = state.folderConfig['ff|'+sub+'|'+tag];
+      if (cfg && cfg.isGroup) {
+        if (!childTag) return base.filter(x=>(x.tags||[]).some(t=>(cfg.groupTags||[]).includes(t))).length;
+        return base.filter(x=>(x.tags||[]).includes(childTag)).length;
+      }
       if (cfg && cfg.isCustom) return 1;
       return base.filter(x=>(x.tags||[]).includes(tag)).length;
     }
@@ -1327,7 +1331,7 @@ function pruneEmptyFolderPath() {
 
 function folderViewHtml() {
   pruneEmptyFolderPath();
-  const [type, sub, tag] = state.folderPath;
+  const [type, sub, tag, childTag] = state.folderPath;
 
   // Root — two big tiles
   if (!type) {
@@ -1366,16 +1370,26 @@ function folderViewHtml() {
   // FF → fandom → tag list (with pairing/trope split)
   if (type==='ff' && sub && !tag) {
     const base = state.items.filter(x=>x.type==='ff'&&(sub==='__none__'?!x.fandom:x.fandom===sub));
-    const tagSet = [...new Set(base.flatMap(x=>x.tags||[]))].sort();
+    const groupKeys = Object.keys(state.folderConfig).filter(k=>{
+      const p = k.split('|');
+      return state.folderConfig[k].isGroup && p.length===3 && p[0]==='ff' && p[1]===sub;
+    });
+    const groupedTagSet = new Set(groupKeys.flatMap(k=>state.folderConfig[k].groupTags||[]));
+    const tagSet = [...new Set(base.flatMap(x=>x.tags||[]))].filter(t=>!groupedTagSet.has(t)).sort();
     const allEntry = [['ff',sub,'__all__'],'📋','All',base.length];
     const tagEntries = tagSet.map(t => {
       const n = base.filter(x=>(x.tags||[]).includes(t)).length;
       return [['ff',sub,t],'🏷️',t,n];
     });
+    groupKeys.forEach(k => {
+      const cfg = state.folderConfig[k];
+      const n = base.filter(x=>(x.tags||[]).some(t=>(cfg.groupTags||[]).includes(t))).length;
+      tagEntries.push([[...k.split('|')], cfg.icon||'📁', cfg.displayName||'Group', n]);
+    });
     const untagged = base.filter(x=>!(x.tags||[]).length);
     Object.keys(state.folderConfig).filter(k=>{
       const p = k.split('|');
-      return state.folderConfig[k].isCustom && p.length===3 && p[0]==='ff' && p[1]===sub;
+      return state.folderConfig[k].isCustom && !state.folderConfig[k].isGroup && p.length===3 && p[0]==='ff' && p[1]===sub;
     }).forEach(k => {
       const cfg = state.folderConfig[k];
       const n = cfg.filterTag ? base.filter(x=>(x.tags||[]).includes(cfg.filterTag)).length : 0;
@@ -1401,19 +1415,42 @@ function folderViewHtml() {
     </div>`;
   }
 
-  // FF → fandom → tag → items
+  // FF → fandom → group → child tag list
   if (type==='ff' && sub && tag) {
     const base = state.items.filter(x=>x.type==='ff'&&(sub==='__none__'?!x.fandom:x.fandom===sub));
     const customCfg = state.folderConfig[`ff|${sub}|${tag}`];
+
+    if (customCfg?.isGroup && !childTag) {
+      const subLbl = getCfg(`ff|${sub}`).displayName || (sub==='__none__'?'Other':sub);
+      const groupLbl = customCfg.displayName || tag;
+      const childEntries = (customCfg.groupTags||[]).map(t => {
+        const n = base.filter(x=>(x.tags||[]).includes(t)).length;
+        const flatCfg = getCfg(`ff|${sub}|${t}`);
+        return [['ff',sub,tag,t], flatCfg.icon || '🏷️', flatCfg.displayName || t, n];
+      });
+      const cards = sortedCards(filterCards(childEntries)).map(([p,e,l,c])=>folderCard(p,e,l,c));
+      return `<div id="folder-view">
+        ${folderCrumbs([{label:'Fanfiction',path:['ff']},{label:subLbl,path:['ff',sub]},{label:groupLbl,path:['ff',sub,tag]}])}
+        ${folderControlBar(false)}
+        <div class="folder-grid">${cards.join('')}</div>
+      </div>`;
+    }
+
     let items;
-    if (tag==='__all__') items = base;
+    if (childTag) items = base.filter(x=>(x.tags||[]).includes(childTag));
+    else if (tag==='__all__') items = base;
     else if (tag==='__untagged__') items = base.filter(x=>!(x.tags||[]).length);
     else if (customCfg?.isCustom && customCfg.filterTag) items = base.filter(x=>(x.tags||[]).includes(customCfg.filterTag));
     else items = base.filter(x=>(x.tags||[]).includes(tag));
     const subLbl = getCfg(`ff|${sub}`).displayName || (sub==='__none__'?'Other':sub);
     const tagLbl = getCfg(`ff|${sub}|${tag}`).displayName || (tag==='__all__'?'All':tag==='__untagged__'?'Untagged':tag);
+    const crumbs = [{label:'Fanfiction',path:['ff']},{label:subLbl,path:['ff',sub]},{label:tagLbl,path:['ff',sub,tag]}];
+    if (childTag) {
+      const flatCfg = getCfg(`ff|${sub}|${childTag}`);
+      crumbs.push({label:flatCfg.displayName || childTag, path:['ff',sub,tag,childTag]});
+    }
     return `<div id="folder-view">
-      ${folderCrumbs([{label:'Fanfiction',path:['ff']},{label:subLbl,path:['ff',sub]},{label:tagLbl,path:['ff',sub,tag]}])}
+      ${folderCrumbs(crumbs)}
       ${folderControlBar(true)}
       ${folderItemList(items)}
     </div>`;
