@@ -1079,7 +1079,11 @@ function folderCard(navPath, defaultEmoji, rawLabel, count) {
   const editKey = key.replace(/"/g,'&quot;');
   const isUrl = icon.startsWith('http');
   const iconHtml = isUrl ? `<img class="fc-img" src="${esc(icon)}" />` : `<span class="fc-emoji">${icon}</span>`;
-  return `<div class="folder-card${pinned?' fc-pinned':''}" data-folder-nav="${nav}">
+  // Draggable so tag/group folders can be dropped onto one another to nest — only real
+  // tag-level ff folders qualify (not All/Untagged, not fandom tiles, not book genres).
+  const isDraggable = navPath.length === 3 && navPath[0] === 'ff' && !['__all__','__untagged__'].includes(navPath[2]);
+  const dragAttrs = isDraggable ? ` draggable="true" data-drag-key="${editKey}"` : '';
+  return `<div class="folder-card${pinned?' fc-pinned':''}" data-folder-nav="${nav}"${dragAttrs}>
     <div class="fc-thumb" style="--c1:${c1};--c2:${c2}">
       ${iconHtml}
       ${pinned ? '<span class="fc-pin">📌</span>' : ''}
@@ -1101,6 +1105,55 @@ function addFolderCard(parentPath) {
       <div class="fc-count" style="color:#d1d5db">Customise</div>
     </div>
   </div>`;
+}
+
+// The raw tags a folder key represents — a group's member tags, or the tag itself.
+function folderTagsOf(key) {
+  const cfg = state.folderConfig[key];
+  if (cfg && cfg.isGroup) return (cfg.groupTags || []).slice();
+  const parts = key.split('|');
+  return [parts[parts.length - 1]];
+}
+
+// iOS-style "drag one folder onto another" — combines two tag/group folders into one
+// group folder, or drops a tag/group into an existing group.
+function mergeFoldersIntoGroup(sourceKey, targetKey) {
+  if (!sourceKey || !targetKey || sourceKey === targetKey) return;
+  const sParts = sourceKey.split('|');
+  const tParts = targetKey.split('|');
+  if (sParts[0] !== tParts[0] || sParts[1] !== tParts[1]) return; // different fandom/section — no-op
+
+  const sourceCfg = state.folderConfig[sourceKey];
+  const targetCfg = state.folderConfig[targetKey];
+  const sourceTags = folderTagsOf(sourceKey);
+
+  if (targetCfg && targetCfg.isGroup) {
+    // Drop into an existing group — just add the source's tag(s), keep the group's identity.
+    const merged = [...new Set([...(targetCfg.groupTags || []), ...sourceTags])];
+    state.folderConfig[targetKey] = { ...targetCfg, isCustom: true, isGroup: true, groupTags: merged, _modAt: new Date().toISOString() };
+    if (sourceCfg && sourceCfg.isGroup) delete state.folderConfig[sourceKey]; // dissolve the now-emptied source group
+    saveFolderConfig();
+    render();
+    return;
+  }
+
+  // Neither side is a group yet — create a brand-new one containing both, iOS-style.
+  const targetTags = folderTagsOf(targetKey);
+  const allTags = [...new Set([...targetTags, ...sourceTags])];
+  const newKey = `${tParts[0]}|${tParts[1]}|group_${Date.now()}`;
+  state.folderConfig[newKey] = {
+    displayName: 'New Folder',
+    icon: '📁',
+    pinned: false,
+    isCustom: true,
+    isGroup: true,
+    groupTags: allTags,
+    _modAt: new Date().toISOString(),
+  };
+  if (sourceCfg && sourceCfg.isGroup) delete state.folderConfig[sourceKey];
+  saveFolderConfig();
+  state.editingFolder = newKey; // jump straight into naming it, like iOS does
+  render();
 }
 
 function sortedCards(items) {
@@ -1835,6 +1888,38 @@ function bindEvents() {
       render();
     });
   });
+
+  // Drag one folder onto another to nest them together, iOS home-screen style.
+  {
+    let dragKey = null;
+    const draggables = document.querySelectorAll('.folder-card[draggable="true"]');
+    draggables.forEach(el => {
+      el.addEventListener('dragstart', e => {
+        dragKey = el.dataset.dragKey;
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', dragKey);
+        el.classList.add('fc-dragging');
+      });
+      el.addEventListener('dragend', () => {
+        el.classList.remove('fc-dragging');
+        draggables.forEach(x => x.classList.remove('fc-drop-hover'));
+        dragKey = null;
+      });
+      el.addEventListener('dragover', e => {
+        if (!dragKey || dragKey === el.dataset.dragKey) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        el.classList.add('fc-drop-hover');
+      });
+      el.addEventListener('dragleave', () => el.classList.remove('fc-drop-hover'));
+      el.addEventListener('drop', e => {
+        e.preventDefault();
+        el.classList.remove('fc-drop-hover');
+        const sourceKey = dragKey || e.dataTransfer.getData('text/plain');
+        mergeFoldersIntoGroup(sourceKey, el.dataset.dragKey);
+      });
+    });
+  }
 
   // Folder edit modal
   const febClose = document.getElementById('fem-close');

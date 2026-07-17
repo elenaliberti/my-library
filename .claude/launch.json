@@ -10,7 +10,7 @@
     {
       "name": "desktop-harness",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "-p", "8770", "/private/tmp/claude-501/-Users-elenaliberti-Downloads-library-app/f569fd44-ac7c-48ca-8119-8311c6686dc5/scratchpad/harness"],
+      "runtimeArgs": ["serve", "-p", "8770", "/private/tmp/claude-501/-Users-elenaliberti-Downloads-library-app/489b5d20-6533-4615-a928-df7437c89688/scratchpad/harness"],
       "port": 8770
     }
   ]

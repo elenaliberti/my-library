@@ -103,6 +103,12 @@ select.filter-select:focus { border-color: var(--purple); }
 .folder-card:active { transform: translateY(0); box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
 .folder-card.fc-pinned { box-shadow: 0 1px 3px rgba(0,0,0,0.07), 0 4px 12px rgba(99,102,241,0.18), 0 0 0 2px #c8d8b4; }
 
+/* Drag-to-nest — iOS-style folder merging */
+.folder-card[draggable="true"] { cursor: grab; }
+.folder-card.fc-dragging { opacity: 0.4; transform: scale(0.95); }
+.folder-card.fc-drop-hover { transform: scale(1.06); box-shadow: 0 0 0 3px #8bab5c, 0 10px 28px rgba(0,0,0,0.18); }
+.folder-card.fc-drop-hover .fc-thumb { filter: brightness(0.85); }
+
 /* Gradient thumbnail area */
 .fc-thumb { display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--c1) 0%, var(--c2) 100%); aspect-ratio: 4/3; position: relative; overflow: hidden; }
 .folder-grid-root .fc-thumb { aspect-ratio: 1 / 1; }
