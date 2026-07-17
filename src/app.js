@@ -1280,8 +1280,16 @@ const SHIP_PORTMANTEAUS = {
 };
 
 function canonicalizeName(n) {
-  const key = (n || '').trim().toLowerCase();
-  return CHARACTER_ALIASES[key] || (n || '').trim();
+  const raw = (n || '').trim();
+  if (!raw) return '';
+  // AO3 exports relationship tags as "Character | Alias" (e.g. "Tom Riddle | Voldemort") —
+  // try every alternative against the alias map before falling back to the first one as-is.
+  const alts = raw.split('|').map(s => s.trim()).filter(Boolean);
+  for (const alt of alts) {
+    const hit = CHARACTER_ALIASES[alt.toLowerCase()];
+    if (hit) return hit;
+  }
+  return alts[0] || raw;
 }
 
 // Turn a pairing string into a fandom-agnostic, order-independent key so equivalent ships
