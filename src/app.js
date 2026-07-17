@@ -2863,7 +2863,7 @@ let _navSwipeAt = 0;
 let _swipeAccumX = 0;
 let _swipeResetTimer = null;
 const SWIPE_THRESHOLD = 14;
-const SWIPE_COOLDOWN = 280;
+const SWIPE_COOLDOWN = 650;
 const SWIPE_IDLE_RESET = 120;
 
 function fireSwipe(action) {
