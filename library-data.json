@@ -7471,16 +7471,16 @@
       ],
       "url": "https://archiveofourown.org/works/53427841/chapters/135228064",
       "_addedAt": 250,
-      "finishedAt": "2025-11-26T12:00:00.000Z",
+      "finishedAt": "2014-09-16T12:00:00.000Z",
       "readDates": [
-        "2025-11-26T12:00:00.000Z"
+        "2014-09-16T12:00:00.000Z"
       ],
       "readCount": 1,
       "genre": "",
       "section": "",
       "pages": null,
       "oneshot": false,
-      "_modAt": "2026-06-29T18:29:30.554Z"
+      "_modAt": "2026-07-17T23:10:00.000Z"
     },
     {
       "id": "ff_252",
@@ -8969,9 +8969,13 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-06-14T01:01:43.526Z",
+      "finishedAt": "2014-12-10T12:00:00.000Z",
       "coverIcon": "https://covers.openlibrary.org/b/id/14407898-L.jpg",
-      "readCount": 1
+      "readCount": 1,
+      "readDates": [
+        "2014-12-10T12:00:00.000Z"
+      ],
+      "_modAt": "2026-07-17T23:10:00.000Z"
     },
     {
       "id": "book_59",
@@ -9012,12 +9016,12 @@
       "url": "",
       "_addedAt": 313,
       "coverIcon": "https://m.media-amazon.com/images/I/61j2gnrOzRL.jpg",
-      "finishedAt": "2025-02-14T12:00:00.000Z",
+      "finishedAt": "2015-05-04T12:00:00.000Z",
       "readDates": [
-        "2025-02-14T12:00:00.000Z"
+        "2015-05-04T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
+      "_modAt": "2026-07-17T23:10:00.000Z",
       "_wordsEstimated": true
     },
     {
@@ -9040,9 +9044,12 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2023-08-24T11:00:00.000Z",
+      "finishedAt": "2014-03-19T12:00:00.000Z",
       "readCount": 1,
-      "_modAt": "2026-06-29T18:23:59.362Z"
+      "_modAt": "2026-07-17T23:10:00.000Z",
+      "readDates": [
+        "2014-03-19T12:00:00.000Z"
+      ]
     },
     {
       "id": "book_63",
@@ -9064,8 +9071,12 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-06-14T02:29:37.409Z",
-      "readCount": 1
+      "finishedAt": "2016-03-08T12:00:00.000Z",
+      "readCount": 1,
+      "readDates": [
+        "2016-03-08T12:00:00.000Z"
+      ],
+      "_modAt": "2026-07-17T23:10:00.000Z"
     },
     {
       "id": "book_64",
@@ -9087,8 +9098,12 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-06-14T02:29:41.671Z",
-      "readCount": 1
+      "finishedAt": "2014-03-11T12:00:00.000Z",
+      "readCount": 1,
+      "readDates": [
+        "2014-03-11T12:00:00.000Z"
+      ],
+      "_modAt": "2026-07-17T23:10:00.000Z"
     },
     {
       "id": "book_65",
@@ -9109,9 +9124,13 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-06-14T02:29:51.821Z",
+      "finishedAt": "2018-05-22T12:00:00.000Z",
       "coverIcon": "https://m.media-amazon.com/images/I/71wb-fYT-ML._AC_UF894,1000_QL80_.jpg",
-      "readCount": 1
+      "readCount": 1,
+      "readDates": [
+        "2018-05-22T12:00:00.000Z"
+      ],
+      "_modAt": "2026-07-17T23:10:00.000Z"
     },
     {
       "id": "book_66",
@@ -9132,9 +9151,13 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-06-14T02:30:16.088Z",
+      "finishedAt": "2016-12-16T12:00:00.000Z",
       "coverIcon": "https://m.media-amazon.com/images/I/418iocF-glL.null_SY250_.jpg",
-      "readCount": 1
+      "readCount": 1,
+      "readDates": [
+        "2016-12-16T12:00:00.000Z"
+      ],
+      "_modAt": "2026-07-17T23:10:00.000Z"
     },
     {
       "id": "book_67",
@@ -9156,8 +9179,12 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-06-14T02:31:54.721Z",
-      "readCount": 1
+      "finishedAt": "2018-04-09T12:00:00.000Z",
+      "readCount": 1,
+      "readDates": [
+        "2018-04-09T12:00:00.000Z"
+      ],
+      "_modAt": "2026-07-17T23:10:00.000Z"
     },
     {
       "id": "book_68",
@@ -9179,8 +9206,12 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-06-14T02:32:01.073Z",
-      "readCount": 1
+      "finishedAt": "2018-04-17T12:00:00.000Z",
+      "readCount": 1,
+      "readDates": [
+        "2018-04-17T12:00:00.000Z"
+      ],
+      "_modAt": "2026-07-17T23:10:00.000Z"
     },
     {
       "id": "book_69",
@@ -9202,8 +9233,12 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-06-14T02:33:31.003Z",
-      "readCount": 1
+      "finishedAt": "2018-12-21T12:00:00.000Z",
+      "readCount": 1,
+      "readDates": [
+        "2018-12-21T12:00:00.000Z"
+      ],
+      "_modAt": "2026-07-17T23:10:00.000Z"
     },
     {
       "id": "book_70",
@@ -9248,8 +9283,12 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-06-14T02:35:00.735Z",
-      "readCount": 1
+      "finishedAt": "2018-04-08T12:00:00.000Z",
+      "readCount": 1,
+      "readDates": [
+        "2018-04-08T12:00:00.000Z"
+      ],
+      "_modAt": "2026-07-17T23:10:00.000Z"
     },
     {
       "id": "book_73",
@@ -9294,8 +9333,12 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-06-14T02:35:58.875Z",
-      "readCount": 1
+      "finishedAt": "2017-08-09T12:00:00.000Z",
+      "readCount": 1,
+      "readDates": [
+        "2017-08-09T12:00:00.000Z"
+      ],
+      "_modAt": "2026-07-17T23:10:00.000Z"
     },
     {
       "id": "book_75",
@@ -9393,8 +9436,12 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-06-14T02:37:30.718Z",
-      "readCount": 1
+      "finishedAt": "2018-02-27T12:00:00.000Z",
+      "readCount": 1,
+      "readDates": [
+        "2018-02-27T12:00:00.000Z"
+      ],
+      "_modAt": "2026-07-17T23:10:00.000Z"
     },
     {
       "id": "book_80",
@@ -9441,11 +9488,11 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-07-17T21:19:15.724Z",
+      "finishedAt": "2017-06-15T12:00:00.000Z",
       "readDates": [
-        "2026-07-17T21:19:15.724Z"
+        "2017-06-15T12:00:00.000Z"
       ],
-      "_modAt": "2026-07-17T21:19:15.725Z"
+      "_modAt": "2026-07-17T23:10:00.000Z"
     },
     {
       "id": "book_82",
@@ -9776,13 +9823,13 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-07-17T21:19:32.057Z",
+      "finishedAt": "2015-06-04T12:00:00.000Z",
       "readDates": [
-        "2026-07-17T21:19:32.057Z",
-        "2026-07-17T21:19:32.057Z",
-        "2026-07-17T21:19:32.057Z"
+        "2015-06-04T12:00:00.000Z",
+        "2015-06-04T12:00:00.000Z",
+        "2015-06-04T12:00:00.000Z"
       ],
-      "_modAt": "2026-07-17T21:19:32.057Z"
+      "_modAt": "2026-07-17T23:10:00.000Z"
     },
     {
       "id": "book_96",
@@ -10040,11 +10087,11 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-07-17T21:19:41.822Z",
+      "finishedAt": "2014-04-15T12:00:00.000Z",
       "readDates": [
-        "2026-07-17T21:19:41.822Z"
+        "2014-04-15T12:00:00.000Z"
       ],
-      "_modAt": "2026-07-17T21:19:41.822Z"
+      "_modAt": "2026-07-17T23:10:00.000Z"
     },
     {
       "id": "book_107",
@@ -10135,11 +10182,11 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-07-17T21:19:50.222Z",
+      "finishedAt": "2015-02-20T12:00:00.000Z",
       "readDates": [
-        "2026-07-17T21:19:50.222Z"
+        "2015-02-20T12:00:00.000Z"
       ],
-      "_modAt": "2026-07-17T21:19:50.222Z"
+      "_modAt": "2026-07-17T23:10:00.000Z"
     },
     {
       "id": "book_111",
@@ -10415,11 +10462,11 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-07-17T21:19:58.523Z",
+      "finishedAt": "2016-08-10T12:00:00.000Z",
       "readDates": [
-        "2026-07-17T21:19:58.523Z"
+        "2016-08-10T12:00:00.000Z"
       ],
-      "_modAt": "2026-07-17T21:19:58.523Z"
+      "_modAt": "2026-07-17T23:10:00.000Z"
     },
     {
       "id": "book_123",
@@ -10815,11 +10862,11 @@
       "pairing": "",
       "rating": "",
       "hearts": null,
-      "finishedAt": "2026-07-17T21:20:08.672Z",
+      "finishedAt": "2018-12-16T12:00:00.000Z",
       "readDates": [
-        "2026-07-17T21:20:08.672Z"
+        "2018-12-16T12:00:00.000Z"
       ],
-      "_modAt": "2026-07-17T21:20:08.672Z"
+      "_modAt": "2026-07-17T23:10:00.000Z"
     },
     {
       "id": "book_140",
@@ -11892,7 +11939,12 @@
       "tags": [],
       "url": "",
       "_addedAt": 436,
-      "readCount": 1
+      "readCount": 1,
+      "finishedAt": "2018-03-09T12:00:00.000Z",
+      "readDates": [
+        "2018-03-09T12:00:00.000Z"
+      ],
+      "_modAt": "2026-07-17T23:10:00.000Z"
     },
     {
       "id": "book_187",
@@ -12329,7 +12381,12 @@
       "tags": [],
       "url": "",
       "_addedAt": 455,
-      "readCount": 1
+      "readCount": 1,
+      "finishedAt": "2018-05-22T12:00:00.000Z",
+      "readDates": [
+        "2018-05-22T12:00:00.000Z"
+      ],
+      "_modAt": "2026-07-17T23:10:00.000Z"
     },
     {
       "id": "book_206",
@@ -16538,12 +16595,12 @@
       "words": 80000,
       "userRating": 0,
       "_addedAt": 646,
-      "finishedAt": "2016-12-14T12:00:00.000Z",
+      "finishedAt": "2018-05-21T12:00:00.000Z",
       "readDates": [
-        "2016-12-14T12:00:00.000Z"
+        "2018-05-21T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-17T23:10:00.000Z"
     },
     {
       "id": "book_1782756764570_5",
