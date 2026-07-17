@@ -32,6 +32,7 @@ let state = {
   settingsOpen: false,
   bannerConfig: {},
   folderUndoStack: [],
+  deletedIds: {},   // id -> ISO timestamp of deletion, so cloud sync/backup can't resurrect it
 };
 
 const STATUS = ['TBR','Reading','Finished','Dropped'];
@@ -104,6 +105,7 @@ async function loadData() {
         state.folderConfig = { ...result.folderConfig, ...state.folderConfig };
         localStorage.setItem('folderConfig', JSON.stringify(state.folderConfig)); // init only — skip saveData
       }
+      if (!Array.isArray(result) && result.deletedIds) state.deletedIds = result.deletedIds;
       if (items.length) { state._loadedFromFile = true; return items; }
     }
   } catch(e) {}
@@ -111,7 +113,7 @@ async function loadData() {
 }
 
 async function saveData() {
-  try { await window.api.saveData({ items: state.items, folderConfig: state.folderConfig }); } catch(e) {}
+  try { await window.api.saveData({ items: state.items, folderConfig: state.folderConfig, deletedIds: state.deletedIds }); } catch(e) {}
 }
 
 // ── Cloud sync (merge with GitHub copy so phone ↔ desktop changes don't clobber) ──
@@ -132,7 +134,7 @@ function pickItem(a, b) {
   const rb = Array.isArray(b.readDates) ? b.readDates.length : (b.readCount||0);
   return rb > ra ? b : a;
 }
-function mergeLibrary(localItems, localFC, remoteItems, remoteFC) {
+function mergeLibrary(localItems, localFC, remoteItems, remoteFC, localDel, remoteDel) {
   const byId = new Map();
   (remoteItems||[]).forEach(x => { if (x && x.id != null) byId.set(x.id, x); });
   (localItems||[]).forEach(x => {
@@ -140,6 +142,26 @@ function mergeLibrary(localItems, localFC, remoteItems, remoteFC) {
     const r = byId.get(x.id);
     byId.set(x.id, r ? pickItem(x, r) : x);
   });
+
+  // Deletion tombstones: merge both sides (later timestamp per id wins), then drop anything
+  // tombstoned from the item union — unless a surviving copy was modified *after* the deletion,
+  // meaning it was intentionally revived/edited elsewhere and that edit should win.
+  const delMerged = { ...(remoteDel || {}) };
+  for (const [id, ts] of Object.entries(localDel || {})) {
+    if (!delMerged[id] || Date.parse(ts) > Date.parse(delMerged[id])) delMerged[id] = ts;
+  }
+  const TOMBSTONE_TTL_DAYS = 365;
+  const cutoff = Date.now() - TOMBSTONE_TTL_DAYS * 24 * 60 * 60 * 1000;
+  let removedByTombstone = 0;
+  for (const [id, ts] of Object.entries(delMerged)) {
+    if (Date.parse(ts) < cutoff) { delete delMerged[id]; continue; } // old enough to stop tracking
+    const item = byId.get(id);
+    if (item) {
+      const modAt = Date.parse(item._modAt || '') || 0;
+      if (modAt <= Date.parse(ts)) { byId.delete(id); removedByTombstone++; }
+    }
+  }
+
   const fc = { ...(remoteFC||{}) };
   for (const [k, lv] of Object.entries(localFC||{})) {
     const rv = fc[k];
@@ -154,19 +176,21 @@ function mergeLibrary(localItems, localFC, remoteItems, remoteFC) {
     const m = (lm >= rm ? lv._modAt : rv._modAt) || lv._modAt || rv._modAt; if (m) out._modAt = m;
     fc[k] = out;
   }
-  return { items: [...byId.values()], folderConfig: fc };
+  return { items: [...byId.values()], folderConfig: fc, deletedIds: delMerged, removedByTombstone };
 }
-// Pull the latest data from GitHub and merge it in (additive — never drops records).
+// Pull the latest data from GitHub and merge it in (additive except for tracked deletions).
 async function syncFromCloud() {
   try {
     if (!window.api.pullData) return false;
     const res = await window.api.pullData();
     if (!res || !res.ok || !res.data) return false;
     const remoteN = (res.data.items||[]).length, localN = state.items.length;
-    const merged = mergeLibrary(state.items, state.folderConfig, res.data.items, res.data.folderConfig);
-    if (merged.items.length < Math.max(localN, remoteN)) return false; // safety: never shrink
+    const merged = mergeLibrary(state.items, state.folderConfig, res.data.items, res.data.folderConfig, state.deletedIds, res.data.deletedIds);
+    // Safety: never lose data for any reason other than an explicit, tracked deletion.
+    if (merged.items.length < Math.max(localN, remoteN) - merged.removedByTombstone) return false;
     state.items = merged.items;
     state.folderConfig = merged.folderConfig;
+    state.deletedIds = merged.deletedIds;
     localStorage.setItem('folderConfig', JSON.stringify(state.folderConfig));
     await saveData();
     return true;
@@ -2244,7 +2268,9 @@ function bindEvents() {
     el.addEventListener('click', e => {
       e.stopPropagation();
       if (confirm('Remove this entry?')) {
-        state.items = state.items.filter(x => x.id !== el.dataset.delete);
+        const id = el.dataset.delete;
+        state.items = state.items.filter(x => x.id !== id);
+        state.deletedIds = { ...state.deletedIds, [id]: new Date().toISOString() };
         saveData(); render();
       }
     });
@@ -2710,6 +2736,9 @@ function showToast(message, type = 'info') {
 }
 
 // ── GitHub backup ─────────────────────────────────────────────────────────────
+// Sync = pull only. Back up = push only. They used to be entangled (Back up silently pulled
+// and merged first), which meant deleting something and then backing up could resurrect it —
+// the pull-in-merge only knows an id is "missing", not "deleted on purpose".
 async function handleSync() {
   showToast('Getting the latest from GitHub…', 'loading');
   try {
@@ -2717,10 +2746,12 @@ async function handleSync() {
     document.getElementById('toast')?.remove();
     if (!res || !res.ok) { showToast('Sync failed: ' + ((res && res.error) || 'no connection'), 'error'); return; }
     if (res.data) {
-      const merged = mergeLibrary(state.items, state.folderConfig, res.data.items, res.data.folderConfig);
-      if (merged.items.length >= Math.max(state.items.length, (res.data.items||[]).length)) {  // never shrink
+      const merged = mergeLibrary(state.items, state.folderConfig, res.data.items, res.data.folderConfig, state.deletedIds, res.data.deletedIds);
+      // Safety: never lose data for any reason other than an explicit, tracked deletion.
+      if (merged.items.length >= Math.max(state.items.length, (res.data.items||[]).length) - merged.removedByTombstone) {
         state.items = merged.items;
         state.folderConfig = merged.folderConfig;
+        state.deletedIds = merged.deletedIds;
         localStorage.setItem('folderConfig', JSON.stringify(state.folderConfig));
         await saveData();
       }
@@ -2739,8 +2770,6 @@ async function handleBackup() {
   showToast('Saving to GitHub…', 'loading');
 
   try {
-    await syncFromCloud();  // merge in any phone changes first so backup never overwrites them
-    render();
     const result = await window.api.gitBackup();
     document.getElementById('toast')?.remove();
     if (result.ok) {

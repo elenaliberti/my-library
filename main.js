@@ -45,8 +45,8 @@ ipcMain.handle('data:load', () => {
     if (fs.existsSync(DATA_PATH)) {
       const raw = fs.readFileSync(DATA_PATH, 'utf-8')
       const parsed = JSON.parse(raw)
-      if (Array.isArray(parsed)) return { items: parsed, folderConfig: {} }
-      if (parsed && parsed.items) return { items: parsed.items, folderConfig: parsed.folderConfig || {} }
+      if (Array.isArray(parsed)) return { items: parsed, folderConfig: {}, deletedIds: {} }
+      if (parsed && parsed.items) return { items: parsed.items, folderConfig: parsed.folderConfig || {}, deletedIds: parsed.deletedIds || {} }
     }
     return null
   } catch { return null }
@@ -409,8 +409,8 @@ ipcMain.handle('git:pull-data', async () => {
     if (raw == null) return { ok: true, data: null }
     const parsed = JSON.parse(raw)
     const data = Array.isArray(parsed)
-      ? { items: parsed, folderConfig: {} }
-      : { items: parsed.items || [], folderConfig: parsed.folderConfig || {} }
+      ? { items: parsed, folderConfig: {}, deletedIds: {} }
+      : { items: parsed.items || [], folderConfig: parsed.folderConfig || {}, deletedIds: parsed.deletedIds || {} }
     return { ok: true, data }
   } catch(e) { return { ok: false, error: e.message } }
 })
