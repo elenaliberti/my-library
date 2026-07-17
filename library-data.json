@@ -16654,23 +16654,6 @@
       "_modAt": "2026-06-29T18:12:44.570Z"
     },
     {
-      "id": "book_1782756764570_8",
-      "type": "book",
-      "title": "Siamo amici solo il mercoledì",
-      "author": "",
-      "genre": "Romance",
-      "status": "Finished",
-      "words": 80000,
-      "userRating": 0,
-      "_addedAt": 650,
-      "finishedAt": "2016-12-14T12:00:00.000Z",
-      "readDates": [
-        "2016-12-14T12:00:00.000Z"
-      ],
-      "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
-    },
-    {
       "id": "book_1782756764570_9",
       "type": "book",
       "title": "Vicini… anche troppo",
@@ -18234,5 +18217,7 @@
       "_modAt": "2026-07-16T23:08:51.597Z"
     }
   },
-  "deletedIds": {}
+  "deletedIds": {
+    "book_1782756764570_8": "2026-07-17T22:33:40.692Z"
+  }
 }
