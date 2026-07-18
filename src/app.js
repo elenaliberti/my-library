@@ -807,9 +807,12 @@ function statsViewHtml() {
     insightHtml = `<span class="ins-emoji">✅</span> <b>${periodTotal}</b> finished ${periodName} &nbsp;·&nbsp; 🔥 best: <b>${groups[peakIdx].label}</b>${trendTxt}`;
   }
 
-  const datedCount = items.filter(x => x.finishedAt).length;
-  const noteHtml = datedCount < totalCount
-    ? `<p class="stats-note">📅 ${totalCount - datedCount} of ${totalCount} items have no finish date — they count in the totals above but not in the chart. Edit items to add dates.</p>`
+  // Items that DO count toward the totals above (they've been read at least once) but have
+  // no dated read event, so they can't show up in the chart — the old check used finishedAt
+  // alone, which wrongly implied TBR/Reading items "count in the totals" when they no longer do.
+  const undatedButCounted = items.filter(x => timesRead(x) > 0 && !ensureReadDates(x).some(Boolean)).length;
+  const noteHtml = undatedButCounted > 0
+    ? `<p class="stats-note">📅 ${undatedButCounted} of ${totalCount} items count in the totals above but have no read date, so they're missing from the chart. Edit items to add one.</p>`
     : '';
 
   const pBtn = (id, lbl) =>
@@ -844,8 +847,10 @@ function statsViewHtml() {
   }
 
   // Reading calendar — one card per month of a chosen year, navigable year by year.
-  const calYear = state.statsCalendarYear ?? getReadingCalendarYears(items)[0]?.year ?? new Date().getFullYear();
-  const calYearData = getReadingCalendarForYear(items, calYear);
+  // Only Finished/Dropped items belong here — TBR/Reading haven't actually been read (yet).
+  const calItems = items.filter(x => x.status === 'Finished' || x.status === 'Dropped');
+  const calYear = state.statsCalendarYear ?? getReadingCalendarYears(calItems)[0]?.year ?? new Date().getFullYear();
+  const calYearData = getReadingCalendarForYear(calItems, calYear);
   const calPill = (emoji, val) => `<span class="cal-year-pill">${emoji} ${val}</span>`;
   const calendarHtml = `
     <div class="stats-trend-hdr" style="margin-top:24px">
@@ -2336,10 +2341,10 @@ function bindEvents() {
   document.querySelectorAll('[data-cal-year-nav]').forEach(el => {
     el.addEventListener('click', () => {
       const cat = state.statsCategory;
-      const items = cat === 'books' ? state.items.filter(x => x.type === 'book')
+      const items = (cat === 'books' ? state.items.filter(x => x.type === 'book')
         : cat === 'ff' ? state.items.filter(x => x.type === 'ff' && !x.oneshot)
         : cat === 'oneshot' ? state.items.filter(x => x.type === 'ff' && x.oneshot)
-        : state.items;
+        : state.items).filter(x => x.status === 'Finished' || x.status === 'Dropped');
       const current = state.statsCalendarYear ?? getReadingCalendarYears(items)[0]?.year ?? new Date().getFullYear();
       state.statsCalendarYear = current + (el.dataset.calYearNav === 'next' ? 1 : -1);
       render();
