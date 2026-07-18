@@ -1212,7 +1212,7 @@ function calItemIconHtml(item) {
   const cover = coverIsUrl
     ? `<img class="cal-item-img" src="${esc(item.coverIcon)}" />`
     : `<span class="cal-item-emoji">${item.coverIcon || (item.type === 'ff' ? '✍️' : '📚')}</span>`;
-  return `<div class="cal-item-icon" style="background:linear-gradient(135deg,${c1},${c2})" title="${esc(item.title || 'Untitled')}">${cover}</div>`;
+  return `<div class="cal-item-icon" style="background:linear-gradient(135deg,${c1},${c2})" data-cal-title="${esc(item.title || 'Untitled')}">${cover}</div>`;
 }
 
 function folderCard(navPath, defaultEmoji, rawLabel, count) {
@@ -1878,6 +1878,7 @@ function listViewContentHtml() {
 
 // ── Render ────────────────────────────────────────────────────────────────────
 function render() {
+  document.querySelectorAll('.cal-tooltip').forEach(t => t.remove()); // avoid an orphaned tooltip surviving a re-render mid-hover
   const scrollable = document.getElementById('list') || document.getElementById('stats-view');
   const scrollTop = scrollable ? scrollable.scrollTop : 0;
   const folderViewEl = document.getElementById('folder-view');
@@ -2318,6 +2319,28 @@ function bindEvents() {
       const current = state.statsCalendarYear ?? getReadingCalendarYears(items)[0]?.year ?? new Date().getFullYear();
       state.statsCalendarYear = current + (el.dataset.calYearNav === 'next' ? 1 : -1);
       render();
+    });
+  });
+
+  // Reading calendar icon tooltips — a floating element appended to <body>, positioned from
+  // the icon's real screen coords, so it always shows in full instead of being clipped by the
+  // month box's own scroll area.
+  document.querySelectorAll('.cal-item-icon[data-cal-title]').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      const tip = document.createElement('div');
+      tip.className = 'cal-tooltip';
+      tip.textContent = el.dataset.calTitle;
+      document.body.appendChild(tip);
+      const r = el.getBoundingClientRect();
+      const above = r.top > tip.offsetHeight + 12;
+      tip.classList.add(above ? 'cal-tooltip-above' : 'cal-tooltip-below');
+      tip.style.left = `${r.left + r.width / 2}px`;
+      tip.style.top = above ? `${r.top - 8}px` : `${r.bottom + 8}px`;
+      el._calTip = tip;
+    });
+    el.addEventListener('mouseleave', () => {
+      el._calTip?.remove();
+      el._calTip = null;
     });
   });
 
