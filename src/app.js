@@ -1212,7 +1212,7 @@ function calItemIconHtml(item) {
   const cover = coverIsUrl
     ? `<img class="cal-item-img" src="${esc(item.coverIcon)}" />`
     : `<span class="cal-item-emoji">${item.coverIcon || (item.type === 'ff' ? '✍️' : '📚')}</span>`;
-  return `<div class="cal-item-icon" style="background:linear-gradient(135deg,${c1},${c2})" data-cal-title="${esc(item.title || 'Untitled')}">${cover}</div>`;
+  return `<div class="cal-item-icon" style="background:linear-gradient(135deg,${c1},${c2})" data-cal-title="${esc(item.title || 'Untitled')}" data-edit="${esc(item.id)}">${cover}</div>`;
 }
 
 function folderCard(navPath, defaultEmoji, rawLabel, count) {
