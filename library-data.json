@@ -2590,24 +2590,33 @@
       "author": "ShanaStoryteller",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 530377,
-      "hearts": 67745,
-      "rating": "Teen+",
-      "pairing": "Gen/M/M",
+      "hearts": 68773,
+      "rating": "",
+      "pairing": "Draco Malfoy/Harry Potter",
       "status": "Finished",
       "userRating": 0,
       "notes": "",
       "tags": [
-        "Drarry",
-        "Gen/M/M"
+        "Soulmate AU",
+        "Indian Harry Potter",
+        "Black Hermione Granger",
+        "canon? i don&#39;t know her",
+        "Slow Build",
+        "Lucius Malfoy is a bad person but a good father",
+        "Drarry"
       ],
-      "url": "",
+      "url": "https://archiveofourown.org/works/12006417/chapters/27167826",
       "_addedAt": 75,
       "finishedAt": "2023-12-08T12:00:00.000Z",
-      "_modAt": "2026-06-29T18:29:30.554Z",
+      "_modAt": "2026-07-18T09:34:19.984Z",
       "readDates": [
         "2023-12-08T12:00:00.000Z"
       ],
-      "readCount": 1
+      "readCount": 1,
+      "genre": "",
+      "section": "",
+      "pages": null,
+      "oneshot": false
     },
     {
       "id": "ff_77",
@@ -3279,24 +3288,33 @@
       "author": "starbrigid",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 90081,
-      "hearts": 41329,
-      "rating": "Teen+",
-      "pairing": "Gen/M/M",
+      "hearts": 42494,
+      "rating": "",
+      "pairing": "Draco Malfoy/Harry Potter",
       "status": "Finished",
       "userRating": 4,
       "notes": "",
       "tags": [
-        "Drarry",
-        "Gen/M/M"
+        "Time Travel",
+        "Slow Burn",
+        "Hermione Granger &amp; Draco Malfoy Friendship",
+        "Fluff and Angst",
+        "Snarky Draco Malfoy",
+        "Abuse",
+        "Drarry"
       ],
-      "url": "",
+      "url": "https://archiveofourown.org/works/23872387/chapters/57383854",
       "_addedAt": 100,
       "finishedAt": "2022-03-09T12:00:00.000Z",
-      "_modAt": "2026-06-29T18:29:30.554Z",
+      "_modAt": "2026-07-18T09:33:55.386Z",
       "readDates": [
         "2022-03-09T12:00:00.000Z"
       ],
-      "readCount": 1
+      "readCount": 1,
+      "genre": "",
+      "section": "",
+      "pages": null,
+      "oneshot": false
     },
     {
       "id": "ff_102",
@@ -16521,7 +16539,7 @@
       "type": "book",
       "title": "Voglio ritrovarti - Capital Theatre - 1",
       "author": "",
-      "genre": "Romanzi storici",
+      "genre": "Romanzo storico",
       "status": "Finished",
       "words": 90000,
       "userRating": 0,
@@ -16531,7 +16549,16 @@
         "2016-12-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-18T09:32:19.740Z",
+      "fandom": "",
+      "section": "",
+      "pairing": "",
+      "rating": "",
+      "hearts": null,
+      "pages": null,
+      "notes": "",
+      "tags": [],
+      "url": ""
     },
     {
       "title": "Everything's Fine in the Beast Division",

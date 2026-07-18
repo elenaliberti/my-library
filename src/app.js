@@ -201,10 +201,10 @@ async function syncFromCloud() {
 function fmt(n) { return n ? Number(n).toLocaleString() : '—'; }
 function genId() { return Date.now() + '_' + Math.random().toString(36).slice(2); }
 function itemWords(x) { return x.words || (x.pages ? x.pages * 250 : 0); }
-// Times read: prefer the per-read timestamp list, fall back to the legacy count.
+// Times read: prefer the per-read timestamp list, fall back to the legacy count. 0 for
+// anything not actually finished (TBR/Reading/Dropped with no explicit reads logged) —
+// word/time totals must NOT count books or fics that haven't been read yet.
 function timesRead(x) { return Array.isArray(x.readDates) ? x.readDates.length : (x.readCount ?? (x.status === 'Finished' ? 1 : 0)); }
-// Re-read multiplier: counts every item at least once, +1× for each re-read beyond the first.
-function readMult(x) { return Math.max(1, timesRead(x)); }
 // Per-read timestamps, migrating legacy reads to the finish date (best-known date for old reads).
 function ensureReadDates(x) {
   if (Array.isArray(x.readDates)) return x.readDates.slice();
@@ -218,6 +218,33 @@ function readEvents(items) {
   const ev = [];
   items.forEach(x => { const w = itemWords(x); ensureReadDates(x).forEach(d => { if (d) ev.push({ date: d, words: w }); }); });
   return ev;
+}
+// Same, but keeping the item itself (for the reading calendar, which shows titles per day).
+function readEventsWithItems(items) {
+  const ev = [];
+  items.forEach(x => { ensureReadDates(x).forEach(d => { if (d) ev.push({ date: d, item: x }); }); });
+  return ev;
+}
+// Group read events into month → day buckets for the reading calendar, most recent first.
+function getReadingCalendar(items) {
+  const MONTHS_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const byMonth = new Map();
+  readEventsWithItems(items).forEach(({ date, item }) => {
+    const d = new Date(date);
+    const monthKey = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    const dayKey = d.getDate();
+    if (!byMonth.has(monthKey)) byMonth.set(monthKey, { year: d.getFullYear(), month: d.getMonth(), days: new Map() });
+    const monthEntry = byMonth.get(monthKey);
+    if (!monthEntry.days.has(dayKey)) monthEntry.days.set(dayKey, []);
+    monthEntry.days.get(dayKey).push(item);
+  });
+  return [...byMonth.entries()]
+    .sort((a, b) => b[0].localeCompare(a[0])) // newest month first
+    .map(([key, { year, month, days }]) => ({
+      key, label: `${MONTHS_FULL[month]} ${year}`,
+      count: [...days.values()].reduce((s, arr) => s + arr.length, 0),
+      days: [...days.entries()].sort((a, b) => b[0] - a[0]), // newest day first
+    }));
 }
 function fmtTime(mins) {
   if (!mins) return '0m';
@@ -406,7 +433,7 @@ function getStats() {
     reading: items.filter(x => x.status === 'Reading').length,
     finished: items.filter(x => x.status === 'Finished').length,
     dropped: items.filter(x => x.status === 'Dropped').length,
-    totalWords: items.reduce((s,x) => s + itemWords(x) * readMult(x), 0),
+    totalWords: items.reduce((s,x) => s + itemWords(x) * timesRead(x), 0),
   };
 }
 
@@ -678,7 +705,7 @@ function statsViewHtml() {
   const cat = state.statsCategory;
   const items = fin[cat];
   const totalCount = items.length;
-  const totalWords = items.reduce((s, x) => s + itemWords(x) * readMult(x), 0);
+  const totalWords = items.reduce((s, x) => s + itemWords(x) * timesRead(x), 0);
   const totalMins = totalWords / SPEED;
 
   const tab = (id, lbl) =>
@@ -693,7 +720,7 @@ function statsViewHtml() {
       { key:'oneshot', lbl:'📄 One-shots',   cls:'amber',  list: fin.oneshot },
     ].filter(p => p.list.length > 0);
     const rows = parts.map(p => {
-      const w = p.list.reduce((s, x) => s + itemWords(x) * readMult(x), 0);
+      const w = p.list.reduce((s, x) => s + itemWords(x) * timesRead(x), 0);
       const pct = Math.round(w / totalWords * 100);
       return `<div class="bdrow">
         <span class="bddot ${p.cls}"></span>
@@ -703,7 +730,7 @@ function statsViewHtml() {
       </div>`;
     }).join('');
     const segs = parts.map(p => {
-      const w = p.list.reduce((s, x) => s + itemWords(x) * readMult(x), 0);
+      const w = p.list.reduce((s, x) => s + itemWords(x) * timesRead(x), 0);
       return `<div class="bdseg ${p.cls}" style="width:${Math.round(w/totalWords*100)}%"></div>`;
     }).join('');
     breakdownHtml = `<div class="stats-breakdown">${rows}<div class="bdbar">${segs}</div></div>`;
@@ -788,6 +815,34 @@ function statsViewHtml() {
       <div class="stats-chart-base"></div>
       <p class="stats-note" style="margin-top:6px">Pace = word count ÷ days from start to finish. Reads are tracked by dragging fics through the <b>MySpace</b> board (TBR → Reading → Finished).</p>`;
   }
+
+  // Reading calendar — every finished read, grouped into a month box per month, newest first.
+  const calMonths = getReadingCalendar(items);
+  const calendarHtml = calMonths.length ? `
+    <div class="stats-trend-hdr" style="margin-top:24px">
+      <span class="stats-section-ttl">🗓️ Reading calendar</span>
+      <span class="stats-note" style="margin:0">${calMonths.reduce((s,m)=>s+m.count,0)} read logged</span>
+    </div>
+    <div class="read-calendar">
+      ${calMonths.map(m => `
+        <div class="cal-month-card">
+          <div class="cal-month-hdr">
+            <span class="cal-month-name">${m.label}</span>
+            <span class="cal-month-count">${m.count}</span>
+          </div>
+          <div class="cal-month-body">
+            ${m.days.map(([day, its]) => `
+              <div class="cal-day-row">
+                <span class="cal-day-date">${day}</span>
+                <span class="cal-day-items">
+                  ${its.map(it => `<span class="cal-item" title="${esc(it.title||'')}">${it.type==='ff'?'✍️':'📚'} ${esc(it.title||'Untitled')}</span>`).join('')}
+                </span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('')}
+    </div>` : '';
 
   return `<div id="stats-view">
     <div class="stats-cats">
