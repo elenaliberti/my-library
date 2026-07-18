@@ -29,6 +29,7 @@ let state = {
   statsCategory: 'all',
   statsPeriod: 'year',
   statsMetric: 'words',
+  statsCalendarYear: null, // null = default to the most recent year with any reads logged
   settingsOpen: false,
   bannerConfig: {},
   folderUndoStack: [],
@@ -225,26 +226,51 @@ function readEventsWithItems(items) {
   items.forEach(x => { ensureReadDates(x).forEach(d => { if (d) ev.push({ date: d, item: x }); }); });
   return ev;
 }
-// Group read events into month → day buckets for the reading calendar, most recent first.
-function getReadingCalendar(items) {
-  const MONTHS_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  const byMonth = new Map();
+const MONTHS_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+// Group every read event into year → month → day buckets for the reading calendar.
+// Each year/month carries its own ff/book counts + word total, for the header stat rows.
+function getReadingCalendarYears(items) {
+  const years = new Map();
   readEventsWithItems(items).forEach(({ date, item }) => {
     const d = new Date(date);
-    const monthKey = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
-    const dayKey = d.getDate();
-    if (!byMonth.has(monthKey)) byMonth.set(monthKey, { year: d.getFullYear(), month: d.getMonth(), days: new Map() });
-    const monthEntry = byMonth.get(monthKey);
-    if (!monthEntry.days.has(dayKey)) monthEntry.days.set(dayKey, []);
-    monthEntry.days.get(dayKey).push(item);
+    const y = d.getFullYear(), m = d.getMonth(), day = d.getDate();
+    const w = itemWords(item);
+
+    if (!years.has(y)) years.set(y, { year: y, ff: 0, book: 0, words: 0, months: new Map() });
+    const yEntry = years.get(y);
+    yEntry.words += w; item.type === 'ff' ? yEntry.ff++ : yEntry.book++;
+
+    if (!yEntry.months.has(m)) yEntry.months.set(m, { month: m, ff: 0, book: 0, words: 0, days: new Map() });
+    const mEntry = yEntry.months.get(m);
+    mEntry.words += w; item.type === 'ff' ? mEntry.ff++ : mEntry.book++;
+
+    if (!mEntry.days.has(day)) mEntry.days.set(day, []);
+    mEntry.days.get(day).push(item);
   });
-  return [...byMonth.entries()]
-    .sort((a, b) => b[0].localeCompare(a[0])) // newest month first
-    .map(([key, { year, month, days }]) => ({
-      key, label: `${MONTHS_FULL[month]} ${year}`,
-      count: [...days.values()].reduce((s, arr) => s + arr.length, 0),
-      days: [...days.entries()].sort((a, b) => b[0] - a[0]), // newest day first
-    }));
+  return [...years.values()].sort((a, b) => b.year - a.year); // newest year first
+}
+
+// All 12 months of a given year (present or not), each with its day/item data if any.
+function getReadingCalendarForYear(items, year) {
+  const years = getReadingCalendarYears(items);
+  const yearData = years.find(y => y.year === year);
+  const months = Array.from({length: 12}, (_, m) => {
+    const mEntry = yearData?.months.get(m);
+    return {
+      month: m, label: MONTHS_FULL[m],
+      ff: mEntry?.ff || 0, book: mEntry?.book || 0, words: mEntry?.words || 0,
+      days: mEntry ? [...mEntry.days.entries()].sort((a, b) => b[0] - a[0]) : [],
+    };
+  });
+  return {
+    year,
+    ff: yearData?.ff || 0, book: yearData?.book || 0, words: yearData?.words || 0,
+    months,
+    hasOlder: years.some(y => y.year < year),
+    hasNewer: years.some(y => y.year > year),
+    latestYear: years[0]?.year ?? new Date().getFullYear(),
+  };
 }
 function fmtTime(mins) {
   if (!mins) return '0m';
@@ -816,33 +842,45 @@ function statsViewHtml() {
       <p class="stats-note" style="margin-top:6px">Pace = word count ÷ days from start to finish. Reads are tracked by dragging fics through the <b>MySpace</b> board (TBR → Reading → Finished).</p>`;
   }
 
-  // Reading calendar — every finished read, grouped into a month box per month, newest first.
-  const calMonths = getReadingCalendar(items);
-  const calendarHtml = calMonths.length ? `
+  // Reading calendar — one card per month of a chosen year, navigable year by year.
+  const calYear = state.statsCalendarYear ?? getReadingCalendarYears(items)[0]?.year ?? new Date().getFullYear();
+  const calYearData = getReadingCalendarForYear(items, calYear);
+  const calPill = (emoji, val) => `<span class="cal-year-pill">${emoji} ${val}</span>`;
+  const calendarHtml = `
     <div class="stats-trend-hdr" style="margin-top:24px">
       <span class="stats-section-ttl">🗓️ Reading calendar</span>
-      <span class="stats-note" style="margin:0">${calMonths.reduce((s,m)=>s+m.count,0)} read logged</span>
+    </div>
+    <div class="cal-year-nav">
+      <button class="cal-year-btn" data-cal-year-nav="prev"${calYearData.hasOlder?'':' disabled'} title="Previous year">‹</button>
+      <div class="cal-year-stats">
+        <span class="cal-year-label">${calYear}</span>
+        ${calPill('✍️', calYearData.ff)}
+        ${calPill('📚', calYearData.book)}
+        ${calPill('📝', fmtNum(calYearData.words) + ' words')}
+        ${calPill('⏱', fmtTime(calYearData.words / SPEED))}
+      </div>
+      <button class="cal-year-btn" data-cal-year-nav="next"${calYearData.hasNewer?'':' disabled'} title="Next year">›</button>
     </div>
     <div class="read-calendar">
-      ${calMonths.map(m => `
+      ${calYearData.months.map(m => `
         <div class="cal-month-card">
           <div class="cal-month-hdr">
             <span class="cal-month-name">${m.label}</span>
-            <span class="cal-month-count">${m.count}</span>
+            <span class="cal-month-stats">${m.ff||m.book ? `✍️${m.ff} · 📚${m.book} · ${fmtNum(m.words)}w` : '—'}</span>
           </div>
           <div class="cal-month-body">
-            ${m.days.map(([day, its]) => `
+            ${m.days.length ? m.days.map(([day, its]) => `
               <div class="cal-day-row">
                 <span class="cal-day-date">${day}</span>
-                <span class="cal-day-items">
-                  ${its.map(it => `<span class="cal-item" title="${esc(it.title||'')}">${it.type==='ff'?'✍️':'📚'} ${esc(it.title||'Untitled')}</span>`).join('')}
-                </span>
+                <div class="cal-day-icons">
+                  ${its.map(calItemIconHtml).join('')}
+                </div>
               </div>
-            `).join('')}
+            `).join('') : '<div class="cal-month-empty">Nothing read</div>'}
           </div>
         </div>
       `).join('')}
-    </div>` : '';
+    </div>`;
 
   return `<div id="stats-view">
     <div class="stats-cats">
@@ -867,6 +905,7 @@ function statsViewHtml() {
     ${noteHtml}
     <p class="stats-note" style="margin-top:6px">* estimated at 250 words/min; books without word count use 250 words/page</p>
     ${paceHtml}
+    ${calendarHtml}
   </div>`;
 }
 
@@ -1163,6 +1202,17 @@ function folderGradient(key) {
   let h = 5381;
   for (let i = 0; i < key.length; i++) h = ((h << 5) + h) ^ key.charCodeAt(i);
   return GRADIENTS[Math.abs(h) % GRADIENTS.length];
+}
+
+// A small square icon for the reading calendar — shows the item's cover if it has one,
+// otherwise a gradient tile with its type emoji, matching folder/MySpace card styling.
+function calItemIconHtml(item) {
+  const [c1, c2] = folderGradient(item.id || item.title || '');
+  const coverIsUrl = (item.coverIcon || '').startsWith('http');
+  const cover = coverIsUrl
+    ? `<img class="cal-item-img" src="${esc(item.coverIcon)}" />`
+    : `<span class="cal-item-emoji">${item.coverIcon || (item.type === 'ff' ? '✍️' : '📚')}</span>`;
+  return `<div class="cal-item-icon" style="background:linear-gradient(135deg,${c1},${c2})" title="${esc(item.title || 'Untitled')}">${cover}</div>`;
 }
 
 function folderCard(navPath, defaultEmoji, rawLabel, count) {
@@ -2250,13 +2300,25 @@ function bindEvents() {
 
   // Stats tabs / period / metric
   document.querySelectorAll('[data-scat]').forEach(el => {
-    el.addEventListener('click', () => { state.statsCategory = el.dataset.scat; render(); });
+    el.addEventListener('click', () => { state.statsCategory = el.dataset.scat; state.statsCalendarYear = null; render(); });
   });
   document.querySelectorAll('[data-speriod]').forEach(el => {
     el.addEventListener('click', () => { state.statsPeriod = el.dataset.speriod; render(); });
   });
   document.querySelectorAll('[data-smetric]').forEach(el => {
     el.addEventListener('click', () => { state.statsMetric = el.dataset.smetric; render(); });
+  });
+  document.querySelectorAll('[data-cal-year-nav]').forEach(el => {
+    el.addEventListener('click', () => {
+      const cat = state.statsCategory;
+      const items = cat === 'books' ? state.items.filter(x => x.type === 'book')
+        : cat === 'ff' ? state.items.filter(x => x.type === 'ff' && !x.oneshot)
+        : cat === 'oneshot' ? state.items.filter(x => x.type === 'ff' && x.oneshot)
+        : state.items;
+      const current = state.statsCalendarYear ?? getReadingCalendarYears(items)[0]?.year ?? new Date().getFullYear();
+      state.statsCalendarYear = current + (el.dataset.calYearNav === 'next' ? 1 : -1);
+      render();
+    });
   });
 
   // Add button
