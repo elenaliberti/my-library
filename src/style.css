@@ -260,7 +260,7 @@ select.filter-select:focus { border-color: var(--purple); }
 /* ── Form ── */
 .field-label { font-size: 11px; color: var(--gray-400); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; display: block; margin-top: 13px; margin-bottom: 5px; }
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-input[type=text], input[type=number], input[type=url], select, textarea {
+input[type=text], input[type=number], input[type=url], input[type=date], select, textarea {
   width: 100%; padding: 8px 12px; border-radius: 4px; border: 1.5px solid var(--gray-200);
   font-size: 14px; font-family: var(--font); color: var(--gray-900); outline: none; transition: border-color 0.15s; background: #fff;
 }
@@ -387,6 +387,9 @@ textarea { min-height: 70px; resize: vertical; }
 .cal-item-img { width: 100%; height: 100%; object-fit: cover; }
 .cal-item-emoji { font-size: 15px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2)); }
 .cal-item-icon:hover { transform: scale(1.12); box-shadow: 0 3px 8px rgba(0,0,0,0.22); }
+.cal-item-icon.cal-dragging { opacity: 0.4; transform: scale(0.9); }
+.cal-month-card.cal-drop-hover { box-shadow: 0 0 0 2.5px var(--purple), 0 10px 24px rgba(0,0,0,0.16); }
+.cal-month-card.cal-drop-hover .cal-month-hdr { background: var(--purple-light); }
 
 .cal-tooltip { position: fixed; transform: translateX(-50%); background: #1e1e2f; color: #fff; font-size: 11.5px; font-weight: 500; padding: 5px 10px; border-radius: 6px; white-space: nowrap; max-width: 260px; overflow: hidden; text-overflow: ellipsis; pointer-events: none; z-index: 9999; box-shadow: 0 8px 22px rgba(0,0,0,0.3); }
 .cal-tooltip-above { transform: translate(-50%, -100%); }

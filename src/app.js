@@ -30,6 +30,7 @@ let state = {
   statsPeriod: 'year',
   statsMetric: 'words',
   statsCalendarYear: null, // null = default to the most recent year with any reads logged
+  calMoveDraft: null, // { itemId, oldDate, defaultDateStr, title } while the "move read date" modal is open
   settingsOpen: false,
   bannerConfig: {},
   folderUndoStack: [],
@@ -246,7 +247,7 @@ function getReadingCalendarYears(items) {
     mEntry.words += w; item.type === 'ff' ? mEntry.ff++ : mEntry.book++;
 
     if (!mEntry.days.has(day)) mEntry.days.set(day, []);
-    mEntry.days.get(day).push(item);
+    mEntry.days.get(day).push({ item, date }); // keep the exact read date, for drag-to-move
   });
   return [...years.values()].sort((a, b) => b.year - a.year); // newest year first
 }
@@ -863,7 +864,7 @@ function statsViewHtml() {
     </div>
     <div class="read-calendar">
       ${calYearData.months.map(m => `
-        <div class="cal-month-card">
+        <div class="cal-month-card" data-cal-drop-year="${calYear}" data-cal-drop-month="${m.month}">
           <div class="cal-month-hdr">
             <span class="cal-month-name">${m.label}</span>
             <span class="cal-month-stats">${m.ff||m.book ? `✍️${m.ff} · 📚${m.book} · ${fmtNum(m.words)}w` : '—'}</span>
@@ -873,7 +874,7 @@ function statsViewHtml() {
               <div class="cal-day-row">
                 <span class="cal-day-date">${day}</span>
                 <div class="cal-day-icons">
-                  ${its.map(calItemIconHtml).join('')}
+                  ${its.map(({item, date}) => calItemIconHtml(item, date)).join('')}
                 </div>
               </div>
             `).join('') : '<div class="cal-month-empty">Nothing read</div>'}
@@ -1206,13 +1207,13 @@ function folderGradient(key) {
 
 // A small square icon for the reading calendar — shows the item's cover if it has one,
 // otherwise a gradient tile with its type emoji, matching folder/MySpace card styling.
-function calItemIconHtml(item) {
+function calItemIconHtml(item, date) {
   const [c1, c2] = folderGradient(item.id || item.title || '');
   const coverIsUrl = (item.coverIcon || '').startsWith('http');
   const cover = coverIsUrl
     ? `<img class="cal-item-img" src="${esc(item.coverIcon)}" />`
     : `<span class="cal-item-emoji">${item.coverIcon || (item.type === 'ff' ? '✍️' : '📚')}</span>`;
-  return `<div class="cal-item-icon" style="background:linear-gradient(135deg,${c1},${c2})" data-cal-title="${esc(item.title || 'Untitled')}" data-edit="${esc(item.id)}">${cover}</div>`;
+  return `<div class="cal-item-icon" draggable="true" style="background:linear-gradient(135deg,${c1},${c2})" data-cal-title="${esc(item.title || 'Untitled')}" data-edit="${esc(item.id)}" data-cal-item-id="${esc(item.id)}" data-cal-date="${esc(date || '')}">${cover}</div>`;
 }
 
 function folderCard(navPath, defaultEmoji, rawLabel, count) {
@@ -1564,6 +1565,29 @@ function itemIconModalHtml() {
   </div>`;
 }
 
+// Prompt shown after dragging a reading-calendar icon to a different month — asks for the
+// exact new date rather than silently guessing, since the drop only tells us the target month.
+function calMoveModalHtml() {
+  if (!state.calMoveDraft) return '';
+  const { title, defaultDateStr } = state.calMoveDraft;
+  return `<div class="folder-edit-backdrop" id="cal-move-backdrop">
+    <div class="folder-edit-modal">
+      <div class="fem-header">
+        <span class="fem-title">Move reading date</span>
+        <button class="fem-close" id="cal-move-close">×</button>
+      </div>
+      <div class="fem-body">
+        <label class="field-label">New date read for <b>${esc(title)}</b></label>
+        <input type="date" id="cal-move-date" value="${defaultDateStr}" />
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="cal-move-cancel">Cancel</button>
+        <button class="btn btn-primary" id="cal-move-save">Save</button>
+      </div>
+    </div>
+  </div>`;
+}
+
 function folderControlBar(isItemList) {
   const sortBar = !isItemList ? `<select class="folder-sort-select" id="folder-sort">
     <option value="count"${state.folderSortBy==='count'?' selected':''}>Most items</option>
@@ -1910,7 +1934,7 @@ function render() {
     </div>`;
 
   if (state.view === 'stats') {
-    document.getElementById('app').innerHTML = titlebarHtml + statsViewHtml() + (state.modalOpen ? modalHtml() : '') + settingsModalHtml();
+    document.getElementById('app').innerHTML = titlebarHtml + statsViewHtml() + (state.modalOpen ? modalHtml() : '') + settingsModalHtml() + calMoveModalHtml();
     const newScrollable = document.getElementById('stats-view');
     if (newScrollable) newScrollable.scrollTop = scrollTop;
     bindEvents();
@@ -2342,6 +2366,80 @@ function bindEvents() {
       el._calTip?.remove();
       el._calTip = null;
     });
+  });
+
+  // Drag a calendar icon onto a different month to change its exact read date.
+  let _calDragPayload = null;
+  document.querySelectorAll('.cal-item-icon[draggable="true"]').forEach(el => {
+    el.addEventListener('dragstart', e => {
+      _calDragPayload = { itemId: el.dataset.calItemId, oldDate: el.dataset.calDate };
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', el.dataset.calItemId);
+      el.classList.add('cal-dragging');
+      el._calTip?.remove(); el._calTip = null; // don't leave a tooltip stuck mid-drag
+    });
+    el.addEventListener('dragend', () => {
+      el.classList.remove('cal-dragging');
+      document.querySelectorAll('.cal-month-card.cal-drop-hover').forEach(c => c.classList.remove('cal-drop-hover'));
+      _calDragPayload = null;
+    });
+  });
+  document.querySelectorAll('.cal-month-card[data-cal-drop-year]').forEach(el => {
+    el.addEventListener('dragover', e => {
+      if (!_calDragPayload) return;
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      el.classList.add('cal-drop-hover');
+    });
+    el.addEventListener('dragleave', () => el.classList.remove('cal-drop-hover'));
+    el.addEventListener('drop', e => {
+      e.preventDefault();
+      el.classList.remove('cal-drop-hover');
+      if (!_calDragPayload) return;
+      const { itemId, oldDate } = _calDragPayload;
+      _calDragPayload = null;
+      const item = state.items.find(x => x.id === itemId);
+      if (!item) return;
+      const targetYear = parseInt(el.dataset.calDropYear, 10);
+      const targetMonth = parseInt(el.dataset.calDropMonth, 10);
+      const oldD = new Date(oldDate);
+      const daysInTargetMonth = new Date(targetYear, targetMonth + 1, 0).getDate();
+      const defaultDay = Math.min(oldD.getDate() || 1, daysInTargetMonth);
+      const defaultDate = new Date(targetYear, targetMonth, defaultDay, 12, 0, 0);
+      state.calMoveDraft = {
+        itemId, oldDate, title: item.title || 'Untitled',
+        defaultDateStr: defaultDate.toISOString().slice(0, 10),
+      };
+      render();
+    });
+  });
+
+  // Move-read-date modal (opened by the drag above)
+  const calMoveClose = () => { state.calMoveDraft = null; render(); };
+  document.getElementById('cal-move-close')?.addEventListener('click', calMoveClose);
+  document.getElementById('cal-move-cancel')?.addEventListener('click', calMoveClose);
+  document.getElementById('cal-move-backdrop')?.addEventListener('click', e => {
+    if (e.target.id === 'cal-move-backdrop') calMoveClose();
+  });
+  document.getElementById('cal-move-save')?.addEventListener('click', () => {
+    const draft = state.calMoveDraft;
+    if (!draft) return;
+    const newDateVal = document.getElementById('cal-move-date')?.value;
+    if (!newDateVal) return;
+    const item = state.items.find(x => x.id === draft.itemId);
+    if (!item) { state.calMoveDraft = null; render(); return; }
+    const newDateIso = new Date(newDateVal + 'T12:00:00').toISOString();
+    const dates = ensureReadDates(item);
+    const idx = dates.findIndex(d => d === draft.oldDate);
+    if (idx !== -1) dates[idx] = newDateIso; else dates.push(newDateIso);
+    item.readDates = dates;
+    item.readCount = dates.length;
+    const validTimes = dates.filter(Boolean).map(d => Date.parse(d)).filter(n => !isNaN(n));
+    if (validTimes.length) item.finishedAt = new Date(Math.max(...validTimes)).toISOString();
+    item._modAt = new Date().toISOString();
+    state.calMoveDraft = null;
+    saveData();
+    render();
   });
 
   // Add button
