@@ -12298,19 +12298,23 @@
       "pages": 384,
       "words": 96000,
       "status": "Finished",
-      "userRating": 0,
+      "userRating": 5,
       "notes": "",
       "tags": [],
       "url": "",
       "_addedAt": 457,
       "favorite": true,
       "coverIcon": "https://covers.openlibrary.org/b/id/13818883-L.jpg",
-      "finishedAt": "2016-07-14T12:00:00.000Z",
+      "finishedAt": "2025-12-22T12:00:00.000Z",
       "readDates": [
         "2016-07-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-19T20:42:02.368Z",
+      "fandom": "",
+      "pairing": "",
+      "rating": "",
+      "hearts": null
     },
     {
       "id": "book_208",
