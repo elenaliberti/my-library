@@ -2,6 +2,31 @@
   "items": [
     {
       "url": "",
+      "title": "The Wolf Queen (The Wolf King, #3)",
+      "author": "Lauren Palphreyman",
+      "fandom": "",
+      "pairing": "",
+      "notes": "",
+      "status": "TBR",
+      "rating": "",
+      "readDates": [],
+      "readCount": 0,
+      "type": "book",
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1775684849i/245493672.jpg",
+      "id": "1784760837731_hfe18kv1os",
+      "genre": "Romantasy",
+      "section": "",
+      "words": null,
+      "hearts": null,
+      "pages": null,
+      "userRating": 0,
+      "tags": [],
+      "finishedAt": null,
+      "_addedAt": 661,
+      "_modAt": "2026-07-22T22:53:57.732Z"
+    },
+    {
+      "url": "",
       "title": "The Night Prince (The Wolf King, #2)",
       "author": "Lauren Palphreyman",
       "fandom": "",
@@ -9943,8 +9968,9 @@
         "2016-02-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:03:49.873Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1488111188i/34397841.jpg"
     },
     {
       "id": "book_103",
@@ -10039,7 +10065,8 @@
       "readDates": [
         "2014-04-15T12:00:00.000Z"
       ],
-      "_modAt": "2026-07-17T23:10:00.000Z"
+      "_modAt": "2026-07-22T23:05:44.052Z",
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1394231405i/21400373.jpg"
     },
     {
       "id": "book_107",
@@ -10061,8 +10088,9 @@
         "2016-03-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:05:52.674Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1434473768i/25738200.jpg"
     },
     {
       "id": "book_108",
@@ -10084,8 +10112,9 @@
         "2016-03-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:06:01.451Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1471248225i/31449202.jpg"
     },
     {
       "id": "book_109",
@@ -10156,8 +10185,9 @@
         "2016-03-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:06:16.308Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1478254309i/32869740.jpg"
     },
     {
       "id": "book_112",
@@ -10179,8 +10209,9 @@
         "2016-03-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:06:24.788Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1441218536i/26214042.jpg"
     },
     {
       "id": "book_113",
@@ -10340,8 +10371,9 @@
         "2016-03-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:06:43.011Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1557311891i/45643219.jpg"
     },
     {
       "id": "book_120",
@@ -10363,8 +10395,9 @@
         "2016-03-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:06:52.357Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1556282542i/45307252.jpg"
     },
     {
       "id": "book_121",
@@ -10414,7 +10447,8 @@
       "readDates": [
         "2016-08-10T12:00:00.000Z"
       ],
-      "_modAt": "2026-07-17T23:10:00.000Z"
+      "_modAt": "2026-07-22T23:07:01.316Z",
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1678889882i/123249384.jpg"
     },
     {
       "id": "book_123",
@@ -10486,8 +10520,9 @@
         "2016-03-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:07:09.737Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1582573423i/51691899.jpg"
     },
     {
       "id": "book_126",
@@ -10509,8 +10544,9 @@
         "2016-03-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:07:17.851Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1582573491i/51691932.jpg"
     },
     {
       "id": "book_127",
@@ -10532,8 +10568,9 @@
         "2016-03-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:07:25.815Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1545221075i/43271614.jpg"
     },
     {
       "id": "book_128",
@@ -10555,8 +10592,9 @@
         "2016-04-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:07:34.714Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1544975982i/43247563.jpg"
     },
     {
       "id": "book_129",
@@ -10578,8 +10616,9 @@
         "2016-04-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:07:43.416Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1522918384i/39722402.jpg"
     },
     {
       "id": "book_130",
@@ -10624,8 +10663,9 @@
         "2016-04-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:07:51.939Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1552395203i/44415138.jpg"
     },
     {
       "id": "book_132",
@@ -10647,8 +10687,9 @@
         "2016-04-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:07:59.846Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1410789739i/23166681.jpg"
     },
     {
       "id": "book_133",
@@ -10693,8 +10734,9 @@
         "2016-04-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:08:08.041Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1441471955i/26232261.jpg"
     },
     {
       "id": "book_135",
@@ -10716,8 +10758,9 @@
         "2016-04-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:08:16.946Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1351787518i/16122296.jpg"
     },
     {
       "id": "book_136",
@@ -10739,8 +10782,9 @@
         "2016-04-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:08:24.603Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1532970052i/40998581.jpg"
     },
     {
       "id": "book_137",
@@ -10786,8 +10830,9 @@
         "2016-04-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:08:32.594Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1309417992i/11887320.jpg"
     },
     {
       "id": "book_139",
@@ -10859,8 +10904,9 @@
         "2016-04-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:08:40.967Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1463349758i/30194316.jpg"
     },
     {
       "id": "book_142",
@@ -10882,8 +10928,9 @@
         "2016-04-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:08:49.000Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1488459472i/34447547.jpg"
     },
     {
       "id": "book_143",
@@ -10905,8 +10952,9 @@
         "2016-04-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:08:58.270Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1491573990i/34817731.jpg"
     },
     {
       "id": "book_144",
@@ -10928,8 +10976,9 @@
         "2016-04-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:09:07.012Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1526638221i/40164263.jpg"
     },
     {
       "id": "book_145",
@@ -10951,8 +11000,9 @@
         "2016-04-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:09:15.218Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1486171942i/34110728.jpg"
     },
     {
       "id": "book_146",
@@ -10974,8 +11024,9 @@
         "2016-04-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:09:23.142Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1506727000i/36326552.jpg"
     },
     {
       "id": "book_147",
@@ -10997,8 +11048,9 @@
         "2016-04-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:10:31.983Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1462210090i/30075676.jpg"
     },
     {
       "id": "book_148",
@@ -11020,8 +11072,9 @@
         "2016-04-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:10:40.538Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1470298302i/31187415.jpg"
     },
     {
       "id": "book_149",
@@ -11044,8 +11097,9 @@
         "2016-05-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:10:47.667Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1529386792i/40578448.jpg"
     },
     {
       "id": "book_150",
@@ -11067,8 +11121,9 @@
         "2016-05-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:10:55.796Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1529191731i/39669779.jpg"
     },
     {
       "id": "book_151",
@@ -11090,8 +11145,9 @@
         "2016-05-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:11:04.207Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1575379105i/49083269.jpg"
     },
     {
       "id": "book_152",
@@ -11113,8 +11169,9 @@
         "2016-05-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:11:11.620Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1570433745l/52560164.jpg"
     },
     {
       "id": "book_153",
@@ -11136,8 +11193,9 @@
         "2016-05-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:11:21.381Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1569861583l/52108583.jpg"
     },
     {
       "id": "book_154",
@@ -11159,8 +11217,9 @@
         "2016-05-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:11:29.302Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1556362603i/45313436.jpg"
     },
     {
       "id": "book_155",
@@ -11204,7 +11263,8 @@
         "2016-05-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-22T23:11:40.513Z",
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1570053714l/52242168.jpg"
     },
     {
       "id": "book_157",
@@ -11226,8 +11286,9 @@
         "2016-05-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:11:48.357Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1540885008i/42585601.jpg"
     },
     {
       "id": "book_158",
@@ -11249,8 +11310,9 @@
         "2016-05-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:11:56.087Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1568264375l/53125314.jpg"
     },
     {
       "id": "book_159",
@@ -11272,7 +11334,8 @@
         "2016-05-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-22T23:12:04.928Z",
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1469721325i/31242607.jpg"
     },
     {
       "id": "book_160",
@@ -11294,8 +11357,9 @@
         "2016-05-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:12:13.203Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1521973997i/39461429.jpg"
     },
     {
       "id": "book_161",
@@ -11317,8 +11381,9 @@
         "2016-05-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:12:21.183Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1541152422i/42610983.jpg"
     },
     {
       "id": "book_162",
@@ -11340,8 +11405,9 @@
         "2016-05-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:12:29.506Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1585604586i/52833204.jpg"
     },
     {
       "id": "book_163",
@@ -11363,8 +11429,9 @@
         "2016-05-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:12:37.173Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1582911342i/51882787.jpg"
     },
     {
       "id": "book_164",
@@ -11386,8 +11453,9 @@
         "2016-05-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:12:45.503Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1542181256i/42776131.jpg"
     },
     {
       "id": "book_165",
@@ -11409,8 +11477,9 @@
         "2016-05-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:12:54.269Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1743820470i/228098533.jpg"
     },
     {
       "id": "book_166",
@@ -11432,8 +11501,9 @@
         "2016-05-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:13:03.169Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1573513262i/48755440.jpg"
     },
     {
       "id": "book_167",
@@ -11455,8 +11525,9 @@
         "2016-05-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:13:10.797Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1581462351i/51185752.jpg"
     },
     {
       "id": "book_168",
@@ -11478,8 +11549,9 @@
         "2016-06-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:13:18.405Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1590608022i/53497698.jpg"
     },
     {
       "id": "book_169",
@@ -11501,8 +11573,9 @@
         "2016-06-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:13:26.699Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1445465132i/27251356.jpg"
     },
     {
       "id": "book_170",
@@ -11524,8 +11597,9 @@
         "2016-06-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:13:34.325Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1591166615i/53790427.jpg"
     },
     {
       "id": "book_171",
@@ -11570,7 +11644,8 @@
         "2016-06-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-22T23:13:42.987Z",
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1574982253i/49005834.jpg"
     },
     {
       "id": "book_173",
@@ -11662,8 +11737,9 @@
         "2016-06-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:13:51.188Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1594151818i/54434545.jpg"
     },
     {
       "id": "book_177",
@@ -11685,8 +11761,9 @@
         "2016-06-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:14:00.679Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1598208284i/55082771.jpg"
     },
     {
       "id": "book_178",
@@ -11731,8 +11808,9 @@
         "2016-06-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:14:12.550Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1591653865i/53906687.jpg"
     },
     {
       "id": "book_180",
@@ -11754,8 +11832,9 @@
         "2016-06-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:14:21.383Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1580684751i/50915952.jpg"
     },
     {
       "id": "book_181",
@@ -11777,8 +11856,9 @@
         "2016-06-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:14:29.891Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1486567640i/34200558.jpg"
     },
     {
       "id": "book_182",
@@ -11800,8 +11880,9 @@
         "2016-06-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:14:37.798Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1605605193i/55921532.jpg"
     },
     {
       "id": "book_183",
@@ -11823,8 +11904,9 @@
         "2016-06-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:14:45.840Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1607445126i/56221844.jpg"
     },
     {
       "id": "book_184",
@@ -11846,8 +11928,9 @@
         "2016-06-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:14:54.247Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1446506325i/27416813.jpg"
     },
     {
       "id": "book_185",
@@ -11869,8 +11952,9 @@
         "2016-06-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:15:02.959Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1600167899i/55342967.jpg"
     },
     {
       "id": "book_186",
@@ -11892,7 +11976,8 @@
       "readDates": [
         "2018-03-09T12:00:00.000Z"
       ],
-      "_modAt": "2026-07-17T23:10:00.000Z"
+      "_modAt": "2026-07-22T23:16:10.974Z",
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1607725510i/56253280.jpg"
     },
     {
       "id": "book_187",
@@ -11914,8 +11999,9 @@
         "2016-06-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:16:18.247Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1732468685i/221886618.jpg"
     },
     {
       "id": "book_188",
@@ -11937,8 +12023,9 @@
         "2016-07-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:16:25.980Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1627981220i/58692091.jpg"
     },
     {
       "id": "book_189",
@@ -11960,8 +12047,9 @@
         "2016-07-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:16:34.603Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1631713987i/59002313.jpg"
     },
     {
       "id": "book_190",
@@ -12079,8 +12167,9 @@
         "2016-07-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:16:42.964Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1574520078l/53045927.jpg"
     },
     {
       "id": "book_195",
@@ -12102,8 +12191,9 @@
         "2016-07-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:16:50.859Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1560004350i/46212946.jpg"
     },
     {
       "id": "book_196",
@@ -12149,8 +12239,9 @@
         "2016-07-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:16:59.123Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1641663831i/60063671.jpg"
     },
     {
       "id": "book_198",
@@ -12172,8 +12263,9 @@
         "2016-07-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:18:07.667Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1641663908i/60063674.jpg"
     },
     {
       "id": "book_199",
@@ -12195,8 +12287,9 @@
         "2016-07-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:18:15.580Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1639239962i/59801633.jpg"
     },
     {
       "id": "book_200",
@@ -12218,8 +12311,9 @@
         "2016-07-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:18:23.903Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1647600364i/60619086.jpg"
     },
     {
       "id": "book_201",
@@ -12264,8 +12358,9 @@
         "2016-07-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:18:32.789Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1649146156i/60754046.jpg"
     },
     {
       "id": "book_203",
@@ -12334,7 +12429,8 @@
       "readDates": [
         "2018-05-22T12:00:00.000Z"
       ],
-      "_modAt": "2026-07-17T23:10:00.000Z"
+      "_modAt": "2026-07-22T23:18:43.033Z",
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1672849686i/75571972.jpg"
     },
     {
       "id": "book_206",
@@ -12356,8 +12452,9 @@
         "2016-07-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:18:51.623Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1694768747i/198822394.jpg"
     },
     {
       "id": "book_207",
@@ -12569,8 +12666,9 @@
         "2018-03-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:19:15.373Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1620615713i/57993571.jpg"
     },
     {
       "id": "book_217",
@@ -12638,8 +12736,9 @@
         "2018-04-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:19:24.752Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1651478498i/60965374.jpg"
     },
     {
       "id": "book_220",
@@ -12732,8 +12831,9 @@
         "2018-05-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:19:31.835Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1412688165i/7785410.jpg"
     },
     {
       "id": "book_224",
@@ -12802,8 +12902,9 @@
         "2018-06-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:19:39.809Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1418886372i/23844390.jpg"
     },
     {
       "id": "book_227",
@@ -12919,8 +13020,9 @@
         "2018-08-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:19:54.980Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1658696458i/61682862.jpg"
     },
     {
       "id": "book_232",
@@ -12988,8 +13090,9 @@
         "2018-09-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:20:10.904Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1655461316i/61304841.jpg"
     },
     {
       "id": "book_235",
@@ -13011,8 +13114,9 @@
         "2018-09-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:20:19.611Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1634082533i/59339155.jpg"
     },
     {
       "id": "book_236",
@@ -13034,8 +13138,9 @@
         "2018-10-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:20:28.184Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1753092110i/239127410.jpg"
     },
     {
       "id": "book_237",
@@ -13057,7 +13162,8 @@
         "2018-10-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-22T23:20:36.117Z",
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1583339454i/45023611.jpg"
     },
     {
       "id": "book_238",
@@ -13127,8 +13233,9 @@
         "2018-11-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:20:44.296Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1538467996i/42115197.jpg"
     },
     {
       "id": "book_241",
@@ -13150,8 +13257,9 @@
         "2018-11-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:20:52.704Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1615413374i/56938253.jpg"
     },
     {
       "id": "book_242",
@@ -13173,8 +13281,9 @@
         "2018-12-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:21:01.197Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1504789367i/36196781.jpg"
     },
     {
       "id": "book_243",
@@ -13196,8 +13305,9 @@
         "2018-12-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:21:09.104Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1492197251i/34858083.jpg"
     },
     {
       "id": "book_245",
@@ -13219,8 +13329,9 @@
         "2017-01-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:21:16.308Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1494403716i/35107877.jpg"
     },
     {
       "id": "book_246",
@@ -13311,8 +13422,9 @@
         "2017-08-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:21:26.317Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1519917027i/38893271.jpg"
     },
     {
       "id": "book_250",
@@ -13386,8 +13498,9 @@
         "2016-08-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:21:35.982Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1515278053i/37843671.jpg"
     },
     {
       "id": "book_254",
@@ -13458,8 +13571,9 @@
         "2016-08-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:21:43.506Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1298761530i/10602875.jpg"
     },
     {
       "id": "book_257",
@@ -13527,8 +13641,9 @@
         "2016-08-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:21:56.478Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1543444888i/42976622.jpg"
     },
     {
       "id": "book_260",
@@ -13574,8 +13689,9 @@
         "2016-08-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:22:04.456Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1504051752i/36147739.jpg"
     },
     {
       "id": "book_262",
@@ -13620,8 +13736,9 @@
         "2016-08-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:22:12.563Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1485715333i/34044028.jpg"
     },
     {
       "id": "book_264",
@@ -13643,8 +13760,9 @@
         "2016-08-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:22:20.421Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1333881985i/13583577.jpg"
     },
     {
       "id": "book_265",
@@ -13666,8 +13784,9 @@
         "2016-08-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:22:28.453Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1530536433i/40692788.jpg"
     },
     {
       "id": "book_266",
@@ -13689,8 +13808,9 @@
         "2016-08-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:22:37.028Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1519745305i/38820685.jpg"
     },
     {
       "id": "book_267",
@@ -13712,8 +13832,9 @@
         "2016-08-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:22:44.884Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1492841540i/34933374.jpg"
     },
     {
       "id": "book_268",
@@ -13760,8 +13881,9 @@
         "2016-08-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:22:52.625Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1549076231i/43810234.jpg"
     },
     {
       "id": "book_270",
@@ -13784,8 +13906,9 @@
         "2016-08-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:23:00.574Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1443858504i/26856475.jpg"
     },
     {
       "id": "book_271",
@@ -13807,8 +13930,9 @@
         "2016-09-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:23:09.515Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1453048564i/28589159.jpg"
     },
     {
       "id": "book_272",
@@ -13830,8 +13954,9 @@
         "2016-09-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:23:17.417Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1296165398i/10330014.jpg"
     },
     {
       "id": "book_273",
@@ -13853,8 +13978,9 @@
         "2016-09-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:23:25.213Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1361619390i/17409603.jpg"
     },
     {
       "id": "book_274",
@@ -13876,8 +14002,9 @@
         "2016-09-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:23:34.999Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1433840466i/25692697.jpg"
     },
     {
       "id": "book_275",
@@ -13899,8 +14026,9 @@
         "2016-09-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:23:43.363Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1496247758i/35274244.jpg"
     },
     {
       "id": "book_276",
@@ -13922,8 +14050,9 @@
         "2016-09-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:23:51.598Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1512169367i/36707145.jpg"
     },
     {
       "id": "book_277",
@@ -13945,8 +14074,9 @@
         "2016-09-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:23:59.493Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1459630165i/29763271.jpg"
     },
     {
       "id": "book_278",
@@ -13968,8 +14098,9 @@
         "2016-09-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:24:08.174Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1522866576i/39718395.jpg"
     },
     {
       "id": "book_279",
@@ -13991,7 +14122,8 @@
         "2016-09-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-22T23:24:16.623Z",
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1402301878i/22446901.jpg"
     },
     {
       "id": "book_280",
@@ -14013,8 +14145,9 @@
         "2016-09-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:24:24.381Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1522769751i/39710818.jpg"
     },
     {
       "id": "book_281",
@@ -14059,8 +14192,9 @@
         "2016-09-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:24:32.152Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1551100586i/44129029.jpg"
     },
     {
       "id": "book_283",
@@ -14105,8 +14239,9 @@
         "2016-09-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:24:40.448Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1489988319i/34629616.jpg"
     },
     {
       "id": "book_285",
@@ -14129,8 +14264,9 @@
         "2016-09-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:24:49.504Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1328710761i/11219837.jpg"
     },
     {
       "id": "book_286",
@@ -14152,8 +14288,9 @@
         "2016-09-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:24:57.988Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1554839475i/45008332.jpg"
     },
     {
       "id": "book_287",
@@ -14175,8 +14312,9 @@
         "2016-09-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:25:06.449Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1472872533i/31826550.jpg"
     },
     {
       "id": "book_288",
@@ -14199,7 +14337,8 @@
       "hearts": null,
       "finishedAt": "2017-12-28T12:00:00.000Z",
       "readCount": 1,
-      "_modAt": "2026-06-29T18:21:12.533Z"
+      "_modAt": "2026-07-22T23:25:14.425Z",
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1298068169i/10505941.jpg"
     },
     {
       "id": "book_289",
@@ -14221,8 +14360,9 @@
         "2016-09-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:25:22.865Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1372500611i/18137668.jpg"
     },
     {
       "id": "book_290",
@@ -14244,8 +14384,9 @@
         "2016-09-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:25:30.800Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1560981769l/52295055.jpg"
     },
     {
       "id": "book_291",
@@ -14267,8 +14408,9 @@
         "2016-09-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:25:39.020Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1463770365i/30241622.jpg"
     },
     {
       "id": "book_292",
@@ -14290,8 +14432,9 @@
         "2016-10-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:25:46.934Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1479794380i/33027542.jpg"
     },
     {
       "id": "book_293",
@@ -14313,8 +14456,9 @@
         "2016-10-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:25:54.844Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1528199260i/40387298.jpg"
     },
     {
       "id": "book_294",
@@ -14336,8 +14480,9 @@
         "2016-10-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:26:02.971Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1492706752i/34910617.jpg"
     },
     {
       "id": "book_295",
@@ -14359,8 +14504,9 @@
         "2016-10-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:26:10.643Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1572715890i/48666709.jpg"
     },
     {
       "id": "book_296",
@@ -14382,8 +14528,9 @@
         "2016-10-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:26:18.729Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1478735020i/32934150.jpg"
     },
     {
       "id": "book_297",
@@ -14429,8 +14576,9 @@
         "2016-10-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:26:26.703Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1474532815i/32179923.jpg"
     },
     {
       "id": "book_299",
@@ -14452,8 +14600,9 @@
         "2016-10-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:26:35.001Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1479887858i/32843058.jpg"
     },
     {
       "id": "book_300",
@@ -14475,8 +14624,9 @@
         "2016-10-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:26:43.291Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1481118586i/33161320.jpg"
     },
     {
       "id": "book_301",
@@ -14498,8 +14648,9 @@
         "2016-10-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:26:51.197Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1479922200i/33114687.jpg"
     },
     {
       "id": "book_302",
@@ -14521,8 +14672,9 @@
         "2016-10-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:26:59.028Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1475221346i/32318016.jpg"
     },
     {
       "id": "book_303",
@@ -14544,8 +14696,9 @@
         "2016-10-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:27:06.751Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1480202829i/33133212.jpg"
     },
     {
       "id": "book_304",
@@ -14567,8 +14720,9 @@
         "2016-10-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:27:14.872Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1524166722i/39895856.jpg"
     },
     {
       "id": "book_305",
@@ -14590,8 +14744,9 @@
         "2016-10-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:27:22.615Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1531432793i/40794816.jpg"
     },
     {
       "id": "book_306",
@@ -14613,8 +14768,9 @@
         "2016-10-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:27:30.812Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1535752926i/41581869.jpg"
     },
     {
       "id": "book_307",
@@ -14636,8 +14792,9 @@
         "2016-10-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:27:39.298Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1486064936i/34103711.jpg"
     },
     {
       "id": "book_308",
@@ -14659,8 +14816,9 @@
         "2016-10-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:27:47.194Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1648744424i/60726860.jpg"
     },
     {
       "id": "book_309",
@@ -14682,8 +14840,9 @@
         "2016-10-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:27:55.432Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1680701936i/114686236.jpg"
     },
     {
       "id": "book_311",
@@ -14889,7 +15048,8 @@
         "2008-05-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-22T23:28:05.015Z",
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1445050576i/27222207.jpg"
     },
     {
       "id": "book_320",
@@ -15005,8 +15165,9 @@
         "2008-08-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:28:18.922Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1515585880i/37903048.jpg"
     },
     {
       "id": "book_325",
@@ -15171,7 +15332,8 @@
         "2008-11-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-22T23:28:26.470Z",
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1487562481i/34346873.jpg"
     },
     {
       "id": "book_332",
@@ -15241,8 +15403,9 @@
         "2016-10-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:29:37.667Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1486586299i/34202103.jpg"
     },
     {
       "id": "book_336",
@@ -15264,8 +15427,9 @@
         "2016-11-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:29:45.528Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1554840679i/45008663.jpg"
     },
     {
       "id": "book_337",
@@ -15333,8 +15497,9 @@
         "2016-11-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:29:59.948Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1519572681i/38743855.jpg"
     },
     {
       "id": "book_340",
@@ -15379,8 +15544,9 @@
         "2016-11-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:30:16.143Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1723488950i/217413607.jpg"
     },
     {
       "id": "book_342",
@@ -15610,8 +15776,9 @@
         "2016-11-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:30:42.355Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1741709201i/229029436.jpg"
     },
     {
       "id": "book_352",
@@ -15633,8 +15800,9 @@
         "2016-11-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:30:50.719Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1459325691i/29740533.jpg"
     },
     {
       "id": "book_353",
@@ -15657,8 +15825,9 @@
         "2016-11-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:31:00.177Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1504560534i/36182353.jpg"
     },
     {
       "id": "book_354",
@@ -15703,8 +15872,9 @@
         "2016-11-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:31:07.759Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1586445787i/53081221.jpg"
     },
     {
       "id": "book_356",
@@ -15772,8 +15942,9 @@
         "2016-12-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:31:16.808Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1661149087i/62049809.jpg"
     },
     {
       "id": "book_359",
@@ -15818,8 +15989,9 @@
         "2016-12-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:31:25.077Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1680793630i/125081652.jpg"
     },
     {
       "id": "book_361",
@@ -15935,8 +16107,9 @@
         "2020-12-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:31:36.475Z",
+      "_wordsEstimated": true,
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1636913336i/50621108.jpg"
     },
     {
       "type": "ff",
