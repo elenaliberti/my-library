@@ -2,6 +2,31 @@
   "items": [
     {
       "url": "",
+      "title": "The Night Prince (The Wolf King, #2)",
+      "author": "Lauren Palphreyman",
+      "fandom": "",
+      "pairing": "",
+      "notes": "",
+      "status": "Reading",
+      "rating": "",
+      "readDates": [],
+      "readCount": 0,
+      "type": "book",
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1736014976i/223259676.jpg",
+      "id": "1784760695932_y2iz245o2em",
+      "genre": "Fantasy",
+      "section": "",
+      "words": null,
+      "hearts": null,
+      "pages": 498,
+      "userRating": 0,
+      "tags": [],
+      "finishedAt": null,
+      "_addedAt": 660,
+      "_modAt": "2026-07-22T22:51:35.933Z"
+    },
+    {
+      "url": "",
       "title": "The Wolf King",
       "author": "Lauren Palphreyman",
       "fandom": "",
@@ -14,7 +39,7 @@
       ],
       "readCount": 1,
       "type": "book",
-      "genre": "YA",
+      "genre": "Romantasy",
       "section": "Fantasy",
       "pages": 483,
       "tags": [
@@ -27,7 +52,7 @@
       "userRating": 0,
       "finishedAt": "2026-07-22T11:00:00.000Z",
       "_addedAt": 659,
-      "_modAt": "2026-07-22T14:07:25.023Z",
+      "_modAt": "2026-07-22T14:34:01.183Z",
       "coverIcon": "https://m.media-amazon.com/images/I/81SRIhvn+5L._SL1500_.jpg"
     },
     {
@@ -718,7 +743,7 @@
     {
       "id": "ff_7",
       "type": "ff",
-      "title": "Synkardi\u00e1s",
+      "title": "Synkardiás",
       "author": "00Q_Magnus",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 90949,
@@ -7422,7 +7447,7 @@
       "pairing": "Annabeth Chase/Percy Jackson",
       "status": "Finished",
       "userRating": 5,
-      "notes": "percy jackson will graduate so help me rick \u00c3\u0097 the camp squads up to save percy's gpa",
+      "notes": "percy jackson will graduate so help me rick Ã the camp squads up to save percy's gpa",
       "tags": [
         "Crack Treated Seriously",
         "Post-Canon",
@@ -8768,7 +8793,7 @@
       "type": "book",
       "title": "Corte di rose e spine",
       "author": "Sarah J. Maas",
-      "genre": "Fantasy / Romantasy",
+      "genre": "Romantasy",
       "section": "Fantasy",
       "pages": 419,
       "words": 120000,
@@ -8779,19 +8804,23 @@
       "url": "",
       "_addedAt": 307,
       "coverIcon": "https://covers.openlibrary.org/b/id/15159374-L.jpg",
-      "finishedAt": "2022-07-14T12:00:00.000Z",
+      "finishedAt": "2022-07-14T11:00:00.000Z",
       "readDates": [
         "2022-07-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-22T14:34:34.029Z",
+      "fandom": "",
+      "pairing": "",
+      "rating": "",
+      "hearts": null
     },
     {
       "id": "book_55",
       "type": "book",
       "title": "Corte di nebbia e furia",
       "author": "Sarah J. Maas",
-      "genre": "Fantasy / Romantasy",
+      "genre": "Romantasy",
       "section": "Fantasy",
       "pages": 626,
       "words": 186000,
@@ -8802,19 +8831,23 @@
       "url": "",
       "_addedAt": 308,
       "coverIcon": "https://covers.openlibrary.org/b/id/14315081-L.jpg",
-      "finishedAt": "2022-08-14T12:00:00.000Z",
+      "finishedAt": "2022-08-14T11:00:00.000Z",
       "readDates": [
         "2022-08-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-22T14:34:28.881Z",
+      "fandom": "",
+      "pairing": "",
+      "rating": "",
+      "hearts": null
     },
     {
       "id": "book_56",
       "type": "book",
       "title": "Corte di ali e rovina",
       "author": "Sarah J. Maas",
-      "genre": "Fantasy / Romantasy",
+      "genre": "Romantasy",
       "section": "Fantasy",
       "pages": 699,
       "words": 199000,
@@ -8825,19 +8858,23 @@
       "url": "",
       "_addedAt": 309,
       "coverIcon": "https://covers.openlibrary.org/b/id/8506724-L.jpg",
-      "finishedAt": "2022-09-14T12:00:00.000Z",
+      "finishedAt": "2022-09-14T11:00:00.000Z",
       "readDates": [
         "2022-09-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-22T14:34:24.146Z",
+      "fandom": "",
+      "pairing": "",
+      "rating": "",
+      "hearts": null
     },
     {
       "id": "book_57",
       "type": "book",
       "title": "A court of frost and starlight",
       "author": "Sarah J. Maas",
-      "genre": "Fantasy / Romantasy",
+      "genre": "Romantasy",
       "section": "Fantasy",
       "pages": 299,
       "words": 58000,
@@ -8853,7 +8890,11 @@
         "2022-11-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-22T14:34:15.046Z",
+      "fandom": "",
+      "pairing": "",
+      "rating": "",
+      "hearts": null
     },
     {
       "id": "book_58",
@@ -8934,7 +8975,7 @@
     {
       "id": "book_62",
       "type": "book",
-      "title": "Non \u00e8 ancora finita",
+      "title": "Non è ancora finita",
       "author": "S. Marty",
       "genre": "Trash Fantasy",
       "section": "Fantasy",
@@ -9377,7 +9418,7 @@
     {
       "id": "book_81",
       "type": "book",
-      "title": "Citt\u00e0 di carta",
+      "title": "Città di carta",
       "author": "John Green",
       "genre": "YA / Romance",
       "section": "Fantasy",
@@ -9711,7 +9752,7 @@
     {
       "id": "book_95",
       "type": "book",
-      "title": "Il ragazzo che entr\u00f2 dalla finestra e si infil\u00f2 nel mio letto",
+      "title": "Il ragazzo che entrò dalla finestra e si infilò nel mio letto",
       "author": "Kirsty Moseley",
       "genre": "Romance",
       "section": "Fantasy",
@@ -9977,7 +10018,7 @@
     {
       "id": "book_106",
       "type": "book",
-      "title": "Un disastro \u00e8 per sempre",
+      "title": "Un disastro è per sempre",
       "author": "Jamie McGuire",
       "genre": "Romance / New Adult",
       "section": "Fantasy",
@@ -10072,7 +10113,7 @@
     {
       "id": "book_110",
       "type": "book",
-      "title": "L'assistente del capo: Chi \u00e8 ora il boss?",
+      "title": "L'assistente del capo: Chi è ora il boss?",
       "author": "Lexy Timms",
       "genre": "Romance",
       "section": "Fantasy",
@@ -10352,7 +10393,7 @@
     {
       "id": "book_122",
       "type": "book",
-      "title": "Siamo amici solo il mercoled\u00ec",
+      "title": "Siamo amici solo il mercoledì",
       "author": "Tania Paxia",
       "genre": "Romance",
       "section": "Fantasy",
@@ -13423,7 +13464,7 @@
     {
       "id": "book_257",
       "type": "book",
-      "title": "Sposa a met\u00c3\u0083\u00c2\u0083\u00c3\u0082\u00c2\u00a0",
+      "title": "Sposa a metÃÂÃÂ ",
       "author": "Mary Balogh",
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
@@ -15344,7 +15385,7 @@
     {
       "id": "book_342",
       "type": "book",
-      "title": "Verso la maturit\u00c3\u0083\u00c2\u0083\u00c3\u0082\u00c2\u00a0",
+      "title": "Verso la maturitÃÂÃÂ ",
       "author": "",
       "genre": "Wattpad / YA",
       "section": "Fantasy",
@@ -15768,7 +15809,7 @@
       "words": 65000,
       "status": "Finished",
       "userRating": 0,
-      "notes": "Bellissimo\u00c3\u0083\u00c2\u00a2\u00c3\u0082\u00c2\u0080\u00c3\u0082\u00c2\u00a6 mi ha fatta piangere",
+      "notes": "BellissimoÃÂ¢ÃÂÃÂ¦ mi ha fatta piangere",
       "tags": [],
       "url": "",
       "_addedAt": 605,
@@ -16413,7 +16454,7 @@
     {
       "id": "book_1782756764570_0",
       "type": "book",
-      "title": "Shadowhunters: Citt\u00e0 di ossa",
+      "title": "Shadowhunters: Città di ossa",
       "author": "Cassandra Clare",
       "genre": "Fantasy",
       "status": "Finished",
@@ -16440,7 +16481,7 @@
     {
       "id": "book_1782756764570_1",
       "type": "book",
-      "title": "Shadowhunters: Citt\u00e0 di cenere",
+      "title": "Shadowhunters: Città di cenere",
       "author": "Cassandra Clare",
       "genre": "Fantasy",
       "status": "Finished",
@@ -16484,7 +16525,7 @@
     {
       "id": "book_1782756764570_9",
       "type": "book",
-      "title": "Vicini\u2026 anche troppo",
+      "title": "Vicini… anche troppo",
       "author": "",
       "genre": "Romance",
       "status": "Finished",
@@ -17988,7 +18029,7 @@
     },
     "ff|Harry Potter - J. K. Rowling|group_bashing": {
       "displayName": "Character Bashing",
-      "icon": "\ud83d\udca5",
+      "icon": "💥",
       "pinned": false,
       "isCustom": true,
       "isGroup": true,
@@ -18004,7 +18045,7 @@
     },
     "ff|Harry Potter - J. K. Rowling|group_crossovers": {
       "displayName": "Crossovers",
-      "icon": "\ud83c\udf00",
+      "icon": "🌀",
       "pinned": false,
       "isCustom": true,
       "isGroup": true,
@@ -18019,7 +18060,7 @@
     },
     "ff|Harry Potter - J. K. Rowling|group_harry_au_roles": {
       "displayName": "Harry AU Roles",
-      "icon": "\ud83c\udfad",
+      "icon": "🎭",
       "pinned": false,
       "isCustom": true,
       "isGroup": true,
