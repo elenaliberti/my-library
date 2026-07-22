@@ -257,8 +257,15 @@ ipcMain.handle('books:fetch', async (_, query) => {
     const data = JSON.parse(raw)
     const doc = (data.docs || [])[0]
     if (!doc) return { error: 'Book not found' }
-    const subjects = (doc.subject || []).filter(s => s.length < 35)
-    const genre = subjects[0] || null
+    // OpenLibrary's subject list is unordered and mixes languages, catalog noise (NYT list
+    // tags, call numbers) and genuine genres — picking index [0] blindly gave things like
+    // "Fantasía" instead of "Fantasy", which then never matched the user's existing folder.
+    // Filter out obvious noise, then prefer a clean ASCII (English) entry if one exists.
+    const rawSubjects = doc.subject || []
+    const looksLikeGenre = s => s.length < 35 && !/[:\d]/.test(s) && !/new york times|bestseller|large (type|print)/i.test(s)
+    const candidates = rawSubjects.filter(looksLikeGenre)
+    const isAsciiClean = s => /^[\x20-\x7E]*$/.test(s)
+    const genre = candidates.find(isAsciiClean) || candidates[0] || rawSubjects[0] || null
     return {
       title: doc.title || null,
       author: (doc.author_name || []).slice(0, 2).join(', ') || null,

@@ -647,9 +647,10 @@ function modalHtml() {
             <input type="text" id="m-pairing" value="${item.pairing||''}" placeholder="e.g. M/M or Harry/Ginny" />
             <div class="field-suggest" id="sug-pairing"></div>
           </div>` : `
-          <div>
+          <div class="ac-wrap">
             <label class="field-label">Genre</label>
             <input type="text" id="m-genre" value="${item.genre||''}" placeholder="e.g. Romantasy" />
+            <div class="field-suggest" id="sug-genre"></div>
           </div>
           <div>
             <label class="field-label">Pages</label>
@@ -1418,6 +1419,21 @@ function shipKey(raw) {
   return parts.sort((a, b) => a.localeCompare(b)).join('/');
 }
 function isShipPairing(s) { return shipKey(s) !== null; }
+
+// A book's genre folder is keyed on the text before " / " — if that top-level part matches an
+// existing genre folder case-insensitively (typo, different casing, or an auto-filled value that
+// isn't phrased the way you've been using), snap it to the existing folder's exact spelling
+// instead of splintering off a near-duplicate ("Romanzo storico" vs "Romanzo Storico").
+function normalizeGenre(raw) {
+  const v = (raw || '').trim();
+  if (!v) return v;
+  const parts = v.split(' / ');
+  const top = parts[0].trim();
+  const existingTops = [...new Set(state.items.filter(x => x.type === 'book' && x.genre).map(x => x.genre.split(' / ')[0].trim()))];
+  const match = existingTops.find(g => g.toLowerCase() === top.toLowerCase());
+  if (match && match !== top) parts[0] = match;
+  return parts.join(' / ');
+}
 
 function folderCrumbs(crumbs) {
   return `<div class="folder-breadcrumb">
@@ -2828,6 +2844,9 @@ function bindEvents() {
   // Pairing suggestions pool both past Pairing values (M/M, F/F…) and ship-name tags already in use.
   const shipTagPool = [...new Set(state.items.flatMap(x => x.tags || []).filter(isShipPairing))];
   attachAutocomplete('m-pairing', 'sug-pairing', [...new Set([...distinctVals('pairing'), ...shipTagPool])].sort((a,b)=>a.localeCompare(b)));
+  // Genre suggestions from existing top-level genre folders only (not the "Fantasy / Romantasy" sub-part).
+  const genreFolderNames = [...new Set(state.items.filter(x => x.type === 'book' && x.genre).map(x => x.genre.split(' / ')[0].trim()))].sort((a,b)=>a.localeCompare(b));
+  attachAutocomplete('m-genre', 'sug-genre', genreFolderNames);
 
   // Duplicate title warning (live, on blur)
   const titleEl = document.getElementById('m-title');
@@ -2988,7 +3007,7 @@ function bindEvents() {
       title,
       author: document.getElementById('m-author')?.value?.trim() || '',
       fandom: isFf ? (document.getElementById('m-fandom')?.value?.trim() || '') : '',
-      genre: !isFf ? (document.getElementById('m-genre')?.value?.trim() || '') : '',
+      genre: !isFf ? normalizeGenre(document.getElementById('m-genre')?.value) : '',
       section: !isFf ? (document.getElementById('m-section')?.value?.trim() || state.editItem?.section || '') : '',
       pairing,
       rating: isFf ? (document.getElementById('m-rating')?.value || '') : '',
