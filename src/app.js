@@ -64,8 +64,14 @@ function currentPageKey() {
 function applyBanner() {
   const el = document.getElementById('app');
   if (!el) return;
-  const bg = resolveBanner(state.bannerConfig[currentPageKey()]);
+  const raw = (state.bannerConfig[currentPageKey()] || '').trim();
+  const bg = resolveBanner(raw);
   if (bg) el.style.setProperty('--banner', bg); else el.style.removeProperty('--banner');
+  // A solid banner colour doubles as this page's button/accent colour (--purple-light/dark
+  // are derived from --purple via color-mix, so they follow automatically). An image banner
+  // has no single "accent colour" to extract, so leave --purple at its sage-green default.
+  const isImage = /^https?:\/\//i.test(raw);
+  if (raw && !isImage) el.style.setProperty('--purple', raw); else el.style.removeProperty('--purple');
 }
 function settingsModalHtml() {
   if (!state.settingsOpen) return '';
@@ -623,7 +629,7 @@ function modalHtml() {
         ${!isFf ? `
           <div class="ac-wrap">
             <div class="fetch-row">
-              <input type="text" id="m-title" value="${item.title||''}" placeholder="Title, author or ISBN…" />
+              <input type="text" id="m-title" value="${item.title||''}" placeholder="Title, author, ISBN, or paste a Goodreads link…" />
               <button class="btn btn-primary btn-sm" id="btn-book-fetch">Auto-fill ✦</button>
             </div>
             <div class="field-suggest" id="sug-title"></div>

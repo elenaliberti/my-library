@@ -263,11 +263,56 @@ function cleanGoogleGenre(raw) {
   return parts.join(' / ') || null
 }
 
+function decodeHtmlEntities(s) {
+  return (s || '')
+    .replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(n))
+}
+
+// Title/author/ISBN search is inherently fuzzy — the same query can match the wrong edition,
+// an omnibus, a translation, etc. A Goodreads book URL names one exact edition, so when the
+// "search" field is actually a Goodreads link, scrape that page directly instead of searching.
+async function fetchFromGoodreads(url) {
+  try {
+    const html = await electronFetch(url)
+
+    // Goodreads embeds clean schema.org Book data as JSON-LD — far more reliable than scraping
+    // the page's (frequently-changing, hashed) CSS classes.
+    let ld = null
+    for (const m of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+      try { const parsed = JSON.parse(m[1]); if (parsed['@type'] === 'Book') { ld = parsed; break } } catch {}
+    }
+    if (!ld) return { error: 'Could not read that as a Goodreads book page — paste the URL from the book\'s main page.' }
+
+    const title = decodeHtmlEntities(ld.name) || null
+    const authorList = Array.isArray(ld.author) ? ld.author : (ld.author ? [ld.author] : [])
+    const author = authorList.map(a => decodeHtmlEntities(a?.name)).filter(Boolean).slice(0, 2).join(', ') || null
+    const pages = ld.numberOfPages || null
+    const cover = ld.image || null
+
+    // The genre buttons render in relevance order right in the page HTML — the first one lines
+    // up well with how this library already names its top-level genre folders.
+    let genre = null
+    const genreSection = html.match(/aria-label="Top genres for this book"([\s\S]{0,4000})/)
+    if (genreSection) {
+      const labels = [...genreSection[1].matchAll(/class="Button__labelItem">([^<]+)<\/span>/g)]
+        .map(m => decodeHtmlEntities(m[1]))
+        .filter(g => !/^(\.\.\.more|book details)/i.test(g))
+      genre = labels[0] || null
+    }
+
+    return { title, author, pages, genre, cover, source: 'Goodreads' }
+  } catch (e) { return { error: e.message } }
+}
+
 // Google Books first (cleaner categories, real cover art, usually better match quality),
 // falling back to OpenLibrary (broader catalog, especially for older/foreign editions) if
 // Google has nothing, is unreachable, or rate-limits us — anonymous Google Books quota is
 // shared per-IP and can run dry on busy networks, so this must never be the only path.
+// A pasted Goodreads book URL skips search entirely and scrapes that exact edition.
 ipcMain.handle('books:fetch', async (_, query) => {
+  if (/goodreads\.com\/book\/show/i.test(query)) return await fetchFromGoodreads(query.trim())
   try {
     const gUrl = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=1`
     const gRaw = await electronFetch(gUrl)
