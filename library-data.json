@@ -2,31 +2,6 @@
   "items": [
     {
       "url": "",
-      "title": "The Wolf Queen (The Wolf King, #3)",
-      "author": "Lauren Palphreyman",
-      "fandom": "",
-      "pairing": "",
-      "notes": "",
-      "status": "TBR",
-      "rating": "",
-      "readDates": [],
-      "readCount": 0,
-      "type": "book",
-      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1775684849i/245493672.jpg",
-      "id": "1784760837731_hfe18kv1os",
-      "genre": "Romantasy",
-      "section": "",
-      "words": null,
-      "hearts": null,
-      "pages": null,
-      "userRating": 0,
-      "tags": [],
-      "finishedAt": null,
-      "_addedAt": 661,
-      "_modAt": "2026-07-22T22:53:57.732Z"
-    },
-    {
-      "url": "",
       "title": "The Night Prince (The Wolf King, #2)",
       "author": "Lauren Palphreyman",
       "fandom": "",
@@ -13578,7 +13553,7 @@
     {
       "id": "book_257",
       "type": "book",
-      "title": "Sposa a metÃÂÃÂ ",
+      "title": "Sposa a metà",
       "author": "Mary Balogh",
       "genre": "Romanzo Storico / Romance",
       "section": "Fantasy",
@@ -13590,13 +13565,17 @@
       "tags": [],
       "url": "",
       "_addedAt": 504,
-      "finishedAt": "2016-08-14T12:00:00.000Z",
+      "finishedAt": "2016-08-14T11:00:00.000Z",
       "readDates": [
         "2016-08-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:42:33.537Z",
+      "_wordsEstimated": true,
+      "fandom": "",
+      "pairing": "",
+      "rating": "",
+      "hearts": null
     },
     {
       "id": "book_258",
@@ -15551,7 +15530,7 @@
     {
       "id": "book_342",
       "type": "book",
-      "title": "Verso la maturitÃÂÃÂ ",
+      "title": "Verso la maturità",
       "author": "",
       "genre": "Wattpad / YA",
       "section": "Fantasy",
@@ -15568,8 +15547,12 @@
         "2016-11-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z",
-      "_wordsEstimated": true
+      "_modAt": "2026-07-22T23:43:46.967Z",
+      "_wordsEstimated": true,
+      "fandom": "",
+      "pairing": "",
+      "rating": "",
+      "hearts": null
     },
     {
       "id": "book_343",
@@ -16775,23 +16758,6 @@
       "url": ""
     },
     {
-      "id": "book_1782756764570_13",
-      "type": "book",
-      "title": "Neal Shusterman - Trilogia della falce 1 - Falce",
-      "author": "",
-      "genre": "Casuali",
-      "status": "Finished",
-      "words": 90000,
-      "userRating": 0,
-      "_addedAt": 655,
-      "finishedAt": "2017-12-14T12:00:00.000Z",
-      "readDates": [
-        "2017-12-14T12:00:00.000Z"
-      ],
-      "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
-    },
-    {
       "id": "book_1782756764570_14",
       "type": "book",
       "title": "Voglio ritrovarti - Capital Theatre - 1",
@@ -17268,6 +17234,31 @@
       "_addedAt": 663,
       "_modAt": "2026-07-09T16:29:45.836Z",
       "coverIcon": "https://i.pinimg.com/1200x/50/90/ef/5090ef9bccaf8d98977dc5dab6c6aace.jpg"
+    },
+    {
+      "url": "",
+      "title": "The Wolf Queen (The Wolf King, #3)",
+      "author": "Lauren Palphreyman",
+      "fandom": "",
+      "pairing": "",
+      "notes": "",
+      "status": "TBR",
+      "rating": "",
+      "readDates": [],
+      "readCount": 0,
+      "type": "book",
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1775684849i/245493672.jpg",
+      "id": "1784760837731_hfe18kv1os",
+      "genre": "Romantasy",
+      "section": "",
+      "words": null,
+      "hearts": null,
+      "pages": null,
+      "userRating": 0,
+      "tags": [],
+      "finishedAt": null,
+      "_addedAt": 661,
+      "_modAt": "2026-07-22T22:53:57.732Z"
     }
   ],
   "folderConfig": {
@@ -18262,6 +18253,7 @@
     "book_25": "2026-07-17T22:36:06.040Z",
     "book_26": "2026-07-17T22:36:10.140Z",
     "ff_245": "2026-07-17T22:36:26.989Z",
-    "book_1782756764570_6": "2026-07-17T22:36:37.223Z"
+    "book_1782756764570_6": "2026-07-17T22:36:37.223Z",
+    "book_1782756764570_13": "2026-07-22T23:44:31.201Z"
   }
 }
