@@ -2862,7 +2862,7 @@ function bindEvents() {
     });
   }
 
-  // Book auto-fill (Google Books)
+  // Book auto-fill (Google Books, falling back to OpenLibrary)
   const bookFetchBtn = document.getElementById('btn-book-fetch');
   if (bookFetchBtn) {
     bookFetchBtn.addEventListener('click', async () => {
@@ -2877,8 +2877,11 @@ function bindEvents() {
         if (data.title)  { const el = document.getElementById('m-title');  if (el) el.value = data.title; }
         if (data.author) { const el = document.getElementById('m-author'); if (el) el.value = data.author; }
         if (data.pages)  { const el = document.getElementById('m-pages');  if (el) el.value = data.pages; }
-        if (data.genre)  { const el = document.getElementById('m-genre');  if (el) el.value = data.genre; }
-        if (msgEl) { msgEl.textContent = '✓ Details filled in — check and adjust!'; msgEl.className = 'fetch-msg ok'; }
+        if (data.genre)  { const el = document.getElementById('m-genre');  if (el) el.value = normalizeGenre(data.genre); }
+        // No cover preview lives in this form, so just stash it on editItem — it'll carry
+        // through to the save (via the ...editItem spread) and show up once the card renders.
+        if (data.cover) { state.editItem = { ...(state.editItem || {}), coverIcon: data.cover }; }
+        if (msgEl) { msgEl.textContent = `✓ Details filled in from ${data.source || 'the catalog'}${data.cover ? ' (cover included)' : ''} — check and adjust!`; msgEl.className = 'fetch-msg ok'; }
       } catch(e) {
         if (msgEl) { msgEl.textContent = 'Not found — fill in manually.'; msgEl.className = 'fetch-msg err'; }
       }

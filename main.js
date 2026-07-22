@@ -250,9 +250,45 @@ ipcMain.handle('ffnet:fetch', async (_, url) => {
 })
 
 // ── Open Library book fetch ───────────────────────────────────────────────────
+// Google's BISAC categories are broad-to-specific, e.g. "Fiction / Fantasy / Epic" — but this
+// library's own genre folders put the specific genre first ("Fantasy", "Romance"...). Taking
+// category[0] as-is would dump nearly every novel into one giant "Fiction" folder, which is
+// worse than the bug we're fixing. Drop generic wrapper segments and a trailing "General".
+const GENERIC_TOP_CATEGORIES = new Set(['fiction', 'nonfiction', 'juvenile fiction', 'young adult fiction', 'juvenile nonfiction', 'literary collections'])
+function cleanGoogleGenre(raw) {
+  if (!raw) return null
+  const parts = raw.split('/').map(s => s.trim()).filter(Boolean)
+  while (parts.length > 1 && GENERIC_TOP_CATEGORIES.has(parts[0].toLowerCase())) parts.shift()
+  if (parts.length > 1 && parts[parts.length - 1].toLowerCase() === 'general') parts.pop()
+  return parts.join(' / ') || null
+}
+
+// Google Books first (cleaner categories, real cover art, usually better match quality),
+// falling back to OpenLibrary (broader catalog, especially for older/foreign editions) if
+// Google has nothing, is unreachable, or rate-limits us — anonymous Google Books quota is
+// shared per-IP and can run dry on busy networks, so this must never be the only path.
 ipcMain.handle('books:fetch', async (_, query) => {
   try {
-    const url = `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=3&fields=title,author_name,number_of_pages_median,subject`
+    const gUrl = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=1`
+    const gRaw = await electronFetch(gUrl)
+    const gData = JSON.parse(gRaw)
+    const vol = (gData.items || [])[0]?.volumeInfo
+    if (vol && vol.title) {
+      const genre = cleanGoogleGenre((vol.categories || [])[0])
+      const cover = (vol.imageLinks?.thumbnail || vol.imageLinks?.smallThumbnail || '').replace(/^http:/, 'https:') || null
+      return {
+        title: vol.title || null,
+        author: (vol.authors || []).slice(0, 2).join(', ') || null,
+        pages: vol.pageCount || null,
+        genre,
+        cover,
+        source: 'Google Books',
+      }
+    }
+  } catch (e) { /* fall through to OpenLibrary */ }
+
+  try {
+    const url = `https://openlibrary.org/search.json?q=${encodeURIComponent(query)}&limit=3&fields=title,author_name,number_of_pages_median,subject,cover_i`
     const raw = await electronFetch(url)
     const data = JSON.parse(raw)
     const doc = (data.docs || [])[0]
@@ -266,11 +302,14 @@ ipcMain.handle('books:fetch', async (_, query) => {
     const candidates = rawSubjects.filter(looksLikeGenre)
     const isAsciiClean = s => /^[\x20-\x7E]*$/.test(s)
     const genre = candidates.find(isAsciiClean) || candidates[0] || rawSubjects[0] || null
+    const cover = doc.cover_i ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg` : null
     return {
       title: doc.title || null,
       author: (doc.author_name || []).slice(0, 2).join(', ') || null,
       pages: doc.number_of_pages_median || null,
       genre: genre || null,
+      cover,
+      source: 'OpenLibrary',
     }
   } catch(e) { return { error: e.message } }
 })
