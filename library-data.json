@@ -1,6 +1,36 @@
 {
   "items": [
     {
+      "url": "",
+      "title": "The Wolf King",
+      "author": "Lauren Palphreyman",
+      "fandom": "",
+      "pairing": "",
+      "notes": "",
+      "status": "Finished",
+      "rating": "",
+      "readDates": [
+        null
+      ],
+      "readCount": 1,
+      "type": "book",
+      "genre": "Young adult fiction",
+      "section": "Fantasy",
+      "pages": 483,
+      "tags": [
+        "werewolf",
+        "royalty"
+      ],
+      "id": "1784729102060_gw9r8r79jxb",
+      "words": null,
+      "hearts": null,
+      "userRating": 0,
+      "finishedAt": "2026-07-22T11:00:00.000Z",
+      "_addedAt": 659,
+      "_modAt": "2026-07-22T14:07:25.023Z",
+      "coverIcon": "https://m.media-amazon.com/images/I/81SRIhvn+5L._SL1500_.jpg"
+    },
+    {
       "oneshot": true,
       "url": "https://archiveofourown.org/works/18391355",
       "title": "Sweetbrier",
