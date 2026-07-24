@@ -550,8 +550,11 @@ function cardHtml(item) {
     ? `<img class="card-cover-img" src="${esc(coverIcon)}" />`
     : `<span class="card-cover-emoji">${coverIcon || (isFf ? '✍️' : '📚')}</span>`;
 
+  // Books can be dragged onto a series folder card (or the "take out of series" drop zone) —
+  // fanfiction entries have no series concept, so only book cards need to be draggable.
+  const dragBookAttrs = !isFf ? ` draggable="true" data-drag-item-id="${item.id}"` : '';
   return `
-    <div class="card" data-id="${item.id}">
+    <div class="card" data-id="${item.id}"${dragBookAttrs}>
       <div class="card-top">
         <div class="card-cover" data-expand="${item.id}" style="--c1:${cc1};--c2:${cc2}">
           ${coverInner}
@@ -1193,18 +1196,28 @@ function saveFolderConfig() {
   saveData(); // also persist to JSON file so git backup pushes it to GitHub
 }
 
-// Undo (⌘Z / Ctrl+Z) for folder structure changes — merges, renames, deletes, creates.
-// Snapshot the whole folderConfig before each mutation so undo is a simple pop+restore.
+// Undo (⌘Z / Ctrl+Z) for folder structure changes (merges, renames, deletes, creates) AND
+// book series drag-and-drop moves — one shared stack, tagged by what it snapshots, so ⌘Z always
+// undoes whichever of the two happened most recently rather than needing two separate shortcuts.
 const FOLDER_UNDO_LIMIT = 20;
 function pushFolderUndo() {
-  state.folderUndoStack.push(JSON.stringify(state.folderConfig));
+  state.folderUndoStack.push({ type: 'folder', data: JSON.stringify(state.folderConfig) });
+  if (state.folderUndoStack.length > FOLDER_UNDO_LIMIT) state.folderUndoStack.shift();
+}
+function pushItemsUndo() {
+  state.folderUndoStack.push({ type: 'items', data: JSON.stringify(state.items) });
   if (state.folderUndoStack.length > FOLDER_UNDO_LIMIT) state.folderUndoStack.shift();
 }
 function undoFolderChange() {
-  const snapshot = state.folderUndoStack.pop();
-  if (snapshot === undefined) { showToast('Nothing to undo', 'info'); return; }
-  state.folderConfig = JSON.parse(snapshot);
-  saveFolderConfig();
+  const entry = state.folderUndoStack.pop();
+  if (entry === undefined) { showToast('Nothing to undo', 'info'); return; }
+  if (entry.type === 'items') {
+    state.items = JSON.parse(entry.data);
+    saveData();
+  } else {
+    state.folderConfig = JSON.parse(entry.data);
+    saveFolderConfig();
+  }
   render();
   showToast('Undid last folder change ↩️', 'info');
 }
@@ -1243,7 +1256,11 @@ function folderCard(navPath, defaultEmoji, rawLabel, count) {
   // tag-level ff folders qualify (not All/Untagged, not fandom tiles, not book genres).
   const isDraggable = navPath.length === 3 && navPath[0] === 'ff' && !['__all__','__untagged__'].includes(navPath[2]);
   const dragAttrs = isDraggable ? ` draggable="true" data-drag-key="${editKey}"` : '';
-  return `<div class="folder-card${pinned?' fc-pinned':''}" data-folder-nav="${nav}"${dragAttrs}>
+  // Book series folders (Books → genre → series) accept a book card dropped onto them —
+  // that's how a standalone book joins a series, no editing required.
+  const isSeriesFolder = navPath.length === 3 && navPath[0] === 'book';
+  const dropAttrs = isSeriesFolder ? ` data-drop-series-name="${esc(navPath[2])}"` : '';
+  return `<div class="folder-card${pinned?' fc-pinned':''}" data-folder-nav="${nav}"${dragAttrs}${dropAttrs}>
     <div class="fc-thumb" style="--c1:${c1};--c2:${c2}">
       ${iconHtml}
       ${pinned ? '<span class="fc-pin">📌</span>' : ''}
@@ -1535,17 +1552,18 @@ function folderCreateModalHtml() {
   if (!state.creatingFolderIn) return '';
   const path = state.creatingFolderIn;
   const needsTag = path[0]==='ff' && path.length===2;
+  const isBookSeries = path[0]==='book' && path.length===2;
   const base = needsTag ? state.items.filter(x=>x.type==='ff'&&(path[1]==='__none__'?!x.fandom:x.fandom===path[1])) : [];
   const tagOpts = needsTag ? [...new Set(base.flatMap(x=>x.tags||[]))].sort().map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join('') : '';
   return `<div class="folder-edit-backdrop" id="folder-create-backdrop">
     <div class="folder-edit-modal">
       <div class="fem-header">
-        <span class="fem-title">New folder</span>
+        <span class="fem-title">${isBookSeries ? 'New series' : 'New folder'}</span>
         <button class="fem-close" id="fcm-close">×</button>
       </div>
       <div class="fem-body">
-        <label class="field-label">Name</label>
-        <input type="text" id="fcm-name" placeholder="Folder name…" />
+        <label class="field-label">${isBookSeries ? 'Series name' : 'Name'}</label>
+        <input type="text" id="fcm-name" placeholder="${isBookSeries ? 'e.g. Harry Potter, Percy Jackson…' : 'Folder name…'}" />
         <label class="field-label" style="margin-top:12px">Icon <span class="fem-hint">(emoji or image URL)</span></label>
         <input type="text" id="fcm-icon" placeholder="⚡  or  https://…" />
         ${needsTag ? `<label class="field-label" style="margin-top:12px">Filter by tag</label>
@@ -1802,14 +1820,51 @@ function folderViewHtml() {
     </div>`;
   }
 
-  // Books → genre → items
-  if (type==='book' && sub) {
+  // Books → genre → series list (series folders up top) + standalone items below
+  if (type==='book' && sub && !tag) {
     const items = sub==='__none__'
       ? state.items.filter(x=>x.type==='book'&&!x.genre)
       : state.items.filter(x=>x.type==='book'&&(x.genre||'').split(' / ')[0].trim()===sub);
     const subLbl = getCfg(`book|${sub}`).displayName || (sub==='__none__'?'Other':sub);
+
+    // A series folder "exists" either because at least one book already carries that series
+    // name, or because it was created ahead of time (empty, via the add-folder tile) — union
+    // of both keeps freshly-created empty series visible without needing a placeholder book.
+    const fromItems = new Set(items.filter(x=>x.series).map(x=>x.series));
+    const fromConfig = Object.keys(state.folderConfig).filter(k=>{
+      const p = k.split('|');
+      return state.folderConfig[k].isSeries && p.length===3 && p[0]==='book' && p[1]===sub;
+    }).map(k=>k.split('|')[2]);
+    const seriesNames = [...new Set([...fromItems, ...fromConfig])];
+    const seriesEntries = seriesNames.map(name => {
+      const n = items.filter(x=>x.series===name).length;
+      return [['book',sub,name], '📚', name, n];
+    });
+    const standalone = items.filter(x=>!x.series);
+    // Series folders are always pinned above the standalone list and are never hit by the
+    // search box below — that only searches titles/authors in the flat list, not series names.
+    const cards = sortedCards(seriesEntries).map(([p,e,l,c])=>folderCard(p,e,l,c));
+    cards.push(addFolderCard(['book',sub]));
+
     return `<div id="folder-view">
       ${folderCrumbs([{label:'Books',path:['book']},{label:subLbl,path:['book',sub]}])}
+      ${folderControlBar(true)}
+      ${seriesEntries.length ? `<div class="fv-section-hdr fv-section-full">📚 Series</div><div class="folder-grid">${cards.join('')}</div>` : `<div class="folder-grid">${cards.join('')}</div>`}
+      ${folderItemList(standalone)}
+    </div>`;
+  }
+
+  // Books → genre → series → items
+  if (type==='book' && sub && tag) {
+    const genreItems = sub==='__none__'
+      ? state.items.filter(x=>x.type==='book'&&!x.genre)
+      : state.items.filter(x=>x.type==='book'&&(x.genre||'').split(' / ')[0].trim()===sub);
+    const items = genreItems.filter(x=>x.series===tag);
+    const subLbl = getCfg(`book|${sub}`).displayName || (sub==='__none__'?'Other':sub);
+    const seriesLbl = getCfg(`book|${sub}|${tag}`).displayName || tag;
+    return `<div id="folder-view">
+      ${folderCrumbs([{label:'Books',path:['book']},{label:subLbl,path:['book',sub]},{label:seriesLbl,path:['book',sub,tag]}])}
+      <div class="series-unassign-zone" id="series-unassign-zone">↩ Drop a book here to take it out of "${esc(seriesLbl)}"</div>
       ${folderControlBar(true)}
       ${folderItemList(items)}
     </div>`;
@@ -2206,6 +2261,69 @@ function bindEvents() {
     });
   }
 
+  // Drag a book card onto a series folder (joins the series) or onto the "take out of series"
+  // zone inside a series view (clears it) — mirrors the folder-merge drag above but for items.
+  {
+    let dragItemId = null;
+    document.querySelectorAll('[data-drag-item-id]').forEach(el => {
+      el.addEventListener('dragstart', e => {
+        dragItemId = el.dataset.dragItemId;
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', dragItemId);
+        el.classList.add('card-dragging');
+      });
+      el.addEventListener('dragend', () => {
+        el.classList.remove('card-dragging');
+        document.querySelectorAll('.fc-drop-hover, .series-unassign-hover').forEach(x => x.classList.remove('fc-drop-hover', 'series-unassign-hover'));
+        dragItemId = null;
+      });
+    });
+
+    const setSeries = (itemId, seriesName) => {
+      const item = state.items.find(x => x.id === itemId);
+      if (!item || item.type !== 'book' || item.series === seriesName) return;
+      pushItemsUndo();
+      item.series = seriesName || undefined;
+      item._modAt = new Date().toISOString();
+      saveData();
+      render();
+      showToast(seriesName ? `Added to "${seriesName}" ↩️⌘Z to undo` : 'Removed from series ↩️⌘Z to undo', 'success');
+    };
+
+    document.querySelectorAll('[data-drop-series-name]').forEach(el => {
+      el.addEventListener('dragover', e => {
+        if (!dragItemId) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        el.classList.add('fc-drop-hover');
+      });
+      el.addEventListener('dragleave', () => el.classList.remove('fc-drop-hover'));
+      el.addEventListener('drop', e => {
+        e.preventDefault();
+        el.classList.remove('fc-drop-hover');
+        const id = dragItemId || e.dataTransfer.getData('text/plain');
+        setSeries(id, el.dataset.dropSeriesName);
+      });
+    });
+
+    const unassignZone = document.getElementById('series-unassign-zone');
+    if (unassignZone) {
+      unassignZone.addEventListener('dragover', e => {
+        if (!dragItemId) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        unassignZone.classList.add('series-unassign-hover');
+      });
+      unassignZone.addEventListener('dragleave', () => unassignZone.classList.remove('series-unassign-hover'));
+      unassignZone.addEventListener('drop', e => {
+        e.preventDefault();
+        unassignZone.classList.remove('series-unassign-hover');
+        const id = dragItemId || e.dataTransfer.getData('text/plain');
+        setSeries(id, null);
+      });
+    }
+  }
+
   // Folder edit modal
   const febClose = document.getElementById('fem-close');
   const febCancel = document.getElementById('fem-cancel');
@@ -2289,11 +2407,16 @@ function bindEvents() {
       const icon = document.getElementById('fcm-icon')?.value.trim();
       const filterTag = document.getElementById('fcm-tag')?.value?.trim() || null;
       if (!name) return;
-      const id = 'custom_' + Date.now();
+      // Book series folders are keyed by the series name itself (like genre folders) rather
+      // than an opaque id, so a book dropped onto it later (item.series = name) matches directly.
+      const isBookSeries = parentPath[0] === 'book' && parentPath.length === 2;
+      const id = isBookSeries ? name : 'custom_' + Date.now();
       const newPath = [...parentPath, id];
       const key = newPath.join('|');
+      if (isBookSeries && state.folderConfig[key]) { showToast('A series with that name already exists', 'error'); return; }
       pushFolderUndo();
       state.folderConfig[key] = { displayName: name, isCustom: true, _modAt: new Date().toISOString() };
+      if (isBookSeries) state.folderConfig[key].isSeries = true;
       if (icon) state.folderConfig[key].icon = icon;
       if (filterTag) state.folderConfig[key].filterTag = filterTag;
       saveFolderConfig();

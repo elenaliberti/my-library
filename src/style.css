@@ -117,6 +117,12 @@ select.filter-select:focus { border-color: var(--purple); }
 .folder-card.fc-drop-hover { transform: scale(1.06); box-shadow: 0 0 0 3px #8bab5c, 0 10px 28px rgba(0,0,0,0.18); }
 .folder-card.fc-drop-hover .fc-thumb { filter: brightness(0.85); }
 
+/* Drag a book card onto a series folder, or onto the unassign zone to take it back out */
+.card[draggable="true"] { cursor: grab; }
+.card.card-dragging { opacity: 0.4; }
+.series-unassign-zone { margin: 4px 4px 12px; padding: 10px 14px; border-radius: 8px; border: 2px dashed var(--gray-300, #d1d5db); color: var(--gray-400, #9ca3af); font-size: 13px; text-align: center; transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s, color 0.15s; }
+.series-unassign-zone.series-unassign-hover { transform: scale(1.02); border-color: #8bab5c; color: #5c7a3a; box-shadow: 0 6px 20px rgba(0,0,0,0.12); }
+
 /* Gradient thumbnail area */
 .fc-thumb { display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--c1) 0%, var(--c2) 100%); aspect-ratio: 4/3; position: relative; overflow: hidden; }
 .folder-grid-root .fc-thumb { aspect-ratio: 1 / 1; }

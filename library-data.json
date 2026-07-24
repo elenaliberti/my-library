@@ -7673,7 +7673,8 @@
         "2016-12-14T12:00:00.000Z",
         "2012-01-14T12:00:00.000Z"
       ],
-      "_modAt": "2026-07-18T10:38:10.867Z"
+      "_modAt": "2026-07-24T13:28:54.506Z",
+      "series": "Harry Potter"
     },
     {
       "id": "book_3",
@@ -7697,7 +7698,8 @@
         "2012-02-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-07-18T10:38:26.748Z"
+      "_modAt": "2026-07-24T13:28:53.258Z",
+      "series": "Harry Potter"
     },
     {
       "id": "book_4",
@@ -7721,7 +7723,8 @@
         "2012-03-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-07-18T10:38:29.316Z"
+      "_modAt": "2026-07-24T13:28:51.940Z",
+      "series": "Harry Potter"
     },
     {
       "id": "book_5",
@@ -7745,7 +7748,8 @@
         "2012-04-14T11:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-07-18T10:38:33.648Z"
+      "_modAt": "2026-07-24T13:28:50.373Z",
+      "series": "Harry Potter"
     },
     {
       "id": "book_6",
@@ -7769,7 +7773,8 @@
         "2012-05-14T11:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-07-18T10:38:37.983Z"
+      "_modAt": "2026-07-24T13:28:48.874Z",
+      "series": "Harry Potter"
     },
     {
       "id": "book_7",
@@ -7793,7 +7798,8 @@
         "2012-06-14T11:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-07-18T10:38:41.381Z"
+      "_modAt": "2026-07-24T13:28:47.124Z",
+      "series": "Harry Potter"
     },
     {
       "id": "book_8",
@@ -7817,7 +7823,8 @@
         "2012-06-28T11:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-07-18T10:38:48.464Z"
+      "_modAt": "2026-07-24T13:28:45.108Z",
+      "series": "Harry Potter"
     },
     {
       "id": "book_9",
@@ -7864,7 +7871,8 @@
         "2014-01-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-24T13:30:37.056Z",
+      "series": "Riordan Universe"
     },
     {
       "id": "book_11",
@@ -7888,7 +7896,8 @@
         "2014-02-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-24T13:30:36.073Z",
+      "series": "Riordan Universe"
     },
     {
       "id": "book_12",
@@ -7912,7 +7921,8 @@
         "2014-03-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-24T13:30:35.149Z",
+      "series": "Riordan Universe"
     },
     {
       "id": "book_13",
@@ -7936,7 +7946,8 @@
         "2014-03-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-24T13:30:34.023Z",
+      "series": "Riordan Universe"
     },
     {
       "id": "book_14",
@@ -7960,7 +7971,8 @@
         "2014-04-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-24T13:30:32.891Z",
+      "series": "Riordan Universe"
     },
     {
       "id": "book_15",
@@ -7984,7 +7996,8 @@
         "2014-05-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-24T13:30:31.773Z",
+      "series": "Riordan Universe"
     },
     {
       "id": "book_16",
@@ -8007,7 +8020,8 @@
         "2014-06-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-24T13:30:30.441Z",
+      "series": "Riordan Universe"
     },
     {
       "id": "book_17",
@@ -8031,7 +8045,8 @@
         "2014-07-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-24T13:30:29.190Z",
+      "series": "Riordan Universe"
     },
     {
       "id": "book_18",
@@ -8054,7 +8069,8 @@
         "2014-07-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-24T13:30:27.890Z",
+      "series": "Riordan Universe"
     },
     {
       "id": "book_19",
@@ -8077,7 +8093,8 @@
         "2014-08-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-24T13:30:26.690Z",
+      "series": "Riordan Universe"
     },
     {
       "id": "book_20",
@@ -8100,7 +8117,8 @@
         "2014-09-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-24T13:30:25.540Z",
+      "series": "Riordan Universe"
     },
     {
       "id": "book_21",
@@ -8123,7 +8141,8 @@
         "2014-10-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T18:12:44.570Z"
+      "_modAt": "2026-07-24T13:30:24.341Z",
+      "series": "Riordan Universe"
     },
     {
       "id": "book_22",
@@ -8145,13 +8164,14 @@
         "2014-11-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T23:33:38.373Z",
+      "_modAt": "2026-07-24T13:30:23.123Z",
       "_wordsEstimated": true,
       "coverIcon": "https://m.media-amazon.com/images/I/9133Ryv0JwL._UF1000,1000_QL80_.jpg",
       "fandom": "",
       "pairing": "",
       "rating": "",
-      "hearts": null
+      "hearts": null,
+      "series": "Riordan Universe"
     },
     {
       "id": "book_23",
@@ -8173,13 +8193,14 @@
         "2014-11-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T23:32:14.475Z",
+      "_modAt": "2026-07-24T13:30:21.791Z",
       "_wordsEstimated": true,
       "coverIcon": "https://cs.ilgiardinodeilibri.it/cop/p/w501/percy-jackson-dei-olimpo-libro.jpg?_=1541410338",
       "fandom": "",
       "pairing": "",
       "rating": "",
-      "hearts": null
+      "hearts": null,
+      "series": "Riordan Universe"
     },
     {
       "id": "book_24",
@@ -8201,13 +8222,14 @@
         "2014-12-14T12:00:00.000Z"
       ],
       "readCount": 1,
-      "_modAt": "2026-06-29T23:31:05.591Z",
+      "_modAt": "2026-07-24T13:30:20.409Z",
       "_wordsEstimated": true,
       "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1386344082l/19236016.jpg",
       "fandom": "",
       "pairing": "",
       "rating": "",
-      "hearts": null
+      "hearts": null,
+      "series": "Riordan Universe"
     },
     {
       "id": "book_27",
@@ -17334,8 +17356,9 @@
         "2026-01-01T12:00:00.000Z"
       ],
       "_addedAt": 944,
-      "_modAt": "2026-07-24T10:49:40.000Z",
-      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1429175391i/25368888.jpg"
+      "_modAt": "2026-07-24T13:29:34.724Z",
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1429175391i/25368888.jpg",
+      "series": "Riordan Universe"
     },
     {
       "id": "1784839526474_cwjxi9eg",
@@ -17361,8 +17384,9 @@
         "2020-04-08T12:00:00.000Z"
       ],
       "_addedAt": 943,
-      "_modAt": "2026-07-24T10:49:40.000Z",
-      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1394980173i/21470028.jpg"
+      "_modAt": "2026-07-24T13:29:36.290Z",
+      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1394980173i/21470028.jpg",
+      "series": "Riordan Universe"
     },
     {
       "id": "1784839526474_239xrf7h",
@@ -19222,7 +19246,7 @@
       "title": "Tutti per uno",
       "author": "Pittacus Lore",
       "fandom": "",
-      "genre": "To Sort",
+      "genre": "hard science-fiction",
       "section": "",
       "pairing": "",
       "rating": "",
@@ -19230,7 +19254,7 @@
       "words": null,
       "hearts": null,
       "pages": null,
-      "userRating": null,
+      "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
@@ -19238,7 +19262,7 @@
       "readCount": 0,
       "readDates": [],
       "_addedAt": 856,
-      "_modAt": "2026-07-24T10:49:40.000Z",
+      "_modAt": "2026-07-24T13:17:22.387Z",
       "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1482158819i/33505721.jpg"
     },
     {
@@ -19247,7 +19271,7 @@
       "title": "Sono Il Numero Quattro",
       "author": "Pittacus Lore",
       "fandom": "",
-      "genre": "To Sort",
+      "genre": "hard science-fiction",
       "section": "",
       "pairing": "",
       "rating": "",
@@ -19255,7 +19279,7 @@
       "words": null,
       "hearts": null,
       "pages": null,
-      "userRating": null,
+      "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
@@ -19263,7 +19287,7 @@
       "readCount": 0,
       "readDates": [],
       "_addedAt": 855,
-      "_modAt": "2026-07-24T10:49:40.000Z",
+      "_modAt": "2026-07-24T13:17:30.765Z",
       "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1327356201i/10656562.jpg"
     },
     {
@@ -19272,7 +19296,7 @@
       "title": "La vendetta del numero nove",
       "author": "Pittacus Lore",
       "fandom": "",
-      "genre": "To Sort",
+      "genre": "hard science-fiction",
       "section": "",
       "pairing": "",
       "rating": "",
@@ -19280,7 +19304,7 @@
       "words": null,
       "hearts": null,
       "pages": null,
-      "userRating": null,
+      "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
@@ -19288,7 +19312,7 @@
       "readCount": 0,
       "readDates": [],
       "_addedAt": 854,
-      "_modAt": "2026-07-24T10:49:40.000Z",
+      "_modAt": "2026-07-24T13:17:34.998Z",
       "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1377939511i/18400482.jpg"
     },
     {
@@ -19297,7 +19321,7 @@
       "title": "La sfida del Numero Cinque",
       "author": "Pittacus Lore",
       "fandom": "",
-      "genre": "To Sort",
+      "genre": "hard science-fiction",
       "section": "",
       "pairing": "",
       "rating": "",
@@ -19305,7 +19329,7 @@
       "words": null,
       "hearts": null,
       "pages": null,
-      "userRating": null,
+      "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
@@ -19313,7 +19337,7 @@
       "readCount": 0,
       "readDates": [],
       "_addedAt": 853,
-      "_modAt": "2026-07-24T10:49:40.000Z",
+      "_modAt": "2026-07-24T13:17:39.447Z",
       "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1399538514i/22052319.jpg"
     },
     {
@@ -19322,7 +19346,7 @@
       "title": "Il ritorno del numero sette",
       "author": "Pittacus Lore",
       "fandom": "",
-      "genre": "To Sort",
+      "genre": "hard science-fiction",
       "section": "",
       "pairing": "",
       "rating": "",
@@ -19330,7 +19354,7 @@
       "words": null,
       "hearts": null,
       "pages": null,
-      "userRating": null,
+      "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
@@ -19338,7 +19362,7 @@
       "readCount": 0,
       "readDates": [],
       "_addedAt": 852,
-      "_modAt": "2026-07-24T10:49:40.000Z",
+      "_modAt": "2026-07-24T13:17:44.047Z",
       "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1426638798i/25164794.jpg"
     },
     {
@@ -19347,7 +19371,7 @@
       "title": "Il potere del numero sei",
       "author": "Pittacus Lore",
       "fandom": "",
-      "genre": "To Sort",
+      "genre": "hard science-fiction",
       "section": "",
       "pairing": "",
       "rating": "",
@@ -19355,7 +19379,7 @@
       "words": null,
       "hearts": null,
       "pages": null,
-      "userRating": null,
+      "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
@@ -19363,7 +19387,7 @@
       "readCount": 0,
       "readDates": [],
       "_addedAt": 851,
-      "_modAt": "2026-07-24T10:49:40.000Z",
+      "_modAt": "2026-07-24T13:17:49.049Z",
       "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1338390244i/14741074.jpg"
     },
     {
@@ -19372,7 +19396,7 @@
       "title": "Il destino del Numero Dieci",
       "author": "Pittacus Lore",
       "fandom": "",
-      "genre": "To Sort",
+      "genre": "hard science-fiction",
       "section": "",
       "pairing": "",
       "rating": "",
@@ -19380,7 +19404,7 @@
       "words": null,
       "hearts": null,
       "pages": null,
-      "userRating": null,
+      "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
@@ -19388,35 +19412,8 @@
       "readCount": 0,
       "readDates": [],
       "_addedAt": 850,
-      "_modAt": "2026-07-24T10:49:40.000Z",
+      "_modAt": "2026-07-24T13:17:53.615Z",
       "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1457084339i/29414962.jpg"
-    },
-    {
-      "id": "1784839526473_q1w0czxc",
-      "type": "book",
-      "title": "Perfetti innamorati",
-      "author": "Abby Jimenez",
-      "fandom": "",
-      "genre": "To Sort",
-      "section": "",
-      "pairing": "",
-      "rating": "",
-      "status": "Finished",
-      "words": null,
-      "hearts": null,
-      "pages": null,
-      "userRating": null,
-      "notes": "",
-      "tags": [],
-      "url": "",
-      "finishedAt": "2024-01-22T12:00:00.000Z",
-      "readCount": 1,
-      "readDates": [
-        "2024-01-22T12:00:00.000Z"
-      ],
-      "_addedAt": 849,
-      "_modAt": "2026-07-24T10:49:40.000Z",
-      "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1673860093i/78302031.jpg"
     },
     {
       "id": "1784839526473_dz8thhdd",
@@ -19424,7 +19421,7 @@
       "title": "Per niente al mondo",
       "author": "Ken Follett",
       "fandom": "",
-      "genre": "To Sort",
+      "genre": "Thriller",
       "section": "",
       "pairing": "",
       "rating": "",
@@ -19432,7 +19429,7 @@
       "words": null,
       "hearts": null,
       "pages": null,
-      "userRating": null,
+      "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
@@ -19440,7 +19437,7 @@
       "readCount": 0,
       "readDates": [],
       "_addedAt": 848,
-      "_modAt": "2026-07-24T10:49:40.000Z",
+      "_modAt": "2026-07-24T13:21:19.175Z",
       "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1618502406i/57747307.jpg"
     },
     {
@@ -19449,7 +19446,7 @@
       "title": "Per caso o per amore",
       "author": "Rachel Van Dyken",
       "fandom": "",
-      "genre": "To Sort",
+      "genre": "Romance",
       "section": "",
       "pairing": "",
       "rating": "",
@@ -19457,7 +19454,7 @@
       "words": null,
       "hearts": null,
       "pages": null,
-      "userRating": null,
+      "userRating": 0,
       "notes": "",
       "tags": [],
       "url": "",
@@ -19467,7 +19464,7 @@
         "2017-11-29T12:00:00.000Z"
       ],
       "_addedAt": 847,
-      "_modAt": "2026-07-24T10:49:40.000Z",
+      "_modAt": "2026-07-24T13:22:06.323Z",
       "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1653375359i/61158027.jpg"
     },
     {
@@ -21118,7 +21115,7 @@
       "title": "La corte di fiamme e argento",
       "author": "Sarah J. Maas",
       "fandom": "",
-      "genre": "Fantasy",
+      "genre": "Romantasy",
       "section": "",
       "pairing": "",
       "rating": "",
@@ -21130,13 +21127,13 @@
       "notes": "",
       "tags": [],
       "url": "",
-      "finishedAt": "2023-08-07T12:00:00.000Z",
+      "finishedAt": "2023-08-07T11:00:00.000Z",
       "readCount": 1,
       "readDates": [
         "2023-08-07T12:00:00.000Z"
       ],
       "_addedAt": 782,
-      "_modAt": "2026-07-24T10:49:40.000Z",
+      "_modAt": "2026-07-24T13:30:55.706Z",
       "coverIcon": "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1612353217i/56843872.jpg"
     },
     {
@@ -25072,6 +25069,19 @@
       ],
       "section": "trope",
       "_modAt": "2026-07-16T23:08:51.597Z"
+    },
+    "book|Fantasy|Harry Potter": {
+      "displayName": "Harry Potter",
+      "isCustom": true,
+      "_modAt": "2026-07-24T13:28:31.789Z",
+      "isSeries": true
+    },
+    "book|Fantasy|Riordan Universe": {
+      "displayName": "Riordan Universe",
+      "isCustom": true,
+      "_modAt": "2026-07-24T13:29:32.372Z",
+      "isSeries": true,
+      "pinned": false
     }
   },
   "deletedIds": {
@@ -25105,6 +25115,7 @@
     "1784839526473_u00nynq2": "2026-07-24T10:17:23.339Z",
     "1784839526473_luixi6pl": "2026-07-24T10:21:42.003Z",
     "1784839526473_2zv5zz7z": "2026-07-24T10:21:44.870Z",
-    "1784839526474_u8yt6gbf": "2026-07-24T12:12:19.781Z"
+    "1784839526474_u8yt6gbf": "2026-07-24T12:12:19.781Z",
+    "1784839526473_q1w0czxc": "2026-07-24T13:20:42.944Z"
   }
 }
