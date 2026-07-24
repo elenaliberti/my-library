@@ -576,6 +576,7 @@ function cardHtml(item) {
         <div class="card-actions">
           <button class="icon-btn${item.favorite ? ' fav-active' : ''}" data-toggle-fav="${item.id}" title="${item.favorite ? 'Remove from favorites' : 'Add to favorites'}">⭐</button>
           ${item.url ? `<button class="icon-btn" data-open-url="${item.url}" title="Open link">🔗</button>` : ''}
+          ${!isFf && item.localFile ? `<button class="icon-btn" data-open-local="${esc(item.id)}" title="Open ${item.localFile.toLowerCase().endsWith('.epub')?'EPUB':'PDF'}">📖</button>` : ''}
           ${isFf && /archiveofourown|fanfiction\.net|transformativeworks/.test(item.url||'') ? `<button class="icon-btn" data-refresh-words="${item.id}" title="Refresh word count from the link">↻</button>` : ''}
           <button class="icon-btn" data-edit="${item.id}" title="Edit">✏️</button>
           <button class="icon-btn danger" data-delete="${item.id}" title="Delete">🗑</button>
@@ -664,6 +665,14 @@ function modalHtml() {
           <div>
             <label class="field-label">Pages</label>
             <input type="number" id="m-pages" value="${item.pages||''}" placeholder="e.g. 512" />
+          </div>
+          <div style="flex:1 1 100%">
+            <label class="field-label">Linked ebook file</label>
+            <div class="local-file-row">
+              <span class="local-file-name" id="m-localfile-name" title="${esc(item.localFile||'')}">${item.localFile ? esc(item.localFile.split('/').pop()) : 'No file linked'}</span>
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-pick-localfile">${item.localFile ? 'Change…' : 'Link file…'}</button>
+              ${item.localFile ? `<button type="button" class="btn btn-secondary btn-sm" id="btn-clear-localfile">Remove</button>` : ''}
+            </div>
           </div>`}
         </div>
 
@@ -1849,7 +1858,10 @@ function folderViewHtml() {
     return `<div id="folder-view">
       ${folderCrumbs([{label:'Books',path:['book']},{label:subLbl,path:['book',sub]}])}
       ${folderControlBar(true)}
-      ${seriesEntries.length ? `<div class="fv-section-hdr fv-section-full">📚 Series</div><div class="folder-grid">${cards.join('')}</div>` : `<div class="folder-grid">${cards.join('')}</div>`}
+      <div class="series-sticky-section">
+        ${seriesEntries.length ? `<div class="fv-section-hdr fv-section-full">📚 Series</div>` : ''}
+        <div class="folder-grid series-grid">${cards.join('')}</div>
+      </div>
       ${folderItemList(standalone)}
     </div>`;
   }
@@ -2740,6 +2752,17 @@ function bindEvents() {
     });
   });
 
+  // Open the book's linked local PDF/EPUB in whatever app the OS has set as default
+  document.querySelectorAll('[data-open-local]').forEach(el => {
+    el.addEventListener('click', async e => {
+      e.stopPropagation();
+      const item = state.items.find(x => x.id === el.dataset.openLocal);
+      if (!item?.localFile) return;
+      const res = await window.api.openLocalFile(item.localFile);
+      if (res?.error) showToast(res.error, 'error');
+    });
+  });
+
   // Refresh word count from the link (list & folder cards)
   document.querySelectorAll('[data-refresh-words]').forEach(btn => {
     btn.addEventListener('click', async e => {
@@ -3015,6 +3038,24 @@ function bindEvents() {
         if (msgEl) { msgEl.textContent = 'Not found — fill in manually.'; msgEl.className = 'fetch-msg err'; }
       }
       bookFetchBtn.disabled = false; bookFetchBtn.textContent = 'Auto-fill ✦';
+    });
+  }
+
+  // Manually link (or replace) the local PDF/EPUB for books the auto-matcher didn't catch
+  const pickLocalBtn = document.getElementById('btn-pick-localfile');
+  if (pickLocalBtn) {
+    pickLocalBtn.addEventListener('click', async () => {
+      const picked = await window.api.pickLocalFile();
+      if (!picked) return;
+      state.editItem = { ...(state.editItem || {}), localFile: picked };
+      render();
+    });
+  }
+  const clearLocalBtn = document.getElementById('btn-clear-localfile');
+  if (clearLocalBtn) {
+    clearLocalBtn.addEventListener('click', () => {
+      state.editItem = { ...(state.editItem || {}), localFile: undefined };
+      render();
     });
   }
 
@@ -3335,7 +3376,7 @@ window.addEventListener('keydown', e => {
 let _navSwipeAt = 0;
 let _swipeAccumX = 0;
 let _swipeResetTimer = null;
-const SWIPE_THRESHOLD = 14;
+const SWIPE_THRESHOLD = 45;
 const SWIPE_COOLDOWN = 650;
 const SWIPE_IDLE_RESET = 120;
 
@@ -3346,6 +3387,9 @@ function fireSwipe(action) {
 }
 
 window.addEventListener('wheel', e => {
+  // The horizontally-scrolling series shelf has its own left/right scroll — trackpad scrolling
+  // through it must never be misread as a back-navigation swipe.
+  if (e.target.closest && e.target.closest('.series-grid')) { _swipeAccumX = 0; return; }
   if (Math.abs(e.deltaX) <= Math.abs(e.deltaY) + 4) { _swipeAccumX = 0; return; }  // must be a horizontal swipe
 
   _swipeAccumX += e.deltaX;

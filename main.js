@@ -73,6 +73,25 @@ ipcMain.handle('data:open-location', () => {
   shell.showItemInFolder(DATA_PATH)
 })
 
+// ── Local ebook file linking ────────────────────────────────────────────────────
+// Opens a book's linked PDF/EPUB with whatever app the user has set as the system default.
+ipcMain.handle('files:open-local', (_, filePath) => {
+  if (!filePath || !fs.existsSync(filePath)) return { error: 'That file no longer exists at its linked location.' }
+  const err = shell.openPath(filePath)
+  return err ? { error: err } : { ok: true }
+})
+
+// Manual override for books the auto-matcher couldn't confidently link — lets the user pick
+// any file directly instead.
+ipcMain.handle('files:pick-local', async () => {
+  const { filePaths } = await dialog.showOpenDialog({
+    title: 'Link a book file',
+    properties: ['openFile'],
+    filters: [{ name: 'Ebook', extensions: ['pdf', 'epub'] }],
+  })
+  return filePaths?.[0] || null
+})
+
 // ── Electron-native fetch (uses Chromium TLS — bypasses Cloudflare JA3 checks) ─
 let _fetchSession = null
 function getFetchSession() {

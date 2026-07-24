@@ -13,4 +13,6 @@ contextBridge.exposeInMainWorld('api', {
   gitBackup:      ()      => ipcRenderer.invoke('git:backup'),
   pullData:       ()      => ipcRenderer.invoke('git:pull-data'),
   fetchBook:      (q)     => ipcRenderer.invoke('books:fetch', q),
+  openLocalFile:  (path)  => ipcRenderer.invoke('files:open-local', path),
+  pickLocalFile:  ()      => ipcRenderer.invoke('files:pick-local'),
 })
