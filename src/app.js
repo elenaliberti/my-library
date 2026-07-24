@@ -629,7 +629,7 @@ function modalHtml() {
         ${!isFf ? `
           <div class="ac-wrap">
             <div class="fetch-row">
-              <input type="text" id="m-title" value="${item.title||''}" placeholder="Title, author, ISBN, or paste a Goodreads link…" />
+              <input type="text" id="m-title" value="${item.title||''}" placeholder="Title, author, ISBN, or paste a Goodreads/Amazon link…" />
               <button class="btn btn-primary btn-sm" id="btn-book-fetch">Auto-fill ✦</button>
             </div>
             <div class="field-suggest" id="sug-title"></div>

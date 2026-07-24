@@ -306,13 +306,73 @@ async function fetchFromGoodreads(url) {
   } catch (e) { return { error: e.message } }
 }
 
+// Amazon sometimes serves a bot-check/CAPTCHA page to a plain fetch even when the same request
+// would sail through in a real browser — so this loads the page in a hidden, genuinely-rendering
+// BrowserWindow (same fix as the Goodreads *search* endpoint needed) instead of electronFetch.
+async function fetchHtmlViaBrowser(url) {
+  const win = new BrowserWindow({ show: false, webPreferences: { contextIsolation: true } })
+  try {
+    await win.loadURL(url)
+    await new Promise(r => setTimeout(r, 1500))
+    return await win.webContents.executeJavaScript('document.documentElement.outerHTML')
+  } finally {
+    win.destroy()
+  }
+}
+
+// Amazon has no JSON-LD for product pages, so this leans on the same handful of element IDs
+// Amazon uses across every locale (productTitle, bylineInfo, landingImage) — plain-text/attribute
+// scraping, same tradeoff as Goodreads's genre buttons above.
+async function fetchFromAmazon(url) {
+  try {
+    const html = await fetchHtmlViaBrowser(url)
+    if (/Enter the characters you see below|Sorry, we just need to make sure/i.test(html)) {
+      return { error: 'Amazon showed a bot-check page — wait a moment and try again.' }
+    }
+
+    const titleMatch = html.match(/id="productTitle"[^>]*>([^<]+)</)
+    const title = titleMatch ? decodeHtmlEntities(titleMatch[1].replace(/\s+/g, ' ').trim()) : null
+    if (!title) return { error: 'Could not read that as an Amazon book page — paste the URL from the book\'s product page.' }
+
+    const authorMatch = html.match(/<div id="bylineInfo"[\s\S]{0,1200}?<a[^>]*>([^<]+)<\/a>/)
+    const author = authorMatch ? decodeHtmlEntities(authorMatch[1].replace(/\s+/g, ' ').trim()) : null
+
+    // "Print length" covers Kindle editions; paperback/hardcover listings use "Paperback"/"Hardcover" instead.
+    const pagesMatch = html.match(/(?:Print length|Paperback|Hardcover):\s*(\d+)\s*pages/)
+    const pages = pagesMatch ? parseInt(pagesMatch[1]) : null
+
+    // data-a-dynamic-image is a JSON map of {url: [w,h]} — the entries are already ordered
+    // smallest-to-largest, so the last key is the highest-resolution cover art available.
+    let cover = null
+    const imgMatch = html.match(/id="landingImage"[^>]*data-a-dynamic-image="([^"]+)"/)
+    if (imgMatch) {
+      try {
+        const urls = Object.keys(JSON.parse(decodeHtmlEntities(imgMatch[1])))
+        cover = urls[urls.length - 1] || null
+      } catch {}
+    }
+
+    // The "Best Sellers Rank" list's first category link is Amazon's own best-genre guess for
+    // the book — mirrors how the Goodreads path takes the first (most relevant) genre button.
+    let genre = null
+    const rankSection = html.match(/Best Sellers Rank:[\s\S]{0,1500}?<\/ul>/)
+    if (rankSection) {
+      const catMatch = rankSection[0].match(/<a href=['"][^'"]*\/bestsellers\/books\/[^'"]*['"]>([^<]+)<\/a>/)
+      genre = catMatch ? decodeHtmlEntities(catMatch[1]).replace(/\s*eBooks?$/i, '').trim() : null
+    }
+
+    return { title, author, pages, genre, cover, source: 'Amazon' }
+  } catch (e) { return { error: e.message } }
+}
+
 // Google Books first (cleaner categories, real cover art, usually better match quality),
 // falling back to OpenLibrary (broader catalog, especially for older/foreign editions) if
 // Google has nothing, is unreachable, or rate-limits us — anonymous Google Books quota is
 // shared per-IP and can run dry on busy networks, so this must never be the only path.
-// A pasted Goodreads book URL skips search entirely and scrapes that exact edition.
+// A pasted Goodreads or Amazon book URL skips search entirely and scrapes that exact edition.
 ipcMain.handle('books:fetch', async (_, query) => {
   if (/goodreads\.com\/book\/show/i.test(query)) return await fetchFromGoodreads(query.trim())
+  if (/amazon\.[a-z.]+\/.*\/(?:dp|gp\/product)\/[A-Z0-9]{10}/i.test(query)) return await fetchFromAmazon(query.trim())
   try {
     const gUrl = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&maxResults=1`
     const gRaw = await electronFetch(gUrl)
