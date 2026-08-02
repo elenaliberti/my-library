@@ -35,6 +35,11 @@ let state = {
   bannerConfig: {},
   folderUndoStack: [],
   deletedIds: {},   // id -> ISO timestamp of deletion, so cloud sync/backup can't resurrect it
+  moodPickerOpen: false,
+  moodPickerMood: null,     // key into MOODS while a result is showing
+  moodPickerBookId: null,   // the TBR book currently revealed for that mood
+  moodPickerFallback: false, // true if no TBR book matched the mood and this is a random pick instead
+  moodPickerDesc: null,       // { text, source } once fetched, or 'loading', or 'none'
 };
 
 const STATUS = ['TBR','Reading','Finished','Dropped'];
@@ -99,6 +104,41 @@ function settingsModalHtml() {
   </div>`;
 }
 const STATUS_COLOR = { TBR:'purple', Reading:'amber', Finished:'green', Dropped:'red' };
+
+// ── Mood-based "what should I read next" picker ─────────────────────────────────
+// Matches against genre (top-level, before " / ") and the trope tag used by the series-folder
+// feature — same fields already populated for the Romance trope sort, so no new data needed.
+function topGenre(item) { return (item.genre || '').split(' / ')[0].trim(); }
+const MOODS = [
+  { key: 'cozy', emoji: '😌', label: 'Cozy & comforting', match: b => topGenre(b) === 'Romance' && !['Mafia Romance', 'Dark Academy / Bully Romance'].includes(b.series) },
+  { key: 'fun', emoji: '😂', label: 'Fun & light-hearted', match: b => ['Fake Dating', 'Bad Boy Romance', 'Enemies to Lovers', 'Grumpy x Sunshine'].includes(b.series) || topGenre(b) === 'Wattpad' },
+  { key: 'cry', emoji: '😭', label: 'I want to cry', match: b => b.series === 'Second Chance / Angst' },
+  { key: 'steamy', emoji: '🔥', label: 'Steamy & intense', match: b => topGenre(b) === 'Erotico' || ['Mafia Romance', 'Dark Academy / Bully Romance'].includes(b.series) },
+  { key: 'escape', emoji: '🐉', label: 'Escape to another world', match: b => ['Fantasy', 'Romantasy', 'Trash Fantasy'].includes(topGenre(b)) },
+  { key: 'sports', emoji: '🏆', label: 'Sports & competition', match: b => b.series === 'Sports Romance' || b.series === 'Hockey' },
+  { key: 'royal', emoji: '👑', label: 'Billionaires & royals', match: b => b.series === 'Billionaire Romance' || b.series === 'Royal Romance' },
+  { key: 'paranormal', emoji: '👻', label: 'Paranormal & supernatural', match: b => b.series === 'Omegaverse' || (b.series || '').includes('Paranormal') || (b.series || '').includes('Shifter') },
+  { key: 'smart', emoji: '🧠', label: 'Thought-provoking', match: b => ['Saggistica', 'Romanzo Storico'].includes(topGenre(b)) },
+  { key: 'surprise', emoji: '🎲', label: 'Surprise me completely', match: () => true },
+];
+
+function moodPool(moodKey) {
+  const mood = MOODS.find(m => m.key === moodKey);
+  if (!mood) return [];
+  return state.items.filter(x => x.type === 'book' && x.status === 'TBR' && mood.match(x));
+}
+function pickMoodBook(moodKey) {
+  // Falls back to the full TBR shelf if nothing on it happens to fit this mood, rather than
+  // dead-ending — the modal marks the result as a fallback so it's not a silent mismatch.
+  let pool = moodPool(moodKey);
+  let fallback = false;
+  if (!pool.length) {
+    pool = state.items.filter(x => x.type === 'book' && x.status === 'TBR');
+    fallback = true;
+  }
+  if (!pool.length) return { book: null, fallback: false };
+  return { book: pool[Math.floor(Math.random() * pool.length)], fallback };
+}
 
 // ── Persistence ───────────────────────────────────────────────────────────────
 async function loadData() {
@@ -535,6 +575,7 @@ function cardHtml(item) {
           </div>
         </div>
         ${notesHtml}${extraHtml}
+        ${item.description ? `<div class="card-synopsis"><span class="card-synopsis-label">${isFf ? 'Summary' : 'Synopsis'}</span><p>${esc(item.description)}</p></div>` : ''}
         ${item.url ? `<p class="card-extra"><a href="${item.url}" style="color:#6366f1">Open link ↗</a></p>` : ''}
       </div>`;
   }
@@ -656,6 +697,10 @@ function modalHtml() {
             <label class="field-label">Pairing</label>
             <input type="text" id="m-pairing" value="${item.pairing||''}" placeholder="e.g. M/M or Harry/Ginny" />
             <div class="field-suggest" id="sug-pairing"></div>
+          </div>
+          <div style="grid-column:1 / -1">
+            <label class="field-label">Summary <span class="fem-hint">(auto-filled from the AO3 link, or paste your own)</span></label>
+            <textarea id="m-description" rows="4" placeholder="The fic's summary…">${esc(item.description||'')}</textarea>
           </div>` : `
           <div class="ac-wrap">
             <label class="field-label">Genre</label>
@@ -666,13 +711,17 @@ function modalHtml() {
             <label class="field-label">Pages</label>
             <input type="number" id="m-pages" value="${item.pages||''}" placeholder="e.g. 512" />
           </div>
-          <div style="flex:1 1 100%">
+          <div style="grid-column:1 / -1">
             <label class="field-label">Linked ebook file</label>
             <div class="local-file-row">
               <span class="local-file-name" id="m-localfile-name" title="${esc(item.localFile||'')}">${item.localFile ? esc(item.localFile.split('/').pop()) : 'No file linked'}</span>
               <button type="button" class="btn btn-secondary btn-sm" id="btn-pick-localfile">${item.localFile ? 'Change…' : 'Link file…'}</button>
               ${item.localFile ? `<button type="button" class="btn btn-secondary btn-sm" id="btn-clear-localfile">Remove</button>` : ''}
             </div>
+          </div>
+          <div style="grid-column:1 / -1">
+            <label class="field-label">Synopsis <span class="fem-hint">(auto-filled by Auto-fill ✦, or paste your own)</span></label>
+            <textarea id="m-description" rows="4" placeholder="A short synopsis…">${esc(item.description||'')}</textarea>
           </div>`}
         </div>
 
@@ -798,7 +847,7 @@ function statsViewHtml() {
   const pctChange = prevV > 0 ? Math.round((lastV - prevV) / prevV * 100) : null;
   const bars = groups.map((g, i) => {
     const val = values[i];
-    const pct = val > 0 ? Math.max(val / maxVal * 88, 5) : 0;
+    const pct = val > 0 ? Math.max(Math.sqrt(val / maxVal) * 88, 5) : 0;
     const lbl = isWords ? fmtNum(val) : String(val);
     const isPeak = val > 0 && i === peakIdx;
     const tip = `${g.label}: ${isWords ? fmtNum(val) + ' words · ' + fmtTime(val / SPEED) : val + (val === 1 ? ' read' : ' reads')}`;
@@ -839,30 +888,54 @@ function statsViewHtml() {
   const mBtn = (id, lbl) =>
     `<button class="smetric-btn${state.statsMetric===id?' active':''}" data-smetric="${id}">${lbl}</button>`;
 
-  // Reading pace — fics tracked through the MySpace board (have both a start and finish date).
+  // Reading pace — books & fics tracked through the MySpace board (have both a start and finish date).
   const pacedReads = state.items
-    .filter(x => x.type === 'ff' && x.readingStartedAt && x.finishedAt && x.words > 0 && Date.parse(x.finishedAt) >= Date.parse(x.readingStartedAt))
+    .filter(x => (x.type === 'ff' || x.type === 'book') && x.readingStartedAt && x.finishedAt && x.words > 0 && Date.parse(x.finishedAt) >= Date.parse(x.readingStartedAt))
     .map(x => { const days = daysBetween(x.readingStartedAt, x.finishedAt); return { title: x.title, words: x.words, days, pace: Math.round(x.words / days), end: x.finishedAt }; })
     .sort((a, b) => Date.parse(a.end) - Date.parse(b.end));
-  let paceHtml = '';
+  let paceHtml = `
+      <div class="stats-trend-hdr" style="margin-top:24px">
+        <span class="stats-section-ttl">📖 Reading pace</span>
+      </div>
+      <div class="stats-insight"><span class="ins-emoji">🌱</span> Not enough tracked reads yet — drag a book or fic through <b>TBR → Reading → Finished</b> on the MySpace board and its pace will show up here.</div>`;
   if (pacedReads.length) {
     const avg = Math.round(pacedReads.reduce((s, r) => s + r.pace, 0) / pacedReads.length);
     const maxPace = Math.max(...pacedReads.map(r => r.pace), 1);
+    const fastest = pacedReads.reduce((b, r) => r.pace > b.pace ? r : b, pacedReads[0]);
+    const slowest = pacedReads.reduce((b, r) => r.pace < b.pace ? r : b, pacedReads[0]);
+
+    // Trend: your most recent reads vs the equally-sized batch right before them.
+    let trendTxt = '';
+    const windowN = Math.min(5, Math.floor(pacedReads.length / 2));
+    if (windowN >= 2) {
+      const recent = pacedReads.slice(-windowN);
+      const older = pacedReads.slice(-windowN * 2, -windowN);
+      const recentAvg = recent.reduce((s, r) => s + r.pace, 0) / recent.length;
+      const olderAvg = older.reduce((s, r) => s + r.pace, 0) / older.length;
+      const chg = olderAvg > 0 ? Math.round((recentAvg - olderAvg) / olderAvg * 100) : 0;
+      trendTxt = chg > 5 ? ` &nbsp;·&nbsp; <span class="ins-up">▲ ${chg}% faster</span> than your ${windowN} reads before that`
+        : chg < -5 ? ` &nbsp;·&nbsp; <span class="ins-down">▼ ${Math.abs(chg)}% slower</span> than your ${windowN} reads before that`
+        : ` &nbsp;·&nbsp; <span class="ins-flat">→ steady pace</span> vs your ${windowN} reads before that`;
+    }
+
     const paceBars = pacedReads.map(r => {
-      const h = Math.max(r.pace / maxPace * 88, 5);
+      const h = Math.max(Math.sqrt(r.pace / maxPace) * 88, 5);
+      const isFastest = r === fastest && fastest.pace !== slowest.pace;
       return `<div class="chart-col" title="${esc(r.title || '')} — ${fmtNum(r.pace)} words/day (${fmtNum(r.words)}w in ${r.days}d)">
-        <div class="chart-bar-wrap"><span class="chart-bar-val">${fmtNum(r.pace)}</span><div class="chart-bar" style="height:${h}%"></div></div>
+        <div class="chart-bar-wrap"><span class="chart-bar-val${isFastest ? ' peak' : ''}">${isFastest ? '⚡' : ''}${fmtNum(r.pace)}</span><div class="chart-bar${isFastest ? ' peak' : ''}" style="height:${h}%"></div></div>
         <div class="chart-bar-lbl">${fmtDateShort(r.end)}</div>
       </div>`;
     }).join('');
     paceHtml = `
       <div class="stats-trend-hdr" style="margin-top:24px">
         <span class="stats-section-ttl">📖 Reading pace</span>
-        <span class="stats-note" style="margin:0">avg <b>${fmtNum(avg)}</b> words/day · ${pacedReads.length} tracked read${pacedReads.length === 1 ? '' : 's'}</span>
+        <span class="stats-note" style="margin:0">${pacedReads.length} tracked read${pacedReads.length === 1 ? '' : 's'}</span>
       </div>
+      <div class="stats-insight"><span class="ins-emoji">⚡</span> You read <b>${fmtNum(avg)}</b> words/day on average${trendTxt}</div>
       <div class="stats-chart">${paceBars}</div>
       <div class="stats-chart-base"></div>
-      <p class="stats-note" style="margin-top:6px">Pace = word count ÷ days from start to finish. Reads are tracked by dragging fics through the <b>MySpace</b> board (TBR → Reading → Finished).</p>`;
+      ${fastest.pace !== slowest.pace ? `<p class="stats-note" style="margin-top:6px">⚡ Fastest: <b>${esc(fastest.title || '')}</b> at ${fmtNum(fastest.pace)} words/day &nbsp;·&nbsp; 🐢 Slowest: <b>${esc(slowest.title || '')}</b> at ${fmtNum(slowest.pace)} words/day</p>` : ''}
+      <p class="stats-note" style="margin-top:6px">Pace = word count ÷ days from start to finish. Reads are tracked by dragging books/fics through the <b>MySpace</b> board (TBR → Reading → Finished).</p>`;
   }
 
   // Reading calendar — one card per month of a chosen year, navigable year by year.
@@ -1046,7 +1119,10 @@ function mySpaceBooksHtml() {
        <div class="ms-shelf-plank"></div>`;
   return `<div class="ms-board ms-board-books">
     <div class="ms-col" data-ms-drop="TBR">
-      <div class="ms-col-hdr"><span>📚 To Be Read</span><span class="ms-count">${tbr.length}</span></div>
+      <div class="ms-col-hdr">
+        <span class="ms-col-hdr-title"><span>📚 To Be Read</span><span class="ms-count">${tbr.length}</span></span>
+        <button class="ms-mood-btn" id="btn-mood-picker" title="What should I read next?">🎲</button>
+      </div>
       <div class="ms-col-body">${tbrBody}</div>
     </div>
     <div class="ms-col-right">
@@ -1375,6 +1451,97 @@ function isPairingTag(rawLabel, navPath) {
   return rawLabel.includes('/') || display.includes('/') || display.includes(' & ');
 }
 
+// ── Auto tag cleanup ────────────────────────────────────────────────────────
+// Runs on every launch: any trope/AU tag that isn't already sorted into a group
+// folder gets checked against the existing groups (in the same fandom) for a
+// meaningful word-overlap match, and gets filed in automatically if it's similar
+// enough. Nothing is ever deleted or force-grouped — a tag with no good match
+// just stays as its own loose folder, same as before this existed.
+const TAG_CLEANUP_STOPWORDS = new Set([
+  'a','an','the','and','or','of','in','on','to','for','with','at','is','are','not','be','being',
+  'been','it','this','that','au','fic','&','harry potter',
+]);
+function decodeTagEntities(s) {
+  return (s || '')
+    .replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'")
+    .replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(n));
+}
+function tagCleanupWords(raw) {
+  return decodeTagEntities(raw)
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter(w => w.length >= 3 && !TAG_CLEANUP_STOPWORDS.has(w));
+}
+function tagCleanupJaccard(aWords, bWords) {
+  const a = new Set(aWords), b = new Set(bWords);
+  if (!a.size || !b.size) return 0;
+  let inter = 0;
+  a.forEach(w => { if (b.has(w)) inter++; });
+  return inter / (a.size + b.size - inter);
+}
+const TAG_CLEANUP_THRESHOLD = 0.2; // deliberately low/sensitive — a single solid shared word is enough
+
+function autoGroupSimilarTags() {
+  let changed = 0;
+  const byFandom = {};
+  state.items.forEach(x => {
+    if (x.type !== 'ff') return;
+    const f = x.fandom || '__none__';
+    (byFandom[f] = byFandom[f] || new Set());
+    (x.tags || []).forEach(t => byFandom[f].add(t));
+  });
+
+  Object.entries(byFandom).forEach(([fandom, tagSet]) => {
+    const prefix = `ff|${fandom}|`;
+    const groupKeys = Object.keys(state.folderConfig).filter(k => k.startsWith(prefix) && state.folderConfig[k].isGroup);
+    if (!groupKeys.length) return; // nothing to sort into yet for this fandom
+
+    // A word that shows up in most of this fandom's tags (usually the fandom's own name/characters)
+    // is noise for similarity purposes — drop it dynamically rather than hardcoding per fandom.
+    const wordDocCount = {};
+    tagSet.forEach(t => { new Set(tagCleanupWords(t)).forEach(w => { wordDocCount[w] = (wordDocCount[w] || 0) + 1; }); });
+    const fandomStop = new Set(Object.keys(wordDocCount).filter(w => wordDocCount[w] / tagSet.size > 0.3));
+    const words = raw => tagCleanupWords(raw).filter(w => !fandomStop.has(w));
+
+    const groupedTagSet = new Set(groupKeys.flatMap(k => state.folderConfig[k].groupTags || []));
+    const groupWordCache = groupKeys.map(k => {
+      const cfg = state.folderConfig[k];
+      const memberWords = (cfg.groupTags || []).map(words);
+      return { key: k, memberWords: [words(cfg.displayName || ''), ...memberWords] };
+    });
+
+    tagSet.forEach(tag => {
+      if (groupedTagSet.has(tag)) return;
+      const key = prefix + tag;
+      if (isPairingTag(tag, key.split('|'))) return; // ships aren't tropes — leave them alone
+      const tagW = words(tag);
+      if (!tagW.length) return;
+      let best = null, bestScore = 0;
+      groupWordCache.forEach(g => {
+        g.memberWords.forEach(mw => {
+          const score = tagCleanupJaccard(tagW, mw);
+          if (score > bestScore) { bestScore = score; best = g.key; }
+        });
+      });
+      if (best && bestScore >= TAG_CLEANUP_THRESHOLD) {
+        const cfg = state.folderConfig[best];
+        cfg.groupTags = [...(cfg.groupTags || []), tag];
+        cfg._modAt = new Date().toISOString();
+        groupedTagSet.add(tag);
+        changed++;
+      }
+    });
+  });
+
+  if (changed) {
+    saveFolderConfig();
+    showToast(`🧹 Auto-sorted ${changed} tag${changed === 1 ? '' : 's'} into existing categories`, 'info');
+  }
+  return changed;
+}
+
 // A manually-typed Pairing value like "Harry/Ginny" is a real ship name and should act as a
 // tag (so it gets its own folder). AO3-style relationship-category shorthand isn't a ship.
 const PAIRING_CATEGORY_WORDS = new Set(['gen','m/m','f/f','f/m','m/f','multi','other','various','none','poly']);
@@ -1637,6 +1804,83 @@ function calMoveModalHtml() {
       <div class="modal-footer">
         <button class="btn btn-secondary" id="cal-move-cancel">Cancel</button>
         <button class="btn btn-primary" id="cal-move-save">Save</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// "What should I read next?" — pick a mood, get a random matching TBR book.
+function moodPickerModalHtml() {
+  if (!state.moodPickerOpen) return '';
+
+  if (!state.moodPickerMood) {
+    return `<div class="folder-edit-backdrop" id="mood-picker-backdrop">
+      <div class="folder-edit-modal mood-modal">
+        <div class="fem-header">
+          <span class="fem-title">What are you in the mood for?</span>
+          <button class="fem-close" id="mood-close">×</button>
+        </div>
+        <div class="mood-grid">
+          ${MOODS.map(m => `<button class="mood-tile" data-mood="${m.key}">
+            <span class="mood-emoji">${m.emoji}</span>
+            <span class="mood-label">${esc(m.label)}</span>
+          </button>`).join('')}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  const mood = MOODS.find(m => m.key === state.moodPickerMood);
+  const book = state.items.find(x => x.id === state.moodPickerBookId);
+  if (!book) {
+    return `<div class="folder-edit-backdrop" id="mood-picker-backdrop">
+      <div class="folder-edit-modal mood-modal">
+        <div class="fem-header">
+          <span class="fem-title">${mood.emoji} ${esc(mood.label)}</span>
+          <button class="fem-close" id="mood-close">×</button>
+        </div>
+        <div class="mood-empty">
+          <p>Nothing on your TBR shelf right now — add some books first!</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="mood-back">← Different mood</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  const [c1, c2] = folderGradient(book.id);
+  const coverIsUrl = (book.coverIcon || '').startsWith('http');
+  const cover = coverIsUrl
+    ? `<img class="mood-cover-img" src="${esc(book.coverIcon)}" />`
+    : `<span class="mood-cover-emoji">${book.coverIcon || '📚'}</span>`;
+  const wasFallback = state.moodPickerFallback;
+
+  return `<div class="folder-edit-backdrop" id="mood-picker-backdrop">
+    <div class="folder-edit-modal mood-modal">
+      <div class="fem-header">
+        <span class="fem-title">${mood.emoji} ${esc(mood.label)}</span>
+        <button class="fem-close" id="mood-close">×</button>
+      </div>
+      ${wasFallback ? `<div class="mood-fallback-note">Nothing on your TBR quite matched this mood — here's a random pick instead.</div>` : ''}
+      <div class="mood-result">
+        <div class="mood-result-cover" style="--c1:${c1};--c2:${c2}">${cover}</div>
+        <div class="mood-result-title">${esc(book.title)}</div>
+        <div class="mood-result-author">by ${esc(book.author || '—')}${book.genre ? ' · ' + esc(book.genre) : ''}</div>
+        <div class="mood-result-desc">
+          ${state.moodPickerDesc === 'loading'
+            ? `<span class="mood-desc-loading">Fetching a synopsis…</span>`
+            : state.moodPickerDesc && state.moodPickerDesc !== 'none'
+              ? `<p>${esc(state.moodPickerDesc.text)}</p><span class="mood-desc-source">via ${esc(state.moodPickerDesc.source)}</span>`
+              : state.moodPickerDesc === 'none'
+                ? `<span class="mood-desc-loading">No synopsis found for this one.</span>`
+                : ''}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="mood-back">← Different mood</button>
+        <button class="btn btn-secondary" id="mood-reroll"${state.moodPickerDesc === 'loading' ? ' disabled' : ''}>🎲 Pick another</button>
+        <button class="btn btn-primary" id="mood-start-reading">📖 Start reading</button>
       </div>
     </div>
   </div>`;
@@ -2055,7 +2299,7 @@ function render() {
         </div>
         ${msTab==='books' ? mySpaceBooksHtml() : mySpaceHtml()}
       </div>` +
-      (state.modalOpen ? modalHtml() : '') + itemIconModalHtml() + settingsModalHtml();
+      (state.modalOpen ? modalHtml() : '') + itemIconModalHtml() + settingsModalHtml() + moodPickerModalHtml();
     bindEvents();
     return;
   }
@@ -2064,6 +2308,7 @@ function render() {
     ${state.modalOpen ? modalHtml() : ''}
     ${itemIconModalHtml()}
     ${settingsModalHtml()}
+    ${moodPickerModalHtml()}
   `;
 
   const newListEl = document.getElementById('list');
@@ -2604,6 +2849,52 @@ function bindEvents() {
     render();
   });
 
+  // Mood picker ("What should I read next?")
+  const moodClose = () => { state.moodPickerOpen = false; state.moodPickerMood = null; state.moodPickerBookId = null; render(); };
+  document.getElementById('btn-mood-picker')?.addEventListener('click', () => {
+    state.moodPickerOpen = true; state.moodPickerMood = null; state.moodPickerBookId = null; render();
+  });
+  document.getElementById('mood-close')?.addEventListener('click', moodClose);
+  document.getElementById('mood-picker-backdrop')?.addEventListener('click', e => {
+    if (e.target.id === 'mood-picker-backdrop') moodClose();
+  });
+  document.getElementById('mood-back')?.addEventListener('click', () => {
+    state.moodPickerMood = null; state.moodPickerBookId = null; render();
+  });
+  const revealMoodBook = (moodKey) => {
+    const { book, fallback } = pickMoodBook(moodKey);
+    state.moodPickerMood = moodKey;
+    state.moodPickerBookId = book?.id || null;
+    state.moodPickerFallback = fallback;
+    state.moodPickerDesc = book ? 'loading' : null;
+    render();
+    if (book) {
+      const requestedId = book.id;
+      window.api.getBookDescription(book.title, book.author).then(res => {
+        // The user may have rerolled or closed the picker while this was in flight —
+        // only apply the result if it's still showing the same book.
+        if (state.moodPickerBookId !== requestedId) return;
+        state.moodPickerDesc = res?.description ? { text: res.description, source: res.source } : 'none';
+        render();
+      }).catch(() => {
+        if (state.moodPickerBookId === requestedId) { state.moodPickerDesc = 'none'; render(); }
+      });
+    }
+  };
+  document.querySelectorAll('[data-mood]').forEach(btn => {
+    btn.addEventListener('click', () => revealMoodBook(btn.dataset.mood));
+  });
+  document.getElementById('mood-reroll')?.addEventListener('click', () => revealMoodBook(state.moodPickerMood));
+  document.getElementById('mood-start-reading')?.addEventListener('click', () => {
+    const item = state.items.find(x => x.id === state.moodPickerBookId);
+    if (item) {
+      item.status = 'Reading';
+      item._modAt = new Date().toISOString();
+      saveData();
+    }
+    moodClose();
+  });
+
   // Add button
   const addBtn = document.getElementById('btn-add');
   if (addBtn) addBtn.addEventListener('click', () => { state.editItem = null; state.modalOpen = true; render(); });
@@ -3034,6 +3325,27 @@ function bindEvents() {
         // through to the save (via the ...editItem spread) and show up once the card renders.
         if (data.cover) { state.editItem = { ...(state.editItem || {}), coverIcon: data.cover }; }
         if (msgEl) { msgEl.textContent = `✓ Details filled in from ${data.source || 'the catalog'}${data.cover ? ' (cover included)' : ''} — check and adjust!`; msgEl.className = 'fetch-msg ok'; }
+
+        // Synopsis lookup (OpenLibrary → Goodreads → Google Books) can take up to ~20s on a slow
+        // connection, so it runs after the fields are already filled in rather than blocking the
+        // rest of the form — the message line just updates in place once it lands.
+        const fetchedTitle = data.title || query;
+        const fetchedAuthor = data.author || document.getElementById('m-author')?.value?.trim();
+        if (fetchedTitle) {
+          if (msgEl) msgEl.textContent += ' Fetching synopsis…';
+          window.api.getBookDescription(fetchedTitle, fetchedAuthor).then(res => {
+            if (res?.description) {
+              state.editItem = { ...(state.editItem || {}), description: res.description };
+              const descEl = document.getElementById('m-description');
+              if (descEl) descEl.value = res.description;
+              if (msgEl && document.body.contains(msgEl)) {
+                msgEl.textContent = `✓ Details filled in from ${data.source || 'the catalog'}${data.cover ? ' (cover included)' : ''}, synopsis added — check and adjust!`;
+              }
+            } else if (msgEl && document.body.contains(msgEl)) {
+              msgEl.textContent = `✓ Details filled in from ${data.source || 'the catalog'}${data.cover ? ' (cover included)' : ''} — no synopsis found anywhere, add one manually if you'd like.`;
+            }
+          }).catch(() => {});
+        }
       } catch(e) {
         if (msgEl) { msgEl.textContent = 'Not found — fill in manually.'; msgEl.className = 'fetch-msg err'; }
       }
@@ -3095,11 +3407,12 @@ function bindEvents() {
           rating: data.rating || state.editItem?.rating || '',
           pairing: data.pairing || state.editItem?.pairing || '',
           tags: data.tags?.length ? data.tags : (state.editItem?.tags || []),
+          description: data.description || state.editItem?.description || '',
           url,
         };
         render();
         const newMsgEl = document.getElementById('fetch-msg');
-        if (newMsgEl) { newMsgEl.textContent = '✓ Details fetched!'; newMsgEl.className = 'fetch-msg ok'; }
+        if (newMsgEl) { newMsgEl.textContent = `✓ Details fetched!${data.description ? ' Summary included.' : ''}`; newMsgEl.className = 'fetch-msg ok'; }
       } catch(e) {
         if (msgEl) { msgEl.textContent = 'Could not fetch — fill in manually.'; msgEl.className='fetch-msg err'; }
         fetchBtn.disabled = false; fetchBtn.textContent = 'Auto-fill ✦';
@@ -3190,6 +3503,7 @@ function bindEvents() {
       pages: pages ? parseInt(pages) : null,
       userRating: modalRating,
       notes: document.getElementById('m-notes')?.value?.trim() || '',
+      description: document.getElementById('m-description')?.value?.trim() || '',
       tags,
       url: document.getElementById('m-url')?.value?.trim() || state.editItem?.url || '',
       oneshot: isFf ? (state.editItem?.oneshot || false) : undefined,
@@ -3428,4 +3742,5 @@ window.addEventListener('wheel', e => {
   render();
   // Pull any changes made on the phone (or elsewhere) and merge them in, then re-render.
   if (await syncFromCloud()) render();
+  if (autoGroupSimilarTags()) render();
 })();

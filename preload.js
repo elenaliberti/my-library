@@ -15,4 +15,5 @@ contextBridge.exposeInMainWorld('api', {
   fetchBook:      (q)     => ipcRenderer.invoke('books:fetch', q),
   openLocalFile:  (path)  => ipcRenderer.invoke('files:open-local', path),
   pickLocalFile:  ()      => ipcRenderer.invoke('files:pick-local'),
+  getBookDescription: (title, author) => ipcRenderer.invoke('books:description', { title, author }),
 })

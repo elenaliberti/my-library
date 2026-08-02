@@ -183,7 +183,15 @@ ipcMain.handle('ao3:fetch', async (_, url) => {
     const pairing = firstTag(getSection('relationship'))
     const tags = allTags(getSection('freeform')).slice(0, 6)
 
-    return { title, author, fandom: fandoms[0] || null, words, hearts: kudos, rating, pairing, tags }
+    // The author's own "Summary:" blurb — front matter they wrote specifically to preview the
+    // fic, same idea as a book's back-cover synopsis. Paragraphs are <p> tags inside the
+    // blockquote; keep the breaks between them instead of squashing everything onto one line.
+    const summaryBlock = html.match(/<div class="summary module">[\s\S]*?<blockquote class="userstuff">([\s\S]*?)<\/blockquote>/i)
+    const description = summaryBlock
+      ? decodeHtmlEntities(summaryBlock[1].replace(/<\/p>\s*<p[^>]*>/gi, '\n\n').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '')).trim()
+      : null
+
+    return { title, author, fandom: fandoms[0] || null, words, hearts: kudos, rating, pairing, tags, description }
   } catch(e) { return { error: e.message } }
 })
 
@@ -289,6 +297,15 @@ function decodeHtmlEntities(s) {
     .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(n))
 }
 
+function normalizeAuthorName(s) {
+  return (s || '').toLowerCase().replace(/[^a-z\s]/g, ' ').split(/\s+/).filter(w => w.length > 2)
+}
+function authorsLikelyMatch(a, b) {
+  const wa = normalizeAuthorName(a), wb = normalizeAuthorName(b)
+  if (!wa.length || !wb.length) return false
+  return wa.some(w => wb.includes(w))
+}
+
 // Title/author/ISBN search is inherently fuzzy — the same query can match the wrong edition,
 // an omnibus, a translation, etc. A Goodreads book URL names one exact edition, so when the
 // "search" field is actually a Goodreads link, scrape that page directly instead of searching.
@@ -383,6 +400,148 @@ async function fetchFromAmazon(url) {
     return { title, author, pages, genre, cover, source: 'Amazon' }
   } catch (e) { return { error: e.message } }
 }
+
+function stripHtml(s) {
+  return (s || '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()
+}
+
+// Short publisher-provided synopsis for the mood picker's "why this book" card — Google Books'
+// `description` field is the jacket-copy blurb, not the book's actual text, same as what any
+// bookstore or library catalog shows. Falls back to OpenLibrary's work description when Google
+// has nothing for that edition.
+// Study-guide/commentary publishers that keep outranking the real novel in Goodreads search —
+// same list used by the cover-backfill batch job earlier, moved here so the live app shares it.
+const KNOWN_STUDY_GUIDE_PUBLISHERS = /supersummary|bookrags|hephaestus books|gloria cooke|larissa duval|ren[ée] henri|litcharts|cliffsnotes|sparknotes/i
+
+// Checks several Goodreads search results (not just the first) and only trusts the description
+// off a page once its own JSON-LD author actually matches — otherwise a study-guide edition
+// silently wins, exactly like it did for cover art before that got the same fix.
+// Kept alive across calls — spinning up a fresh hidden BrowserWindow per lookup was adding
+// several hundred ms of pure window-creation overhead on top of an already-slow page-load chain.
+let _descWin = null
+function getDescWin() {
+  if (!_descWin || _descWin.isDestroyed()) {
+    // backgroundThrottling:false matters here — macOS App Nap silently stalls a hidden window's
+    // JS/timers once it's been in the background a while, which reads exactly like "hangs
+    // forever" from the renderer's side even though nothing actually errored.
+    _descWin = new BrowserWindow({ show: false, webPreferences: { contextIsolation: true, backgroundThrottling: false } })
+  }
+  return _descWin
+}
+
+function withTimeout(promise, ms, label) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => setTimeout(() => reject(new Error(`timeout after ${ms}ms (${label})`)), ms)),
+  ])
+}
+
+async function fetchGoodreadsDescription(title, author) {
+  const win = getDescWin()
+  await win.loadURL(`https://www.goodreads.com/search?q=${encodeURIComponent(`${title} ${author || ''}`)}`)
+  await new Promise(r => setTimeout(r, 1800))
+  const searchHtml = await win.webContents.executeJavaScript('document.documentElement.outerHTML')
+  const linkMatches = [...searchHtml.matchAll(/href="(\/book\/show\/[0-9]+[^"]*)"/g)]
+  // Capped at 3 (was 5) — this runs live while someone's waiting on a UI, not in a background
+  // batch job, so worst-case latency matters more than exhausting every possible candidate.
+  const candidateUrls = [...new Set(linkMatches.map(m => `https://www.goodreads.com${m[1].replace(/&amp;/g, '&')}`))].slice(0, 3)
+
+  for (const bookUrl of candidateUrls) {
+    await win.loadURL(bookUrl)
+    await new Promise(r => setTimeout(r, 1000))
+    const bookHtml = await win.webContents.executeJavaScript('document.documentElement.outerHTML')
+    let ld = null
+    for (const m of bookHtml.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+      try { const parsed = JSON.parse(m[1]); if (parsed['@type'] === 'Book') { ld = parsed; break } } catch {}
+    }
+    if (!ld) continue
+    const ldAuthorNames = (Array.isArray(ld.author) ? ld.author : (ld.author ? [ld.author] : [])).map(a => a?.name).filter(Boolean).join(', ')
+    if (KNOWN_STUDY_GUIDE_PUBLISHERS.test(ldAuthorNames)) continue
+    if (author && !authorsLikelyMatch(author, ldAuthorNames)) continue
+
+    // og:description is only ever Goodreads' own truncated ~150-character SEO snippet (note the
+    // trailing "…" even mid-sentence) — the full blurb lives in the page's own description
+    // block instead, under data-testid="description". Falls back to the truncated og tag only
+    // if that block isn't there for some reason.
+    let desc = null
+    const fullDescMatch = bookHtml.match(/data-testid="description"[\s\S]*?data-testid="contentContainer">([\s\S]*?)<\/div><div class="">/)
+    if (fullDescMatch) {
+      desc = decodeHtmlEntities(fullDescMatch[1].replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '')).trim()
+    }
+    if (!desc) {
+      const ogDesc = bookHtml.match(/<meta property="og:description" content="([^"]*)"/)
+      desc = ogDesc ? decodeHtmlEntities(ogDesc[1]) : null
+    }
+    if (desc && !KNOWN_STUDY_GUIDE_PUBLISHERS.test(desc)) return desc
+  }
+  return null
+}
+
+// Retries a fetch+parse a couple of times on a 429 before giving up — OpenLibrary throttles
+// bursts (e.g. clicking "pick another" a few times fast) rather than blocking outright.
+async function fetchJsonWithRetry(url, attempts = 3) {
+  for (let i = 0; i < attempts; i++) {
+    try {
+      const raw = await electronFetch(url)
+      return JSON.parse(raw)
+    } catch (e) {
+      if (/HTTP 429/.test(e.message) && i < attempts - 1) {
+        await new Promise(r => setTimeout(r, 1500 * (i + 1)))
+        continue
+      }
+      throw e
+    }
+  }
+}
+
+const DESC_LOG_PATH = path.join(app.getPath('userData'), 'description-debug.log')
+function descLog(msg) {
+  try { fs.appendFileSync(DESC_LOG_PATH, `[${new Date().toISOString()}] ${msg}\n`) } catch {}
+}
+
+ipcMain.handle('books:description', async (_, { title, author }) => {
+  descLog(`--- request: "${title}" by "${author}" ---`)
+  // Google Books' anonymous quota has been fully exhausted for a while now (every call 429s),
+  // so it's skipped entirely here rather than burning a guaranteed-failing round trip on every
+  // single request — that was roughly doubling latency and, worse, eating into the retry budget
+  // that OpenLibrary actually needs when a few "pick another" clicks land close together.
+  try {
+    const sData = await withTimeout(fetchJsonWithRetry(`https://openlibrary.org/search.json?q=${encodeURIComponent(`${title} ${author || ''}`)}&fields=key&limit=1`), 15000, 'OL search')
+    const workKey = sData.docs?.[0]?.key
+    descLog(`OpenLibrary workKey: ${workKey || 'none'}`)
+    if (workKey) {
+      const wData = await withTimeout(fetchJsonWithRetry(`https://openlibrary.org${workKey}.json`), 15000, 'OL work')
+      const desc = typeof wData.description === 'string' ? wData.description : wData.description?.value
+      if (desc) { descLog('OpenLibrary: found description'); return { description: stripHtml(desc), source: 'OpenLibrary' } }
+      descLog('OpenLibrary: work has no description field')
+    }
+  } catch (e) { descLog(`OpenLibrary ERROR: ${e.message}`) }
+
+  // Goodreads has far better coverage of self-pub/indie titles than OpenLibrary or Google
+  // Books — worth the extra few seconds of real-browser search since those are exactly the
+  // books most likely to come up empty otherwise. Hard-capped at 10s total so a stalled hidden
+  // window (or a slow Goodreads response) can't hang the whole request indefinitely.
+  try {
+    const desc = await withTimeout(fetchGoodreadsDescription(title, author), 25000, 'Goodreads')
+    if (desc) { descLog('Goodreads: found description'); return { description: desc, source: 'Goodreads' } }
+    descLog('Goodreads: no matching candidate had a usable description')
+  } catch (e) {
+    descLog(`Goodreads ERROR: ${e.message}`)
+    // A timed-out or crashed lookup can leave the shared window in a bad state — drop it so
+    // the next request starts clean instead of inheriting whatever it was stuck doing.
+    if (_descWin && !_descWin.isDestroyed()) { _descWin.destroy(); _descWin = null }
+  }
+
+  try {
+    const gUrl = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(`intitle:${title}${author ? ' inauthor:' + author : ''}`)}&maxResults=1`
+    const gData = await withTimeout(fetchJsonWithRetry(gUrl, 1), 10000, 'Google Books')
+    const desc = gData.items?.[0]?.volumeInfo?.description
+    if (desc) { descLog('Google Books: found description'); return { description: stripHtml(desc), source: 'Google Books' } }
+  } catch (e) { descLog(`Google Books ERROR: ${e.message}`) }
+
+  descLog('No description found from any source.')
+  return { description: null }
+})
 
 // Google Books first (cleaner categories, real cover art, usually better match quality),
 // falling back to OpenLibrary (broader catalog, especially for older/foreign editions) if
