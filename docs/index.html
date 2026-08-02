@@ -341,6 +341,42 @@ html{background:#fff}
 #toast-wrap{position:fixed;top:calc(var(--safe-top) + 68px);left:50%;transform:translateX(-50%);z-index:700;pointer-events:none}
 .toast-el{padding:11px 22px;border-radius:16px;font-size:13px;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,.18);white-space:nowrap;display:flex;align-items:center;gap:8px;animation:tin .2s ease}
 @keyframes tin{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Synopsis (item detail + edit form) ── */
+.sh-synopsis{font-size:13px;color:var(--text2);line-height:1.7;white-space:pre-line}
+
+/* ── Book series shelf (pinned, horizontally scrollable, sits above the plain item list) ── */
+.series-shelf-wrap{padding:10px 0 4px;position:sticky;top:0;z-index:1;background:var(--bg)}
+.series-shelf-lbl{padding:0 16px 8px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.series-shelf{display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;padding:0 16px 10px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.series-shelf::-webkit-scrollbar{display:none}
+.series-card{flex:0 0 auto;width:104px;cursor:pointer}
+.series-card .fc-thumb{width:104px;height:78px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:var(--shadow)}
+.series-card .fc-name{font-size:12px;font-weight:800;margin-top:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)}
+.series-card .fc-count{font-size:10px;color:var(--muted)}
+
+/* ── Mood picker sheet ── */
+#mood-shade{position:fixed;inset:0;background:rgba(47,58,38,.45);z-index:300;opacity:0;pointer-events:none;transition:opacity .25s}
+#mood-shade.on{opacity:1;pointer-events:all}
+#mood-sheet{position:fixed;left:0;right:0;bottom:0;background:#fff;border-radius:14px 14px 0 0;z-index:301;max-height:88vh;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1);padding:16px 20px calc(var(--safe-bottom) + 20px)}
+#mood-sheet.on{transform:translateY(0)}
+.mood-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.mood-title{font-size:16px;font-weight:800;color:var(--text)}
+.mood-close{width:30px;height:30px;background:var(--surface);border:none;border-radius:50%;font-size:16px;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center}
+.mood-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mood-tile{padding:16px 10px;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer}
+.mood-tile:active{opacity:.7}
+.mood-emoji{font-size:26px}
+.mood-label{font-size:12px;font-weight:700;color:var(--text2);text-align:center}
+.mood-empty{padding:24px 0;text-align:center;color:var(--muted);font-size:14px}
+.mood-fallback-note{font-size:12px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:8px 12px;margin-bottom:12px}
+.mood-result{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
+.mood-result-cover{width:96px;height:136px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:40px;overflow:hidden;box-shadow:var(--shadow)}
+.mood-result-cover img{width:100%;height:100%;object-fit:cover}
+.mood-result-title{font-size:16px;font-weight:800;color:var(--text);margin-top:6px}
+.mood-result-author{font-size:12px;color:var(--muted)}
+.mood-result-desc{font-size:12.5px;color:var(--text2);line-height:1.6;text-align:left;background:var(--surface);border-radius:8px;padding:10px 12px;margin-top:6px;white-space:pre-line}
+.mood-actions{display:flex;gap:8px;margin-top:16px}
 </style>
 </head>
 <body>
@@ -361,6 +397,7 @@ html{background:#fff}
 <div id="app" class="hidden">
   <div id="hdr">
     <span class="hdr-title">My <em>Library</em></span>
+    <div class="ico-btn" id="btn-mood" title="Pick what to read">🎲</div>
     <div class="ico-btn" id="btn-sync" title="Sync — get the latest from GitHub">↻</div>
     <div class="ico-btn" id="btn-backup" title="Back up — save all changes to GitHub">☁️</div>
     <div class="ico-btn" id="btn-settings">⚙️</div>
@@ -457,6 +494,10 @@ html{background:#fff}
   </div>
 </div>
 
+<!-- Mood picker sheet -->
+<div id="mood-shade"></div>
+<div id="mood-sheet"><div id="mood-body"></div></div>
+
 <div id="toast-wrap"></div>
 
 <script>
@@ -491,6 +532,28 @@ const FOLDER_DEFAULTS={
   'ff|Harry Potter - J. K. Rowling|Creature Harry':{displayName:'Creature Harry',icon:'🐺'},
 };
 
+// ── Mood picker (matches desktop) ─────────────────────────────────────────────
+const topGenre=b=>(b.genre||'').split(' / ')[0].trim();
+const MOODS=[
+  {key:'cozy',emoji:'😌',label:'Cozy & comforting',match:b=>topGenre(b)==='Romance'&&!['Mafia Romance','Dark Academy / Bully Romance'].includes(b.series)},
+  {key:'fun',emoji:'😂',label:'Fun & light-hearted',match:b=>['Fake Dating','Bad Boy Romance','Enemies to Lovers','Grumpy x Sunshine'].includes(b.series)||topGenre(b)==='Wattpad'},
+  {key:'cry',emoji:'😭',label:'I want to cry',match:b=>b.series==='Second Chance / Angst'},
+  {key:'steamy',emoji:'🔥',label:'Steamy & intense',match:b=>topGenre(b)==='Erotico'||['Mafia Romance','Dark Academy / Bully Romance'].includes(b.series)},
+  {key:'escape',emoji:'🐉',label:'Escape to another world',match:b=>['Fantasy','Romantasy','Trash Fantasy'].includes(topGenre(b))},
+  {key:'sports',emoji:'🏆',label:'Sports & competition',match:b=>b.series==='Sports Romance'||b.series==='Hockey'},
+  {key:'royal',emoji:'👑',label:'Billionaires & royals',match:b=>b.series==='Billionaire Romance'||b.series==='Royal Romance'},
+  {key:'paranormal',emoji:'👻',label:'Paranormal & supernatural',match:b=>b.series==='Omegaverse'||(b.series||'').includes('Paranormal')||(b.series||'').includes('Shifter')},
+  {key:'smart',emoji:'🧠',label:'Thought-provoking',match:b=>['Saggistica','Romanzo Storico'].includes(topGenre(b))},
+  {key:'surprise',emoji:'🎲',label:'Surprise me completely',match:()=>true},
+];
+function moodPool(key){const m=MOODS.find(m=>m.key===key);if(!m)return[];return S.items.filter(x=>x.type==='book'&&x.status==='TBR'&&m.match(x))}
+function pickMoodBook(key){
+  let pool=moodPool(key),fallback=false;
+  if(!pool.length){pool=S.items.filter(x=>x.type==='book'&&x.status==='TBR');fallback=true}
+  if(!pool.length)return{book:null,fallback:false};
+  return{book:pool[Math.floor(Math.random()*pool.length)],fallback};
+}
+
 // ── State ─────────────────────────────────────────────────────────────────────
 const S={
   items:[],sha:null,loading:false,
@@ -500,6 +563,7 @@ const S={
   folderPath:[],gridFilter:null,
   statsPeriod:'year',statsMetric:'words',statsCat:'all',
   selId:null,editing:null,mRating:0,mTags:[],
+  moodOpen:false,moodKey:null,moodBookId:null,moodFallback:false,
 };
 
 // ── Utils ─────────────────────────────────────────────────────────────────────
@@ -633,7 +697,9 @@ async function fetchFic(url){
     const rating=firstTag(getSec('rating'));
     const pairing=firstTag(getSec('relationship'));
     const tags=allTags(getSec('freeform')).slice(0,6);
-    return{title,author,fandom:fandoms[0]||null,words,hearts:kudos,rating,pairing,tags};
+    const summaryBlock=html.match(/<div class="summary module">[\s\S]*?<blockquote class="userstuff">([\s\S]*?)<\/blockquote>/i);
+    const description=summaryBlock?summaryBlock[1].replace(/<\/p>\s*<p[^>]*>/gi,'\n\n').replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]+>/g,'').trim():null;
+    return{title,author,fandom:fandoms[0]||null,words,hearts:kudos,rating,pairing,tags,description};
   } else {
     const pageTitleRaw=html.match(/<title>([^<]+)<\/title>/i)?.[1]||'';
     const pt=pageTitleRaw.replace(/\s*\|\s*FanFiction\s*$/i,'').trim();
@@ -767,6 +833,16 @@ function renderGrid(){
       <div class="fc-body"><div class="fc-name">${esc(displayLabel)}</div><div class="fc-count">${count} item${count!==1?'s':''}</div></div>
     </div>`;
   }
+  // Generic tag/group folder card (used for fandom tag list + group child-tag drill-down)
+  function cell(nav,fallbackLabel,fallbackIcon,count,key){
+    const cfg=key?getCfg(key):{};
+    const label=cfg.displayName||fallbackLabel;
+    const icon=cfg.icon||fallbackIcon;
+    const[c1,c2]=grad(key||nav);
+    const iconHtml=String(icon).startsWith('http')?`<img src="${esc(icon)}" style="width:100%;height:100%;object-fit:cover">`:`<span>${icon}</span>`;
+    const editBtn=key?`<button class="fc-edit-btn" data-edit-key="${esc(key)}">✏️</button>`:'';
+    return `<div class="fc" data-fc-label="${esc(nav)}"><div class="fc-thumb" style="background:linear-gradient(135deg,${c1},${c2})">${iconHtml}${editBtn}</div><div class="fc-body"><div class="fc-name">${esc(label)}</div><div class="fc-count">${count} item${count!==1?'s':''}</div></div></div>`;
+  }
 
   function crumbBar(crumbs){
     let html=`<div class="grid-crumb"><span class="crumb" data-go="[]">Home</span>`;
@@ -854,22 +930,22 @@ function renderGrid(){
 
     // One folder per TAG, split into Pairings / Tropes (matches the computer version)
     const subKey=fandom==='Other'?'__none__':fandom;
-    const tagSet=[...new Set(ficItems.flatMap(x=>x.tags||[]))].sort();
+    // Group folders (isGroup) roll up several tags under one umbrella — their member tags
+    // don't get their own top-level entry, they show up one level deeper instead.
+    const groupKeys=Object.keys(S.folderConfig).filter(k=>{const p=k.split('|');return S.folderConfig[k].isGroup&&p.length===3&&p[0]==='ff'&&p[1]===subKey;});
+    const groupedTagSet=new Set(groupKeys.flatMap(k=>S.folderConfig[k].groupTags||[]));
+    const tagSet=[...new Set(ficItems.flatMap(x=>x.tags||[]))].filter(t=>!groupedTagSet.has(t)).sort();
     let entries=tagSet.map(t=>({nav:t,label:t,key:`ff|${subKey}|${t}`,count:ficItems.filter(x=>(x.tags||[]).includes(t)).length}));
     // user-created custom folders (folderConfig isCustom + filterTag)
-    Object.keys(S.folderConfig).filter(k=>{const p=k.split('|');return S.folderConfig[k].isCustom&&p.length===3&&p[0]==='ff'&&p[1]===subKey;}).forEach(k=>{
+    Object.keys(S.folderConfig).filter(k=>{const p=k.split('|');return S.folderConfig[k].isCustom&&!S.folderConfig[k].isGroup&&p.length===3&&p[0]==='ff'&&p[1]===subKey;}).forEach(k=>{
       const cfg=S.folderConfig[k],tail=k.split('|')[2];
       entries.push({nav:tail,label:cfg.displayName||'Custom',key:k,count:cfg.filterTag?ficItems.filter(x=>(x.tags||[]).includes(cfg.filterTag)).length:0});
     });
-    const cell=(nav,fallbackLabel,fallbackIcon,count,key)=>{
-      const cfg=key?getCfg(key):{};
-      const label=cfg.displayName||fallbackLabel;
-      const icon=cfg.icon||fallbackIcon;
-      const[c1,c2]=grad(key||nav);
-      const iconHtml=String(icon).startsWith('http')?`<img src="${esc(icon)}" style="width:100%;height:100%;object-fit:cover">`:`<span>${icon}</span>`;
-      const editBtn=key?`<button class="fc-edit-btn" data-edit-key="${esc(key)}">✏️</button>`:'';
-      return `<div class="fc" data-fc-label="${esc(nav)}"><div class="fc-thumb" style="background:linear-gradient(135deg,${c1},${c2})">${iconHtml}${editBtn}</div><div class="fc-body"><div class="fc-name">${esc(label)}</div><div class="fc-count">${count} item${count!==1?'s':''}</div></div></div>`;
-    };
+    groupKeys.forEach(k=>{
+      const cfg=S.folderConfig[k],tail=k.split('|')[2];
+      const n=ficItems.filter(x=>(x.tags||[]).some(t=>(cfg.groupTags||[]).includes(t))).length;
+      entries.push({nav:tail,label:cfg.displayName||'Group',key:k,count:n});
+    });
     const byCount=(a,b)=>(b.count-a.count)||(getCfg(a.key).displayName||a.label).localeCompare(getCfg(b.key).displayName||b.label);
     const pairings=entries.filter(e=>isPairingTag(e.label,e.key)).sort(byCount);
     const tropes=entries.filter(e=>!isPairingTag(e.label,e.key)).sort(byCount);
@@ -880,20 +956,44 @@ function renderGrid(){
     html=crumbBar([{label:'Fanfiction',path:['Fanfiction']},{label:fandomLabel,path:['Fanfiction',fandom]}])
       +`<div class="grid-search-row"><input class="grid-search-in" id="grid-search" placeholder="🔍 Search folders…" autocomplete="off"></div>`+body;
 
-  // ── Level 3: fandom → tag → items ──
+  // ── Level 3: fandom → tag → items (or, for a group folder, its member tags) ──
   }else if(path[0]==='Fanfiction'&&path.length===3){
     const fandom=path[1];const tagFilter=path[2];
     const subKey=fandom==='Other'?'__none__':fandom;
     const ficItems=fandom==='Other'?S.items.filter(x=>x.type==='ff'&&!x.fandom):S.items.filter(x=>x.type==='ff'&&x.fandom===fandom);
     const customCfg=S.folderConfig[`ff|${subKey}|${tagFilter}`];
-    let items;
-    if(tagFilter==='__all__')items=ficItems;
-    else if(tagFilter==='__untagged__')items=ficItems.filter(x=>!(x.tags||[]).length);
-    else if(customCfg&&customCfg.isCustom&&customCfg.filterTag)items=ficItems.filter(x=>(x.tags||[]).includes(customCfg.filterTag));
-    else items=ficItems.filter(x=>(x.tags||[]).includes(tagFilter));
     const fandomLabel=getCfg(`ff|${subKey}`).displayName||fandom;
-    const tagLabel=getCfg(`ff|${subKey}|${tagFilter}`).displayName||(tagFilter==='__all__'?'All':tagFilter==='__untagged__'?'Untagged':tagFilter);
-    html=crumbBar([{label:'Fanfiction',path:['Fanfiction']},{label:fandomLabel,path:['Fanfiction',fandom]},{label:tagLabel,path:['Fanfiction',fandom,tagFilter]}])+
+
+    if(customCfg&&customCfg.isGroup){
+      const groupLabel=customCfg.displayName||tagFilter;
+      const childCards=(customCfg.groupTags||[]).map(t=>{
+        const n=ficItems.filter(x=>(x.tags||[]).includes(t)).length;
+        return cell(t,t,'🏷️',n,`ff|${subKey}|${t}`);
+      }).join('');
+      html=crumbBar([{label:'Fanfiction',path:['Fanfiction']},{label:fandomLabel,path:['Fanfiction',fandom]},{label:groupLabel,path:['Fanfiction',fandom,tagFilter]}])
+        +`<div class="folder-grid">${childCards}</div>`;
+    }else{
+      let items;
+      if(tagFilter==='__all__')items=ficItems;
+      else if(tagFilter==='__untagged__')items=ficItems.filter(x=>!(x.tags||[]).length);
+      else if(customCfg&&customCfg.isCustom&&customCfg.filterTag)items=ficItems.filter(x=>(x.tags||[]).includes(customCfg.filterTag));
+      else items=ficItems.filter(x=>(x.tags||[]).includes(tagFilter));
+      const tagLabel=getCfg(`ff|${subKey}|${tagFilter}`).displayName||(tagFilter==='__all__'?'All':tagFilter==='__untagged__'?'Untagged':tagFilter);
+      html=crumbBar([{label:'Fanfiction',path:['Fanfiction']},{label:fandomLabel,path:['Fanfiction',fandom]},{label:tagLabel,path:['Fanfiction',fandom,tagFilter]}])+
+        itemListHtml(items);
+    }
+
+  // ── Level 4: fandom → group → child tag → items ──
+  }else if(path[0]==='Fanfiction'&&path.length===4){
+    const fandom=path[1];const groupKey=path[2];const childTag=path[3];
+    const subKey=fandom==='Other'?'__none__':fandom;
+    const ficItems=fandom==='Other'?S.items.filter(x=>x.type==='ff'&&!x.fandom):S.items.filter(x=>x.type==='ff'&&x.fandom===fandom);
+    const items=ficItems.filter(x=>(x.tags||[]).includes(childTag));
+    const fandomLabel=getCfg(`ff|${subKey}`).displayName||fandom;
+    const groupCfg=S.folderConfig[`ff|${subKey}|${groupKey}`]||{};
+    const groupLabel=groupCfg.displayName||groupKey;
+    const childLabel=getCfg(`ff|${subKey}|${childTag}`).displayName||childTag;
+    html=crumbBar([{label:'Fanfiction',path:['Fanfiction']},{label:fandomLabel,path:['Fanfiction',fandom]},{label:groupLabel,path:['Fanfiction',fandom,groupKey]},{label:childLabel,path:['Fanfiction',fandom,groupKey,childTag]}])+
       itemListHtml(items);
 
   // ── Books → genres ──
@@ -907,12 +1007,35 @@ function renderGrid(){
     if(none)cards.push(folderCard('Other','📖',none,'book|__none__'));
     html=crumbBar([{label:'Books',path:['Books']}])+`<div class="folder-grid">${cards.join('')}</div>`;
 
-  // ── Books → genre → items ──
+  // ── Books → genre → items (with a pinned, horizontally-scrollable series shelf on top) ──
   }else if(path[0]==='Books'&&path.length===2){
     const genre=path[1];
     const items=genre==='Other'?S.items.filter(x=>x.type==='book'&&!x.genre):S.items.filter(x=>x.type==='book'&&(x.genre||'').split(' / ')[0].trim()===genre);
     const genreLabel=getCfg(`book|${genre}`).displayName||genre;
-    html=crumbBar([{label:'Books',path:['Books']},{label:genreLabel,path:['Books',genre]}])+itemListHtml(items);
+    const seriesNames=[...new Set(items.filter(x=>x.series).map(x=>x.series))].sort((a,b)=>
+      items.filter(x=>x.series===b).length-items.filter(x=>x.series===a).length);
+    let seriesHtml='';
+    if(seriesNames.length){
+      const cards=seriesNames.map(s=>{
+        const n=items.filter(x=>x.series===s).length;
+        const cfg=getCfg(`book|${genre}|${s}`);
+        const icon=cfg.icon||'📚';
+        const[c1,c2]=grad(`book|${genre}|${s}`);
+        const iconHtml=String(icon).startsWith('http')?`<img src="${esc(icon)}" style="width:100%;height:100%;object-fit:cover">`:`<span>${icon}</span>`;
+        return `<div class="series-card" data-series-nav="${esc(s)}"><div class="fc-thumb" style="background:linear-gradient(135deg,${c1},${c2})">${iconHtml}</div><div class="fc-name">${esc(cfg.displayName||s)}</div><div class="fc-count">${n} item${n!==1?'s':''}</div></div>`;
+      }).join('');
+      seriesHtml=`<div class="series-shelf-wrap"><div class="series-shelf-lbl">📚 Series</div><div class="series-shelf">${cards}</div></div>`;
+    }
+    html=crumbBar([{label:'Books',path:['Books']},{label:genreLabel,path:['Books',genre]}])+seriesHtml+itemListHtml(items);
+
+  // ── Books → genre → series → items ──
+  }else if(path[0]==='Books'&&path.length===3){
+    const genre=path[1];const seriesName=path[2];
+    const genreItems=genre==='Other'?S.items.filter(x=>x.type==='book'&&!x.genre):S.items.filter(x=>x.type==='book'&&(x.genre||'').split(' / ')[0].trim()===genre);
+    const items=genreItems.filter(x=>x.series===seriesName);
+    const genreLabel=getCfg(`book|${genre}`).displayName||genre;
+    const seriesLabel=getCfg(`book|${genre}|${seriesName}`).displayName||seriesName;
+    html=crumbBar([{label:'Books',path:['Books']},{label:genreLabel,path:['Books',genre]},{label:seriesLabel,path:['Books',genre,seriesName]}])+itemListHtml(items);
   }
 
   el.innerHTML=html;
@@ -944,7 +1067,13 @@ function renderGrid(){
       if(!path.length){S.folderPath=[lbl==='Fanfiction'?'Fanfiction':'Books'];renderGrid();}
       else if(path.length===1){S.folderPath=[...path,lbl];renderGrid();}
       else if(path.length===2){S.folderPath=[...path,lbl];renderGrid();}
+      else if(path.length===3){S.folderPath=[...path,lbl];renderGrid();} // drill into a group's child tag
     });
+  });
+
+  // series card clicks (Books → genre → series → items)
+  el.querySelectorAll('.series-card').forEach(sc=>{
+    sc.addEventListener('click',()=>{S.folderPath=[...path,sc.dataset.seriesNav];renderGrid();});
   });
 
   // folder edit buttons
@@ -1013,13 +1142,37 @@ function renderStats(){
   const metricFn=S.statsMetric==='words'?g=>g.events.reduce((s,ev)=>s+ev.words,0):g=>g.events.length;
   const values=groups.map(metricFn);const maxVal=Math.max(...values,1);
   const bars=groups.map((g,i)=>{
-    const val=values[i];const pct=val>0?Math.max(val/maxVal*100,4):0;const lbl=S.statsMetric==='words'?fmtN(val):String(val);
+    // sqrt scale so one outlier period doesn't flatten every other bar to nothing
+    const val=values[i];const pct=val>0?Math.max(Math.sqrt(val/maxVal)*100,4):0;const lbl=S.statsMetric==='words'?fmtN(val):String(val);
     return`<div class="scol" style="flex:1;min-width:20px"><div class="sbar-v">${val>0?lbl:''}</div><div class="sbar-wrap"><div class="sbar${val===0?' empty':''}" style="height:${pct}%;width:100%"></div></div><div class="sbar-lbl">${g.label}</div></div>`;
   }).join('');
   const tab=(id,lbl)=>`<span class="stab${cat===id?' on':''}" data-scat="${id}">${lbl}</span>`;
   const pb=(id,lbl)=>`<button class="spbtn${S.statsPeriod===id?' on':''}" data-speriod="${id}">${lbl}</button>`;
   const mb=(id,lbl)=>`<button class="smbtn${S.statsMetric===id?' on':''}" data-smetric="${id}">${lbl}</button>`;
-  el.innerHTML=`<div class="stat-tabs">${tab('all','All')}${tab('books','📚 Books')}${tab('ff','📖 FF')}${tab('oneshot','📄 One-shots')}</div>${summary}${breakdown}<div class="strend-hdr"><span class="strend-ttl">Reading trend</span><div class="sctrl-row">${pb('week','Week')}${pb('month','Month')}${pb('year','Year')}${pb('ever','All time')}</div></div><div class="sctrl-row" style="padding:0 16px 8px;gap:6px">${mb('words','Words')}${mb('items','Items')}</div><div class="schart">${bars}</div><div class="schart-base"></div><div class="snote">* ~250 words/min; books without word count use 250 words/page</div>`;
+
+  // ── Reading pace — books & fics tracked with both a start and finish date ──
+  const pacedReads=S.items
+    .filter(x=>(x.type==='ff'||x.type==='book')&&x.readingStartedAt&&x.finishedAt&&x.words>0&&Date.parse(x.finishedAt)>=Date.parse(x.readingStartedAt))
+    .map(x=>{const days=Math.max(1,Math.round((Date.parse(x.finishedAt)-Date.parse(x.readingStartedAt))/86400000));return{title:x.title,pace:Math.round(x.words/days),end:x.finishedAt}})
+    .sort((a,b)=>Date.parse(a.end)-Date.parse(b.end));
+  let paceHtml=`<div class="strend-hdr" style="margin-top:14px"><span class="strend-ttl">📖 Reading pace</span></div><div class="snote" style="padding-top:0">Not enough tracked reads yet — drag a book or fic through TBR → Reading → Finished and its pace will show up here.</div>`;
+  if(pacedReads.length){
+    const avg=Math.round(pacedReads.reduce((s,r)=>s+r.pace,0)/pacedReads.length);
+    const maxPace=Math.max(...pacedReads.map(r=>r.pace),1);
+    const fastest=pacedReads.reduce((b,r)=>r.pace>b.pace?r:b,pacedReads[0]);
+    const slowest=pacedReads.reduce((b,r)=>r.pace<b.pace?r:b,pacedReads[0]);
+    const paceBars=pacedReads.map(r=>{
+      const h=Math.max(Math.sqrt(r.pace/maxPace)*100,4);
+      const isFastest=r===fastest&&fastest.pace!==slowest.pace;
+      return`<div class="scol" style="flex:1;min-width:20px"><div class="sbar-v">${isFastest?'⚡':''}${fmtN(r.pace)}</div><div class="sbar-wrap"><div class="sbar" style="height:${h}%;width:100%"></div></div><div class="sbar-lbl">${new Date(r.end).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</div></div>`;
+    }).join('');
+    paceHtml=`<div class="strend-hdr" style="margin-top:14px"><span class="strend-ttl">📖 Reading pace</span></div>
+      <div class="snote" style="padding-top:0">avg <b>${fmtN(avg)}</b> words/day · ${pacedReads.length} tracked read${pacedReads.length===1?'':'s'}</div>
+      <div class="schart">${paceBars}</div><div class="schart-base"></div>
+      ${fastest.pace!==slowest.pace?`<div class="snote">⚡ Fastest: <b>${esc(fastest.title||'')}</b> (${fmtN(fastest.pace)}w/day) · 🐢 Slowest: <b>${esc(slowest.title||'')}</b> (${fmtN(slowest.pace)}w/day)</div>`:''}`;
+  }
+
+  el.innerHTML=`<div class="stat-tabs">${tab('all','All')}${tab('books','📚 Books')}${tab('ff','📖 FF')}${tab('oneshot','📄 One-shots')}</div>${summary}${breakdown}<div class="strend-hdr"><span class="strend-ttl">Reading trend</span><div class="sctrl-row">${pb('week','Week')}${pb('month','Month')}${pb('year','Year')}${pb('ever','All time')}</div></div><div class="sctrl-row" style="padding:0 16px 8px;gap:6px">${mb('words','Words')}${mb('items','Items')}</div><div class="schart">${bars}</div><div class="schart-base"></div><div class="snote">* ~250 words/min; books without word count use 250 words/page</div>${paceHtml}`;
   el.querySelectorAll('[data-scat]').forEach(e=>e.addEventListener('click',()=>{S.statsCat=e.dataset.scat;renderStats()}));
   el.querySelectorAll('[data-speriod]').forEach(e=>e.addEventListener('click',()=>{S.statsPeriod=e.dataset.speriod;renderStats()}));
   el.querySelectorAll('[data-smetric]').forEach(e=>e.addEventListener('click',()=>{S.statsMetric=e.dataset.smetric;renderStats()}));
@@ -1069,6 +1222,7 @@ function openSheet(id){
     <div class="sh-sec"><div class="sh-lbl">Re-reads</div><div class="rr-row"><div class="rr-info"><span class="rr-label">📖 Read ${rc} time${rc===1?'':'s'}</span>${lastReadAt(x)?`<span class="rr-sub">Last read ${new Date(lastReadAt(x)).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</span>`:''}</div><div class="rr-stepper"><button class="rr-step" id="rr-minus"${rc<=0?' disabled':''}>－</button><button class="rr-step" id="rr-plus">＋</button></div></div></div>
     ${info.length?`<div class="sh-sec"><div class="sh-lbl">Details</div><div class="info-grid">${info.map(p=>`<div class="info-tile"><div class="info-lbl">${esc(p.l)}</div><div class="info-val">${esc(p.v)}</div></div>`).join('')}</div></div>`:''}
     ${(x.tags||[]).length?`<div class="sh-sec"><div class="sh-lbl">Tags</div><div class="sh-tags">${(x.tags||[]).map(t=>`<span class="sh-tag">${esc(t)}</span>`).join('')}</div></div>`:''}
+    ${x.description?`<div class="sh-sec"><div class="sh-lbl">${isFf?'Summary':'Synopsis'}</div><div class="sh-synopsis">${esc(x.description)}</div></div>`:''}
     ${x.notes?`<div class="sh-sec"><div class="sh-lbl">Notes</div><div class="sh-notes">"${esc(x.notes)}"</div></div>`:''}
     <div class="sh-actions">${x.url?`<button class="btn" id="sh-open">🔗 Open</button>`:''}<button class="btn btn-p" id="sh-edit">✏️ Edit</button><button class="btn btn-d" id="sh-del">🗑</button></div>`;
 
@@ -1162,6 +1316,73 @@ function _updateIshPreview(val){
   }
 }
 
+// ── Mood picker ───────────────────────────────────────────────────────────────
+function openMoodPicker(){
+  S.moodOpen=true;S.moodKey=null;S.moodBookId=null;S.moodFallback=false;
+  renderMoodPicker();
+  document.getElementById('mood-shade').classList.add('on');
+  document.getElementById('mood-sheet').classList.add('on');
+}
+function closeMoodPicker(){
+  document.getElementById('mood-shade').classList.remove('on');
+  document.getElementById('mood-sheet').classList.remove('on');
+  S.moodOpen=false;
+}
+function revealMoodBook(key){
+  const{book,fallback}=pickMoodBook(key);
+  S.moodKey=key;S.moodBookId=book?.id||null;S.moodFallback=fallback;
+  renderMoodPicker();
+}
+function renderMoodPicker(){
+  const body=document.getElementById('mood-body');if(!body)return;
+
+  if(!S.moodKey){
+    body.innerHTML=`<div class="mood-hdr"><span class="mood-title">What are you in the mood for?</span><button class="mood-close" id="mood-close">×</button></div>
+      <div class="mood-grid">${MOODS.map(m=>`<button class="mood-tile" data-mood="${m.key}"><span class="mood-emoji">${m.emoji}</span><span class="mood-label">${esc(m.label)}</span></button>`).join('')}</div>`;
+    document.getElementById('mood-close')?.addEventListener('click',closeMoodPicker);
+    body.querySelectorAll('[data-mood]').forEach(b=>b.addEventListener('click',()=>revealMoodBook(b.dataset.mood)));
+    return;
+  }
+
+  const mood=MOODS.find(m=>m.key===S.moodKey);
+  const book=S.items.find(x=>x.id===S.moodBookId);
+  if(!book){
+    body.innerHTML=`<div class="mood-hdr"><span class="mood-title">${mood.emoji} ${esc(mood.label)}</span><button class="mood-close" id="mood-close">×</button></div>
+      <div class="mood-empty">Nothing on your TBR shelf right now — add some books first!</div>
+      <div class="mood-actions"><button class="btn" id="mood-back">← Different mood</button></div>`;
+    document.getElementById('mood-close')?.addEventListener('click',closeMoodPicker);
+    document.getElementById('mood-back')?.addEventListener('click',()=>{S.moodKey=null;renderMoodPicker()});
+    return;
+  }
+
+  const[c1,c2]=grad(book.id||'');
+  const coverHtml=(book.coverIcon||'').startsWith('http')
+    ?`<img src="${esc(book.coverIcon)}" onerror="this.style.display='none'">`
+    :`<span>${book.coverIcon||'📚'}</span>`;
+  body.innerHTML=`<div class="mood-hdr"><span class="mood-title">${mood.emoji} ${esc(mood.label)}</span><button class="mood-close" id="mood-close">×</button></div>
+    ${S.moodFallback?`<div class="mood-fallback-note">Nothing on your TBR quite matched this mood — here's a random pick instead.</div>`:''}
+    <div class="mood-result">
+      <div class="mood-result-cover" style="background:linear-gradient(135deg,${c1},${c2})">${coverHtml}</div>
+      <div class="mood-result-title">${esc(book.title)}</div>
+      <div class="mood-result-author">by ${esc(book.author||'—')}${book.genre?' · '+esc(book.genre):''}</div>
+      ${book.description?`<div class="mood-result-desc">${esc(book.description)}</div>`:''}
+    </div>
+    <div class="mood-actions">
+      <button class="btn" id="mood-back">← Different mood</button>
+      <button class="btn" id="mood-reroll">🎲 Pick another</button>
+      <button class="btn btn-p" id="mood-start">📖 Start reading</button>
+    </div>`;
+  document.getElementById('mood-close')?.addEventListener('click',closeMoodPicker);
+  document.getElementById('mood-back')?.addEventListener('click',()=>{S.moodKey=null;renderMoodPicker()});
+  document.getElementById('mood-reroll')?.addEventListener('click',()=>revealMoodBook(S.moodKey));
+  document.getElementById('mood-start')?.addEventListener('click',async()=>{
+    const it=S.items.find(x=>x.id===S.moodBookId);if(!it)return;
+    await qSave({...it,status:'Reading'});
+    closeMoodPicker();
+    toast('Marked as Reading ✓','ok');
+  });
+}
+
 // ── Modal ─────────────────────────────────────────────────────────────────────
 function openModal(item){
   S.editing=item?{...item}:{type:'ff',status:'TBR'};
@@ -1202,6 +1423,7 @@ function renderModalBody(){
     <label class="m-lbl">Tags</label><div class="tag-add-row"><input class="m-in" id="f-tag-in" placeholder="Add tag + Enter" autocomplete="off"/><button class="tag-add-btn" id="f-tag-btn">＋</button></div>
     <div class="tag-suggest" id="f-tag-suggest"></div>
     <div class="tags-area" id="f-tags">${tagsHtml}</div>
+    <label class="m-lbl">${isFf?'Summary':'Synopsis'}</label><textarea class="m-ta" id="f-description" placeholder="${isFf?'Fic summary…':'Book synopsis…'}">${esc(x.description||'')}</textarea>
     <label class="m-lbl">Notes</label><textarea class="m-ta" id="f-notes">${esc(x.notes||'')}</textarea>
     <label class="m-lbl">Favorite</label><select class="m-sel" id="f-fav"><option value="false"${!x.favorite?' selected':''}>No</option><option value="true"${x.favorite?' selected':''}>⭐ Yes</option></select>`;
 
@@ -1311,7 +1533,7 @@ function renderModalBody(){
 
 function snapEdit(){
   const g=id=>document.getElementById(id)?.value??null;const p={};
-  [['f-title','title'],['f-author','author'],['f-url','url'],['f-fandom','fandom'],['f-pairing','pairing'],['f-genre','genre'],['f-section','section'],['f-notes','notes'],['f-status','status'],['f-rating','rating']].forEach(([id,k])=>{const v=g(id);if(v!==null)p[k]=v.trim()});
+  [['f-title','title'],['f-author','author'],['f-url','url'],['f-fandom','fandom'],['f-pairing','pairing'],['f-genre','genre'],['f-section','section'],['f-notes','notes'],['f-description','description'],['f-status','status'],['f-rating','rating']].forEach(([id,k])=>{const v=g(id);if(v!==null)p[k]=v.trim()});
   const w=g('f-words');if(w)p.words=parseInt(w)||null;
   const h=g('f-hearts');if(h)p.hearts=parseInt(h)||null;
   const pg=g('f-pages');if(pg)p.pages=parseInt(pg)||null;
@@ -1333,7 +1555,7 @@ async function saveModal(){
     id:S.editing?.id||genId(),
     type:S.editing?.type||'ff',
     title,author:g('f-author').trim(),
-    status:st,words:gN('f-words'),notes:g('f-notes').trim(),
+    status:st,words:gN('f-words'),notes:g('f-notes').trim(),description:g('f-description').trim(),
     tags:[...S.mTags],userRating:S.mRating,
     favorite:g('f-fav')==='true',
     readCount:rc?parseInt(rc)||0:(S.editing?.readCount??(st==='Finished'?1:0)),
@@ -1527,6 +1749,10 @@ document.getElementById('btn-sync').addEventListener('click',async()=>{
 document.getElementById('btn-backup').addEventListener('click',async()=>{
   await doSave();   // pushes (and merge-on-conflict); shows its own toast + spins this button
 });
+
+// Mood picker
+document.getElementById('btn-mood').addEventListener('click',openMoodPicker);
+document.getElementById('mood-shade').addEventListener('click',closeMoodPicker);
 
 // Settings
 document.getElementById('btn-settings').addEventListener('click',()=>{
