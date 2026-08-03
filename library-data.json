@@ -3,7 +3,7 @@
     {
       "title": "As Potter is to Snape Chapter 1",
       "author": "ScarlettWriter91",
-      "fandom": "harry potter",
+      "fandom": "Harry Potter - J. K. Rowling",
       "words": 220409,
       "hearts": 704,
       "rating": "",
@@ -24,14 +24,14 @@
       "readCount": 0,
       "readDates": [],
       "_addedAt": 944,
-      "_modAt": "2026-08-01T19:56:04.564Z"
+      "_modAt": "2026-08-03T11:06:16.221Z"
     },
     {
       "title": "Mourning Dove",
       "author": "MusicalSurge",
       "fandom": "Harry Potter - J. K. Rowling",
       "words": 20925,
-      "hearts": 13931,
+      "hearts": 13940,
       "rating": "Mature",
       "pairing": "",
       "tags": [
@@ -48,16 +48,19 @@
       "type": "ff",
       "genre": "",
       "section": "",
-      "status": "TBR",
+      "status": "Finished",
       "pages": null,
-      "userRating": 0,
+      "userRating": 2,
       "notes": "",
       "oneshot": false,
-      "finishedAt": null,
-      "readCount": 0,
-      "readDates": [],
+      "finishedAt": "2026-08-02T11:00:00.000Z",
+      "readCount": 1,
+      "readDates": [
+        "2026-08-02T22:25:39.989Z"
+      ],
       "_addedAt": 943,
-      "_modAt": "2026-08-01T19:54:58.613Z"
+      "_modAt": "2026-08-02T22:26:55.753Z",
+      "waitingOnChap": false
     },
     {
       "title": "A Patchwork Family",
@@ -26557,10 +26560,12 @@
         "Royal Harry",
         "Political Harry Potter",
         "Parselmouth Harry Potter",
-        "Auror Harry"
+        "Auror Harry",
+        "Severus Snape Adopts Harry Potter",
+        "Severitus | Severus Snape is Harry Potter&#39;s Parent"
       ],
       "section": "trope",
-      "_modAt": "2026-07-26T20:23:55.756Z"
+      "_modAt": "2026-08-02T22:27:06.459Z"
     },
     "book|Fantasy|Harry Potter": {
       "displayName": "Harry Potter",
@@ -26893,10 +26898,16 @@
         "Aberforth Mentor",
         "are monsters born or made?",
         "Hermione Granger &amp; Draco Malfoy Friendship",
-        "Mentor Severus"
+        "Mentor Severus",
+        "Good Severus Snape",
+        "Mentor Severus Snape",
+        "Severus Snape Has a Heart",
+        "Severus Snape Adopts Draco Malfoy",
+        "Draco Malfoy &amp; Harry Potter are Siblings",
+        "Severus Snape Being a Bastard"
       ],
       "section": "trope",
-      "_modAt": "2026-07-26T20:32:16.051Z"
+      "_modAt": "2026-08-02T21:30:37.544Z"
     },
     "ff|Harry Potter - J. K. Rowling|is not a canonical tag so let's go with": {
       "displayName": "nnn",
