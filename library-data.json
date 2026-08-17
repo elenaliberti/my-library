@@ -1,9 +1,43 @@
 {
   "items": [
     {
+      "title": "The Bone Man",
+      "author": "inspiration_assaulted",
+      "fandom": "Harry Potter - J. K. Rowling",
+      "words": 56445,
+      "hearts": 7569,
+      "rating": "",
+      "pairing": "Draco Malfoy/Harry Potter",
+      "tags": [
+        "Dark Harry Potter",
+        "Runes",
+        "Father Voldemort",
+        "Powerful Harry",
+        "New Indentity",
+        "Drarry"
+      ],
+      "description": "Harry Potter disappears from the Hogwarts Express at the end of his fifth year. The Light thinks he is dead. They're right, in a way, but also so very, very wrong. What has the boy who was once Harry Potter become?",
+      "url": "https://archiveofourown.org/works/1051935/chapters/2104982",
+      "id": "1786982892010_6jwrsxkb553",
+      "type": "ff",
+      "genre": "",
+      "section": "",
+      "status": "TBR",
+      "pages": null,
+      "userRating": 0,
+      "notes": "",
+      "oneshot": false,
+      "finishedAt": null,
+      "readCount": 0,
+      "readDates": [],
+      "_addedAt": 950,
+      "_modAt": "2026-08-17T16:09:04.675Z",
+      "coverIcon": "https://64.media.tumblr.com/50690192c362b0718f2d4e4eb80de23d/6a566cf0ebee648c-4e/s2048x3072/0fda161b05b00ec848cd62a3c2a93f18ebf96b78.pnj"
+    },
+    {
       "title": "Friendly Neighbourhood Falcon-Mage",
       "author": "Fregor",
-      "fandom": "Harry Potter - J. K. Rowling",
+      "fandom": "Marvel Cinematic Universe",
       "words": 52934,
       "hearts": 20584,
       "rating": "Mature",
@@ -17,16 +51,20 @@
       "type": "ff",
       "genre": "",
       "section": "",
-      "status": "TBR",
+      "status": "Finished",
       "pages": null,
       "userRating": 0,
       "notes": "",
       "oneshot": false,
-      "finishedAt": null,
-      "readCount": 0,
-      "readDates": [],
+      "finishedAt": "2026-08-17T11:00:00.000Z",
+      "readCount": 1,
+      "readDates": [
+        "2026-08-17T11:00:00.000Z"
+      ],
       "_addedAt": 948,
-      "_modAt": "2026-08-09T12:24:33.788Z"
+      "_modAt": "2026-08-17T16:08:31.393Z",
+      "waitingOnChap": true,
+      "readingStartedAt": "2026-08-10T00:37:48.125Z"
     },
     {
       "title": "4 Years Too Late",
@@ -65,7 +103,7 @@
     {
       "title": "Welcome To Earth",
       "author": "dclaw23",
-      "fandom": "Spider-Man (Tom Holland Movies)",
+      "fandom": "Marvel Cinematic Universe",
       "words": 69442,
       "hearts": 10830,
       "rating": "",
@@ -85,17 +123,19 @@
       "type": "ff",
       "genre": "",
       "section": "",
-      "status": "Reading",
+      "status": "Finished",
       "pages": null,
       "userRating": 0,
       "notes": "",
       "oneshot": false,
-      "finishedAt": null,
-      "readCount": 0,
-      "readDates": [],
+      "finishedAt": "2026-08-17T11:00:00.000Z",
+      "readCount": 1,
+      "readDates": [
+        "2026-08-17T11:00:00.000Z"
+      ],
       "_addedAt": 946,
-      "_modAt": "2026-08-09T12:21:56.739Z",
-      "waitingOnChap": false,
+      "_modAt": "2026-08-17T16:09:21.359Z",
+      "waitingOnChap": true,
       "readingStartedAt": "2026-08-09T12:21:56.739Z"
     },
     {
@@ -25718,6 +25758,42 @@
       ],
       "_addedAt": 945,
       "_modAt": "2026-08-08T22:06:41.169Z"
+    },
+    {
+      "title": "How Long Would you Wait for Me? (How long I've been away?)",
+      "author": "a_dale",
+      "fandom": "Marvel Cinematic Universe",
+      "words": 2783,
+      "hearts": 8598,
+      "rating": "Not Rated",
+      "pairing": "Peter Parker/Harry Potter",
+      "tags": [
+        "Soulmate AU",
+        "dreamshare au",
+        "Post-Harry Potter and the Deathly Hallows",
+        "Alternate Universe - Canon Divergence",
+        "this is literally right after the end of deathly hollows",
+        "Pre-Avengers: Infinity War Part 1 (Movie)",
+        "Harry/Peter Parker"
+      ],
+      "description": "Soulmates meet as soon as they start dreaming, because their dreams connect them to their soulmate from the moment they both take their first breath.\nHaving had his mind blocked by Voldemort all those years, Harry was certain he didn't have a soulmate.\nRight up until he did.",
+      "url": "https://archiveofourown.org/works/20875460",
+      "id": "1786539069531_ubwv6vcvre9",
+      "type": "ff",
+      "genre": "",
+      "section": "",
+      "status": "Finished",
+      "pages": null,
+      "userRating": 0,
+      "notes": "",
+      "oneshot": false,
+      "finishedAt": "2026-08-12T11:00:00.000Z",
+      "readCount": 1,
+      "readDates": [
+        "2026-08-12T11:00:00.000Z"
+      ],
+      "_addedAt": 949,
+      "_modAt": "2026-08-12T14:04:42.409Z"
     }
   ],
   "folderConfig": {
@@ -26916,10 +26992,11 @@
         "Alternate Universe",
         "Alternate Universe - Everyone&#39;s About the Same Age Now",
         "Alternate Universe - Zombies",
-        "Post-Hogwarts"
+        "Post-Hogwarts",
+        "Post-Harry Potter and the Deathly Hallows"
       ],
       "section": "trope",
-      "_modAt": "2026-07-29T18:38:53.293Z"
+      "_modAt": "2026-08-12T14:02:39.788Z"
     },
     "ff|Harry Potter - J. K. Rowling|group_marauders_founders": {
       "displayName": "Marauders & Founders Era",
@@ -27047,6 +27124,12 @@
       "displayName": "nnn",
       "pinned": false,
       "_modAt": "2026-07-26T20:17:48.893Z"
+    },
+    "ff|Marvel Cinematic Universe": {
+      "displayName": "Marvel Cinematic Universe",
+      "icon": "https://i.pinimg.com/1200x/b8/5a/8c/b85a8c763a6e1d21431914fc6fe68436.jpg",
+      "pinned": false,
+      "_modAt": "2026-08-17T16:10:21.331Z"
     }
   },
   "deletedIds": {
