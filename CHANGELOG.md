@@ -5,6 +5,7 @@
 ### Palette
 - **No more greige.** Pure white surfaces, indigo text, electric violet as the one accent, hot pink for peaks and gradients, a lime highlight on "Pick for me". Chips, tabs, segmented controls and the primary button fill violet (with a soft glow) instead of black; folder tiles and cover fallbacks use saturated duotones (violet, pink, sky, lime-teal, sunset, aqua, coral-yellow). Dark mode is deep indigo with lilac text and brighter accents.
 - The four status colours (TBR, Reading, Finished, Dropped) are untouched — they are the reader's own code.
+- **Softer where it matters.** The primary button is a lilac-to-pink pastel gradient with indigo text, the titlebar carries an airy lilac / blush / sky wash, and the accent is a calmer periwinkle rather than electric violet.
 - **Page banners only colour their band now.** A custom banner no longer replaces the app's accent colour everywhere; section labels still take a contrast-safe ink from it. Banner presets follow the new palette.
 
 ## 1.5.0 — 18 Sep 2026

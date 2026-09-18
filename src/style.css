@@ -11,19 +11,22 @@
 
   /* Accent (legacy name "purple" kept — it IS purple now: electric violet, the single primary
      accent; applyBanner() may override it per page from a custom banner colour). */
-  --purple: #6c4dff;
+  --purple: #7d6cf0;
   --purple-light: color-mix(in srgb, var(--purple) 14%, var(--surface));
   --purple-dark: color-mix(in srgb, var(--purple) 72%, black);
   --accent-soft: color-mix(in srgb, var(--purple) 40%, var(--surface));
-  --accent-2: #ff5fb0;       /* hot pink — peaks, gradients, the second half of the primary button */
+  --accent-2: #f08ad2;       /* orchid pink — peaks, gradients, the second half of the primary button */
+  --lilac: #c4b5ff;          /* pastel lilac — the primary button and the titlebar wash */
+  --blush: #f7b8dd;          /* pastel pink */
+  --mist: #c9e6ff;           /* pastel sky */
   --pop: #c8f04b;            /* lime — one playful highlight, used sparingly */
   --sky: #37c6ff;
 
   /* Banner system: with no custom banner the header strips are lavender-white; with one
      (#app.has-banner) they take the banner as fill with white text. Ink is for labels. */
   --banner-bar: var(--bg);
-  --banner-fill: #6c4dff;
-  --banner-ink: #5636e6;
+  --banner-fill: #7d6cf0;
+  --banner-ink: #5b4bd6;
 
   /* Surfaces & text — pure white, indigo ink. Colour comes from the accents, never the paper. */
   --bg: #ffffff;
@@ -87,12 +90,15 @@
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
-    --purple: #9d85ff;
+    --purple: #a99bff;
     --purple-dark: color-mix(in srgb, var(--purple) 80%, white);
-    --accent-2: #ff7ac2;
+    --accent-2: #f39ad9;
+    --lilac: #7f6fd6;
+    --blush: #c97aa8;
+    --mist: #6f9fd0;
     --pop: #d4ff5c;
     --sky: #5cd3ff;
-    --banner-fill: #6c4dff;
+    --banner-fill: #7d6cf0;
     --banner-ink: #c3b6ff;
     --bg: #0f0d1a;
     --bg-subtle: #14111f;
@@ -152,7 +158,7 @@ b, strong { font-weight: 600; }
 
 /* ── Skeleton first paint ── */
 #loading { flex: 1; display: flex; flex-direction: column; background: var(--bg); }
-.sk-bar { height: 62px; background: color-mix(in srgb, var(--bg) 66%, transparent); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.sk-bar { height: 62px; background: linear-gradient(100deg, color-mix(in srgb, var(--lilac) 38%, transparent), color-mix(in srgb, var(--blush) 30%, transparent) 48%, color-mix(in srgb, var(--mist) 38%, transparent)), var(--bg); border-bottom: 1px solid var(--border); flex-shrink: 0; }
 .sk-banner { height: 68px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
 .sk-list { padding: var(--s5) var(--gutter); display: flex; flex-direction: column; gap: var(--s3); }
 .sk-card { display: flex; gap: var(--s4); padding: var(--s4) var(--s5); border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--card); }
@@ -170,14 +176,16 @@ b, strong { font-weight: 600; }
 /* ── Titlebar ── */
 #titlebar {
   -webkit-app-region: drag;
-  background: color-mix(in srgb, var(--bg) 70%, transparent);
+  background:
+    linear-gradient(100deg, color-mix(in srgb, var(--lilac) 38%, transparent) 0%, color-mix(in srgb, var(--blush) 30%, transparent) 48%, color-mix(in srgb, var(--mist) 38%, transparent) 100%),
+    color-mix(in srgb, var(--bg) 78%, transparent);
   backdrop-filter: blur(18px) saturate(1.3); -webkit-backdrop-filter: blur(18px) saturate(1.3);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid color-mix(in srgb, var(--lilac) 45%, var(--border));
   padding: 13px var(--gutter) 13px calc(var(--gutter) + 56px);
   display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
   position: relative; z-index: 7;
 }
-#titlebar-title { font-family: var(--font-serif); font-size: 18px; font-weight: var(--serif-weight); letter-spacing: -0.012em; color: var(--text); background: linear-gradient(90deg, var(--text) 0%, var(--text) 45%, var(--purple) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; gap: var(--s2); line-height: 1.2; }
+#titlebar-title { font-family: var(--font-serif); font-size: 18px; font-weight: var(--serif-weight); letter-spacing: -0.012em; color: var(--text); display: flex; align-items: center; gap: var(--s2); line-height: 1.2; }
 #titlebar .subtitle { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; font-variant-numeric: tabular-nums; }
 #titlebar-actions { -webkit-app-region: no-drag; display: flex; gap: var(--s1); align-items: center; }
 
@@ -185,13 +193,14 @@ b, strong { font-weight: 600; }
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 8px 16px; border-radius: var(--radius); border: 1px solid transparent; font-size: 13.5px; font-weight: 600; cursor: pointer; letter-spacing: 0.005em; transition: background 0.15s, color 0.15s, box-shadow 0.15s, transform 0.12s var(--ease-out), border-color 0.15s; position: relative; white-space: nowrap; }
 .btn:active { transform: translateY(0.5px) scale(0.99); }
 .btn:disabled { opacity: 0.55; cursor: default; transform: none; }
-.btn-primary { background: linear-gradient(135deg, var(--purple) 0%, color-mix(in srgb, var(--purple) 55%, var(--accent-2)) 100%); color: #fff; box-shadow: var(--glow); }
-.btn-primary:hover { filter: brightness(1.06) saturate(1.05); box-shadow: var(--glow), var(--shadow-2); }
+.btn-primary { background: linear-gradient(135deg, var(--lilac) 0%, var(--blush) 100%); color: #1a1530; border-color: transparent; box-shadow: 0 6px 16px -8px color-mix(in srgb, var(--lilac) 80%, transparent), 0 1px 2px rgba(40,25,100,0.08); }
+.btn-primary:hover { filter: saturate(1.15) brightness(1.02); box-shadow: 0 10px 22px -8px color-mix(in srgb, var(--blush) 80%, transparent), var(--shadow-2); }
+@media (prefers-color-scheme: dark) { .btn-primary { color: #fff; } }
 .btn-secondary { background: var(--surface); color: var(--text-2); border-color: var(--border-strong); }
 .btn-secondary:hover { background: var(--surface-2); border-color: var(--text-faint); }
 .btn-ghost { background: transparent; color: var(--text-2); }
-.btn-ghost:hover { background: color-mix(in srgb, var(--purple) 9%, transparent); color: var(--text); }
-.btn-ghost.is-on { background: color-mix(in srgb, var(--purple) 14%, transparent); color: var(--purple-dark); }
+.btn-ghost:hover { background: color-mix(in srgb, var(--surface) 70%, transparent); color: var(--text); }
+.btn-ghost.is-on { background: color-mix(in srgb, var(--surface) 85%, transparent); color: var(--purple-dark); box-shadow: var(--shadow-1); }
 .btn-danger { background: var(--red); color: #fff; }
 .btn-danger:hover { background: var(--red-ink); }
 .btn-sm { padding: 7px 12px; font-size: 13px; }

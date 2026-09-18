@@ -208,7 +208,7 @@ const BANNER_PAGES = [
   { key: 'myspace', label: 'MySpace' },
   { key: 'stats',   label: 'Stats' },
 ];
-const BANNER_PRESETS = ['#6c4dff', '#4b2ee0', '#ff5fb0', '#37c6ff', '#2fd4c2', '#c8f04b', '#ffb648', '#ff7a59'];
+const BANNER_PRESETS = ['#7d6cf0', '#c4b5ff', '#f7b8dd', '#c9e6ff', '#2fd4c2', '#c8f04b', '#ffb648', '#ff7a59'];
 
 function loadBannerConfig() { try { return JSON.parse(localStorage.getItem('bannerConfig') || '{}'); } catch { return {}; } }
 function saveBannerConfig() { try { localStorage.setItem('bannerConfig', JSON.stringify(state.bannerConfig)); } catch (e) {} }
