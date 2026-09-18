@@ -1,6 +1,6 @@
 {
   "name": "my-library",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Personal reading tracker for fanfiction and books",
   "main": "main.js",
   "scripts": {
@@ -12,14 +12,21 @@
     "productName": "My Library",
     "mac": {
       "category": "public.app-category.books",
-      "icon": "assets/icon.icns"
+      "icon": "assets/icon.icns",
+      "darkModeSupport": false
     },
     "directories": {
       "output": "dist"
     },
     "files": [
       "**/*",
-      "!dist/**"
+      "!dist/**",
+      "!docs/**",
+      "!library-data.json",
+      "!.claude/**",
+      "!*.md",
+      "!setup.sh",
+      "!*.log"
     ]
   },
   "dependencies": {

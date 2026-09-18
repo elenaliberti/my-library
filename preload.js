@@ -3,6 +3,7 @@ contextBridge.exposeInMainWorld('api', {
   loadData:       ()      => ipcRenderer.invoke('data:load'),
   saveData:       (data)  => ipcRenderer.invoke('data:save', data),
   exportPath:     ()      => ipcRenderer.invoke('data:export-path'),
+  exportExcel:    (filePath, items) => ipcRenderer.invoke('data:export', { filePath, items }),
   openDataFolder: ()      => ipcRenderer.invoke('data:open-location'),
   fetchAO3:       (url)   => ipcRenderer.invoke('ao3:fetch', url),
   fetchFFNet:     (url)   => ipcRenderer.invoke('ffnet:fetch', url),

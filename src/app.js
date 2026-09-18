@@ -40,6 +40,9 @@ let state = {
   moodPickerBookId: null,   // the TBR book currently revealed for that mood
   moodPickerFallback: false, // true if no TBR book matched the mood and this is a random pick instead
   moodPickerDesc: null,       // { text, source } once fetched, or 'loading', or 'none'
+  loadError: null,          // set when the data file exists but can't be read — the app goes read-only
+  recoveredFrom: null,      // name of the .bak / dated snapshot the library was restored from, if any
+  readOnly: false,          // true while in recovery mode: nothing is ever written back to disk
 };
 
 const STATUS = ['TBR','Reading','Finished','Dropped'];
@@ -140,28 +143,105 @@ function pickMoodBook(moodKey) {
   return { book: pool[Math.floor(Math.random() * pool.length)], fallback };
 }
 
+// ── Data normalisation (runs on every load, idempotent) ───────────────────────
+// Older records and other clients have left a few inconsistencies in the file: a lowercase
+// "finished" status, HTML entities in scraped AO3 tags ("Harry Potter&#39;s Parent"), Finished
+// items whose readDates list is empty while readCount says 1, tags stored as non-arrays. None of
+// this bumps _modAt — it's a repair of how the record is represented, not an edit, so it must
+// never win a sync merge over a genuine change made on the phone.
+const STATUS_CANON = Object.fromEntries(STATUS.map(s => [s.toLowerCase(), s]));
+STATUS_CANON['dnf'] = 'Dropped'; STATUS_CANON['paused'] = 'Reading'; // legacy phone-only statuses
+function normalizeItem(x) {
+  if (!x || typeof x !== 'object') return x;
+  const out = { ...x };
+  const dec = s => (typeof s === 'string' && /&(?:amp|quot|#39|lt|gt|#\d+);/.test(s)) ? decodeTagEntities(s) : s;
+  for (const f of ['title', 'author', 'fandom', 'pairing', 'genre', 'series', 'section', 'description', 'notes']) {
+    if (typeof out[f] === 'string') out[f] = dec(out[f]);
+  }
+  out.tags = Array.isArray(out.tags) ? [...new Set(out.tags.filter(t => typeof t === 'string' && t.trim()).map(dec))] : [];
+  if (typeof out.status === 'string') {
+    const canon = STATUS_CANON[out.status.trim().toLowerCase()];
+    if (canon) out.status = canon;
+  }
+  if (!STATUS.includes(out.status)) out.status = 'TBR';
+  if (out.type !== 'ff' && out.type !== 'book') out.type = out.fandom || out.hearts ? 'ff' : 'book';
+  for (const f of ['words', 'hearts', 'pages']) {
+    if (typeof out[f] === 'string') { const n = parseInt(out[f].replace(/[^\d]/g, ''), 10); out[f] = Number.isFinite(n) ? n : null; }
+  }
+  if (typeof out.userRating !== 'number' || !Number.isFinite(out.userRating)) out.userRating = 0;
+  // Finished ⇒ read at least once. readDates is what stats trust, so make it agree with readCount.
+  if (Array.isArray(out.readDates)) {
+    out.readDates = out.readDates.filter(d => d === null || typeof d === 'string');
+    if (out.status === 'Finished' && out.readDates.length === 0) {
+      out.readDates = Array.from({ length: Math.max(1, out.readCount || 0) }, () => out.finishedAt || null);
+    }
+    out.readCount = out.readDates.length;
+  } else if (out.status === 'Finished' && !(out.readCount > 0)) {
+    out.readCount = 1;
+  }
+  return out;
+}
+function normalizeFolderConfig(fc) {
+  const out = {};
+  for (const [k, v] of Object.entries(fc || {})) {
+    if (!v || typeof v !== 'object') continue;
+    const cfg = { ...v };
+    if (Array.isArray(cfg.groupTags)) cfg.groupTags = [...new Set(cfg.groupTags.map(decodeTagEntities))];
+    if (typeof cfg.filterTag === 'string') cfg.filterTag = decodeTagEntities(cfg.filterTag);
+    out[decodeTagEntities(k)] = cfg;
+  }
+  return out;
+}
+
 // ── Persistence ───────────────────────────────────────────────────────────────
 async function loadData() {
   state._loadedFromFile = false;
   state._jsonHadFolderConfig = false;
-  try {
-    const result = await window.api.loadData();
-    if (result) {
-      const items = Array.isArray(result) ? result : (result.items || []);
-      if (!Array.isArray(result) && result.folderConfig && Object.keys(result.folderConfig).length) {
-        state._jsonHadFolderConfig = true;
-        state.folderConfig = { ...result.folderConfig, ...state.folderConfig };
-        localStorage.setItem('folderConfig', JSON.stringify(state.folderConfig)); // init only — skip saveData
-      }
-      if (!Array.isArray(result) && result.deletedIds) state.deletedIds = result.deletedIds;
-      if (items.length) { state._loadedFromFile = true; return items; }
+  let result = null;
+  try { result = await window.api.loadData(); } catch (e) { result = { error: e.message || 'load failed' }; }
+  if (result && result.error) {
+    // The file is there but unreadable. Do NOT fall back to the seed list — that would be saved
+    // straight back over the real library on the first edit. Go read-only and say so.
+    state.loadError = result;
+    state.readOnly = true;
+    return [];
+  }
+  if (result) {
+    const items = Array.isArray(result) ? result : (result.items || []);
+    if (!Array.isArray(result) && result.folderConfig && Object.keys(result.folderConfig).length) {
+      state._jsonHadFolderConfig = true;
+      state.folderConfig = normalizeFolderConfig(result.folderConfig);
     }
-  } catch(e) {}
-  return INITIAL_DATA.map((item, i) => ({ ...item, _addedAt: i }));
+    if (!Array.isArray(result) && result.deletedIds) state.deletedIds = result.deletedIds;
+    if (!Array.isArray(result) && result.recoveredFrom) state.recoveredFrom = result.recoveredFrom;
+    if (items.length) { state._loadedFromFile = true; return items.map(normalizeItem); }
+  }
+  // Genuine first launch (no library file anywhere on disk): start from the bundled seed list.
+  return INITIAL_DATA.map((item, i) => normalizeItem({ ...item, _addedAt: i }));
 }
 
-async function saveData() {
-  try { await window.api.saveData({ items: state.items, folderConfig: state.folderConfig, deletedIds: state.deletedIds }); } catch(e) {}
+// Saves are coalesced: if one is already being written, remember that the state moved on and
+// write again once it lands. The most recent state always ends up on disk, and rapid edits
+// (five star clicks in a row) cost one or two 800 KB serialisations instead of five.
+let _saving = null, _saveQueued = false, _saveErrorShown = false;
+function saveData() {
+  if (state.readOnly) return Promise.resolve(false);
+  if (_saving) { _saveQueued = true; return _saving; }
+  _saving = (async () => {
+    try {
+      do {
+        _saveQueued = false;
+        const res = await window.api.saveData({ items: state.items, folderConfig: state.folderConfig, deletedIds: state.deletedIds });
+        if (res && res.ok === false) throw new Error(res.error || 'save failed');
+        _saveErrorShown = false;
+      } while (_saveQueued);
+      return true;
+    } catch (e) {
+      if (!_saveErrorShown) { _saveErrorShown = true; showToast(`⚠️ Couldn't save to disk: ${e.message}`, 'error', { duration: 8000 }); }
+      return false;
+    } finally { _saving = null; }
+  })();
+  return _saving;
 }
 
 // ── Cloud sync (merge with GitHub copy so phone ↔ desktop changes don't clobber) ──
@@ -357,7 +437,26 @@ function getGenres() {
 }
 
 function esc(s) {
-  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+// Accent- and case-insensitive text for search ("Attraversaspecchi", "Diari delle streghe" and
+// AO3 tags with curly apostrophes should all match what's typed on a plain keyboard).
+function norm(s) {
+  return String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[‘’]/g, "'").toLowerCase();
+}
+// Next add-order stamp. `items.length` used to be reused after deletions, so 30 records share a
+// value today; monotonic max+1 keeps "recently added" ordering unambiguous from here on.
+function nextAddedAt() {
+  return state.items.reduce((m, x) => Math.max(m, typeof x._addedAt === 'number' ? x._addedAt : -1), -1) + 1;
+}
+// YYYY-MM-DD in *local* time for <input type=date>. Slicing the ISO string gives the UTC date,
+// which is off by one for anyone east of Greenwich in the evening.
+function toDateInputValue(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (isNaN(d)) return '';
+  const p = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
 }
 
 function fandomEmoji(f) {
@@ -470,30 +569,41 @@ function getFiltered() {
       if (top !== state.filterGenre) return false;
     }
     if (state.search) {
-      const q = state.search.toLowerCase();
-      return (item.title||'').toLowerCase().includes(q)
-        || (item.author||'').toLowerCase().includes(q)
-        || (item.fandom||'').toLowerCase().includes(q)
-        || (item.genre||'').toLowerCase().includes(q)
-        || (item.section||'').toLowerCase().includes(q)
-        || (item.tags||[]).some(t => t.toLowerCase().includes(q));
+      const q = norm(state.search);
+      return norm(item.title).includes(q)
+        || norm(item.author).includes(q)
+        || norm(item.fandom).includes(q)
+        || norm(item.genre).includes(q)
+        || norm(item.series).includes(q)
+        || norm(item.section).includes(q)
+        || (item.tags||[]).some(t => norm(t).includes(q));
     }
     return true;
-  }).sort((a,b) => {
-    if (state.sortBy === 'title') return (a.title||'').localeCompare(b.title||'');
-    if (state.sortBy === 'words') return (b.words||0) - (a.words||0);
-    if (state.sortBy === 'hearts') return (b.hearts||0) - (a.hearts||0);
-    if (state.sortBy === 'rating') return (b.userRating||0) - (a.userRating||0);
-    if (state.sortBy === 'author') return (a.author||'').localeCompare(b.author||'');
-    // default 'recent': most recently read/finished first; not-yet-read items on top by add order
-    const ra = lastReadAt(a), rb = lastReadAt(b);
-    const ta = ra ? Date.parse(ra) : null, tb = rb ? Date.parse(rb) : null;
+  }).sort(itemComparator(state.sortBy));
+}
+
+// Sort comparator with the "last read" timestamp resolved once per item rather than on every
+// comparison (lastReadAt copies the readDates array each call — n·log n of those adds up).
+function itemComparator(sortBy) {
+  if (sortBy === 'title') return (a, b) => (a.title||'').localeCompare(b.title||'');
+  if (sortBy === 'words') return (a, b) => (b.words||0) - (a.words||0);
+  if (sortBy === 'hearts') return (a, b) => (b.hearts||0) - (a.hearts||0);
+  if (sortBy === 'rating') return (a, b) => (b.userRating||0) - (a.userRating||0);
+  if (sortBy === 'author') return (a, b) => (a.author||'').localeCompare(b.author||'');
+  // default 'recent': most recently read/finished first; not-yet-read items on top by add order
+  const cache = new Map();
+  const readTs = x => {
+    if (!cache.has(x)) { const r = lastReadAt(x); cache.set(x, r ? Date.parse(r) : null); }
+    return cache.get(x);
+  };
+  return (a, b) => {
+    const ta = readTs(a), tb = readTs(b);
     if (ta === null && tb === null) return (b._addedAt||0) - (a._addedAt||0);
     if (ta === null) return -1;
     if (tb === null) return 1;
     if (tb !== ta) return tb - ta;
     return (b._addedAt||0) - (a._addedAt||0);
-  });
+  };
 }
 
 function getStats() {
@@ -526,7 +636,14 @@ function badgeHtml(status) {
 }
 
 function tagHtml(t, removable=false, itemId='') {
-  return `<span class="tag">${t}${removable ? `<span class="tag-remove" data-tag="${esc(t)}" data-id="${itemId}">×</span>` : ''}</span>`;
+  return `<span class="tag">${esc(t)}${removable ? `<span class="tag-remove" data-tag="${esc(t)}" data-id="${esc(itemId)}" title="Remove tag">×</span>` : ''}</span>`;
+}
+
+// Cover <img> markup shared by every card style. Lazy-loaded so the list view doesn't fire 900
+// image requests at once; a failed load is swapped for the emoji tile by the delegated handler
+// in init (see attachCoverFallback) — no inline onerror, which the CSP forbids.
+function coverImgHtml(cls, url, fallbackEmoji) {
+  return `<img class="${cls} cover-img" src="${esc(url)}" alt="" loading="lazy" decoding="async" data-fallback="${esc(fallbackEmoji)}" />`;
 }
 
 // ── Card HTML ─────────────────────────────────────────────────────────────────
@@ -541,27 +658,29 @@ function cardHtml(item) {
   if (isFf && item.hearts) metaParts.push(`♥ ${fmt(item.hearts)}`);
   if (!isFf && item.pages) metaParts.push(`📄 ${fmt(item.pages)} pages`);
   if (item.userRating > 0) metaParts.push(starsHtml(item.userRating, item.id, true));
-  if (!isFf && item.section) metaParts.push(`<span style="color:#9ca3af;font-size:11px">${item.section}</span>`);
+  if (!isFf && item.section) metaParts.push(`<span class="card-section">${esc(item.section)}</span>`);
+  if (!isFf && item.series) metaParts.push(`<span class="card-series" title="Series">📚 ${esc(item.series)}</span>`);
   const tags = (item.tags||[]).map(t => tagHtml(t)).join('');
+  const id = esc(item.id);
 
   let expandedHtml = '';
   if (expanded) {
     const statusBtns = STATUS.map(s =>
-      `<button class="status-btn${item.status===s?' active-'+s:''}" data-set-status="${s}" data-id="${item.id}">${s}</button>`
+      `<button class="status-btn${item.status===s?' active-'+s:''}" data-set-status="${s}" data-id="${id}">${s}</button>`
     ).join('');
-    const notesHtml = item.notes ? `<p class="card-notes">"${item.notes}"</p>` : '';
+    const notesHtml = item.notes ? `<p class="card-notes">"${esc(item.notes)}"</p>` : '';
     const extraParts = [];
     if (isFf) {
-      if (item.pairing) extraParts.push(`Pairing: ${item.pairing}`);
-      if (item.rating) extraParts.push(`Rating: ${item.rating}`);
+      if (item.pairing) extraParts.push(`Pairing: ${esc(item.pairing)}`);
+      if (item.rating) extraParts.push(`Rating: ${esc(item.rating)}`);
     }
     const extraHtml = extraParts.length ? `<p class="card-extra">${extraParts.join(' · ')}</p>` : '';
 
     expandedHtml = `
       <div class="card-expanded">
         <div class="status-switcher">${statusBtns}</div>
-        <div style="margin:8px 0 4px;display:flex;gap:4px;align-items:center">
-          <span style="font-size:12px;color:#9ca3af;margin-right:4px">Your rating:</span>
+        <div class="card-rating-row">
+          <span class="card-rating-label">Your rating:</span>
           ${starsHtml(item.userRating, item.id)}
         </div>
         <div class="reread-row">
@@ -570,40 +689,42 @@ function cardHtml(item) {
             ${lastReadHtml}
           </div>
           <div class="reread-stepper">
-            <button class="reread-step" data-reread-delta="-1" data-reread-id="${item.id}" title="Remove the latest re-read"${readCount <= 0 ? ' disabled' : ''}>－</button>
-            <button class="reread-step" data-reread-delta="1" data-reread-id="${item.id}" title="I re-read this today">＋</button>
+            <button class="reread-step" data-reread-delta="-1" data-reread-id="${id}" title="Remove the latest re-read"${readCount <= 0 ? ' disabled' : ''}>－</button>
+            <button class="reread-step" data-reread-delta="1" data-reread-id="${id}" title="I re-read this today">＋</button>
           </div>
         </div>
         ${notesHtml}${extraHtml}
         ${item.description ? `<div class="card-synopsis"><span class="card-synopsis-label">${isFf ? 'Summary' : 'Synopsis'}</span><p>${esc(item.description)}</p></div>` : ''}
-        ${item.url ? `<p class="card-extra"><a href="${item.url}" style="color:#6366f1">Open link ↗</a></p>` : ''}
+        ${item.url ? `<p class="card-extra"><button class="link-btn" data-open-url="${esc(item.url)}">Open link ↗</button></p>` : ''}
       </div>`;
   }
 
   const sub = isFf
-    ? `by <b>${item.author||'—'}</b>${item.fandom ? ' · '+item.fandom : ''}`
-    : `by <b>${item.author||'—'}</b>${item.genre ? ' · '+item.genre : ''}`;
+    ? `by <b>${esc(item.author||'—')}</b>${item.fandom ? ' · '+esc(item.fandom) : ''}`
+    : `by <b>${esc(item.author||'—')}</b>${item.genre ? ' · '+esc(item.genre) : ''}`;
 
   const [cc1, cc2] = folderGradient(item.id);
   const coverIcon = item.coverIcon || '';
   const coverIsUrl = coverIcon.startsWith('http');
+  const fallbackEmoji = isFf ? '✍️' : '📚';
   const coverInner = coverIsUrl
-    ? `<img class="card-cover-img" src="${esc(coverIcon)}" />`
-    : `<span class="card-cover-emoji">${coverIcon || (isFf ? '✍️' : '📚')}</span>`;
+    ? coverImgHtml('card-cover-img', coverIcon, fallbackEmoji)
+    : `<span class="card-cover-emoji">${esc(coverIcon) || fallbackEmoji}</span>`;
 
   // Books can be dragged onto a series folder card (or the "take out of series" drop zone) —
   // fanfiction entries have no series concept, so only book cards need to be draggable.
-  const dragBookAttrs = !isFf ? ` draggable="true" data-drag-item-id="${item.id}"` : '';
+  const dragBookAttrs = !isFf ? ` draggable="true" data-drag-item-id="${id}"` : '';
+  const hasLink = /^https?:\/\//i.test(item.url || '');
   return `
-    <div class="card" data-id="${item.id}"${dragBookAttrs}>
+    <div class="card${expanded ? ' is-expanded' : ''}" data-id="${id}"${dragBookAttrs}>
       <div class="card-top">
-        <div class="card-cover" data-expand="${item.id}" style="--c1:${cc1};--c2:${cc2}">
+        <div class="card-cover" data-expand="${id}" style="--c1:${cc1};--c2:${cc2}">
           ${coverInner}
-          <button class="cover-edit-btn" data-edit-item-icon="${item.id}" title="Change cover icon">✏️</button>
+          <button class="cover-edit-btn" data-edit-item-icon="${id}" title="Change cover icon">✏️</button>
         </div>
-        <div class="card-main" data-expand="${item.id}">
+        <div class="card-main" data-expand="${id}">
           <div class="card-title-row">
-            <span class="card-title">${item.title}</span>
+            <span class="card-title">${esc(item.title)}</span>
             ${badgeHtml(item.status)}
             ${item.oneshot ? '<span class="badge badge-oneshot">One-shot</span>' : ''}
             ${readCount > 1 ? `<span class="badge badge-reread" title="Read ${readCount} times">↻${readCount}</span>` : ''}
@@ -615,12 +736,12 @@ function cardHtml(item) {
           </div>
         </div>
         <div class="card-actions">
-          <button class="icon-btn${item.favorite ? ' fav-active' : ''}" data-toggle-fav="${item.id}" title="${item.favorite ? 'Remove from favorites' : 'Add to favorites'}">⭐</button>
-          ${item.url ? `<button class="icon-btn" data-open-url="${item.url}" title="Open link">🔗</button>` : ''}
-          ${!isFf && item.localFile ? `<button class="icon-btn" data-open-local="${esc(item.id)}" title="Open ${item.localFile.toLowerCase().endsWith('.epub')?'EPUB':'PDF'}">📖</button>` : ''}
-          ${isFf && /archiveofourown|fanfiction\.net|transformativeworks/.test(item.url||'') ? `<button class="icon-btn" data-refresh-words="${item.id}" title="Refresh word count from the link">↻</button>` : ''}
-          <button class="icon-btn" data-edit="${item.id}" title="Edit">✏️</button>
-          <button class="icon-btn danger" data-delete="${item.id}" title="Delete">🗑</button>
+          <button class="icon-btn${item.favorite ? ' fav-active' : ''}" data-toggle-fav="${id}" title="${item.favorite ? 'Remove from favorites' : 'Add to favorites'}">⭐</button>
+          ${hasLink ? `<button class="icon-btn" data-open-url="${esc(item.url)}" title="Open link">🔗</button>` : ''}
+          ${!isFf && item.localFile ? `<button class="icon-btn" data-open-local="${id}" title="Open ${item.localFile.toLowerCase().endsWith('.epub')?'EPUB':'PDF'}">📖</button>` : ''}
+          ${isFf && /archiveofourown|fanfiction\.net|transformativeworks/.test(item.url||'') ? `<button class="icon-btn" data-refresh-words="${id}" title="Refresh word count from the link">↻</button>` : ''}
+          <button class="icon-btn" data-edit="${id}" title="Edit">✏️</button>
+          <button class="icon-btn danger" data-delete="${id}" title="Delete">🗑</button>
         </div>
       </div>
       ${expandedHtml}
@@ -658,9 +779,9 @@ function modalHtml() {
         </div>` : ''}
 
         ${isFf ? `
-        <label class="field-label">Fic URL <span style="font-size:10px;font-weight:400;color:#9ca3af">(AO3 or FF.net)</span></label>
+        <label class="field-label">Fic URL <span class="fem-hint">(AO3 or FF.net)</span></label>
         <div class="fetch-row">
-          <input type="url" id="m-url" value="${item.url||''}" placeholder="https://archiveofourown.org/… or https://www.fanfiction.net/…" />
+          <input type="url" id="m-url" value="${esc(item.url||'')}" placeholder="https://archiveofourown.org/… or https://www.fanfiction.net/…" />
           <button class="btn btn-primary btn-sm" id="btn-fetch">Auto-fill ✦</button>
         </div>
         <div class="fetch-msg" id="fetch-msg"></div>
@@ -674,28 +795,28 @@ function modalHtml() {
         ${!isFf ? `
           <div class="ac-wrap">
             <div class="fetch-row">
-              <input type="text" id="m-title" value="${item.title||''}" placeholder="Title, author, ISBN, or paste a Goodreads/Amazon link…" />
+              <input type="text" id="m-title" value="${esc(item.title||'')}" placeholder="Title, author, ISBN, or paste a Goodreads/Amazon link…" />
               <button class="btn btn-primary btn-sm" id="btn-book-fetch">Auto-fill ✦</button>
             </div>
             <div class="field-suggest" id="sug-title"></div>
           </div>
           <div class="fetch-msg" id="book-fetch-msg"></div>
-        ` : `<div class="ac-wrap"><input type="text" id="m-title" value="${item.title||''}" placeholder="Title" /><div class="field-suggest" id="sug-title"></div></div>`}
+        ` : `<div class="ac-wrap"><input type="text" id="m-title" value="${esc(item.title||'')}" placeholder="Title" /><div class="field-suggest" id="sug-title"></div></div>`}
         <div class="dupe-warn" id="dupe-warning"></div>
 
         <label class="field-label">Author</label>
-        <div class="ac-wrap"><input type="text" id="m-author" value="${item.author||''}" placeholder="Author / username" /><div class="field-suggest" id="sug-author"></div></div>
+        <div class="ac-wrap"><input type="text" id="m-author" value="${esc(item.author||'')}" placeholder="Author / username" /><div class="field-suggest" id="sug-author"></div></div>
 
         <div class="field-row">
           ${isFf ? `
           <div class="ac-wrap">
             <label class="field-label">Fandom</label>
-            <input type="text" id="m-fandom" value="${item.fandom||''}" placeholder="e.g. Harry Potter" />
+            <input type="text" id="m-fandom" value="${esc(item.fandom||'')}" placeholder="e.g. Harry Potter" />
             <div class="field-suggest" id="sug-fandom"></div>
           </div>
           <div class="ac-wrap">
             <label class="field-label">Pairing</label>
-            <input type="text" id="m-pairing" value="${item.pairing||''}" placeholder="e.g. M/M or Harry/Ginny" />
+            <input type="text" id="m-pairing" value="${esc(item.pairing||'')}" placeholder="e.g. M/M or Harry/Ginny" />
             <div class="field-suggest" id="sug-pairing"></div>
           </div>
           <div style="grid-column:1 / -1">
@@ -704,12 +825,17 @@ function modalHtml() {
           </div>` : `
           <div class="ac-wrap">
             <label class="field-label">Genre</label>
-            <input type="text" id="m-genre" value="${item.genre||''}" placeholder="e.g. Romantasy" />
+            <input type="text" id="m-genre" value="${esc(item.genre||'')}" placeholder="e.g. Romantasy" />
             <div class="field-suggest" id="sug-genre"></div>
           </div>
           <div>
             <label class="field-label">Pages</label>
-            <input type="number" id="m-pages" value="${item.pages||''}" placeholder="e.g. 512" />
+            <input type="number" id="m-pages" min="0" value="${item.pages||''}" placeholder="e.g. 512" />
+          </div>
+          <div class="ac-wrap">
+            <label class="field-label">Series <span class="fem-hint">(optional — groups books under a series folder)</span></label>
+            <input type="text" id="m-series" value="${esc(item.series||'')}" placeholder="e.g. Fourth Wing" />
+            <div class="field-suggest" id="sug-series"></div>
           </div>
           <div style="grid-column:1 / -1">
             <label class="field-label">Linked ebook file</label>
@@ -729,18 +855,18 @@ function modalHtml() {
           <div>
             <label class="field-label">Word count</label>
             <div class="wc-row">
-              <input type="number" id="m-words" value="${item.words||''}" placeholder="e.g. 120000" />
+              <input type="number" id="m-words" min="0" value="${item.words||''}" placeholder="e.g. 120000" />
               ${isFf ? `<button type="button" class="btn btn-secondary btn-sm" id="btn-refresh-words" title="Refresh word count & kudos from the link (doesn't touch your other fields)">↻</button>` : ''}
             </div>
           </div>
           ${isFf ? `
           <div>
             <label class="field-label">Kudos / Hearts</label>
-            <input type="number" id="m-hearts" value="${item.hearts||''}" placeholder="e.g. 5000" />
+            <input type="number" id="m-hearts" min="0" value="${item.hearts||''}" placeholder="e.g. 5000" />
           </div>` : `
           <div>
             <label class="field-label">Section</label>
-            <input type="text" id="m-section" value="${item.section||''}" placeholder="e.g. Romantasy" />
+            <input type="text" id="m-section" value="${esc(item.section||'')}" placeholder="e.g. Romantasy" />
           </div>`}
         </div>
 
@@ -772,13 +898,13 @@ function modalHtml() {
         <div class="tags-display" id="tags-display">${tags}</div>
 
         <label class="field-label">Times read</label>
-        <input type="number" id="m-readcount" min="0" value="${item.readCount ?? (item.status === 'Finished' ? 1 : 0)}" style="width:100px" />
+        <input type="number" id="m-readcount" min="0" value="${Array.isArray(item.readDates) ? item.readDates.length : (item.readCount ?? (item.status === 'Finished' ? 1 : 0))}" style="width:100px" />
 
-        <label class="field-label">Date finished <span style="font-weight:400;text-transform:none;font-size:10px">(optional)</span></label>
-        <input type="date" id="m-finished" value="${item.finishedAt ? item.finishedAt.slice(0,10) : (!isEdit && isFf ? new Date().toISOString().slice(0,10) : '')}" />
+        <label class="field-label">Date finished <span class="fem-hint">(optional)</span></label>
+        <input type="date" id="m-finished" value="${item.finishedAt ? toDateInputValue(item.finishedAt) : (!isEdit && (item.status || 'TBR') === 'Finished' ? toDateInputValue(new Date().toISOString()) : '')}" />
 
         <label class="field-label">Notes</label>
-        <textarea id="m-notes" placeholder="Personal thoughts, read again?">${item.notes||''}</textarea>
+        <textarea id="m-notes" placeholder="Personal thoughts, read again?">${esc(item.notes||'')}</textarea>
 
         <div class="modal-footer">
           <button class="btn btn-secondary" id="modal-cancel">Cancel</button>
@@ -1011,9 +1137,10 @@ function statsViewHtml() {
 function mySpaceCard(x) {
   const [c1, c2] = folderGradient(x.id);
   const coverIsUrl = (x.coverIcon || '').startsWith('http');
+  const fallback = x.type === 'book' ? '📚' : '✍️';
   const cover = coverIsUrl
-    ? `<img class="ms-cover-img" src="${esc(x.coverIcon)}" />`
-    : `<span class="ms-cover-emoji">${x.coverIcon || '✍️'}</span>`;
+    ? coverImgHtml('ms-cover-img', x.coverIcon, fallback)
+    : `<span class="ms-cover-emoji">${esc(x.coverIcon) || fallback}</span>`;
   const tags = [];
   if (x.status === 'Reading' && x.readingStartedAt) {
     tags.push(`<span class="ms-badge">▶ ${fmtDateShort(x.readingStartedAt)} · ${daysBetween(x.readingStartedAt, new Date().toISOString())}d</span>`);
@@ -1078,8 +1205,8 @@ function mySpaceShelfCover(x) {
   const [c1, c2] = folderGradient(x.id);
   const coverIsUrl = (x.coverIcon || '').startsWith('http');
   const cover = coverIsUrl
-    ? `<img class="ms-shelf-img" src="${esc(x.coverIcon)}" />`
-    : `<span class="ms-shelf-emoji">${x.coverIcon || '📚'}</span>`;
+    ? coverImgHtml('ms-shelf-img', x.coverIcon, '📚')
+    : `<span class="ms-shelf-emoji">${esc(x.coverIcon) || '📚'}</span>`;
   return `<div class="ms-shelf-book" draggable="true" data-ms-id="${esc(x.id)}" title="${esc(x.title || '')}">
     <div class="ms-shelf-cover" style="background:linear-gradient(135deg,${c1},${c2})">${cover}<button class="ms-cover-edit cover-edit-btn" data-edit-item-icon="${esc(x.id)}" draggable="false" title="Change cover">✏️</button></div>
   </div>`;
@@ -1320,9 +1447,10 @@ function folderGradient(key) {
 function calItemIconHtml(item, date) {
   const [c1, c2] = folderGradient(item.id || item.title || '');
   const coverIsUrl = (item.coverIcon || '').startsWith('http');
+  const fallback = item.type === 'ff' ? '✍️' : '📚';
   const cover = coverIsUrl
-    ? `<img class="cal-item-img" src="${esc(item.coverIcon)}" />`
-    : `<span class="cal-item-emoji">${item.coverIcon || (item.type === 'ff' ? '✍️' : '📚')}</span>`;
+    ? coverImgHtml('cal-item-img', item.coverIcon, fallback)
+    : `<span class="cal-item-emoji">${esc(item.coverIcon) || fallback}</span>`;
   return `<div class="cal-item-icon" draggable="true" style="background:linear-gradient(135deg,${c1},${c2})" data-cal-title="${esc(item.title || 'Untitled')}" data-edit="${esc(item.id)}" data-cal-item-id="${esc(item.id)}" data-cal-date="${esc(date || '')}">${cover}</div>`;
 }
 
@@ -1336,7 +1464,7 @@ function folderCard(navPath, defaultEmoji, rawLabel, count) {
   const nav = JSON.stringify(navPath).replace(/"/g,'&quot;');
   const editKey = key.replace(/"/g,'&quot;');
   const isUrl = icon.startsWith('http');
-  const iconHtml = isUrl ? `<img class="fc-img" src="${esc(icon)}" />` : `<span class="fc-emoji">${icon}</span>`;
+  const iconHtml = isUrl ? coverImgHtml('fc-img', icon, defaultEmoji) : `<span class="fc-emoji">${esc(icon)}</span>`;
   // Draggable so tag/group folders can be dropped onto one another to nest — only real
   // tag-level ff folders qualify (not All/Untagged, not fandom tiles, not book genres).
   const isDraggable = navPath.length === 3 && navPath[0] === 'ff' && !['__all__','__untagged__'].includes(navPath[2]);
@@ -1485,6 +1613,7 @@ const TAG_CLEANUP_THRESHOLD = 0.2; // deliberately low/sensitive — a single so
 
 function autoGroupSimilarTags() {
   let changed = 0;
+  const before = JSON.stringify(state.folderConfig);
   const byFandom = {};
   state.items.forEach(x => {
     if (x.type !== 'ff') return;
@@ -1536,8 +1665,15 @@ function autoGroupSimilarTags() {
   });
 
   if (changed) {
+    // Snapshot BEFORE persisting so ⌘Z (or the toast's Undo) can put the folders back exactly as
+    // they were — an automatic reshuffle with a deliberately low match threshold must be reversible.
+    state.folderUndoStack.push({ type: 'folder', data: before });
+    if (state.folderUndoStack.length > FOLDER_UNDO_LIMIT) state.folderUndoStack.shift();
     saveFolderConfig();
-    showToast(`🧹 Auto-sorted ${changed} tag${changed === 1 ? '' : 's'} into existing categories`, 'info');
+    showToast(`🧹 Auto-sorted ${changed} tag${changed === 1 ? '' : 's'} into existing categories`, 'info', {
+      duration: 9000,
+      action: { label: 'Undo', onClick: undoFolderChange },
+    });
   }
   return changed;
 }
@@ -1688,7 +1824,7 @@ function folderEditModalHtml() {
   const isUrl = icon.startsWith('http');
   const preview = isUrl
     ? `<img src="${esc(icon)}" style="width:100%;height:100%;object-fit:cover;border-radius:12px" />`
-    : `<span style="font-size:38px;line-height:1">${icon || '📁'}</span>`;
+    : `<span style="font-size:38px;line-height:1">${esc(icon) || '📁'}</span>`;
   return `<div class="folder-edit-backdrop" id="folder-edit-backdrop">
     <div class="folder-edit-modal">
       <div class="fem-header">
@@ -1763,7 +1899,7 @@ function itemIconModalHtml() {
   const [c1, c2] = folderGradient(item.id);
   const preview = isUrl
     ? `<img src="${esc(icon)}" style="width:100%;height:100%;object-fit:cover;border-radius:10px" />`
-    : `<span style="font-size:38px;line-height:1">${icon || (isFf?'✍️':'📚')}</span>`;
+    : `<span style="font-size:38px;line-height:1">${esc(icon) || (isFf?'✍️':'📚')}</span>`;
   return `<div class="folder-edit-backdrop" id="item-icon-backdrop">
     <div class="folder-edit-modal">
       <div class="fem-header">
@@ -1852,8 +1988,8 @@ function moodPickerModalHtml() {
   const [c1, c2] = folderGradient(book.id);
   const coverIsUrl = (book.coverIcon || '').startsWith('http');
   const cover = coverIsUrl
-    ? `<img class="mood-cover-img" src="${esc(book.coverIcon)}" />`
-    : `<span class="mood-cover-emoji">${book.coverIcon || '📚'}</span>`;
+    ? coverImgHtml('mood-cover-img', book.coverIcon, '📚')
+    : `<span class="mood-cover-emoji">${esc(book.coverIcon) || '📚'}</span>`;
   const wasFallback = state.moodPickerFallback;
 
   return `<div class="folder-edit-backdrop" id="mood-picker-backdrop">
@@ -1918,9 +2054,13 @@ function pruneEmptyFolderPath() {
     }
     if (type === 'book') {
       if (!sub) return 1;
-      return (sub==='__none__'
+      const inGenre = sub==='__none__'
         ? state.items.filter(x=>x.type==='book'&&!x.genre)
-        : state.items.filter(x=>x.type==='book'&&(x.genre||'').split(' / ')[0].trim()===sub)).length;
+        : state.items.filter(x=>x.type==='book'&&(x.genre||'').split(' / ')[0].trim()===sub);
+      if (!tag) return inGenre.length;
+      // A series folder created ahead of time (empty, via the ＋ tile) is allowed to stay open.
+      if (state.folderConfig[`book|${sub}|${tag}`]?.isSeries) return 1;
+      return inGenre.filter(x=>x.series===tag).length;
     }
     return 1;
   };
@@ -2142,19 +2282,7 @@ function listViewContentHtml() {
     return state.filterStatus === key ? `active-${map[key]||''}` : '';
   };
 
-  const fpill = (label, active, action) =>
-    `<span class="fpill${active?' active':''}" data-${action}>${label}</span>`;
-
-  // Fandom/section quick filters
-  const fandomPills = fandoms.slice(0,12).map(f =>
-    fpill(f, state.filterFandom===f, `fandom="${f}"`)
-  ).join('');
-  const sectionPills = sections.map(s =>
-    fpill(s, state.filterSection===s, `section="${s.replace(/"/g,'&quot;')}"`)
-  ).join('');
-  const genrePills = getGenres().map(g =>
-    fpill(g, state.filterGenre===g, `genre="${g.replace(/"/g,'&quot;')}"`)
-  ).join('');
+  const genres = getGenres();
 
   return `
     <div class="stat-row">
@@ -2178,7 +2306,7 @@ function listViewContentHtml() {
     </div>
 
     <div class="controls">
-      <input id="search-input" type="text" placeholder="Search title, author, fandom, tag…" value="${state.search}" />
+      <input id="search-input" type="text" placeholder="Search title, author, fandom, tag…" value="${esc(state.search)}" autocomplete="off" spellcheck="false" />
       <select class="filter-select" id="sort-select">
         <option value="added"${state.sortBy==='added'?' selected':''}>Recent (last read/added)</option>
         <option value="title"${state.sortBy==='title'?' selected':''}>A → Z</option>
@@ -2198,15 +2326,15 @@ function listViewContentHtml() {
           <div class="dd-item${state.filterType==='ff'?' sel':''}" data-type="ff">All fanfiction</div>
           <div class="dd-item${state.filterType==='oneshot'?' sel':''}" data-type="oneshot">📄 One-shots</div>
           ${fandoms.length ? '<div class="dd-sep"></div>' : ''}
-          ${fandoms.map(f => `<div class="dd-item${state.filterFandom===f?' sel':''}" data-fandom="${esc(f).replace(/"/g,'&quot;')}">${esc(f)}</div>`).join('')}
+          ${fandoms.map(f => `<div class="dd-item${state.filterFandom===f?' sel':''}" data-fandom="${esc(f)}">${esc(f)}</div>`).join('')}
         </div>
       </div>
       <div class="dd${(state.filterType==='book'||state.filterGenre!=='all')?' dd-on':''}">
         <button class="dd-btn">📚 Books <span class="dd-chev">▾</span></button>
         <div class="dd-menu">
           <div class="dd-item${state.filterType==='book'?' sel':''}" data-type="book">All books</div>
-          ${getGenres().length ? '<div class="dd-sep"></div>' : ''}
-          ${getGenres().map(g => `<div class="dd-item${state.filterGenre===g?' sel':''}" data-genre="${esc(g).replace(/"/g,'&quot;')}">${esc(g)}</div>`).join('')}
+          ${genres.length ? '<div class="dd-sep"></div>' : ''}
+          ${genres.map(g => `<div class="dd-item${state.filterGenre===g?' sel':''}" data-genre="${esc(g)}">${esc(g)}</div>`).join('')}
         </div>
       </div>
     </div>
@@ -2215,7 +2343,7 @@ function listViewContentHtml() {
       const fandomTags = getTagsForFandom();
       if (!fandomTags.length) return '';
       const opts = fandomTags.map(t =>
-        `<option value="${t}"${state.filterTag === t ? ' selected' : ''}>${t}</option>`
+        `<option value="${esc(t)}"${state.filterTag === t ? ' selected' : ''}>${esc(t)}</option>`
       ).join('');
       return `<div class="tag-filter-row">
         <span class="tag-filter-label">Tag:</span>
@@ -2226,7 +2354,7 @@ function listViewContentHtml() {
       </div>`;
     })() : ''}
 
-    <div id="results-meta">${filtered.length} ${filtered.length===1?'entry':'entries'}${state.search ? ` matching "<b>${state.search}</b>"` : ''}</div>
+    <div id="results-meta">${filtered.length} ${filtered.length===1?'entry':'entries'}${state.search ? ` matching "<b>${esc(state.search)}</b>"` : ''}</div>
 
     <div id="list">
       ${filtered.length === 0 ? `
@@ -2238,9 +2366,34 @@ function listViewContentHtml() {
   `;
 }
 
+// Shown instead of the library when the data file exists but can't be parsed. Nothing is
+// written to disk while this is up, so the broken file (and its .bak / dated snapshots in the
+// same folder) stay exactly as they are for recovery.
+function recoveryPanelHtml() {
+  const err = state.loadError || {};
+  return `<div id="recovery-panel">
+    <div class="recovery-card">
+      <div class="recovery-icon">🛟</div>
+      <h2>Your library file couldn't be read</h2>
+      <p>The app found <code>${esc(err.path || 'library-data.json')}</code> but it isn't valid JSON, and no readable backup copy was found next to it.</p>
+      <p>Nothing has been changed or overwritten. Your entries are still in that file — it most likely just needs the last few characters repaired, or you can restore <code>library-data.json.bak</code> or a dated copy from the <code>backups</code> folder.</p>
+      <div class="recovery-actions">
+        <button class="btn btn-primary" id="recovery-open-folder">📁 Open data folder</button>
+        <button class="btn btn-secondary" id="recovery-retry">↻ Try again</button>
+      </div>
+    </div>
+  </div>`;
+}
+
 // ── Render ────────────────────────────────────────────────────────────────────
 function render() {
   document.querySelectorAll('.cal-tooltip').forEach(t => t.remove()); // avoid an orphaned tooltip surviving a re-render mid-hover
+  if (state.loadError) {
+    document.getElementById('app').innerHTML = recoveryPanelHtml();
+    document.getElementById('recovery-open-folder')?.addEventListener('click', () => window.api.openDataFolder());
+    document.getElementById('recovery-retry')?.addEventListener('click', () => location.reload());
+    return;
+  }
   const scrollable = document.getElementById('list') || document.getElementById('stats-view');
   const scrollTop = scrollable ? scrollable.scrollTop : 0;
   const folderViewEl = document.getElementById('folder-view');
@@ -2250,7 +2403,7 @@ function render() {
   const titlebarHtml = `
     <div id="titlebar">
       <div>
-        <div id="titlebar-title">My Library</div>
+        <div id="titlebar-title">My Library${state.readOnly ? ' <span class="badge badge-Dropped" title="Nothing is being saved to disk">read-only</span>' : ''}</div>
         <div class="subtitle">${stats.ff} fics · ${stats.books} books · ${stats.totalWords.toLocaleString()} words read</div>
       </div>
       <div id="titlebar-actions">
@@ -2271,8 +2424,19 @@ function render() {
       </div>
     </div>`;
 
+  // A persistent (dismissable) notice beats a toast here — "your main file was damaged and this
+  // is a restored copy" must not be pushed off-screen by the next routine toast.
+  const noticeHtml = state.recoveredFrom ? `
+    <div class="notice-bar" role="alert">
+      <span class="notice-icon">🛟</span>
+      <span class="notice-msg">Your main library file was missing or unreadable, so this library was restored from <b>${esc(state.recoveredFrom)}</b>. Everything you change from now on is saved normally. If anything looks out of date, check the <b>backups</b> folder.</span>
+      <button class="btn btn-secondary btn-sm" id="notice-open-folder">📁 Open folder</button>
+      <button class="notice-close" id="notice-dismiss" title="Dismiss">×</button>
+    </div>` : '';
+  const titlebarHtmlWithNotice = titlebarHtml + noticeHtml;
+
   if (state.view === 'stats') {
-    document.getElementById('app').innerHTML = titlebarHtml + statsViewHtml() + (state.modalOpen ? modalHtml() : '') + settingsModalHtml() + calMoveModalHtml();
+    document.getElementById('app').innerHTML = titlebarHtmlWithNotice + statsViewHtml() + (state.modalOpen ? modalHtml() : '') + settingsModalHtml() + calMoveModalHtml();
     const newScrollable = document.getElementById('stats-view');
     if (newScrollable) newScrollable.scrollTop = scrollTop;
     bindEvents();
@@ -2281,7 +2445,7 @@ function render() {
 
   if (state.viewMode === 'folder') {
     const inHp = state.folderPath[0] === 'ff' && state.folderPath[1] === 'Harry Potter - J. K. Rowling';
-    document.getElementById('app').innerHTML = titlebarHtml + folderViewHtml() + folderEditModalHtml() + folderCreateModalHtml() + itemIconModalHtml() + (state.modalOpen ? modalHtml() : '') + settingsModalHtml() + (inHp ? hpCatHtml() : '');
+    document.getElementById('app').innerHTML = titlebarHtmlWithNotice + folderViewHtml() + folderEditModalHtml() + folderCreateModalHtml() + itemIconModalHtml() + (state.modalOpen ? modalHtml() : '') + settingsModalHtml() + (inHp ? hpCatHtml() : '');
     const newFolderView = document.getElementById('folder-view');
     if (newFolderView) newFolderView.scrollTop = folderScrollTop;
     bindEvents();
@@ -2291,7 +2455,7 @@ function render() {
 
   if (state.viewMode === 'myspace') {
     const msTab = state.mySpaceTab === 'books' ? 'books' : 'ff';
-    document.getElementById('app').innerHTML = titlebarHtml +
+    document.getElementById('app').innerHTML = titlebarHtmlWithNotice +
       `<div id="myspace-page">
         <div class="ms-tabs">
           <button class="ms-tab${msTab==='ff'?' active':''}" data-ms-tab="ff">📖 Fanfiction</button>
@@ -2304,7 +2468,7 @@ function render() {
     return;
   }
 
-  document.getElementById('app').innerHTML = titlebarHtml + listViewContentHtml() + `
+  document.getElementById('app').innerHTML = titlebarHtmlWithNotice + listViewContentHtml() + `
     ${state.modalOpen ? modalHtml() : ''}
     ${itemIconModalHtml()}
     ${settingsModalHtml()}
@@ -2331,14 +2495,20 @@ function snapshotModalForm() {
   const author  = v('m-author');  if (author  !== null) patch.author  = author.trim();
   const fandom  = v('m-fandom');  if (fandom  !== null) patch.fandom  = fandom.trim();
   const genre   = v('m-genre');   if (genre   !== null) patch.genre   = genre.trim();
+  const series  = v('m-series');  if (series  !== null) patch.series  = series.trim() || undefined;
   const section = v('m-section'); if (section !== null) patch.section = section.trim();
   const pairing = v('m-pairing'); if (pairing !== null) patch.pairing = pairing.trim();
   const notes   = v('m-notes');   if (notes   !== null) patch.notes   = notes.trim();
+  const desc    = v('m-description'); if (desc !== null) patch.description = desc.trim();
   const status  = v('m-status');  if (status  !== null) patch.status  = status;
   const rating  = v('m-rating');  if (rating  !== null) patch.rating  = rating;
-  const ws = v('m-words');     if (ws && ws.trim())  patch.words     = parseInt(ws)  || base.words;
-  const hs = v('m-hearts');    if (hs && hs.trim())  patch.hearts    = parseInt(hs)  || base.hearts;
-  const ps = v('m-pages');     if (ps && ps.trim())  patch.pages     = parseInt(ps)  || base.pages;
+  const fin     = v('m-finished'); if (fin    !== null) patch.finishedAt = fin ? new Date(fin + 'T12:00:00').toISOString() : null;
+  const lit = document.querySelectorAll('#star-picker span.lit').length;
+  if (document.getElementById('star-picker')) patch.userRating = lit;
+  // An emptied number field means "clear it", not "keep the old value".
+  const ws = v('m-words');     if (ws !== null) patch.words  = ws.trim()  ? (parseInt(ws)  || null) : null;
+  const hs = v('m-hearts');    if (hs !== null) patch.hearts = hs.trim()  ? (parseInt(hs)  || null) : null;
+  const ps = v('m-pages');     if (ps !== null) patch.pages  = ps.trim()  ? (parseInt(ps)  || null) : null;
   const rc = v('m-readcount');
   if (rc !== null) {
     const n = Math.max(0, parseInt(rc) || 0);
@@ -2351,16 +2521,31 @@ function snapshotModalForm() {
   state.editItem = { ...base, ...patch };
 }
 
+// Re-rendering ~1000 cards on every keystroke made typing in the search box lag. Debounce the
+// render (state updates immediately, the DOM catches up once typing pauses) and restore the caret
+// in the recreated input so it never feels like focus was stolen.
+let _searchTimer = null;
+function bindDebouncedSearch(inputId, apply) {
+  const el = document.getElementById(inputId);
+  if (!el) return;
+  el.addEventListener('input', e => {
+    apply(e.target.value);
+    const cursorPos = e.target.selectionStart;
+    clearTimeout(_searchTimer);
+    _searchTimer = setTimeout(() => {
+      render();
+      const newEl = document.getElementById(inputId);
+      if (newEl && document.activeElement !== newEl) { newEl.focus(); try { newEl.setSelectionRange(cursorPos, cursorPos); } catch {} }
+    }, 140);
+  });
+}
+
 function bindEvents() {
   // Search
-  const searchEl = document.getElementById('search-input');
-  if (searchEl) searchEl.addEventListener('input', e => {
-    const cursorPos = e.target.selectionStart;
-    state.search = e.target.value;
-    render();
-    const newEl = document.getElementById('search-input');
-    if (newEl) { newEl.focus(); newEl.setSelectionRange(cursorPos, cursorPos); }
-  });
+  document.getElementById('notice-dismiss')?.addEventListener('click', () => { state.recoveredFrom = null; render(); });
+  document.getElementById('notice-open-folder')?.addEventListener('click', () => window.api.openDataFolder());
+
+  bindDebouncedSearch('search-input', v => { state.search = v; });
 
   // Sort
   const sortEl = document.getElementById('sort-select');
@@ -2438,15 +2623,7 @@ function bindEvents() {
   });
 
   // Folder search & sort
-  const folderSearchEl = document.getElementById('folder-search');
-  if (folderSearchEl) {
-    folderSearchEl.addEventListener('input', e => {
-      state.folderSearch = e.target.value;
-      render();
-      const newEl = document.getElementById('folder-search');
-      if (newEl) { newEl.focus(); newEl.setSelectionRange(e.target.selectionStart, e.target.selectionStart); }
-    });
-  }
+  bindDebouncedSearch('folder-search', v => { state.folderSearch = v; });
   const folderSortEl = document.getElementById('folder-sort');
   if (folderSortEl) folderSortEl.addEventListener('change', e => { state.folderSortBy = e.target.value; render(); });
 
@@ -2597,8 +2774,8 @@ function bindEvents() {
       if (!preview) return;
       const isUrl = val.startsWith('http');
       preview.innerHTML = isUrl
-        ? `<img src="${val}" style="width:100%;height:100%;object-fit:cover;border-radius:12px" />`
-        : `<span style="font-size:38px;line-height:1">${val || '📁'}</span>`;
+        ? `<img src="${esc(val)}" style="width:100%;height:100%;object-fit:cover;border-radius:12px" />`
+        : `<span style="font-size:38px;line-height:1">${esc(val) || '📁'}</span>`;
     });
   }
   if (febSave) {
@@ -2628,10 +2805,15 @@ function bindEvents() {
   }
   const febDelete = document.getElementById('fem-delete');
   if (febDelete) {
-    febDelete.addEventListener('click', () => {
+    febDelete.addEventListener('click', async () => {
       const key = state.editingFolder;
       if (!key) return;
-      if (!confirm('Delete this folder? The items inside keep their tags — only this custom folder is removed.')) return;
+      const ok = await confirmDialog({
+        title: 'Delete this folder?',
+        message: 'The items inside keep their tags — only this custom folder is removed. ⌘Z undoes it.',
+        confirmLabel: 'Delete folder', danger: true,
+      });
+      if (!ok || state.editingFolder !== key) return;
       pushFolderUndo();
       delete state.folderConfig[key];
       saveFolderConfig();
@@ -2708,8 +2890,8 @@ function bindEvents() {
       const item = state.items.find(x => x.id === state.editingItemIcon);
       const isFf = item?.type === 'ff';
       preview.innerHTML = isUrl
-        ? `<img src="${val}" style="width:100%;height:100%;object-fit:cover;border-radius:10px" />`
-        : `<span style="font-size:38px;line-height:1">${val || (isFf?'✍️':'📚')}</span>`;
+        ? `<img src="${esc(val)}" style="width:100%;height:100%;object-fit:cover;border-radius:10px" />`
+        : `<span style="font-size:38px;line-height:1">${esc(val) || (isFf?'✍️':'📚')}</span>`;
     });
   }
   if (iimClear) {
@@ -3022,24 +3204,45 @@ function bindEvents() {
     });
   });
 
-  // Delete
+  // Delete — confirm in-app, then remove with a 7-second Undo (the tombstone is dropped again
+  // on undo so a later sync can't treat the restored entry as deleted).
   document.querySelectorAll('[data-delete]').forEach(el => {
-    el.addEventListener('click', e => {
+    el.addEventListener('click', async e => {
       e.stopPropagation();
-      if (confirm('Remove this entry?')) {
-        const id = el.dataset.delete;
-        state.items = state.items.filter(x => x.id !== id);
-        state.deletedIds = { ...state.deletedIds, [id]: new Date().toISOString() };
-        saveData(); render();
-      }
+      const id = el.dataset.delete;
+      const item = state.items.find(x => x.id === id);
+      if (!item) return;
+      const ok = await confirmDialog({
+        title: 'Delete this entry?',
+        message: `“${item.title || 'Untitled'}” will be removed from your library.`,
+        confirmLabel: 'Delete', danger: true,
+      });
+      if (!ok) return;
+      const idx = state.items.indexOf(item);
+      state.items = state.items.filter(x => x.id !== id);
+      state.deletedIds = { ...state.deletedIds, [id]: new Date().toISOString() };
+      saveData(); render();
+      showToast(`Deleted “${item.title || 'Untitled'}”`, 'info', {
+        duration: 7000,
+        action: { label: 'Undo', onClick: () => {
+          if (state.items.some(x => x.id === id)) return;
+          const restored = [...state.items];
+          restored.splice(Math.min(idx, restored.length), 0, item);
+          state.items = restored;
+          const { [id]: _dropped, ...rest } = state.deletedIds;
+          state.deletedIds = rest;
+          saveData(); render();
+        } },
+      });
     });
   });
 
   // Open URL
   document.querySelectorAll('[data-open-url]').forEach(el => {
-    el.addEventListener('click', e => {
+    el.addEventListener('click', async e => {
       e.stopPropagation();
-      window.api.openExternal(el.dataset.openUrl);
+      const res = await window.api.openExternal(el.dataset.openUrl);
+      if (res?.error) showToast(res.error, 'error');
     });
   });
 
@@ -3078,9 +3281,14 @@ function bindEvents() {
       const status = el.dataset.setStatus;
       state.items = state.items.map(x => {
         if (x.id !== id) return x;
-        const update = { ...x, status, _modAt: new Date().toISOString() };
-        if (status === 'Finished' && !x.finishedAt) update.finishedAt = new Date().toISOString();
-        if (status === 'Finished' && !(x.readCount > 0)) update.readCount = 1;
+        const now = new Date().toISOString();
+        const update = { ...x, status, _modAt: now };
+        if (status === 'Finished') {
+          if (!x.finishedAt) update.finishedAt = now;
+          // Finished means "read at least once" — and readDates is what the stats trust, so an
+          // empty list must be filled in, not just readCount bumped (which left "Read 0 times").
+          if (!(timesRead(x) > 0)) { update.readDates = [update.finishedAt]; update.readCount = 1; }
+        }
         return update;
       });
       saveData(); render();
@@ -3284,6 +3492,7 @@ function bindEvents() {
   attachAutocomplete('m-fandom', 'sug-fandom', distinctVals('fandom'));
   attachAutocomplete('m-author', 'sug-author', distinctVals('author'));
   attachAutocomplete('m-title',  'sug-title',  distinctVals('title'));
+  attachAutocomplete('m-series', 'sug-series', distinctVals('series'));
   // Pairing suggestions pool both past Pairing values (M/M, F/F…) and ship-name tags already in use.
   const shipTagPool = [...new Set(state.items.flatMap(x => x.tags || []).filter(isShipPairing))];
   attachAutocomplete('m-pairing', 'sug-pairing', [...new Set([...distinctVals('pairing'), ...shipTagPool])].sort((a,b)=>a.localeCompare(b)));
@@ -3421,13 +3630,25 @@ function bindEvents() {
   }
 
   // Submit
-  document.getElementById('modal-submit')?.addEventListener('click', () => {
-    const title = document.getElementById('m-title')?.value?.trim();
-    if (!title) { alert('Title is required.'); return; }
+  document.getElementById('modal-submit')?.addEventListener('click', async () => {
+    const titleInput = document.getElementById('m-title');
+    const title = titleInput?.value?.trim();
+    if (!title) {
+      showToast('A title is required.', 'error');
+      titleInput?.focus(); titleInput?.classList.add('field-invalid');
+      titleInput?.addEventListener('input', () => titleInput.classList.remove('field-invalid'), { once: true });
+      return;
+    }
     if (!state.editItem?.id) {
-      const dupe = state.items.find(x => x.title.toLowerCase().trim() === title.toLowerCase().trim());
+      const dupe = state.items.find(x => norm(x.title) === norm(title));
       if (dupe) {
-        if (!confirm(`"${title}" is already in your library (${dupe.type === 'ff' ? 'fanfiction' : 'book'}, ${dupe.status}). Add it anyway?`)) return;
+        const ok = await confirmDialog({
+          title: 'Already in your library',
+          message: `“${title}” is already saved as a ${dupe.type === 'ff' ? 'fanfiction' : 'book'} (${dupe.status}). Add it again anyway?`,
+          confirmLabel: 'Add anyway',
+        });
+        if (!ok) return;
+        if (!state.modalOpen) return; // the modal was closed while the dialog was up
       }
     }
 
@@ -3494,6 +3715,7 @@ function bindEvents() {
       author: document.getElementById('m-author')?.value?.trim() || '',
       fandom: isFf ? (document.getElementById('m-fandom')?.value?.trim() || '') : '',
       genre: !isFf ? normalizeGenre(document.getElementById('m-genre')?.value) : '',
+      series: !isFf ? (document.getElementById('m-series')?.value?.trim() || undefined) : undefined,
       section: !isFf ? (document.getElementById('m-section')?.value?.trim() || state.editItem?.section || '') : '',
       pairing,
       rating: isFf ? (document.getElementById('m-rating')?.value || '') : '',
@@ -3510,7 +3732,7 @@ function bindEvents() {
       finishedAt,
       readCount,
       readDates,
-      _addedAt: state.editItem?._addedAt ?? state.items.length,
+      _addedAt: state.editItem?._addedAt ?? nextAddedAt(),
       _modAt: new Date().toISOString(),
     };
 
@@ -3520,47 +3742,79 @@ function bindEvents() {
 
     state.modalOpen = false; state.editItem = null;
     saveData(); render();
+    showToast(idx >= 0 ? 'Changes saved ✓' : `Added “${item.title}” ✓`, 'success', { duration: 2500 });
   });
 }
 
 // ── Toast notifications ───────────────────────────────────────────────────────
-function showToast(message, type = 'info') {
-  // Remove any existing toast
+// showToast(message, type, { duration, action: { label, onClick } })
+// Styled in CSS (.toast); wraps long messages instead of running off-screen; an optional action
+// button (used for Undo) keeps the toast up until it's clicked or the timer runs out.
+let _toastTimer = null;
+function showToast(message, type = 'info', opts = {}) {
   document.getElementById('toast')?.remove();
+  clearTimeout(_toastTimer);
 
-  const colors = {
-    info:    { bg: '#1e1e3c', color: '#fff' },
-    success: { bg: '#065f46', color: '#fff' },
-    error:   { bg: '#7f1d1d', color: '#fff' },
-    loading: { bg: '#1e1e3c', color: '#fff' },
-  };
-  const c = colors[type] || colors.info;
-
+  const icon = { loading: '⏳', success: '✅', error: '❌', info: 'ℹ️' }[type] || 'ℹ️';
   const toast = document.createElement('div');
   toast.id = 'toast';
-  toast.innerHTML = `
-    <span style="font-size:16px">${type === 'loading' ? '⏳' : type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'}</span>
-    <span>${message}</span>
-  `;
-  Object.assign(toast.style, {
-    position: 'fixed', bottom: '28px', left: '50%', transform: 'translateX(-50%)',
-    background: c.bg, color: c.color, padding: '12px 22px', borderRadius: '12px',
-    fontSize: '14px', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '10px',
-    boxShadow: '0 8px 32px rgba(0,0,0,0.25)', zIndex: '9999',
-    animation: 'fadeInUp 0.2s ease', whiteSpace: 'nowrap',
-  });
-
-  // Add animation keyframes once
-  if (!document.getElementById('toast-style')) {
-    const style = document.createElement('style');
-    style.id = 'toast-style';
-    style.textContent = `@keyframes fadeInUp { from { opacity:0; transform:translateX(-50%) translateY(10px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }`;
-    document.head.appendChild(style);
+  toast.className = `toast toast-${type}`;
+  toast.setAttribute('role', 'status');
+  toast.innerHTML = `<span class="toast-icon">${icon}</span><span class="toast-msg">${message}</span>${opts.action ? `<button class="toast-action" type="button">${esc(opts.action.label)}</button>` : ''}`;
+  if (opts.action) {
+    toast.querySelector('.toast-action').addEventListener('click', () => {
+      toast.remove(); clearTimeout(_toastTimer);
+      try { opts.action.onClick(); } catch (e) { console.error(e); }
+    });
   }
-
   document.body.appendChild(toast);
-  if (type !== 'loading') setTimeout(() => toast.remove(), 4000);
+  const duration = opts.duration ?? (type === 'loading' ? 0 : 4000);
+  if (duration > 0) {
+    _toastTimer = setTimeout(() => {
+      toast.classList.add('toast-out');
+      setTimeout(() => toast.remove(), 220);
+    }, duration);
+  }
   return toast;
+}
+
+// ── In-app confirm dialog (replaces the OS `confirm()` sheet) ─────────────────
+// Returns a Promise<boolean>. Enter confirms, Escape cancels, clicking the backdrop cancels.
+function confirmDialog({ title, message, confirmLabel = 'OK', cancelLabel = 'Cancel', danger = false }) {
+  return new Promise(resolve => {
+    document.getElementById('confirm-backdrop')?.remove();
+    const wrap = document.createElement('div');
+    wrap.id = 'confirm-backdrop';
+    wrap.className = 'folder-edit-backdrop confirm-backdrop';
+    wrap.innerHTML = `
+      <div class="folder-edit-modal confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+        <div class="confirm-body">
+          <div class="confirm-title" id="confirm-title">${esc(title)}</div>
+          ${message ? `<p class="confirm-msg">${esc(message)}</p>` : ''}
+        </div>
+        <div class="modal-footer confirm-footer">
+          <button class="btn btn-secondary" data-confirm="0">${esc(cancelLabel)}</button>
+          <button class="btn ${danger ? 'btn-danger' : 'btn-primary'}" data-confirm="1">${esc(confirmLabel)}</button>
+        </div>
+      </div>`;
+    const previouslyFocused = document.activeElement;
+    const finish = ok => {
+      document.removeEventListener('keydown', onKey, true);
+      wrap.classList.add('confirm-out');
+      setTimeout(() => wrap.remove(), 160);
+      if (previouslyFocused && previouslyFocused.focus) try { previouslyFocused.focus(); } catch {}
+      resolve(ok);
+    };
+    const onKey = e => {
+      if (e.key === 'Escape') { e.stopPropagation(); e.preventDefault(); finish(false); }
+      else if (e.key === 'Enter') { e.stopPropagation(); e.preventDefault(); finish(true); }
+    };
+    document.addEventListener('keydown', onKey, true);
+    wrap.addEventListener('click', e => { if (e.target === wrap) finish(false); });
+    wrap.querySelectorAll('[data-confirm]').forEach(b => b.addEventListener('click', () => finish(b.dataset.confirm === '1')));
+    document.body.appendChild(wrap);
+    wrap.querySelector(danger ? '[data-confirm="0"]' : '[data-confirm="1"]').focus();
+  });
 }
 
 // ── GitHub backup ─────────────────────────────────────────────────────────────
@@ -3568,6 +3822,7 @@ function showToast(message, type = 'info') {
 // and merged first), which meant deleting something and then backing up could resurrect it —
 // the pull-in-merge only knows an id is "missing", not "deleted on purpose".
 async function handleSync() {
+  if (state.readOnly) { showToast('Read-only mode — fix the data file first, then sync.', 'error'); return; }
   showToast('Getting the latest from GitHub…', 'loading');
   try {
     const res = await window.api.pullData();
@@ -3593,11 +3848,17 @@ async function handleSync() {
 }
 
 async function handleBackup() {
+  if (state.readOnly) { showToast('Read-only mode — fix the data file first, then back up.', 'error'); return; }
   const btn = document.getElementById('btn-backup');
   if (btn) { btn.disabled = true; btn.textContent = '⏳ Backing up…'; }
   showToast('Saving to GitHub…', 'loading');
 
   try {
+    // Merge whatever the phone pushed since we last looked BEFORE committing. Without this, a
+    // push rejected as "remote ahead" was resolved with `-X ours`, which threw away the phone's
+    // entries wholesale. Deletions are safe to merge now thanks to the tombstones in deletedIds.
+    const pulled = await syncFromCloud();
+    if (pulled) render();
     const result = await window.api.gitBackup();
     document.getElementById('toast')?.remove();
     if (result.ok) {
@@ -3615,54 +3876,33 @@ async function handleBackup() {
 }
 
 // ── Excel export ──────────────────────────────────────────────────────────────
+// The workbook is built in the main process (see data:export in main.js) — this sandboxed
+// renderer has no `require`, which is why the old in-renderer ExcelJS call never worked.
 async function exportToExcel() {
   const filePath = await window.api.exportPath();
   if (!filePath) return;
-
-  // Build CSV as fallback if xlsx not available, then convert
-  const ExcelJS = require('exceljs');
-  const wb = new ExcelJS.Workbook();
-
-  // FF sheet
-  const ffSheet = wb.addWorksheet('Fanfiction');
-  ffSheet.columns = [
-    {header:'#', width:5}, {header:'Title', width:50}, {header:'Author', width:25},
-    {header:'Fandom', width:20}, {header:'Words', width:12}, {header:'Hearts', width:12},
-    {header:'Rating', width:12}, {header:'Pairing', width:12},
-    {header:'Status', width:12}, {header:'My Rating', width:12}, {header:'Notes', width:30},
-  ];
-  const ffItems = state.items.filter(x => x.type === 'ff');
-  ffItems.forEach((item, i) => {
-    ffSheet.addRow([i+1, item.title, item.author, item.fandom, item.words, item.hearts,
-      item.rating, item.pairing, item.status, item.userRating ? '★'.repeat(item.userRating) : '', item.notes]);
-  });
-  ffSheet.getRow(1).font = { bold: true };
-
-  // Books sheet
-  const bkSheet = wb.addWorksheet('Books');
-  bkSheet.columns = [
-    {header:'#', width:5}, {header:'Title', width:55}, {header:'Author', width:25},
-    {header:'Genre', width:30}, {header:'Section', width:20}, {header:'Pages', width:10},
-    {header:'Words', width:12}, {header:'Status', width:12},
-    {header:'My Rating', width:12}, {header:'Notes', width:30},
-  ];
-  const bkItems = state.items.filter(x => x.type === 'book');
-  bkItems.forEach((item, i) => {
-    bkSheet.addRow([i+1, item.title, item.author, item.genre, item.section,
-      item.pages, item.words, item.status, item.userRating ? '★'.repeat(item.userRating) : '', item.notes]);
-  });
-  bkSheet.getRow(1).font = { bold: true };
-
-  await wb.xlsx.writeFile(filePath);
-  alert(`Exported ${state.items.length} entries to:\n${filePath}`);
+  showToast('Exporting…', 'loading');
+  try {
+    const res = await window.api.exportExcel(filePath, state.items);
+    if (!res?.ok) throw new Error(res?.error || 'export failed');
+    showToast(`Exported ${res.count} entries to ${filePath.split('/').pop()} ✓`, 'success', { duration: 6000 });
+  } catch (e) {
+    showToast('Export failed: ' + e.message, 'error', { duration: 8000 });
+  }
 }
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 window.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && state.editingFolder) { state.editingFolder = null; render(); return; }
-  if (e.key === 'Escape' && state.creatingFolderIn) { state.creatingFolderIn = null; render(); return; }
-  if (e.key === 'Escape' && state.editingItemIcon) { state.editingItemIcon = null; render(); return; }
-  if (e.key === 'Escape' && state.modalOpen) { state.modalOpen = false; state.editItem = null; render(); }
+  if (e.key === 'Escape') {
+    // Close the top-most overlay only — one Escape per layer, like every native Mac app.
+    if (state.editingFolder)      { state.editingFolder = null; render(); return; }
+    if (state.creatingFolderIn)   { state.creatingFolderIn = null; render(); return; }
+    if (state.editingItemIcon)    { state.editingItemIcon = null; render(); return; }
+    if (state.calMoveDraft)       { state.calMoveDraft = null; render(); return; }
+    if (state.settingsOpen)       { state.settingsOpen = false; render(); return; }
+    if (state.moodPickerOpen)     { state.moodPickerOpen = false; state.moodPickerMood = null; state.moodPickerBookId = null; render(); return; }
+    if (state.modalOpen)          { state.modalOpen = false; state.editItem = null; render(); return; }
+  }
   if ((e.metaKey || e.ctrlKey) && e.key === 'f') {
     e.preventDefault();
     document.getElementById('search-input')?.focus();
@@ -3730,16 +3970,38 @@ window.addEventListener('wheel', e => {
   }
 }, { passive: true });
 
+// A cover image that fails to load (dead Pinterest link, offline) turns into the emoji tile
+// instead of the browser's broken-image glyph. One delegated listener, capture phase, because
+// `error` doesn't bubble — and no inline onerror attributes, which the CSP blocks.
+function attachCoverFallback() {
+  document.addEventListener('error', e => {
+    const img = e.target;
+    if (!(img instanceof HTMLImageElement) || !img.classList.contains('cover-img')) return;
+    const span = document.createElement('span');
+    span.className = img.className.replace('cover-img', '').replace(/-img\b/, '-emoji').trim() || 'card-cover-emoji';
+    span.textContent = img.dataset.fallback || '📚';
+    img.replaceWith(span);
+  }, true);
+  document.addEventListener('load', e => {
+    if (e.target instanceof HTMLImageElement && e.target.classList.contains('cover-img')) e.target.classList.add('is-loaded');
+  }, true);
+}
+
 (async () => {
+  attachCoverFallback();
   state.items = await loadData();
-  state.folderConfig = loadFolderConfig();
   state.bannerConfig = loadBannerConfig();
-  // One-time migration: older data files stored folder icons only in localStorage.
-  // Write them into the JSON file so cloud backup syncs folder covers to mobile.
-  if (state._loadedFromFile && !state._jsonHadFolderConfig && Object.keys(state.folderConfig).length) {
-    saveData();
+  // The JSON file is the source of truth for folder config (it's what syncs to the phone).
+  // localStorage only matters for libraries from before folderConfig lived in the file: pick it
+  // up once, persist it, and from then on it's just a mirror.
+  const legacyLocal = loadFolderConfig();
+  if (!state._jsonHadFolderConfig && Object.keys(legacyLocal).length) {
+    state.folderConfig = normalizeFolderConfig(legacyLocal);
+    if (state._loadedFromFile) saveData();
   }
+  try { localStorage.setItem('folderConfig', JSON.stringify(state.folderConfig)); } catch {}
   render();
+  if (state.loadError) return; // recovery mode — never sync or auto-group over a broken file
   // Pull any changes made on the phone (or elsewhere) and merge them in, then re-render.
   if (await syncFromCloud()) render();
   if (autoGroupSimilarTags()) render();

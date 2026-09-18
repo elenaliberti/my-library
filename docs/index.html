@@ -69,7 +69,7 @@ html{background:#fff}
 .spill.on-Reading{background:#eff6ff;border-color:#60a5fa}
 .spill.on-Finished{background:#f0fdf4;border-color:#4ade80}
 .spill.on-Paused{background:#fffbeb;border-color:#fbbf24}
-.spill.on-DNF{background:#fff1f2;border-color:#f87171}
+.spill.on-DNF,.spill.on-Dropped{background:#fff1f2;border-color:#f87171}
 .spill-num{font-size:17px;font-weight:800;line-height:1;color:var(--text)}
 .spill-lbl{font-size:9px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-top:2px}
 .spill-words{font-size:11px;color:var(--muted);font-weight:600;margin-left:auto;white-space:nowrap;align-self:center;padding:4px 9px;background:#fff;border:1px solid var(--border);border-radius:5px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
@@ -233,7 +233,7 @@ html{background:#fff}
 .st-chip.a-TBR{background:#d7f0ec;border-color:#7fcabb;color:#0f6e63}
 .st-chip.a-Reading{background:#eff6ff;border-color:#60a5fa;color:#1d4ed8}
 .st-chip.a-Finished{background:#f0fdf4;border-color:#4ade80;color:#15803d}
-.st-chip.a-DNF{background:#fef2f2;border-color:#f87171;color:#b91c1c}
+.st-chip.a-DNF,.st-chip.a-Dropped{background:#fef2f2;border-color:#f87171;color:#b91c1c}
 .st-chip.a-Paused{background:#fffbeb;border-color:#fbbf24;color:#92400e}
 .stars-row{display:flex;gap:8px;font-size:28px}
 .s-star{opacity:.18;cursor:pointer;transition:opacity .1s,transform .1s;color:var(--accent)}
@@ -517,7 +517,8 @@ if('serviceWorker' in navigator){
 const REPO='elenaliberti/my-library';
 const FILE='library-data.json';
 const API='https://api.github.com';
-const STATUS=['TBR','Reading','Finished','Paused','DNF'];
+const STATUS=['TBR','Reading','Finished','Dropped'];  // must match the desktop app
+const STATUS_CANON={tbr:'TBR',reading:'Reading',finished:'Finished',dropped:'Dropped',dnf:'Dropped',paused:'Reading'};
 
 const FOLDER_DEFAULTS={
   'ff|Harry Potter - J. K. Rowling':{displayName:'Harry Potter',icon:'⚡'},
@@ -557,7 +558,7 @@ function pickMoodBook(key){
 // ── State ─────────────────────────────────────────────────────────────────────
 const S={
   items:[],sha:null,loading:false,
-  folderConfig:{},
+  folderConfig:{},deletedIds:{},
   search:'',filter:'all',sortBy:'added',statFilter:'all',
   view:'library',
   folderPath:[],gridFilter:null,
@@ -575,13 +576,38 @@ const itemWords=x=>x.words||(x.pages?x.pages*250:0);
 // Times read: prefer the per-read timestamp list, fall back to the legacy count.
 const timesRead=x=>Array.isArray(x.readDates)?x.readDates.length:(x.readCount??(x.status==='Finished'?1:0));
 // Re-read multiplier: counts every item at least once, +1× for each re-read beyond the first.
-const readMult=x=>Math.max(1,timesRead(x));
+const readMult=x=>timesRead(x);  // 0 for unread TBR/Reading items — same rule as the desktop
 // Per-read timestamps, migrating legacy reads to the finish date (best-known date for old reads).
 const ensureReadDates=x=>Array.isArray(x.readDates)?x.readDates.slice():Array.from({length:x.readCount??(x.status==='Finished'?1:0)},()=>x.finishedAt||null);
 // Most recent read timestamp, or null.
 const lastReadAt=x=>{const d=ensureReadDates(x).filter(Boolean);return d.length?d[d.length-1]:null};
 // Flatten items into individual read events, each dated when that read happened.
 const readEvents=items=>{const ev=[];items.forEach(x=>{const w=itemWords(x);ensureReadDates(x).forEach(d=>{if(d)ev.push({date:d,words:w})})});return ev};
+// ── Normalise records on load (idempotent; mirrors the desktop app) ──
+const decEnt=s=>String(s).replace(/&amp;/g,'&').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&#(\d+);/g,(_,n)=>String.fromCharCode(n));
+const hasEnt=s=>typeof s==='string'&&/&(?:amp|quot|#39|lt|gt|#\d+);/.test(s);
+function normalizeItem(x){
+  if(!x||typeof x!=='object')return x;
+  const o={...x};
+  for(const f of ['title','author','fandom','pairing','genre','series','section','description','notes'])if(hasEnt(o[f]))o[f]=decEnt(o[f]);
+  o.tags=Array.isArray(o.tags)?[...new Set(o.tags.filter(t=>typeof t==='string'&&t.trim()).map(t=>hasEnt(t)?decEnt(t):t))]:[];
+  const canon=STATUS_CANON[String(o.status||'').trim().toLowerCase()];
+  o.status=canon||'TBR';
+  if(Array.isArray(o.readDates)){
+    if(o.status==='Finished'&&!o.readDates.length)o.readDates=Array.from({length:Math.max(1,o.readCount||0)},()=>o.finishedAt||null);
+    o.readCount=o.readDates.length;
+  }else if(o.status==='Finished'&&!(o.readCount>0))o.readCount=1;
+  return o;
+}
+function normalizeFolderConfig(fc){
+  const out={};
+  for(const[k,v]of Object.entries(fc||{})){if(!v||typeof v!=='object')continue;const c={...v};
+    if(Array.isArray(c.groupTags))c.groupTags=[...new Set(c.groupTags.map(t=>hasEnt(t)?decEnt(t):t))];
+    if(hasEnt(c.filterTag))c.filterTag=decEnt(c.filterTag);
+    out[hasEnt(k)?decEnt(k):k]=c;}
+  return out;
+}
+
 // ── Merge (so phone ↔ desktop saves never clobber each other) ──
 function pickItem(a,b){
   const ma=Date.parse(a._modAt||'')||0, mb=Date.parse(b._modAt||'')||0;
@@ -591,10 +617,19 @@ function pickItem(a,b){
   const ra=Array.isArray(a.readDates)?a.readDates.length:(a.readCount||0),rb=Array.isArray(b.readDates)?b.readDates.length:(b.readCount||0);
   return rb>ra?b:a;
 }
-function mergeLibrary(localItems,localFC,remoteItems,remoteFC){
+function mergeLibrary(localItems,localFC,remoteItems,remoteFC,localDel,remoteDel){
   const byId=new Map();
   (remoteItems||[]).forEach(x=>{if(x&&x.id!=null)byId.set(x.id,x)});
   (localItems||[]).forEach(x=>{if(!x||x.id==null)return;const r=byId.get(x.id);byId.set(x.id,r?pickItem(x,r):x)});
+  // Deletion tombstones from both sides; drop any item deleted after its last edit.
+  const delMerged={...(remoteDel||{})};
+  for(const[id,ts]of Object.entries(localDel||{})){if(!delMerged[id]||Date.parse(ts)>Date.parse(delMerged[id]))delMerged[id]=ts}
+  const cutoff=Date.now()-365*24*60*60*1000;
+  for(const[id,ts]of Object.entries(delMerged)){
+    if(Date.parse(ts)<cutoff){delete delMerged[id];continue}
+    const it=byId.get(id);
+    if(it&&(Date.parse(it._modAt||'')||0)<=Date.parse(ts))byId.delete(id);
+  }
   const fc={...(remoteFC||{})};
   for(const [k,lv] of Object.entries(localFC||{})){
     const rv=fc[k];
@@ -609,13 +644,13 @@ function mergeLibrary(localItems,localFC,remoteItems,remoteFC){
     const m=(lm>=rm?lv._modAt:rv._modAt)||lv._modAt||rv._modAt; if(m)out._modAt=m;
     fc[k]=out;
   }
-  return{items:[...byId.values()],folderConfig:fc};
+  return{items:[...byId.values()],folderConfig:fc,deletedIds:delMerged};
 }
 function fmtTime(m){if(!m)return'0m';const h=Math.floor(m/60);if(!h)return Math.round(m)+'m';const d=Math.floor(h/24);const rh=h%24;if(!d)return h+'h';return rh?`${d}d ${rh}h`:`${d}d`}
 function djb2(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h)^s.charCodeAt(i);return h>>>0}
 const GR=[['#7c3aed','#2563eb'],['#db2777','#9333ea'],['#059669','#0284c7'],['#dc2626','#ea580c'],['#0891b2','#0d9488'],['#7c3aed','#ec4899'],['#1d4ed8','#4f6b3f'],['#d97706','#dc2626'],['#0f766e','#0891b2'],['#9333ea','#0ea5e9']];
 const grad=k=>GR[djb2(k||'x')%GR.length];
-function badgeClass(s){return{TBR:'b-tbr',Reading:'b-reading',Finished:'b-finished',DNF:'b-dnf',Paused:'b-paused'}[s]||'b-tbr'}
+function badgeClass(s){return{TBR:'b-tbr',Reading:'b-reading',Finished:'b-finished',Dropped:'b-dnf',DNF:'b-dnf',Paused:'b-paused'}[s]||'b-tbr'}
 
 // ── folderConfig helpers ──────────────────────────────────────────────────────
 function getCfg(key){return{...(FOLDER_DEFAULTS[key]||{}), ...(S.folderConfig[key]||{})}}
@@ -643,13 +678,14 @@ async function ghLoad(){
   if(!r.ok)throw new Error(`GitHub ${r.status}`);
   const d=await r.json();
   const parsed=JSON.parse(atob(d.content.replace(/\n/g,'')));
-  const items=Array.isArray(parsed)?parsed:(parsed.items||[]);
-  const folderConfig=Array.isArray(parsed)?{}:(parsed.folderConfig||{});
-  return{items,folderConfig,sha:d.sha};
+  const items=(Array.isArray(parsed)?parsed:(parsed.items||[])).map(normalizeItem);
+  const folderConfig=normalizeFolderConfig(Array.isArray(parsed)?{}:(parsed.folderConfig||{}));
+  const deletedIds=Array.isArray(parsed)?{}:(parsed.deletedIds||{});
+  return{items,folderConfig,deletedIds,sha:d.sha};
 }
 
-async function ghSave(items,folderConfig,sha){
-  const data={items,folderConfig};
+async function ghSave(items,folderConfig,sha,deletedIds){
+  const data={items,folderConfig,deletedIds:deletedIds||S.deletedIds||{}};
   const content=btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2))));
   const now=new Date().toLocaleString('en-GB',{dateStyle:'medium',timeStyle:'short'});
   const r=await fetch(`${API}/repos/${REPO}/contents/${FILE}`,{
@@ -1257,6 +1293,7 @@ function openSheet(id){
   document.getElementById('sh-open')?.addEventListener('click',()=>{const it=S.items.find(i=>i.id===S.selId);if(it?.url)window.open(it.url,'_blank')});
   document.getElementById('sh-del')?.addEventListener('click',async()=>{
     if(!confirm('Delete this entry?'))return;
+    S.deletedIds={...S.deletedIds,[S.selId]:new Date().toISOString()};
     S.items=S.items.filter(i=>i.id!==S.selId);closeSheet();renderLibrary();if(S.view==='grid')renderGrid();await doSave();
   });
 
@@ -1560,7 +1597,7 @@ async function saveModal(){
     favorite:g('f-fav')==='true',
     readCount:rc?parseInt(rc)||0:(S.editing?.readCount??(st==='Finished'?1:0)),
     finishedAt:finV?new Date(finV+'T12:00:00').toISOString():(st==='Finished'&&!S.editing?.finishedAt?new Date().toISOString():S.editing?.finishedAt||null),
-    _addedAt:S.editing?._addedAt??S.items.length,
+    _addedAt:S.editing?._addedAt??(S.items.reduce((m,x)=>Math.max(m,typeof x._addedAt==='number'?x._addedAt:-1),-1)+1),
     _modAt:new Date().toISOString(),
   };
   if(isFf){item.url=g('f-url').trim();item.fandom=g('f-fandom').trim();item.pairing=g('f-pairing').trim();item.hearts=gN('f-hearts');item.rating=g('f-rating');item.oneshot=g('f-oneshot')==='true'}
@@ -1586,14 +1623,14 @@ async function doSave(){
   try{
     let sha=S.sha;
     if(!sha){const f=await ghLoad();sha=f.sha}
-    S.sha=await ghSave(S.items,S.folderConfig,sha);toast('Saved ✓','ok');
+    S.sha=await ghSave(S.items,S.folderConfig,sha,S.deletedIds);toast('Saved ✓','ok');
   }catch(e){
     if(e.message==='conflict'){
       try{
         const f=await ghLoad();                                  // someone else (desktop) saved — merge, don't clobber
-        const m=mergeLibrary(S.items,S.folderConfig,f.items,f.folderConfig);
-        S.items=m.items;S.folderConfig=m.folderConfig;
-        S.sha=await ghSave(S.items,S.folderConfig,f.sha);
+        const m=mergeLibrary(S.items,S.folderConfig,f.items,f.folderConfig,S.deletedIds,f.deletedIds);
+        S.items=m.items;S.folderConfig=m.folderConfig;S.deletedIds=m.deletedIds;
+        S.sha=await ghSave(S.items,S.folderConfig,f.sha,S.deletedIds);
         renderLibrary();renderStatRow();if(S.view==='grid')renderGrid();
         toast('Synced + saved ✓','ok');
       }
@@ -1644,7 +1681,7 @@ async function init(){
   showApp();S.loading=true;renderLibrary();
   try{
     const r=await ghLoad();
-    S.items=r.items;S.sha=r.sha;
+    S.items=r.items;S.sha=r.sha;S.deletedIds=r.deletedIds||{};
     // Merge: remote folderConfig wins for any key not already set locally
     S.folderConfig={...r.folderConfig,...S.folderConfig};
     S.loading=false;renderStatRow();switchView('grid');  // open to Browse by default
@@ -1664,7 +1701,7 @@ document.getElementById('s-btn').addEventListener('click',async()=>{
   const t=document.getElementById('pat-in').value.trim();if(!t)return;
   const errEl=document.getElementById('setup-err');errEl.textContent='';errEl.style.display='none';
   document.getElementById('s-btn').textContent='Connecting…';
-  try{localStorage.setItem('gh_token',t);const r=await ghLoad();S.items=r.items;S.sha=r.sha;S.folderConfig=r.folderConfig||{};showApp();renderStatRow();switchView('grid')}
+  try{localStorage.setItem('gh_token',t);const r=await ghLoad();S.items=r.items;S.sha=r.sha;S.folderConfig=r.folderConfig||{};S.deletedIds=r.deletedIds||{};showApp();renderStatRow();switchView('grid')}
   catch(e){localStorage.removeItem('gh_token');errEl.style.display='block';errEl.textContent=e.message==='invalid_token'?'❌ Token invalid or missing repo access':'❌ '+e.message;document.getElementById('s-btn').textContent='Connect Library →'}
 });
 document.getElementById('pat-in').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('s-btn').click()});
@@ -1735,8 +1772,8 @@ document.getElementById('btn-sync').addEventListener('click',async()=>{
   const b=document.getElementById('btn-sync');b.textContent='⏳';
   try{
     const r=await ghLoad();
-    const m=mergeLibrary(S.items,S.folderConfig,r.items,r.folderConfig);
-    S.items=m.items;S.folderConfig=m.folderConfig;S.sha=r.sha;
+    const m=mergeLibrary(S.items,S.folderConfig,r.items,r.folderConfig,S.deletedIds,r.deletedIds);
+    S.items=m.items;S.folderConfig=m.folderConfig;S.deletedIds=m.deletedIds;S.sha=r.sha;
     renderLibrary();renderStatRow();
     if(S.view==='stats')renderStats();
     if(S.view==='grid')renderGrid();

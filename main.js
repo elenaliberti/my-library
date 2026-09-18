@@ -1,26 +1,66 @@
 const { app, BrowserWindow, ipcMain, dialog, shell, session, nativeImage } = require('electron')
 const path = require('path')
 const fs = require('fs')
+const fsp = fs.promises
 const { execFile } = require('child_process')
 
-const DATA_PATH = path.join(app.getPath('userData'), 'library-data.json')
+const USER_DATA = app.getPath('userData')
+const DATA_PATH = path.join(USER_DATA, 'library-data.json')
+const DATA_BAK_PATH = DATA_PATH + '.bak'          // the previous good save, swapped in atomically
+const BACKUP_DIR = path.join(USER_DATA, 'backups') // one dated snapshot per day, last 14 kept
+const DAILY_BACKUPS_TO_KEEP = 14
+const WINDOW_STATE_PATH = path.join(USER_DATA, 'window-state.json')
 const ICON_PATH = path.join(__dirname, 'assets', 'icon.png')
+
+// ── Window state (size/position survive relaunch) ─────────────────────────────
+function loadWindowState() {
+  try { return JSON.parse(fs.readFileSync(WINDOW_STATE_PATH, 'utf-8')) } catch { return {} }
+}
+function saveWindowState(win) {
+  try {
+    if (win.isDestroyed() || win.isMinimized() || win.isFullScreen()) return
+    fs.writeFileSync(WINDOW_STATE_PATH, JSON.stringify(win.getBounds()))
+  } catch {}
+}
 
 function createWindow() {
   const icon = nativeImage.createFromPath(ICON_PATH)
+  const saved = loadWindowState()
   const win = new BrowserWindow({
-    width: 1200,
-    height: 820,
+    width: saved.width || 1200,
+    height: saved.height || 820,
+    x: saved.x, y: saved.y,
     minWidth: 900,
     minHeight: 600,
     titleBarStyle: 'hiddenInset',
     backgroundColor: '#fafaf9',
+    show: false,
     icon,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
-      nodeIntegration: false
+      nodeIntegration: false,
+      sandbox: true,
     }
+  })
+  // Painting the window only once the renderer has its first frame avoids the white flash
+  // and the half-drawn titlebar that shows up for a moment on cold launches.
+  win.once('ready-to-show', () => win.show())
+  let stateTimer = null
+  const queueState = () => { clearTimeout(stateTimer); stateTimer = setTimeout(() => saveWindowState(win), 300) }
+  win.on('resize', queueState)
+  win.on('move', queueState)
+  win.on('close', () => saveWindowState(win))
+  // The renderer must never navigate away from the app (a plain <a href> to AO3 used to replace
+  // the whole window with the fic page). Anything external goes to the system browser instead.
+  win.webContents.on('will-navigate', (e, url) => {
+    if (url.startsWith('file://')) return
+    e.preventDefault()
+    if (/^https?:\/\//i.test(url)) shell.openExternal(url)
+  })
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    if (/^https?:\/\//i.test(url)) shell.openExternal(url)
+    return { action: 'deny' }
   })
   // Always load fresh renderer code: drop any stale V8 bytecode cache from a
   // previous app version before loading, so code updates always take effect.
@@ -40,24 +80,165 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit() })
 
 // ── Data ──────────────────────────────────────────────────────────────────────
-ipcMain.handle('data:load', () => {
-  try {
-    if (fs.existsSync(DATA_PATH)) {
-      const raw = fs.readFileSync(DATA_PATH, 'utf-8')
-      const parsed = JSON.parse(raw)
-      if (Array.isArray(parsed)) return { items: parsed, folderConfig: {}, deletedIds: {} }
-      if (parsed && parsed.items) return { items: parsed.items, folderConfig: parsed.folderConfig || {}, deletedIds: parsed.deletedIds || {} }
+// Shape every loaded file into { items, folderConfig, deletedIds }, or null if it isn't a
+// library file at all. Being strict here matters: a half-written or foreign JSON file must
+// never be mistaken for "an empty library" and then saved over the real one.
+function shapeLibrary(parsed) {
+  if (Array.isArray(parsed)) return { items: parsed, folderConfig: {}, deletedIds: {} }
+  if (parsed && typeof parsed === 'object' && Array.isArray(parsed.items)) {
+    return {
+      items: parsed.items,
+      folderConfig: (parsed.folderConfig && typeof parsed.folderConfig === 'object') ? parsed.folderConfig : {},
+      deletedIds: (parsed.deletedIds && typeof parsed.deletedIds === 'object') ? parsed.deletedIds : {},
     }
-    return null
-  } catch { return null }
+  }
+  return null
+}
+
+function readLibraryFile(p) {
+  if (!fs.existsSync(p)) return { status: 'missing' }
+  try {
+    const data = shapeLibrary(JSON.parse(fs.readFileSync(p, 'utf-8')))
+    return data ? { status: 'ok', data } : { status: 'corrupt' }
+  } catch { return { status: 'corrupt' } }
+}
+
+function listDailyBackups() {
+  try {
+    return fs.readdirSync(BACKUP_DIR)
+      .filter(f => /^library-data-\d{4}-\d{2}-\d{2}\.json$/.test(f))
+      .sort()                       // ISO dates sort chronologically as strings
+      .map(f => path.join(BACKUP_DIR, f))
+  } catch { return [] }
+}
+
+// One snapshot per calendar day of whatever the app opens with, pruned to the last 14. This is
+// the safety net for anything the atomic-save + .bak pair can't catch (a bad edit that was then
+// saved twice, a sync that merged something unexpected, etc).
+function takeDailyBackup() {
+  try {
+    if (!fs.existsSync(DATA_PATH)) return
+    fs.mkdirSync(BACKUP_DIR, { recursive: true })
+    const today = new Date().toISOString().slice(0, 10)
+    const dest = path.join(BACKUP_DIR, `library-data-${today}.json`)
+    if (!fs.existsSync(dest)) fs.copyFileSync(DATA_PATH, dest)
+    const all = listDailyBackups()
+    all.slice(0, Math.max(0, all.length - DAILY_BACKUPS_TO_KEEP)).forEach(f => { try { fs.unlinkSync(f) } catch {} })
+  } catch {}
+}
+
+ipcMain.handle('data:load', () => {
+  takeDailyBackup()
+  const main = readLibraryFile(DATA_PATH)
+  if (main.status === 'ok') return main.data
+
+  // Main file missing or unreadable — fall back through the previous save, then the newest
+  // dated snapshot. Whatever we recover from is reported so the UI can say so.
+  const candidates = [DATA_BAK_PATH, ...listDailyBackups().reverse()]
+  for (const p of candidates) {
+    const r = readLibraryFile(p)
+    if (r.status === 'ok') return { ...r.data, recoveredFrom: path.basename(p), mainStatus: main.status }
+  }
+  // Nothing on disk at all → genuine first launch; the renderer may seed from INITIAL_DATA.
+  if (main.status === 'missing' && candidates.every(p => !fs.existsSync(p))) return null
+  // A library file exists but nothing parses. Refuse to pretend it's empty.
+  return { error: 'corrupt', path: DATA_PATH }
 })
 
-ipcMain.handle('data:save', (_, data) => {
+// Atomic save: write the new JSON to a temp file, fsync it, keep the previous file as .bak,
+// then rename the temp file into place. A crash or power cut mid-save can no longer leave a
+// truncated library-data.json behind — either the old file or the new one is always intact.
+let _saveInFlight = null
+async function writeLibraryAtomic(toSave) {
+  const json = JSON.stringify(toSave, null, 2)
+  const tmp = DATA_PATH + '.tmp'
+  const fh = await fsp.open(tmp, 'w')
+  try { await fh.writeFile(json, 'utf-8'); await fh.sync() } finally { await fh.close() }
+  if (fs.existsSync(DATA_PATH)) {
+    try { await fsp.rename(DATA_PATH, DATA_BAK_PATH) } catch {}
+  }
+  await fsp.rename(tmp, DATA_PATH)
+}
+
+ipcMain.handle('data:save', async (_, data) => {
+  const toSave = Array.isArray(data) ? { items: data, folderConfig: {}, deletedIds: {} } : data
+  if (!toSave || !Array.isArray(toSave.items)) return { ok: false, error: 'Refusing to save: items is not a list.' }
+  const job = (async () => {
+    if (_saveInFlight) { try { await _saveInFlight } catch {} }
+    await writeLibraryAtomic(toSave)
+  })()
+  _saveInFlight = job
+  try { await job; return { ok: true } }
+  catch (e) { return { ok: false, error: e.message } }
+  finally { if (_saveInFlight === job) _saveInFlight = null }
+})
+
+// Don't let the process exit with a write still in progress.
+let _quitting = false
+app.on('before-quit', (e) => {
+  if (_saveInFlight && !_quitting) {
+    _quitting = true
+    e.preventDefault()
+    _saveInFlight.finally(() => app.quit())
+  }
+})
+
+// ── Excel export (runs here — the sandboxed renderer has no require()) ────────
+ipcMain.handle('data:export', async (_, { filePath, items }) => {
   try {
-    const toSave = Array.isArray(data) ? { items: data, folderConfig: {} } : data
-    fs.writeFileSync(DATA_PATH, JSON.stringify(toSave, null, 2), 'utf-8')
-    return true
-  } catch { return false }
+    const ExcelJS = require('exceljs')
+    const wb = new ExcelJS.Workbook()
+    wb.creator = 'My Library'
+    const fmtDate = iso => (iso ? new Date(iso) : null)
+    const stars = n => (n ? '★'.repeat(n) : '')
+    const timesRead = x => Array.isArray(x.readDates) ? x.readDates.length : (x.readCount ?? (x.status === 'Finished' ? 1 : 0))
+    const lastRead = x => { const d = (Array.isArray(x.readDates) ? x.readDates : []).filter(Boolean); return d.length ? d[d.length - 1] : (x.finishedAt || null) }
+
+    const styleHeader = ws => {
+      const row = ws.getRow(1)
+      row.font = { bold: true, color: { argb: 'FFFFFFFF' } }
+      row.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF3C5429' } }
+      row.alignment = { vertical: 'middle' }
+      row.height = 20
+      ws.views = [{ state: 'frozen', ySplit: 1 }]
+      ws.autoFilter = { from: { row: 1, column: 1 }, to: { row: 1, column: ws.columns.length } }
+    }
+
+    const ff = wb.addWorksheet('Fanfiction')
+    ff.columns = [
+      { header: '#', key: 'n', width: 5 }, { header: 'Title', key: 'title', width: 50 }, { header: 'Author', key: 'author', width: 25 },
+      { header: 'Fandom', key: 'fandom', width: 28 }, { header: 'Pairing', key: 'pairing', width: 22 }, { header: 'Words', key: 'words', width: 12 },
+      { header: 'Kudos', key: 'hearts', width: 12 }, { header: 'Rating', key: 'rating', width: 12 }, { header: 'One-shot', key: 'oneshot', width: 10 },
+      { header: 'Status', key: 'status', width: 12 }, { header: 'My Rating', key: 'userRating', width: 12 }, { header: 'Times read', key: 'timesRead', width: 11 },
+      { header: 'Last read', key: 'lastRead', width: 13 }, { header: 'Favourite', key: 'favorite', width: 10 }, { header: 'Tags', key: 'tags', width: 40 },
+      { header: 'URL', key: 'url', width: 45 }, { header: 'Notes', key: 'notes', width: 40 },
+    ]
+    items.filter(x => x.type === 'ff').forEach((x, i) => ff.addRow({
+      n: i + 1, title: x.title, author: x.author, fandom: x.fandom, pairing: x.pairing, words: x.words || null, hearts: x.hearts || null,
+      rating: x.rating, oneshot: x.oneshot ? 'Yes' : '', status: x.status, userRating: stars(x.userRating), timesRead: timesRead(x),
+      lastRead: fmtDate(lastRead(x)), favorite: x.favorite ? '⭐' : '', tags: (x.tags || []).join(', '), url: x.url, notes: x.notes,
+    }))
+    styleHeader(ff)
+
+    const bk = wb.addWorksheet('Books')
+    bk.columns = [
+      { header: '#', key: 'n', width: 5 }, { header: 'Title', key: 'title', width: 55 }, { header: 'Author', key: 'author', width: 25 },
+      { header: 'Genre', key: 'genre', width: 30 }, { header: 'Series', key: 'series', width: 22 }, { header: 'Section', key: 'section', width: 16 },
+      { header: 'Pages', key: 'pages', width: 10 }, { header: 'Words', key: 'words', width: 12 }, { header: 'Status', key: 'status', width: 12 },
+      { header: 'My Rating', key: 'userRating', width: 12 }, { header: 'Times read', key: 'timesRead', width: 11 }, { header: 'Last read', key: 'lastRead', width: 13 },
+      { header: 'Favourite', key: 'favorite', width: 10 }, { header: 'Tags', key: 'tags', width: 30 }, { header: 'Ebook file', key: 'localFile', width: 40 }, { header: 'Notes', key: 'notes', width: 40 },
+    ]
+    items.filter(x => x.type === 'book').forEach((x, i) => bk.addRow({
+      n: i + 1, title: x.title, author: x.author, genre: x.genre, series: x.series || '', section: x.section, pages: x.pages || null, words: x.words || null,
+      status: x.status, userRating: stars(x.userRating), timesRead: timesRead(x), lastRead: fmtDate(lastRead(x)), favorite: x.favorite ? '⭐' : '',
+      tags: (x.tags || []).join(', '), localFile: x.localFile ? path.basename(x.localFile) : '', notes: x.notes,
+    }))
+    styleHeader(bk)
+    ;[ff, bk].forEach(ws => ws.getColumn('lastRead').numFmt = 'dd mmm yyyy')
+
+    await wb.xlsx.writeFile(filePath)
+    return { ok: true, count: items.length }
+  } catch (e) { return { ok: false, error: e.message } }
 })
 
 ipcMain.handle('data:export-path', async () => {
@@ -75,9 +256,11 @@ ipcMain.handle('data:open-location', () => {
 
 // ── Local ebook file linking ────────────────────────────────────────────────────
 // Opens a book's linked PDF/EPUB with whatever app the user has set as the system default.
-ipcMain.handle('files:open-local', (_, filePath) => {
-  if (!filePath || !fs.existsSync(filePath)) return { error: 'That file no longer exists at its linked location.' }
-  const err = shell.openPath(filePath)
+ipcMain.handle('files:open-local', async (_, filePath) => {
+  if (typeof filePath !== 'string' || !filePath || !fs.existsSync(filePath)) return { error: 'That file no longer exists at its linked location.' }
+  // shell.openPath resolves to '' on success or to an error message — it must be awaited,
+  // otherwise the pending Promise itself is truthy and can't even be sent back over IPC.
+  const err = await shell.openPath(filePath)
   return err ? { error: err } : { ok: true }
 })
 
@@ -162,16 +345,20 @@ ipcMain.handle('ao3:fetch', async (_, url) => {
     const firstTag = s => { const m = (s||'').match(/<a[^>]*class="[^"]*tag[^"]*"[^>]*>([^<]+)<\/a>/i); return m ? m[1].trim() : null }
     const allTags = s => { const tags = []; const r = /<a[^>]*class="[^"]*tag[^"]*"[^>]*>([^<]+)<\/a>/gi; let m; while ((m = r.exec(s||'')) !== null) tags.push(m[1].trim()); return tags }
 
+    // AO3 HTML-encodes apostrophes and ampersands in tag/author text ("Harry Potter&#39;s
+    // Parent", "Draco &amp; Harry") — decode everything we store so the library never holds
+    // raw entities that then have to be rendered unescaped to look right.
+    const dec = s => (s == null ? s : decodeHtmlEntities(s))
     const titleBlock = html.match(/<h2[^>]*class="[^"]*title[^"]*"[^>]*>([\s\S]*?)<\/h2>/i)
-    const title = titleBlock
+    const title = dec(titleBlock
       ? stripTags(titleBlock[1])
-      : html.match(/<title>([^|<]+)/i)?.[1]?.replace(/ - Archive of Our Own$/, '').trim() || null
+      : html.match(/<title>([^|<]+)/i)?.[1]?.replace(/ - Archive of Our Own$/, '').trim() || null)
 
     const authorMatch = html.match(/<a[^>]*rel="author"[^>]*>([^<]+)<\/a>/i)
-    const author = authorMatch ? authorMatch[1].trim() : null
+    const author = authorMatch ? dec(authorMatch[1].trim()) : null
 
     const fandomSection = getSection('fandom')
-    const fandoms = allTags(fandomSection)
+    const fandoms = allTags(fandomSection).map(dec)
 
     const wordsText = stripTags(getSection('words') || '').replace(/,/g, '')
     const words = wordsText ? parseInt(wordsText) || null : null
@@ -179,9 +366,9 @@ ipcMain.handle('ao3:fetch', async (_, url) => {
     const kudosText = stripTags(getSection('kudos') || '').replace(/,/g, '')
     const kudos = kudosText ? parseInt(kudosText) || null : null
 
-    const rating = firstTag(getSection('rating'))
-    const pairing = firstTag(getSection('relationship'))
-    const tags = allTags(getSection('freeform')).slice(0, 6)
+    const rating = dec(firstTag(getSection('rating')))
+    const pairing = dec(firstTag(getSection('relationship')))
+    const tags = allTags(getSection('freeform')).slice(0, 6).map(dec)
 
     // The author's own "Summary:" blurb — front matter they wrote specifically to preview the
     // fic, same idea as a book's back-cover synopsis. Paragraphs are <p> tags inside the
@@ -196,7 +383,11 @@ ipcMain.handle('ao3:fetch', async (_, url) => {
 })
 
 ipcMain.handle('shell:open-external', (_, url) => {
-  shell.openExternal(url)
+  // Only ever hand http(s) links to the OS — a stray file:// or javascript: string in a
+  // record's url field must not be able to launch anything.
+  if (typeof url !== 'string' || !/^https?:\/\//i.test(url.trim())) return { error: 'Not a web link.' }
+  shell.openExternal(url.trim())
+  return { ok: true }
 })
 
 // Open an AO3 login window in the SAME session the scraper uses (persist:fetch),
@@ -615,23 +806,29 @@ async function findGit() {
   throw new Error('Git not found. Make sure you completed Step 2 of the GitHub setup.')
 }
 
+// The repo that holds library-data.json for GitHub backups. When running from source
+// (`npm start`) that's this very folder; the packaged .app lives inside app.asar, so it falls
+// back to the usual checkout location. One helper, so all three git handlers agree.
+function findRepoDir() {
+  const candidates = [
+    __dirname,
+    path.join(app.getPath('home'), 'Downloads', 'library-app'),
+    path.join(app.getPath('home'), 'Downloads', 'my-library'),
+    process.cwd(),
+  ]
+  for (const c of candidates) {
+    try {
+      const resolved = path.resolve(c)
+      if (fs.existsSync(path.join(resolved, '.git'))) return resolved
+    } catch {}
+  }
+  return null
+}
+
 ipcMain.handle('git:status', async () => {
   try {
     const git = await findGit()
-    const appDir = path.dirname(app.getPath('exe'))
-    // Find the actual project root (where .git lives)
-    const candidates = [
-      path.join(app.getPath('userData'), '..', '..', '..', 'Downloads', 'library-app'),
-      process.cwd(),
-      path.join(__dirname),
-    ]
-    let repoDir = null
-    for (const c of candidates) {
-      try {
-        const resolved = path.resolve(c)
-        if (fs.existsSync(path.join(resolved, '.git'))) { repoDir = resolved; break }
-      } catch {}
-    }
+    const repoDir = findRepoDir()
     if (!repoDir) return { ok: false, error: 'Git repo not found. Run the GitHub setup steps first.' }
 
     // Check remote
@@ -653,21 +850,11 @@ ipcMain.handle('git:status', async () => {
 ipcMain.handle('git:backup', async () => {
   try {
     const git = await findGit()
-
-    // Find repo dir
-    const candidates = [
-      path.join(app.getPath('home'), 'Downloads', 'library-app'),
-      path.join(__dirname),
-      process.cwd(),
-    ]
-    let repoDir = null
-    for (const c of candidates) {
-      try {
-        const resolved = path.resolve(c)
-        if (fs.existsSync(path.join(resolved, '.git'))) { repoDir = resolved; break }
-      } catch {}
-    }
+    const repoDir = findRepoDir()
     if (!repoDir) return { ok: false, error: 'Git repo not found. Complete the GitHub setup steps first.' }
+
+    // Wait for any save that's still being written so the backup is of the latest state.
+    if (_saveInFlight) { try { await _saveInFlight } catch {} }
 
     // Copy current data file into repo so it gets committed
     const repoDataPath = path.join(repoDir, 'library-data.json')
@@ -675,12 +862,13 @@ ipcMain.handle('git:backup', async () => {
       fs.copyFileSync(DATA_PATH, repoDataPath)
     }
 
-    // git add + commit + push
-    await run(git, ['add', '.'], repoDir)
+    // Stage ONLY the data file. `git add .` used to sweep up whatever else was sitting in the
+    // working tree (half-finished code edits, stray files) into a "Library backup" commit.
+    await run(git, ['add', '--', 'library-data.json'], repoDir)
 
     // Check if there's anything to commit
     let status = ''
-    try { status = await run(git, ['status', '--porcelain'], repoDir) } catch {}
+    try { status = await run(git, ['status', '--porcelain', '--', 'library-data.json'], repoDir) } catch {}
     if (!status) return { ok: true, message: 'Already up to date — nothing new to back up.' }
 
     const now = new Date().toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })
@@ -690,8 +878,9 @@ ipcMain.handle('git:backup', async () => {
     for (const branch of ['main', 'master']) {
       try { await run(git, ['push', 'origin', branch], repoDir); pushed = true; break }
       catch {
-        // Remote is ahead (e.g. the phone saved). The data file was already merged at the
-        // record level before this backup, so keep our version on any conflict, then retry.
+        // Remote is ahead (e.g. the phone saved). The renderer merges the GitHub copy in at the
+        // record level (tombstone-aware) right before calling this, so our file is already the
+        // union — keeping "ours" on a textual conflict is then the correct resolution.
         try {
           await run(git, ['pull', '--no-rebase', '--no-edit', '-X', 'ours', 'origin', branch], repoDir)
           await run(git, ['push', 'origin', branch], repoDir); pushed = true; break
@@ -699,14 +888,14 @@ ipcMain.handle('git:backup', async () => {
       }
     }
     if (!pushed) {
-      return { ok: true, message: `Saved locally at ${now} ✓ (GitHub push failed — add a token to the remote URL to fix)` }
+      return { ok: true, message: `Saved locally at ${now} ✓ (GitHub push failed — check your connection or GitHub login)` }
     }
 
     return { ok: true, message: `Backed up to GitHub at ${now} ✓` }
   } catch(e) {
     const isCredErr = e.message.includes('Username') || e.message.includes('could not read') || e.message.includes('Authentication')
     if (isCredErr) {
-      return { ok: false, error: 'GitHub auth failed. In Terminal run:\ngit remote set-url origin https://elenaliberti:YOUR_TOKEN@github.com/elenaliberti/my-library.git\n(get a token at github.com → Settings → Developer settings → PAT)' }
+      return { ok: false, error: 'GitHub auth failed. In Terminal run `gh auth login` (or store a token in Keychain with `git credential-osxkeychain`), then try again.' }
     }
     return { ok: false, error: e.message }
   }
@@ -716,18 +905,7 @@ ipcMain.handle('git:backup', async () => {
 ipcMain.handle('git:pull-data', async () => {
   try {
     const git = await findGit()
-    const candidates = [
-      path.join(app.getPath('home'), 'Downloads', 'library-app'),
-      path.join(__dirname),
-      process.cwd(),
-    ]
-    let repoDir = null
-    for (const c of candidates) {
-      try {
-        const resolved = path.resolve(c)
-        if (fs.existsSync(path.join(resolved, '.git'))) { repoDir = resolved; break }
-      } catch {}
-    }
+    const repoDir = findRepoDir()
     if (!repoDir) return { ok: false, error: 'Git repo not found.' }
 
     await run(git, ['fetch', 'origin'], repoDir)
@@ -736,10 +914,8 @@ ipcMain.handle('git:pull-data', async () => {
       try { raw = await run(git, ['show', `origin/${branch}:library-data.json`], repoDir); break } catch {}
     }
     if (raw == null) return { ok: true, data: null }
-    const parsed = JSON.parse(raw)
-    const data = Array.isArray(parsed)
-      ? { items: parsed, folderConfig: {}, deletedIds: {} }
-      : { items: parsed.items || [], folderConfig: parsed.folderConfig || {}, deletedIds: parsed.deletedIds || {} }
+    const data = shapeLibrary(JSON.parse(raw))
+    if (!data) return { ok: false, error: 'The GitHub copy of library-data.json is not a valid library file.' }
     return { ok: true, data }
   } catch(e) { return { ok: false, error: e.message } }
 })
