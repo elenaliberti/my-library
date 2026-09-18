@@ -571,8 +571,15 @@ const S={
 const genId=()=>`${Date.now()}_${Math.random().toString(36).slice(2,8)}`;
 const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const fmt=n=>!n?'':(n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?(n/1e3).toFixed(0)+'K':String(n));
-const fmtN=n=>!n?'—':(n>=1e6?(n/1e6).toFixed(1)+'M':n>=1e3?Math.round(n/1e3)+'K':n.toLocaleString());
+const fmtN=n=>!n?'—':(n>=999500?(n/1e6).toFixed(1)+'M':n>=1e3?Math.round(n/1e3)+'K':n.toLocaleString());
 const itemWords=x=>x.words||(x.pages?x.pages*250:0);
+// A Dropped entry was not read to the end: its read event counts, its words do not (matches desktop).
+const progressTotal=x=>{const p=x&&x.progress;if(!p)return null;if(p.unit==='percent')return 100;if(p.total>0)return p.total;if(p.unit==='page'&&x.pages>0)return x.pages;if(p.unit==='chapter'&&x.chaptersTotal>0)return x.chaptersTotal;return null};
+const progressPct=x=>{const p=x&&x.progress;if(!p||!(Number(p.value)>=0))return null;const t=progressTotal(x);if(!t)return null;return Math.max(0,Math.min(100,Number(p.value)/t*100))};
+// Words credited per read event: a dropped item credits the part you got to (0 if unknown).
+const readWords=x=>{if(x.status==='Dropped'){const pct=progressPct(x);return pct===null?0:itemWords(x)*pct/100}return itemWords(x)};
+// Everything credited to the item: read events plus the part of a book still in progress.
+const creditedWords=x=>{let w=readWords(x)*readMult(x);if(x.status==='Reading'){const pct=progressPct(x);if(pct!==null)w+=itemWords(x)*pct/100}return w};
 // Times read: prefer the per-read timestamp list, fall back to the legacy count.
 const timesRead=x=>Array.isArray(x.readDates)?x.readDates.length:(x.readCount??(x.status==='Finished'?1:0));
 // Re-read multiplier: counts every item at least once, +1× for each re-read beyond the first.
@@ -580,9 +587,9 @@ const readMult=x=>timesRead(x);  // 0 for unread TBR/Reading items — same rule
 // Per-read timestamps, migrating legacy reads to the finish date (best-known date for old reads).
 const ensureReadDates=x=>Array.isArray(x.readDates)?x.readDates.slice():Array.from({length:x.readCount??(x.status==='Finished'?1:0)},()=>x.finishedAt||null);
 // Most recent read timestamp, or null.
-const lastReadAt=x=>{const d=ensureReadDates(x).filter(Boolean);return d.length?d[d.length-1]:null};
+const lastReadAt=x=>{let best=null,bt=-Infinity;for(const d of ensureReadDates(x)){if(!d)continue;const t=Date.parse(d);if(Number.isFinite(t)&&t>bt){bt=t;best=d}}return best};
 // Flatten items into individual read events, each dated when that read happened.
-const readEvents=items=>{const ev=[];items.forEach(x=>{const w=itemWords(x);ensureReadDates(x).forEach(d=>{if(d)ev.push({date:d,words:w})})});return ev};
+const readEvents=items=>{const ev=[];items.forEach(x=>{const w=readWords(x);ensureReadDates(x).forEach(d=>{if(d)ev.push({date:d,words:w})})});return ev};
 // ── Normalise records on load (idempotent; mirrors the desktop app) ──
 const decEnt=s=>String(s).replace(/&amp;/g,'&').replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&#(\d+);/g,(_,n)=>String.fromCharCode(n));
 const hasEnt=s=>typeof s==='string'&&/&(?:amp|quot|#39|lt|gt|#\d+);/.test(s);
@@ -594,7 +601,11 @@ function normalizeItem(x){
   const canon=STATUS_CANON[String(o.status||'').trim().toLowerCase()];
   o.status=canon||'TBR';
   if(Array.isArray(o.readDates)){
+    o.readDates=o.readDates.filter(d=>d===null||(typeof d==='string'&&Number.isFinite(Date.parse(d))));
     if(o.status==='Finished'&&!o.readDates.length)o.readDates=Array.from({length:Math.max(1,o.readCount||0)},()=>o.finishedAt||null);
+    const dated=o.readDates.filter(Boolean).sort((a,b)=>Date.parse(a)-Date.parse(b)),undated=o.readDates.filter(d=>!d);
+    const sameDay=dated.length>1&&dated.every(d=>d.slice(0,10)===dated[0].slice(0,10))&&(!o.finishedAt||dated[0].slice(0,10)===String(o.finishedAt).slice(0,10));
+    o.readDates=sameDay?[dated[0],...dated.slice(1).map(()=>null),...undated]:[...dated,...undated];
     o.readCount=o.readDates.length;
   }else if(o.status==='Finished'&&!(o.readCount>0))o.readCount=1;
   return o;
@@ -624,9 +635,8 @@ function mergeLibrary(localItems,localFC,remoteItems,remoteFC,localDel,remoteDel
   // Deletion tombstones from both sides; drop any item deleted after its last edit.
   const delMerged={...(remoteDel||{})};
   for(const[id,ts]of Object.entries(localDel||{})){if(!delMerged[id]||Date.parse(ts)>Date.parse(delMerged[id]))delMerged[id]=ts}
-  const cutoff=Date.now()-365*24*60*60*1000;
+  // Tombstones are kept for good (≈70 bytes each) — a TTL only ever risked bringing deleted items back.
   for(const[id,ts]of Object.entries(delMerged)){
-    if(Date.parse(ts)<cutoff){delete delMerged[id];continue}
     const it=byId.get(id);
     if(it&&(Date.parse(it._modAt||'')||0)<=Date.parse(ts))byId.delete(id);
   }
@@ -733,9 +743,10 @@ async function fetchFic(url){
     const rating=firstTag(getSec('rating'));
     const pairing=firstTag(getSec('relationship'));
     const tags=allTags(getSec('freeform')).slice(0,6);
+    const chm=strip(getSec('chapters')||'').match(/(\d+)\s*\/\s*(\d+|\?)/);const chaptersPosted=chm?parseInt(chm[1],10)||null:null,chaptersTotal=chm&&chm[2]!=='?'?parseInt(chm[2],10)||null:null;
     const summaryBlock=html.match(/<div class="summary module">[\s\S]*?<blockquote class="userstuff">([\s\S]*?)<\/blockquote>/i);
     const description=summaryBlock?summaryBlock[1].replace(/<\/p>\s*<p[^>]*>/gi,'\n\n').replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]+>/g,'').trim():null;
-    return{title,author,fandom:fandoms[0]||null,words,hearts:kudos,rating,pairing,tags,description};
+    return{title,author,fandom:fandoms[0]||null,words,hearts:kudos,rating,pairing,tags,description,chaptersPosted,chaptersTotal};
   } else {
     const pageTitleRaw=html.match(/<title>([^<]+)<\/title>/i)?.[1]||'';
     const pt=pageTitleRaw.replace(/\s*\|\s*FanFiction\s*$/i,'').trim();
@@ -792,7 +803,7 @@ function cover(item,w,h,r){
 function renderStatRow(){
   const el=document.getElementById('stat-row');if(!el)return;
   const counts={};STATUS.forEach(s=>counts[s]=S.items.filter(x=>x.status===s).length);
-  const totalWords=S.items.reduce((s,x)=>s+itemWords(x)*readMult(x),0);
+  const totalWords=S.items.reduce((s,x)=>s+creditedWords(x),0);
   el.innerHTML=STATUS.map(s=>`<div class="spill${S.statFilter===s?' on-'+s:''}" data-spill="${s}"><span class="spill-num">${counts[s]}</span><span class="spill-lbl">${s}</span></div>`).join('')+
     `<span class="spill-words">📝 ${fmtN(totalWords)}</span>`;
   el.querySelectorAll('[data-spill]').forEach(el=>el.addEventListener('click',()=>{
@@ -1053,7 +1064,7 @@ function renderGrid(){
     let seriesHtml='';
     if(seriesNames.length){
       const cards=seriesNames.map(s=>{
-        const n=items.filter(x=>x.series===s).length;
+        const n=S.items.filter(x=>x.type==='book'&&x.series===s).length;  // whole series, not just this genre
         const cfg=getCfg(`book|${genre}|${s}`);
         const icon=cfg.icon||'📚';
         const[c1,c2]=grad(`book|${genre}|${s}`);
@@ -1068,7 +1079,7 @@ function renderGrid(){
   }else if(path[0]==='Books'&&path.length===3){
     const genre=path[1];const seriesName=path[2];
     const genreItems=genre==='Other'?S.items.filter(x=>x.type==='book'&&!x.genre):S.items.filter(x=>x.type==='book'&&(x.genre||'').split(' / ')[0].trim()===genre);
-    const items=genreItems.filter(x=>x.series===seriesName);
+    const items=S.items.filter(x=>x.type==='book'&&x.series===seriesName);  // a series spans genres
     const genreLabel=getCfg(`book|${genre}`).displayName||genre;
     const seriesLabel=getCfg(`book|${genre}|${seriesName}`).displayName||seriesName;
     html=crumbBar([{label:'Books',path:['Books']},{label:genreLabel,path:['Books',genre]},{label:seriesLabel,path:['Books',genre,seriesName]}])+itemListHtml(items);
@@ -1152,14 +1163,14 @@ function renderStats(){
   };
   const cat=S.statsCat;const items=fin[cat];
   const totalCount=items.length;
-  const totalWords=items.reduce((s,x)=>s+itemWords(x)*readMult(x),0);
+  const totalWords=items.reduce((s,x)=>s+creditedWords(x),0);
   const totalMins=totalWords/SPEED;
   const summary=`<div class="ssum"><div class="stile"><div class="stile-n">${totalCount}</div><div class="stile-l">Items</div></div><div class="stile"><div class="stile-n">${fmtN(totalWords)}</div><div class="stile-l">Words</div></div><div class="stile"><div class="stile-n">${fmtTime(totalMins)}</div><div class="stile-l">Time*</div></div></div>`;
   let breakdown='';
   if(cat==='all'&&totalWords>0){
     const parts=[{lbl:'📚 Books',cls:'green',list:fin.books},{lbl:'📖 Fanfic',cls:'purple',list:fin.ff},{lbl:'📄 One-shots',cls:'amber',list:fin.oneshot}].filter(p=>p.list.length>0);
-    const rows=parts.map(p=>{const w=p.list.reduce((s,x)=>s+itemWords(x)*readMult(x),0);const pct=Math.round(w/totalWords*100);return`<div class="sbrow"><span class="sbdot ${p.cls}"></span><span class="sblbl">${p.lbl}</span><span class="sbstat">${p.list.length} · ${fmtN(w)}w</span><span class="sbpct">${pct}%</span></div>`}).join('');
-    const segs=parts.map(p=>{const w=p.list.reduce((s,x)=>s+itemWords(x)*readMult(x),0);return`<div class="sbseg ${p.cls}" style="width:${Math.round(w/totalWords*100)}%"></div>`}).join('');
+    const rows=parts.map(p=>{const w=p.list.reduce((s,x)=>s+creditedWords(x),0);const pct=Math.round(w/totalWords*100);return`<div class="sbrow"><span class="sbdot ${p.cls}"></span><span class="sblbl">${p.lbl}</span><span class="sbstat">${p.list.length} · ${fmtN(w)}w</span><span class="sbpct">${pct}%</span></div>`}).join('');
+    const segs=parts.map(p=>{const w=p.list.reduce((s,x)=>s+creditedWords(x),0);return`<div class="sbseg ${p.cls}" style="width:${Math.round(w/totalWords*100)}%"></div>`}).join('');
     breakdown=`<div class="sbreak">${rows}<div class="sbbar">${segs}</div></div>`;
   }
   function getPeriodData(items2,period){
@@ -1188,12 +1199,12 @@ function renderStats(){
 
   // ── Reading pace — books & fics tracked with both a start and finish date ──
   const pacedReads=S.items
-    .filter(x=>(x.type==='ff'||x.type==='book')&&x.readingStartedAt&&x.finishedAt&&x.words>0&&Date.parse(x.finishedAt)>=Date.parse(x.readingStartedAt))
-    .map(x=>{const days=Math.max(1,Math.round((Date.parse(x.finishedAt)-Date.parse(x.readingStartedAt))/86400000));return{title:x.title,pace:Math.round(x.words/days),end:x.finishedAt}})
+    .filter(x=>(x.type==='ff'||x.type==='book')&&x.status!=='Dropped'&&x.readingStartedAt&&x.finishedAt&&itemWords(x)>0&&Date.parse(x.finishedAt)>=Date.parse(x.readingStartedAt))
+    .map(x=>{const days=Math.max(1,Math.round((Date.parse(x.finishedAt)-Date.parse(x.readingStartedAt))/86400000));return{title:x.title,pace:Math.round(itemWords(x)/days),end:x.finishedAt}})
     .sort((a,b)=>Date.parse(a.end)-Date.parse(b.end));
   let paceHtml=`<div class="strend-hdr" style="margin-top:14px"><span class="strend-ttl">📖 Reading pace</span></div><div class="snote" style="padding-top:0">Not enough tracked reads yet — drag a book or fic through TBR → Reading → Finished and its pace will show up here.</div>`;
   if(pacedReads.length){
-    const avg=Math.round(pacedReads.reduce((s,r)=>s+r.pace,0)/pacedReads.length);
+    const sortedP=pacedReads.map(r=>r.pace).sort((a,b)=>a-b),mid=sortedP.length>>1;const avg=Math.round(sortedP.length%2?sortedP[mid]:(sortedP[mid-1]+sortedP[mid])/2);  // median, not mean
     const maxPace=Math.max(...pacedReads.map(r=>r.pace),1);
     const fastest=pacedReads.reduce((b,r)=>r.pace>b.pace?r:b,pacedReads[0]);
     const slowest=pacedReads.reduce((b,r)=>r.pace<b.pace?r:b,pacedReads[0]);
@@ -1203,12 +1214,12 @@ function renderStats(){
       return`<div class="scol" style="flex:1;min-width:20px"><div class="sbar-v">${isFastest?'⚡':''}${fmtN(r.pace)}</div><div class="sbar-wrap"><div class="sbar" style="height:${h}%;width:100%"></div></div><div class="sbar-lbl">${new Date(r.end).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</div></div>`;
     }).join('');
     paceHtml=`<div class="strend-hdr" style="margin-top:14px"><span class="strend-ttl">📖 Reading pace</span></div>
-      <div class="snote" style="padding-top:0">avg <b>${fmtN(avg)}</b> words/day · ${pacedReads.length} tracked read${pacedReads.length===1?'':'s'}</div>
+      <div class="snote" style="padding-top:0">typical <b>${fmtN(avg)}</b> words/day (median) · ${pacedReads.length} tracked read${pacedReads.length===1?'':'s'}</div>
       <div class="schart">${paceBars}</div><div class="schart-base"></div>
       ${fastest.pace!==slowest.pace?`<div class="snote">⚡ Fastest: <b>${esc(fastest.title||'')}</b> (${fmtN(fastest.pace)}w/day) · 🐢 Slowest: <b>${esc(slowest.title||'')}</b> (${fmtN(slowest.pace)}w/day)</div>`:''}`;
   }
 
-  el.innerHTML=`<div class="stat-tabs">${tab('all','All')}${tab('books','📚 Books')}${tab('ff','📖 FF')}${tab('oneshot','📄 One-shots')}</div>${summary}${breakdown}<div class="strend-hdr"><span class="strend-ttl">Reading trend</span><div class="sctrl-row">${pb('week','Week')}${pb('month','Month')}${pb('year','Year')}${pb('ever','All time')}</div></div><div class="sctrl-row" style="padding:0 16px 8px;gap:6px">${mb('words','Words')}${mb('items','Items')}</div><div class="schart">${bars}</div><div class="schart-base"></div><div class="snote">* ~250 words/min; books without word count use 250 words/page</div>${paceHtml}`;
+  el.innerHTML=`<div class="stat-tabs">${tab('all','All')}${tab('books','📚 Books')}${tab('ff','📖 FF')}${tab('oneshot','📄 One-shots')}</div>${summary}${breakdown}<div class="strend-hdr"><span class="strend-ttl">Reading trend</span><div class="sctrl-row">${pb('week','Week')}${pb('month','Month')}${pb('year','Year')}${pb('ever','All time')}</div></div><div class="sctrl-row" style="padding:0 16px 8px;gap:6px">${mb('words','Words')}${mb('items','Items')}</div><div class="schart">${bars}</div><div class="schart-base"></div><div class="snote">* ~250 words/min; books without a word count use 250 words/page. Each read counts once; TBR/Reading add nothing until finished; dropped items add no words.</div>${paceHtml}`;
   el.querySelectorAll('[data-scat]').forEach(e=>e.addEventListener('click',()=>{S.statsCat=e.dataset.scat;renderStats()}));
   el.querySelectorAll('[data-speriod]').forEach(e=>e.addEventListener('click',()=>{S.statsPeriod=e.dataset.speriod;renderStats()}));
   el.querySelectorAll('[data-smetric]').forEach(e=>e.addEventListener('click',()=>{S.statsMetric=e.dataset.smetric;renderStats()}));
@@ -1273,6 +1284,9 @@ function openSheet(id){
   document.querySelectorAll('.st-chip').forEach(c=>c.addEventListener('click',async()=>{
     const ns=c.dataset.s;const it=S.items.find(i=>i.id===S.selId);if(!it||it.status===ns)return;
     const up={...it,status:ns,finishedAt:ns==='Finished'&&!it.finishedAt?new Date().toISOString():it.finishedAt,readCount:ns==='Finished'&&!(it.readCount>0)?1:(it.readCount||0)};
+    if(ns==='Reading'&&!up.readingStartedAt)up.readingStartedAt=new Date().toISOString();
+    if(ns==='TBR'){up.readingStartedAt=null;up.progress=null}
+    if(ns==='Finished')up.progress=null;
     await qSave(up);
   }));
   document.querySelectorAll('.s-star').forEach(s=>s.addEventListener('click',async()=>{
@@ -1414,7 +1428,7 @@ function renderMoodPicker(){
   document.getElementById('mood-reroll')?.addEventListener('click',()=>revealMoodBook(S.moodKey));
   document.getElementById('mood-start')?.addEventListener('click',async()=>{
     const it=S.items.find(x=>x.id===S.moodBookId);if(!it)return;
-    await qSave({...it,status:'Reading'});
+    await qSave({...it,status:'Reading',readingStartedAt:it.readingStartedAt||new Date().toISOString()});
     closeMoodPicker();
     toast('Marked as Reading ✓','ok');
   });
@@ -1601,6 +1615,8 @@ async function saveModal(){
     _modAt:new Date().toISOString(),
   };
   if(isFf){item.url=g('f-url').trim();item.fandom=g('f-fandom').trim();item.pairing=g('f-pairing').trim();item.hearts=gN('f-hearts');item.rating=g('f-rating');item.oneshot=g('f-oneshot')==='true'}
+  if(st==='Reading'&&!item.readingStartedAt)item.readingStartedAt=new Date().toISOString();
+  if(st==='TBR')item.readingStartedAt=null;
   else{item.genre=g('f-genre').trim();item.section=g('f-section').trim();item.pages=gN('f-pages')}
   // Reconcile per-read timestamps with the chosen "times read" count.
   {

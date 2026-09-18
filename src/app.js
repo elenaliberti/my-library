@@ -43,16 +43,172 @@ let state = {
   loadError: null,          // set when the data file exists but can't be read — the app goes read-only
   recoveredFrom: null,      // name of the .bak / dated snapshot the library was restored from, if any
   readOnly: false,          // true while in recovery mode: nothing is ever written back to disk
+  missingFiles: {},         // localFile path → true when the linked ebook isn't on disk (checked at launch)
+  density: 'comfortable',   // 'comfortable' | 'compact' — card density, remembered in localStorage
+  msSearch: '',             // MySpace board: filter typed into the TBR column
+  msSort: 'added',          // MySpace board: 'added' | 'waiting' | 'shortest' | 'longest' | 'author' | 'series'
+  msChip: null,             // MySpace board: genre (books) / fandom (fics) chip, or null
 };
+
+// ── Remembered UI state (which view you were in, sort, density) ────────────────
+const UI_STATE_KEY = 'uiState:v1';
+function restoreUiState() {
+  try {
+    const s = JSON.parse(localStorage.getItem(UI_STATE_KEY) || '{}');
+    if (['list', 'folder', 'myspace'].includes(s.viewMode)) state.viewMode = s.viewMode;
+    if (s.view === 'stats') state.view = 'stats';
+    if (s.mySpaceTab === 'books' || s.mySpaceTab === 'ff') state.mySpaceTab = s.mySpaceTab;
+    if (['week', 'month', 'year', 'ever'].includes(s.statsPeriod)) state.statsPeriod = s.statsPeriod;
+    if (s.statsMetric === 'items' || s.statsMetric === 'words') state.statsMetric = s.statsMetric;
+    if (['all', 'books', 'ff', 'oneshot'].includes(s.statsCategory)) state.statsCategory = s.statsCategory;
+    if (['added', 'title', 'author', 'words', 'hearts', 'rating'].includes(s.sortBy)) state.sortBy = s.sortBy;
+    if (s.folderSortBy === 'alpha' || s.folderSortBy === 'count') state.folderSortBy = s.folderSortBy;
+    if (Array.isArray(s.folderPath) && s.folderPath.every(p => typeof p === 'string')) state.folderPath = s.folderPath;
+  } catch {}
+  try { state.density = localStorage.getItem('density:v2') === 'compact' ? 'compact' : 'comfortable'; } catch {}
+  document.body.dataset.density = state.density;
+}
+let _uiStateTimer = null;
+function persistUiState() {
+  clearTimeout(_uiStateTimer);
+  _uiStateTimer = setTimeout(() => {
+    try {
+      localStorage.setItem(UI_STATE_KEY, JSON.stringify({
+        viewMode: state.viewMode, view: state.view, mySpaceTab: state.mySpaceTab,
+        statsPeriod: state.statsPeriod, statsMetric: state.statsMetric, statsCategory: state.statsCategory,
+        sortBy: state.sortBy, folderSortBy: state.folderSortBy, folderPath: state.folderPath,
+      }));
+    } catch {}
+  }, 150);
+}
+
+// ── Linked ebook files: which ones are actually still on disk ──────────────────
+async function refreshFileStatus() {
+  const paths = [...new Set(state.items.map(x => x.localFile).filter(p => typeof p === 'string' && p))];
+  if (!paths.length || !window.api.checkFiles) { const had = Object.keys(state.missingFiles).length > 0; state.missingFiles = {}; return had; }
+  try {
+    const res = await window.api.checkFiles(paths);
+    const missing = {};
+    for (const [p, ok] of Object.entries(res || {})) if (!ok) missing[p] = true;
+    const changed = JSON.stringify(missing) !== JSON.stringify(state.missingFiles);
+    state.missingFiles = missing;
+    return changed;
+  } catch { return false; }
+}
+// Try to find a moved file by name in the usual folders; fall back to the picker (pre-pointed
+// at the best guess). Relinks and saves on success.
+async function relinkLocalFile(item) {
+  const name = (item.localFile || '').split('/').pop();
+  showToast(`Looking for “${name}”…`, 'loading');
+  let hits = [];
+  try { hits = (await window.api.locateFile(name)) || []; } catch {}
+  let picked = null;
+  if (hits.length === 1) picked = hits[0];
+  else {
+    document.getElementById('toast')?.remove();
+    const hint = hits[0] ? hits[0].slice(0, hits[0].lastIndexOf('/')) : undefined;
+    picked = await window.api.pickLocalFile(hint);
+  }
+  if (!picked) {
+    showToast(hits.length > 1 ? 'Several files with that name were found — pick the right one from the dialog to relink.' : 'Not found — link the file again once you know where it is.', 'info', { duration: 6000 });
+    return;
+  }
+  item.localFile = picked;
+  item._modAt = new Date().toISOString();
+  saveData();
+  await refreshFileStatus();
+  render();
+  showToast(hits.length === 1 ? `Found it — relinked to ${picked.split('/').pop()} ✓` : 'Relinked ✓', 'success');
+}
+
+
+// Bulk, automatic version — runs after the launch check and from Settings. Every missing file is
+// looked for under the nearest folder that still exists (the "PDF and FF" folder the files were
+// reorganised inside), by exact name first and then by normalised title ("Author - Title.ext").
+// Unique matches are applied and saved; look-alikes stay flagged for the per-item picker.
+async function relinkMovedFiles({ silent = false } = {}) {
+  const missing = state.items.filter(x => x.localFile && state.missingFiles[x.localFile]);
+  if (!missing.length || !window.api.relinkFiles) {
+    if (!silent) showToast(missing.length ? 'File search isn’t available in this build.' : 'Every linked file is where it should be ✓', missing.length ? 'info' : 'success');
+    return 0;
+  }
+  if (!silent) showToast(`Looking for ${missing.length} moved ${missing.length === 1 ? 'file' : 'files'}…`, 'loading');
+  let res = null;
+  try { res = await window.api.relinkFiles(missing.map(x => ({ id: x.id, path: x.localFile, title: x.title, author: x.author }))); } catch {}
+  document.getElementById('toast')?.remove();
+  if (!res || res.error) { if (!silent) showToast('Couldn’t search for the files.', 'error'); return 0; }
+  const byId = new Map(state.items.map(x => [x.id, x]));
+  const now = new Date().toISOString();
+  let n = 0, byTitle = 0;
+  for (const r of res.relinked || []) {
+    const it = byId.get(r.id);
+    if (!it || it.localFile !== r.from || typeof r.to !== 'string') continue;
+    it.localFile = r.to; it._modAt = now; n++; if (r.confidence !== 'exact') byTitle++;
+  }
+  if (n) { saveData(); await refreshFileStatus(); render(); }
+  const amb = (res.ambiguous || []).length, nf = (res.notFound || []).length;
+  if (n || !silent) {
+    const parts = [];
+    if (n) parts.push(`Relinked ${n} moved ${n === 1 ? 'file' : 'files'}${byTitle ? ` (${byTitle} matched by title)` : ''} ✓`);
+    if (amb) parts.push(`${amb} ${amb === 1 ? 'has' : 'have'} several look-alikes — use the book button to pick`);
+    if (nf) parts.push(`${nf} not found under ${(res.roots || []).length ? res.roots.map(r => r.split('/').pop()).join(' or ') : 'the old folder'}`);
+    showToast(parts.join(' · '), n ? 'success' : 'info', { duration: n ? 8000 : 6000 });
+  }
+  return n;
+}
+
+
+// ── Icon set ─────────────────────────────────────────────────────────────────────
+// Stroke icons drawn with currentColor so they inherit text colour and theme. Emoji stay only
+// where they are *content* the user chose (folder icons, covers, moods) — never as chrome.
+const ICONS = {
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  star: '<path d="M12 2.5l2.95 6.1 6.7.95-4.85 4.7 1.15 6.65L12 17.75 6.05 20.9 7.2 14.25 2.35 9.55l6.7-.95z"/>',
+  link: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+  bookOpen: '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+  book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+  feather: '<path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><path d="M16 8 2 22"/><path d="M17.5 15H9"/>',
+  edit: '<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4z"/>',
+  trash: '<path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>',
+  refresh: '<path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>',
+  chevron: '<path d="m6 9 6 6 6-6"/>',
+  search: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>',
+  cloud: '<path d="M16 16l-4-4-4 4"/><path d="M12 12v9"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>',
+  sliders: '<path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/>',
+  chart: '<path d="M12 20V10M18 20V4M6 20v-4"/>',
+  x: '<path d="M18 6 6 18M6 6l12 12"/>',
+  check: '<path d="M20 6 9 17l-5-5"/>',
+  checkCircle: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/>',
+  xCircle: '<circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/>',
+  clock: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  folder: '<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>',
+  pin: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',
+  calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+  dice: '<rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8" cy="8" r="1.2" fill="currentColor"/><circle cx="16" cy="8" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="8" cy="16" r="1.2" fill="currentColor"/><circle cx="16" cy="16" r="1.2" fill="currentColor"/>',
+  home: '<path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/>',
+  layers: '<path d="m12 2 10 5-10 5L2 7z"/><path d="m2 12 10 5 10-5"/><path d="m2 17 10 5 10-5"/>',
+  alert: '<circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>',
+  arrowLeft: '<path d="M19 12H5M12 19l-7-7 7-7"/>',
+  external: '<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/>',
+  sort: '<path d="M11 5h10M11 9h7M11 13h4M3 17l3 3 3-3M6 20V4"/>',
+  tag: '<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1" fill="currentColor"/>',
+  bookmark: '<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>',
+  inbox: '<path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>',
+};
+window.icon = icon;
+function icon(name, cls = '') {
+  const d = ICONS[name] || ICONS.alert;
+  return `<svg class="ico${cls ? ' ' + cls : ''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+}
 
 const STATUS = ['TBR','Reading','Finished','Dropped'];
 const BANNER_PAGES = [
-  { key: 'list',    label: '📚 Library (list view)' },
-  { key: 'folder',  label: '🗂 Browse / folders' },
-  { key: 'myspace', label: '🗂️ MySpace' },
-  { key: 'stats',   label: '📈 Stats' },
+  { key: 'list',    label: 'Library (list view)' },
+  { key: 'folder',  label: 'Browse / folders' },
+  { key: 'myspace', label: 'MySpace' },
+  { key: 'stats',   label: 'Stats' },
 ];
-const BANNER_PRESETS = ['#7d9d6a', '#3c5429', '#9bb08a', '#a98467', '#b9854f', '#6b8e9e', '#b07d9e', '#c98b8b'];
+const BANNER_PRESETS = ['#6c4dff', '#4b2ee0', '#ff5fb0', '#37c6ff', '#2fd4c2', '#c8f04b', '#ffb648', '#ff7a59'];
 
 function loadBannerConfig() { try { return JSON.parse(localStorage.getItem('bannerConfig') || '{}'); } catch { return {}; } }
 function saveBannerConfig() { try { localStorage.setItem('bannerConfig', JSON.stringify(state.bannerConfig)); } catch (e) {} }
@@ -69,17 +225,48 @@ function currentPageKey() {
   if (state.viewMode === 'folder') return 'folder';
   return 'list';
 }
+// Parse a CSS colour string (hex or rgb()) into [r,g,b], or null.
+function parseColor(str) {
+  const s = String(str || '').trim();
+  let m = /^#([0-9a-f]{3})$/i.exec(s);
+  if (m) return m[1].split('').map(ch => parseInt(ch + ch, 16));
+  m = /^#([0-9a-f]{6})([0-9a-f]{2})?$/i.exec(s);
+  if (m) return [m[1].slice(0, 2), m[1].slice(2, 4), m[1].slice(4, 6)].map(h => parseInt(h, 16));
+  m = /^rgba?\(\s*(\d+)[\s,]+(\d+)[\s,]+(\d+)/i.exec(s);
+  if (m) return [+m[1], +m[2], +m[3]];
+  return null;
+}
+// A text ("ink") version of a banner colour that stays legible on the current theme's surfaces:
+// same hue, lightness pinned dark on light mode and light on dark mode.
+function inkFromBanner(color) {
+  const rgb = parseColor(color);
+  if (!rgb) return null;
+  const [r, g, b] = rgb.map(v => v / 255);
+  const max = Math.max(r, g, b), min = Math.min(r, g, b), l = (max + min) / 2;
+  let h = 0, s = 0;
+  if (max !== min) {
+    const d = max - min;
+    s = d / (1 - Math.abs(2 * l - 1));
+    h = max === r ? ((g - b) / d) % 6 : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+    h = (h * 60 + 360) % 360;
+  }
+  const dark = matchMedia('(prefers-color-scheme: dark)').matches;
+  return `hsl(${h.toFixed(0)} ${Math.round(Math.min(0.6, Math.max(s, 0.25)) * 100)}% ${dark ? 74 : 27}%)`;
+}
 function applyBanner() {
   const el = document.getElementById('app');
   if (!el) return;
   const raw = (state.bannerConfig[currentPageKey()] || '').trim();
   const bg = resolveBanner(raw);
   if (bg) el.style.setProperty('--banner', bg); else el.style.removeProperty('--banner');
-  // A solid banner colour doubles as this page's button/accent colour (--purple-light/dark
-  // are derived from --purple via color-mix, so they follow automatically). An image banner
-  // has no single "accent colour" to extract, so leave --purple at its sage-green default.
+  el.classList.toggle('has-banner', !!bg);
+  // A solid banner colour tints this page's section labels (contrast-safe ink derived from it)
+  // and fills the header bands; the app's accent colour is left alone so buttons, chips and
+  // charts stay on the palette. An image banner has no single colour, so ink stays default.
   const isImage = /^https?:\/\//i.test(raw);
-  if (raw && !isImage) el.style.setProperty('--purple', raw); else el.style.removeProperty('--purple');
+  const ink = raw && !isImage ? inkFromBanner(raw) : null;
+  el.style.removeProperty('--purple'); // older builds set the accent from the banner
+  if (ink) el.style.setProperty('--banner-ink', ink); else el.style.removeProperty('--banner-ink');
 }
 function settingsModalHtml() {
   if (!state.settingsOpen) return '';
@@ -97,7 +284,7 @@ function settingsModalHtml() {
   }).join('');
   return `<div class="folder-edit-backdrop" id="settings-backdrop">
     <div class="folder-edit-modal" style="width:470px">
-      <div class="fem-header"><span class="fem-title">⚙️ Page banners</span><button class="fem-close" id="settings-close">×</button></div>
+      <div class="fem-header"><span class="fem-title">Page banners</span><button class="fem-close" id="settings-close">${icon('x')}</button></div>
       <div class="fem-body" style="padding-bottom:14px; max-height:70vh; overflow-y:auto">
         <p class="fem-hint" style="display:block; margin-bottom:2px">Give each page's banner a colour (<b>#hex</b>) or a background <b>image URL</b> — like a book cover. Leave blank for the default sage.</p>
         ${rows}
@@ -171,10 +358,19 @@ function normalizeItem(x) {
   if (typeof out.userRating !== 'number' || !Number.isFinite(out.userRating)) out.userRating = 0;
   // Finished ⇒ read at least once. readDates is what stats trust, so make it agree with readCount.
   if (Array.isArray(out.readDates)) {
-    out.readDates = out.readDates.filter(d => d === null || typeof d === 'string');
+    out.readDates = out.readDates.filter(d => d === null || (typeof d === 'string' && Number.isFinite(Date.parse(d))));
     if (out.status === 'Finished' && out.readDates.length === 0) {
       out.readDates = Array.from({ length: Math.max(1, out.readCount || 0) }, () => out.finishedAt || null);
     }
+    // Chronological order (unknown dates last) so "latest re-read" and the － stepper mean what
+    // they say even after a date was edited in the calendar.
+    const dated = out.readDates.filter(Boolean).sort((a, b) => Date.parse(a) - Date.parse(b));
+    const undated = out.readDates.filter(d => !d);
+    // Legacy migration artefact: "read 3 times" became three copies of the one finish date,
+    // which stacked three events on a single day in the calendar and charts. Keep the first
+    // copy dated; the others are real reads with an unknown date.
+    const sameDay = dated.length > 1 && dated.every(d => d.slice(0, 10) === dated[0].slice(0, 10)) && (!out.finishedAt || dated[0].slice(0, 10) === String(out.finishedAt).slice(0, 10));
+    out.readDates = sameDay ? [dated[0], ...dated.slice(1).map(() => null), ...undated] : [...dated, ...undated];
     out.readCount = out.readDates.length;
   } else if (out.status === 'Finished' && !(out.readCount > 0)) {
     out.readCount = 1;
@@ -278,11 +474,12 @@ function mergeLibrary(localItems, localFC, remoteItems, remoteFC, localDel, remo
   for (const [id, ts] of Object.entries(localDel || {})) {
     if (!delMerged[id] || Date.parse(ts) > Date.parse(delMerged[id])) delMerged[id] = ts;
   }
-  const TOMBSTONE_TTL_DAYS = 365;
-  const cutoff = Date.now() - TOMBSTONE_TTL_DAYS * 24 * 60 * 60 * 1000;
+  // Tombstones are kept for good. Each is ~70 bytes and deletions run to a couple of hundred a
+  // year, so there's nothing to save by expiring them — while any TTL meant a device that had
+  // been offline long enough could quietly bring a deleted entry back.
   let removedByTombstone = 0;
   for (const [id, ts] of Object.entries(delMerged)) {
-    if (Date.parse(ts) < cutoff) { delete delMerged[id]; continue; } // old enough to stop tracking
+    if (!Number.isFinite(Date.parse(ts))) { delete delMerged[id]; continue; } // malformed stamp → drop it
     const item = byId.get(id);
     if (item) {
       const modAt = Date.parse(item._modAt || '') || 0;
@@ -316,8 +513,9 @@ async function syncFromCloud() {
     const merged = mergeLibrary(state.items, state.folderConfig, res.data.items, res.data.folderConfig, state.deletedIds, res.data.deletedIds);
     // Safety: never lose data for any reason other than an explicit, tracked deletion.
     if (merged.items.length < Math.max(localN, remoteN) - merged.removedByTombstone) return false;
-    state.items = merged.items;
-    state.folderConfig = merged.folderConfig;
+    // Records that arrive from the phone go through the same repairs as records loaded from disk.
+    state.items = merged.items.map(normalizeItem);
+    state.folderConfig = normalizeFolderConfig(merged.folderConfig);
     state.deletedIds = merged.deletedIds;
     localStorage.setItem('folderConfig', JSON.stringify(state.folderConfig));
     await saveData();
@@ -328,7 +526,89 @@ async function syncFromCloud() {
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function fmt(n) { return n ? Number(n).toLocaleString() : '—'; }
 function genId() { return Date.now() + '_' + Math.random().toString(36).slice(2); }
-function itemWords(x) { return x.words || (x.pages ? x.pages * 250 : 0); }
+const WORDS_PER_PAGE = 250;   // used when a book has a page count but no word count
+const WORDS_PER_MINUTE = 250; // reading-time estimate
+function itemWords(x) { return x.words || (x.pages ? x.pages * WORDS_PER_PAGE : 0); }
+// Whether a word figure is an estimate rather than a real count: flagged by an import, or
+// derived from pages. Surfaced as "≈" wherever the number is shown.
+function wordsEstimated(x) { return !!x._wordsEstimated || (!x.words && !!x.pages); }
+// ── Reading progress ─────────────────────────────────────────────────────────────
+// progress = { unit: 'page' | 'chapter' | 'percent', value, total | null, at: ISO }
+// Where you are in a book you're reading, or where you stopped in one you dropped. The total
+// falls back to the item's own page / chapter count when it isn't given explicitly.
+function progressTotal(x) {
+  const p = x?.progress;
+  if (!p) return null;
+  if (p.unit === 'percent') return 100;
+  if (p.total > 0) return p.total;
+  if (p.unit === 'page' && x.pages > 0) return x.pages;
+  if (p.unit === 'chapter' && x.chaptersTotal > 0) return x.chaptersTotal;
+  return null;
+}
+function progressPct(x) {
+  const p = x?.progress;
+  if (!p || !(Number(p.value) >= 0)) return null;
+  const total = progressTotal(x);
+  if (!total) return null;
+  return Math.max(0, Math.min(100, Number(p.value) / total * 100));
+}
+function progressLabel(x) {
+  const p = x?.progress, pct = progressPct(x);
+  if (!p || pct === null) return '';
+  if (p.unit === 'percent') return `${Math.round(pct)}%`;
+  return `${p.unit === 'chapter' ? 'ch.' : 'p.'} ${p.value}/${progressTotal(x)} · ${Math.round(pct)}%`;
+}
+// Words credited for ONE read event of this item. A Dropped entry was not read to the end: it
+// credits the part you got to when the stopping point is known, and nothing when it isn't —
+// counting the full 4.7M words of an abandoned epic was the biggest distortion in the old totals.
+function wordsPerRead(x) {
+  if (x.status === 'Dropped') { const pct = progressPct(x); return pct === null ? 0 : itemWords(x) * pct / 100; }
+  return itemWords(x);
+}
+// Everything credited to this item right now: its read events, plus the part of a book still
+// being read (which has no event yet, so it counts in totals but not in the dated charts).
+function creditedWords(x) {
+  let w = wordsPerRead(x) * timesRead(x);
+  if (x.status === 'Reading') { const pct = progressPct(x); if (pct !== null) w += itemWords(x) * pct / 100; }
+  return w;
+}
+// Median words/day across every finished, board-tracked read — the app's "typical pace".
+function typicalPace() {
+  const paces = state.items
+    .filter(x => x.status === 'Finished' && x.readingStartedAt && x.finishedAt && itemWords(x) > 0 && Date.parse(x.finishedAt) >= Date.parse(x.readingStartedAt))
+    .map(x => itemWords(x) / daysBetween(x.readingStartedAt, x.finishedAt));
+  return { median: median(paces), n: paces.length };
+}
+// When a book in progress is likely to be finished: this book's own pace once there is real
+// progress and at least a day on the shelf, otherwise the library-wide median.
+function finishEstimate(x) {
+  const total = itemWords(x);
+  if (!total || x.status !== 'Reading') return null;
+  const pct = progressPct(x);
+  const done = pct === null ? 0 : total * pct / 100;
+  let pace = null, basis = '';
+  if (pct !== null && pct > 0 && x.readingStartedAt) {
+    const days = daysBetween(x.readingStartedAt, x.progress?.at || new Date().toISOString());
+    if (days >= 1 && Date.parse(x.progress?.at || 0) - Date.parse(x.readingStartedAt) >= 86400000) { pace = done / days; basis = 'at your pace on this book'; }
+  }
+  if (!pace) { const g = typicalPace(); if (g.n >= 1 && g.median > 0) { pace = g.median; basis = 'at your typical pace'; } }
+  if (!pace) return null;
+  const daysLeft = Math.max(0, Math.ceil((total - done) / pace));
+  return { daysLeft, date: new Date(Date.now() + daysLeft * 86400000), basis, pace: Math.round(pace), estimated: wordsEstimated(x) || pct === null };
+}
+// A book that has sat on the shelf a long time with no sign of movement.
+const STALE_READ_DAYS = 60, STALE_PROGRESS_DAYS = 30;
+function isStaleRead(x) {
+  if (x.status !== 'Reading' || !x.readingStartedAt) return false;
+  const lastTouch = Math.max(Date.parse(x.readingStartedAt) || 0, Date.parse(x.progress?.at || 0) || 0, Date.parse(x._modAt || 0) || 0);
+  return Date.now() - Date.parse(x.readingStartedAt) > STALE_READ_DAYS * 86400000 && Date.now() - lastTouch > STALE_PROGRESS_DAYS * 86400000;
+}
+// Every path that turns something into "Reading" must stamp when that happened, otherwise the
+// pace, the "started · Nd" chip and the finish estimate never appear for it.
+function ensureReadingStart(x, now) {
+  if (x.status === 'Reading' && !x.readingStartedAt) x.readingStartedAt = now || new Date().toISOString();
+  return x;
+}
 // Times read: prefer the per-read timestamp list, fall back to the legacy count. 0 for
 // anything not actually finished (TBR/Reading/Dropped with no explicit reads logged) —
 // word/time totals must NOT count books or fics that haven't been read yet.
@@ -339,13 +619,34 @@ function ensureReadDates(x) {
   const n = x.readCount ?? (x.status === 'Finished' ? 1 : 0);
   return Array.from({ length: n }, () => x.finishedAt || null);
 }
-// Most recent read timestamp, or null.
-function lastReadAt(x) { const d = ensureReadDates(x).filter(Boolean); return d.length ? d[d.length - 1] : null; }
+// Most recent read timestamp, or null. Uses the latest *date*, not the last array slot —
+// dates edited via the calendar can leave the list out of order.
+function lastReadAt(x) {
+  let best = null, bestT = -Infinity;
+  for (const d of ensureReadDates(x)) { if (!d) continue; const t = Date.parse(d); if (Number.isFinite(t) && t > bestT) { bestT = t; best = d; } }
+  return best;
+}
 // Flatten items into individual read events, each dated when that read happened.
 function readEvents(items) {
   const ev = [];
-  items.forEach(x => { const w = itemWords(x); ensureReadDates(x).forEach(d => { if (d) ev.push({ date: d, words: w }); }); });
+  items.forEach(x => { const w = wordsPerRead(x); ensureReadDates(x).forEach(d => { if (d) ev.push({ date: d, words: w }); }); });
   return ev;
+}
+function median(nums) {
+  const a = nums.filter(n => Number.isFinite(n)).sort((x, y) => x - y);
+  if (!a.length) return 0;
+  const mid = a.length >> 1;
+  return a.length % 2 ? a[mid] : (a[mid - 1] + a[mid]) / 2;
+}
+// Integer percentages that always sum to 100 (largest-remainder method).
+function percentages(values) {
+  const total = values.reduce((s, v) => s + v, 0);
+  if (!total) return values.map(() => 0);
+  const raw = values.map(v => v / total * 100);
+  const out = raw.map(Math.floor);
+  let left = 100 - out.reduce((s, v) => s + v, 0);
+  raw.map((v, i) => [v - Math.floor(v), i]).sort((a, b) => b[0] - a[0]).slice(0, left).forEach(([, i]) => out[i]++);
+  return out;
 }
 // Same, but keeping the item itself (for the reading calendar, which shows titles per day).
 function readEventsWithItems(items) {
@@ -361,8 +662,9 @@ function getReadingCalendarYears(items) {
   const years = new Map();
   readEventsWithItems(items).forEach(({ date, item }) => {
     const d = new Date(date);
+    if (isNaN(d)) return;
     const y = d.getFullYear(), m = d.getMonth(), day = d.getDate();
-    const w = itemWords(item);
+    const w = wordsPerRead(item);
 
     if (!years.has(y)) years.set(y, { year: y, ff: 0, book: 0, words: 0, months: new Map() });
     const yEntry = years.get(y);
@@ -400,18 +702,21 @@ function getReadingCalendarForYear(items, year) {
   };
 }
 function fmtTime(mins) {
-  if (!mins) return '0m';
+  if (!mins || !Number.isFinite(mins)) return '0m';
   const h = Math.floor(mins / 60);
   if (h === 0) return `${Math.round(mins)}m`;
   const d = Math.floor(h / 24);
   const rh = h % 24;
-  if (d === 0) return `${h}h`;
+  if (d === 0) { const rm = Math.round(mins % 60); return rm && h < 10 ? `${h}h ${rm}m` : `${h}h`; }
   return rh ? `${d}d ${rh}h` : `${d}d`;
 }
 function fmtNum(n) {
-  if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
-  if (n >= 1000) return Math.round(n / 1000) + 'K';
-  return n.toLocaleString();
+  n = Number(n);
+  if (!Number.isFinite(n)) return '—';
+  const neg = n < 0 ? '-' : ''; n = Math.abs(n);
+  if (n >= 999500) return neg + (n / 1000000).toFixed(1) + 'M';   // 999,600 is "1.0M", not "1000K"
+  if (n >= 1000) return neg + Math.round(n / 1000) + 'K';
+  return neg + Math.round(n).toLocaleString();
 }
 
 function fmtDateShort(iso) { return iso ? new Date(iso).toLocaleDateString('en-GB', { day:'numeric', month:'short' }) : ''; }
@@ -608,6 +913,12 @@ function itemComparator(sortBy) {
 
 function getStats() {
   const items = state.items;
+  let totalWords = 0, estimatedWords = 0;
+  for (const x of items) {
+    const w = creditedWords(x);
+    totalWords += w;
+    if (w && wordsEstimated(x)) estimatedWords += w;
+  }
   return {
     total: items.length,
     ff: items.filter(x => x.type === 'ff').length,
@@ -616,7 +927,9 @@ function getStats() {
     reading: items.filter(x => x.status === 'Reading').length,
     finished: items.filter(x => x.status === 'Finished').length,
     dropped: items.filter(x => x.status === 'Dropped').length,
-    totalWords: items.reduce((s,x) => s + itemWords(x) * timesRead(x), 0),
+    totalWords,
+    estimatedWords,                 // share of totalWords that rests on page-count / import estimates
+    hasEstimates: estimatedWords > 0,
   };
 }
 
@@ -654,13 +967,16 @@ function cardHtml(item) {
   const _lastRead = lastReadAt(item);
   const lastReadHtml = _lastRead ? `<span class="reread-sub">Last read ${new Date(_lastRead).toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'})}</span>` : '';
   const metaParts = [];
-  if (item.words) metaParts.push(`📝 ${fmt(item.words)} words`);
-  if (isFf && item.hearts) metaParts.push(`♥ ${fmt(item.hearts)}`);
-  if (!isFf && item.pages) metaParts.push(`📄 ${fmt(item.pages)} pages`);
-  if (item.userRating > 0) metaParts.push(starsHtml(item.userRating, item.id, true));
+  if (item.words) metaParts.push(`<span title="${wordsEstimated(item) ? 'Estimated word count' : 'Word count'}">${wordsEstimated(item) ? '≈' : ''}${fmt(item.words)} words</span>`);
+  if (isFf && item.chaptersPosted) metaParts.push(`<span title="Chapters posted${item.chaptersTotal ? ' / planned' : ''}">${item.chaptersPosted}${item.chaptersTotal ? '/' + item.chaptersTotal : '/?'} chapters</span>`);
+  if (isFf && item.hearts) metaParts.push(`<span title="Kudos">${fmt(item.hearts)} kudos</span>`);
+  if (!isFf && item.pages) metaParts.push(`${fmt(item.pages)} pages`);
   if (!isFf && item.section) metaParts.push(`<span class="card-section">${esc(item.section)}</span>`);
-  if (!isFf && item.series) metaParts.push(`<span class="card-series" title="Series">📚 ${esc(item.series)}</span>`);
-  const tags = (item.tags||[]).map(t => tagHtml(t)).join('');
+  if (!isFf && item.series) metaParts.push(`<span class="card-series" title="Series">${esc(item.series)}</span>`);
+  if (item.userRating > 0) metaParts.push(starsHtml(item.userRating, item.id, true));
+  const allTags = item.tags || [];
+  const TAG_LIMIT = 4;
+  const tags = allTags.slice(0, TAG_LIMIT).map(t => tagHtml(t)).join('') + (allTags.length > TAG_LIMIT ? `<span class="tag tag-more" title="${esc(allTags.slice(TAG_LIMIT).join(', '))}">+${allTags.length - TAG_LIMIT}</span>` : '');
   const id = esc(item.id);
 
   let expandedHtml = '';
@@ -685,7 +1001,7 @@ function cardHtml(item) {
         </div>
         <div class="reread-row">
           <div class="reread-info">
-            <span class="reread-label">📖 Read ${readCount} time${readCount === 1 ? '' : 's'}</span>
+            <span class="reread-label">Read ${readCount} time${readCount === 1 ? '' : 's'}</span>
             ${lastReadHtml}
           </div>
           <div class="reread-stepper">
@@ -693,9 +1009,20 @@ function cardHtml(item) {
             <button class="reread-step" data-reread-delta="1" data-reread-id="${id}" title="I re-read this today">＋</button>
           </div>
         </div>
+        ${(item.status === 'Reading' || item.status === 'Dropped') ? (() => {
+          const pct = progressPct(item);
+          const label = item.status === 'Dropped' ? 'Stopped at' : 'Currently at';
+          const est = finishEstimate(item);
+          return `<div class="card-progress">
+            <span class="card-progress-lbl">${icon('pin')} ${label}</span>
+            ${pct !== null ? `<span class="prog-track"><span class="prog-fill" style="width:${pct.toFixed(1)}%"></span></span><b>${esc(progressLabel(item))}</b>` : `<span class="card-progress-none">${item.status === 'Dropped' ? 'unknown — no words credited' : 'not tracked yet'}</span>`}
+            <button class="link-btn" data-progress="${id}">${pct !== null ? 'Update' : 'Set'}</button>
+            ${est ? `<span class="ins-sub">· ≈ ${est.daysLeft} day${est.daysLeft === 1 ? '' : 's'} left ${esc(est.basis)}</span>` : ''}
+          </div>`;
+        })() : ''}
         ${notesHtml}${extraHtml}
         ${item.description ? `<div class="card-synopsis"><span class="card-synopsis-label">${isFf ? 'Summary' : 'Synopsis'}</span><p>${esc(item.description)}</p></div>` : ''}
-        ${item.url ? `<p class="card-extra"><button class="link-btn" data-open-url="${esc(item.url)}">Open link ↗</button></p>` : ''}
+        ${item.url ? `<p class="card-extra"><button class="link-btn" data-open-url="${esc(item.url)}">${icon('external')} Open link</button></p>` : ''}
       </div>`;
   }
 
@@ -703,7 +1030,7 @@ function cardHtml(item) {
     ? `by <b>${esc(item.author||'—')}</b>${item.fandom ? ' · '+esc(item.fandom) : ''}`
     : `by <b>${esc(item.author||'—')}</b>${item.genre ? ' · '+esc(item.genre) : ''}`;
 
-  const [cc1, cc2] = folderGradient(item.id);
+  const [cc1, cc2] = coverGradient(item);
   const coverIcon = item.coverIcon || '';
   const coverIsUrl = coverIcon.startsWith('http');
   const fallbackEmoji = isFf ? '✍️' : '📚';
@@ -715,33 +1042,51 @@ function cardHtml(item) {
   // fanfiction entries have no series concept, so only book cards need to be draggable.
   const dragBookAttrs = !isFf ? ` draggable="true" data-drag-item-id="${id}"` : '';
   const hasLink = /^https?:\/\//i.test(item.url || '');
+  const fileMissing = !isFf && item.localFile && state.missingFiles[item.localFile];
+  const fileKind = item.localFile ? (item.localFile.toLowerCase().match(/\.(epub|pdf|mobi|azw3)$/)?.[1] || 'file').toUpperCase() : '';
+
+  // Read history on something that isn't Finished: a re-read in progress, or a finished book
+  // put back on the pile. Say so instead of hiding it.
+  let rereadBadge = '';
+  if (readCount > 1) rereadBadge = `<span class="badge badge-reread" title="Read ${readCount} times">${icon('refresh')} ${readCount}×</span>`;
+  else if (readCount === 1 && item.status !== 'Finished') rereadBadge = `<span class="badge badge-reread" title="Read once before — the earlier read still counts in your stats">${icon('refresh')} ${item.status === 'Reading' ? 're-reading' : 'read before'}</span>`;
+
+  // Inside a series folder: a book filed under a different genre than the folder gets a pill to
+  // move it in line with the rest of the series (see the series view in folderViewHtml).
+  const fp = state.folderPath;
+  const inSeriesView = state.viewMode === 'folder' && fp[0] === 'book' && fp.length === 3 && fp[1] !== '__none__';
+  const refileHtml = (!isFf && inSeriesView && item.series === fp[2] && topGenre(item) !== fp[1])
+    ? `<button class="refile-pill" data-refile="${id}" data-refile-genre="${esc(fp[1])}" title="Change this book's genre so it sits with the rest of the series">Filed under <b>${esc(topGenre(item) || 'no genre')}</b> · Move to ${esc(fp[1])}</button>`
+    : '';
+
   return `
-    <div class="card${expanded ? ' is-expanded' : ''}" data-id="${id}"${dragBookAttrs}>
+    <div class="card${expanded ? ' is-expanded' : ''}" data-id="${id}"${dragBookAttrs} style="${accentStyle(item)}">
       <div class="card-top">
         <div class="card-cover" data-expand="${id}" style="--c1:${cc1};--c2:${cc2}">
           ${coverInner}
-          <button class="cover-edit-btn" data-edit-item-icon="${id}" title="Change cover icon">✏️</button>
+          <button class="cover-edit-btn" data-edit-item-icon="${id}" title="Change cover">${icon('edit')}</button>
         </div>
         <div class="card-main" data-expand="${id}">
           <div class="card-title-row">
             <span class="card-title">${esc(item.title)}</span>
-            ${badgeHtml(item.status)}
             ${item.oneshot ? '<span class="badge badge-oneshot">One-shot</span>' : ''}
-            ${readCount > 1 ? `<span class="badge badge-reread" title="Read ${readCount} times">↻${readCount}</span>` : ''}
+            ${rereadBadge}
           </div>
           <div class="card-sub">${sub}</div>
-          <div class="card-meta">
-            ${metaParts.join('\n')}
-            ${tags}
-          </div>
+          ${metaParts.length ? `<div class="card-meta">${metaParts.join('<span class="dot">·</span>')}</div>` : ''}
+          ${tags ? `<div class="card-tags">${tags}</div>` : ''}
+          ${refileHtml}
         </div>
-        <div class="card-actions">
-          <button class="icon-btn${item.favorite ? ' fav-active' : ''}" data-toggle-fav="${id}" title="${item.favorite ? 'Remove from favorites' : 'Add to favorites'}">⭐</button>
-          ${hasLink ? `<button class="icon-btn" data-open-url="${esc(item.url)}" title="Open link">🔗</button>` : ''}
-          ${!isFf && item.localFile ? `<button class="icon-btn" data-open-local="${id}" title="Open ${item.localFile.toLowerCase().endsWith('.epub')?'EPUB':'PDF'}">📖</button>` : ''}
-          ${isFf && /archiveofourown|fanfiction\.net|transformativeworks/.test(item.url||'') ? `<button class="icon-btn" data-refresh-words="${id}" title="Refresh word count from the link">↻</button>` : ''}
-          <button class="icon-btn" data-edit="${id}" title="Edit">✏️</button>
-          <button class="icon-btn danger" data-delete="${id}" title="Delete">🗑</button>
+        <div class="card-side">
+          ${badgeHtml(item.status)}
+          <div class="card-actions">
+            <button class="icon-btn${item.favorite ? ' fav-active' : ''}" data-toggle-fav="${id}" title="${item.favorite ? 'Remove from favourites' : 'Add to favourites'}">${icon('star')}</button>
+            ${hasLink ? `<button class="icon-btn" data-open-url="${esc(item.url)}" title="Open link">${icon('external')}</button>` : ''}
+            ${!isFf && item.localFile ? `<button class="icon-btn${fileMissing ? ' is-missing' : ''}" data-open-local="${id}" title="${fileMissing ? `Linked ${fileKind} not found on disk — click to locate or relink` : `Open ${fileKind}`}">${icon('bookOpen')}</button>` : ''}
+            ${isFf && /archiveofourown|fanfiction\.net|transformativeworks/.test(item.url||'') ? `<button class="icon-btn" data-refresh-words="${id}" title="Refresh word count from the link">${icon('refresh')}</button>` : ''}
+            <button class="icon-btn" data-edit="${id}" title="Edit">${icon('edit')}</button>
+            <button class="icon-btn danger" data-delete="${id}" title="Delete">${icon('trash')}</button>
+          </div>
         </div>
       </div>
       ${expandedHtml}
@@ -770,25 +1115,25 @@ function modalHtml() {
       <div class="modal">
         <div class="modal-header">
           <span class="modal-title">${isEdit ? 'Edit entry' : 'Add new entry'}</span>
-          <button class="modal-close" id="modal-close">×</button>
+          <button class="modal-close" id="modal-close">${icon('x')}</button>
         </div>
 
         ${!isEdit ? `<div class="type-toggle">
-          ${typeBtn('ff','📖 Fanfiction')}
-          ${typeBtn('book','📚 Book')}
+          ${typeBtn('ff', icon('feather') + ' Fanfiction')}
+          ${typeBtn('book', icon('book') + ' Book')}
         </div>` : ''}
 
         ${isFf ? `
         <label class="field-label">Fic URL <span class="fem-hint">(AO3 or FF.net)</span></label>
         <div class="fetch-row">
           <input type="url" id="m-url" value="${esc(item.url||'')}" placeholder="https://archiveofourown.org/… or https://www.fanfiction.net/…" />
-          <button class="btn btn-primary btn-sm" id="btn-fetch">Auto-fill ✦</button>
+          <button class="btn btn-primary btn-sm" id="btn-fetch">Auto-fill</button>
         </div>
         <div class="fetch-msg" id="fetch-msg"></div>
         <label class="field-label">Format</label>
         <div class="type-toggle">
-          <button class="type-btn${!item.oneshot ? ' active' : ''}" data-oneshot-btn="false">📖 Multi-chapter</button>
-          <button class="type-btn${item.oneshot ? ' active' : ''}" data-oneshot-btn="true">📄 One-shot</button>
+          <button class="type-btn${!item.oneshot ? ' active' : ''}" data-oneshot-btn="false">Multi-chapter</button>
+          <button class="type-btn${item.oneshot ? ' active' : ''}" data-oneshot-btn="true">One-shot</button>
         </div>` : ''}
 
         <label class="field-label">Title *</label>
@@ -796,7 +1141,7 @@ function modalHtml() {
           <div class="ac-wrap">
             <div class="fetch-row">
               <input type="text" id="m-title" value="${esc(item.title||'')}" placeholder="Title, author, ISBN, or paste a Goodreads/Amazon link…" />
-              <button class="btn btn-primary btn-sm" id="btn-book-fetch">Auto-fill ✦</button>
+              <button class="btn btn-primary btn-sm" id="btn-book-fetch">Auto-fill</button>
             </div>
             <div class="field-suggest" id="sug-title"></div>
           </div>
@@ -840,13 +1185,13 @@ function modalHtml() {
           <div style="grid-column:1 / -1">
             <label class="field-label">Linked ebook file</label>
             <div class="local-file-row">
-              <span class="local-file-name" id="m-localfile-name" title="${esc(item.localFile||'')}">${item.localFile ? esc(item.localFile.split('/').pop()) : 'No file linked'}</span>
+              <span class="local-file-name" id="m-localfile-name" title="${esc(item.localFile||'')}">${item.localFile ? esc(item.localFile.split('/').pop()) : 'No file linked'}${item.localFile && state.missingFiles[item.localFile] ? ' <span class="local-file-missing">· ⚠️ not found on disk</span>' : ''}</span>
               <button type="button" class="btn btn-secondary btn-sm" id="btn-pick-localfile">${item.localFile ? 'Change…' : 'Link file…'}</button>
               ${item.localFile ? `<button type="button" class="btn btn-secondary btn-sm" id="btn-clear-localfile">Remove</button>` : ''}
             </div>
           </div>
           <div style="grid-column:1 / -1">
-            <label class="field-label">Synopsis <span class="fem-hint">(auto-filled by Auto-fill ✦, or paste your own)</span></label>
+            <label class="field-label">Synopsis <span class="fem-hint">(auto-filled by Auto-fill, or paste your own)</span></label>
             <textarea id="m-description" rows="4" placeholder="A short synopsis…">${esc(item.description||'')}</textarea>
           </div>`}
         </div>
@@ -856,7 +1201,7 @@ function modalHtml() {
             <label class="field-label">Word count</label>
             <div class="wc-row">
               <input type="number" id="m-words" min="0" value="${item.words||''}" placeholder="e.g. 120000" />
-              ${isFf ? `<button type="button" class="btn btn-secondary btn-sm" id="btn-refresh-words" title="Refresh word count & kudos from the link (doesn't touch your other fields)">↻</button>` : ''}
+              ${isFf ? `<button type="button" class="btn btn-secondary btn-sm" id="btn-refresh-words" title="Refresh word count & kudos from the link (doesn't touch your other fields)">${icon('refresh')}</button>` : ''}
             </div>
           </div>
           ${isFf ? `
@@ -900,6 +1245,16 @@ function modalHtml() {
         <label class="field-label">Times read</label>
         <input type="number" id="m-readcount" min="0" value="${Array.isArray(item.readDates) ? item.readDates.length : (item.readCount ?? (item.status === 'Finished' ? 1 : 0))}" style="width:100px" />
 
+        <label class="field-label">Progress <span class="fem-hint">(where you are, or where you stopped if dropped — only that part counts as read)</span></label>
+        <div class="progress-fields">
+          <select id="m-prog-unit" class="filter-select">
+            ${['page', 'chapter', 'percent'].map(u => `<option value="${u}"${(item.progress?.unit || (isFf ? 'chapter' : 'page')) === u ? ' selected' : ''}>${u[0].toUpperCase() + u.slice(1)}</option>`).join('')}
+          </select>
+          <input type="number" id="m-prog-value" min="0" placeholder="—" value="${item.progress?.value ?? ''}" />
+          <span class="progress-of">${(item.progress?.unit || (isFf ? 'chapter' : 'page')) === 'percent' ? '%' : 'of'}</span>
+          <input type="number" id="m-prog-total" min="1" placeholder="total" value="${item.progress?.total ?? (isFf ? (item.chaptersTotal || '') : (item.pages || ''))}" />
+        </div>
+
         <label class="field-label">Date finished <span class="fem-hint">(optional)</span></label>
         <input type="date" id="m-finished" value="${item.finishedAt ? toDateInputValue(item.finishedAt) : (!isEdit && (item.status || 'TBR') === 'Finished' ? toDateInputValue(new Date().toISOString()) : '')}" />
 
@@ -915,8 +1270,12 @@ function modalHtml() {
 }
 
 // ── Stats View ────────────────────────────────────────────────────────────────
+// Every figure here follows the same three rules, stated in the footnotes:
+//   1. a read counts once per read event (re-reads add up); TBR/Reading add nothing yet;
+//   2. a Dropped entry's read event counts as an item but contributes 0 words;
+//   3. words come from the real count when there is one, else pages × 250 (marked ≈).
 function statsViewHtml() {
-  const SPEED = 250;
+  const SPEED = WORDS_PER_MINUTE;
   const fin = {
     all:     state.items,
     books:   state.items.filter(x => x.type === 'book'),
@@ -926,8 +1285,11 @@ function statsViewHtml() {
   const cat = state.statsCategory;
   const items = fin[cat];
   const totalCount = items.length;
-  const totalWords = items.reduce((s, x) => s + itemWords(x) * timesRead(x), 0);
+  const wordsOf = list => list.reduce((s, x) => s + creditedWords(x), 0);
+  const totalWords = wordsOf(items);
+  const estWords = items.reduce((s, x) => s + (wordsEstimated(x) ? creditedWords(x) : 0), 0);
   const totalMins = totalWords / SPEED;
+  const approx = estWords > 0 ? '≈' : '';
 
   const tab = (id, lbl) =>
     `<span class="stat-tab${cat === id ? ' active' : ''}" data-scat="${id}">${lbl}</span>`;
@@ -936,24 +1298,18 @@ function statsViewHtml() {
   let breakdownHtml = '';
   if (cat === 'all' && totalWords > 0) {
     const parts = [
-      { key:'books',   lbl:'📚 Books',       cls:'green',  list: fin.books },
-      { key:'ff',      lbl:'📖 Fanfiction',  cls:'purple', list: fin.ff },
-      { key:'oneshot', lbl:'📄 One-shots',   cls:'amber',  list: fin.oneshot },
-    ].filter(p => p.list.length > 0);
-    const rows = parts.map(p => {
-      const w = p.list.reduce((s, x) => s + itemWords(x) * timesRead(x), 0);
-      const pct = Math.round(w / totalWords * 100);
-      return `<div class="bdrow">
+      { key:'books',   lbl:'Books',       cls:'green',  list: fin.books },
+      { key:'ff',      lbl:'Fanfiction',  cls:'purple', list: fin.ff },
+      { key:'oneshot', lbl:'One-shots',   cls:'amber',  list: fin.oneshot },
+    ].filter(p => p.list.length > 0).map(p => ({ ...p, w: wordsOf(p.list) }));
+    const pcts = percentages(parts.map(p => p.w));   // always sums to 100
+    const rows = parts.map((p, i) => `<div class="bdrow">
         <span class="bddot ${p.cls}"></span>
         <span class="bdlabel">${p.lbl}</span>
-        <span class="bdstat">${p.list.length} · ${fmtNum(w)} words · ${fmtTime(w/SPEED)}</span>
-        <span class="bdpct">${pct}%</span>
-      </div>`;
-    }).join('');
-    const segs = parts.map(p => {
-      const w = p.list.reduce((s, x) => s + itemWords(x) * timesRead(x), 0);
-      return `<div class="bdseg ${p.cls}" style="width:${Math.round(w/totalWords*100)}%"></div>`;
-    }).join('');
+        <span class="bdstat">${p.list.length} · ${fmtNum(p.w)} words · ${fmtTime(p.w/SPEED)}</span>
+        <span class="bdpct">${pcts[i]}%</span>
+      </div>`).join('');
+    const segs = parts.map((p, i) => `<div class="bdseg ${p.cls}" style="width:${pcts[i]}%"></div>`).join('');
     breakdownHtml = `<div class="stats-breakdown">${rows}<div class="bdbar">${segs}</div></div>`;
   }
 
@@ -967,9 +1323,15 @@ function statsViewHtml() {
   const maxVal = Math.max(...values, 1);
   const periodTotal = values.reduce((a, b) => a + b, 0);
   const peakIdx = values.reduce((bi, v, i) => (v > values[bi] ? i : bi), 0);
-  const peakVal = values[peakIdx];
-  const lastV = values[values.length - 1] || 0;
-  const prevV = values[values.length - 2] || 0;
+  // Trend: never compare a half-elapsed current bucket against a complete previous one — that
+  // reads as a collapse at the start of every month. If the current bucket is under half done,
+  // compare the last two *complete* buckets instead, and say so.
+  const elapsed = currentBucketElapsedFraction(state.statsPeriod);
+  const useComplete = elapsed < 0.5 && values.length >= 3;
+  const lastV = useComplete ? (values[values.length - 2] || 0) : (values[values.length - 1] || 0);
+  const prevV = useComplete ? (values[values.length - 3] || 0) : (values[values.length - 2] || 0);
+  const bucketName = { week: 'day', month: 'week', year: 'month', ever: 'year' }[state.statsPeriod] || 'period';
+  const trendLabel = useComplete ? `last full ${bucketName} vs the one before` : `vs previous ${bucketName}${elapsed < 1 ? ' (so far)' : ''}`;
   const pctChange = prevV > 0 ? Math.round((lastV - prevV) / prevV * 100) : null;
   const bars = groups.map((g, i) => {
     const val = values[i];
@@ -979,66 +1341,78 @@ function statsViewHtml() {
     const tip = `${g.label}: ${isWords ? fmtNum(val) + ' words · ' + fmtTime(val / SPEED) : val + (val === 1 ? ' read' : ' reads')}`;
     return `<div class="chart-col" title="${tip}">
       <div class="chart-bar-wrap">
-        ${val > 0 ? `<span class="chart-bar-val${isPeak ? ' peak' : ''}">${isPeak ? '🔥' : ''}${lbl}</span>` : ''}
+        ${val > 0 ? `<span class="chart-bar-val${isPeak ? ' peak' : ''}">${lbl}</span>` : ''}
         <div class="chart-bar${val === 0 ? ' empty' : ''}${isPeak ? ' peak' : ''}" style="height:${pct}%"></div>
       </div>
       <div class="chart-bar-lbl${isPeak ? ' peak' : ''}">${g.label}</div>
     </div>`;
   }).join('');
   // Friendly, dynamic headline for the trend
-  const periodName = { week: 'this week', month: 'this past month', year: 'this year', ever: 'all time' }[state.statsPeriod] || '';
+  const periodName = { week: 'this week', month: 'these 4 weeks', year: 'this year', ever: 'all time' }[state.statsPeriod] || '';
   const trendTxt = pctChange === null ? '' :
-    pctChange > 0 ? ` · <span class="ins-up">▲ ${pctChange}% vs before</span>` :
-    pctChange < 0 ? ` · <span class="ins-down">▼ ${Math.abs(pctChange)}% vs before</span>` : ` · <span class="ins-flat">→ steady</span>`;
+    pctChange > 0 ? ` · <span class="ins-up" title="${trendLabel}">▲ ${pctChange}%</span> <span class="ins-sub">${trendLabel}</span>` :
+    pctChange < 0 ? ` · <span class="ins-down" title="${trendLabel}">▼ ${Math.abs(pctChange)}%</span> <span class="ins-sub">${trendLabel}</span>` : ` · <span class="ins-flat">→ steady</span> <span class="ins-sub">${trendLabel}</span>`;
   let insightHtml;
   if (periodTotal === 0) {
-    insightHtml = `<span class="ins-emoji">🌱</span> Nothing logged ${periodName} yet — finish a fic (or add a finish date) and watch this fill up!`;
+    insightHtml = `Nothing logged ${periodName} yet — finish a fic (or add a finish date) and watch this fill up.`;
   } else if (isWords) {
-    const books = periodTotal / 90000;
-    const booksTxt = books >= 0.4 ? ` &nbsp;·&nbsp; 📚 ≈ ${books < 10 ? books.toFixed(1) : Math.round(books)} books` : '';
-    insightHtml = `<span class="ins-emoji">📖</span> <b>${fmtNum(periodTotal)}</b> words ${periodName}${booksTxt} &nbsp;·&nbsp; 🔥 best: <b>${groups[peakIdx].label}</b>${trendTxt}`;
+    const novels = periodTotal / 90000;
+    const novelsTxt = novels >= 0.4 ? ` &nbsp;·&nbsp; ≈ ${novels < 10 ? novels.toFixed(1) : Math.round(novels)} novels’ worth <span class="ins-sub">(90k words each)</span>` : '';
+    insightHtml = `<b>${fmtNum(periodTotal)}</b> words ${periodName}${novelsTxt} &nbsp;·&nbsp; best: <b>${groups[peakIdx].label}</b>${trendTxt}`;
   } else {
-    insightHtml = `<span class="ins-emoji">✅</span> <b>${periodTotal}</b> finished ${periodName} &nbsp;·&nbsp; 🔥 best: <b>${groups[peakIdx].label}</b>${trendTxt}`;
+    insightHtml = `<b>${periodTotal}</b> read${periodTotal === 1 ? '' : 's'} ${periodName} &nbsp;·&nbsp; best: <b>${groups[peakIdx].label}</b>${trendTxt}`;
   }
 
-  // Items that DO count toward the totals above (they've been read at least once) but have
-  // no dated read event, so they can't show up in the chart — the old check used finishedAt
-  // alone, which wrongly implied TBR/Reading items "count in the totals" when they no longer do.
-  const undatedButCounted = items.filter(x => timesRead(x) > 0 && !ensureReadDates(x).some(Boolean)).length;
-  const noteHtml = undatedButCounted > 0
-    ? `<p class="stats-note">📅 ${undatedButCounted} of ${totalCount} items count in the totals above but have no read date, so they're missing from the chart. Edit items to add one.</p>`
-    : '';
+  // What the totals leave out or estimate — said plainly rather than hidden in the number.
+  // Undated read *events* (not just items): a book read three times with one known date has
+  // two reads that count in the totals but can't be placed on the chart or calendar.
+  let undatedEvents = 0, undatedWords = 0;
+  items.forEach(x => { const n = ensureReadDates(x).filter(d => !d).length; if (n) { undatedEvents += n; undatedWords += n * wordsPerRead(x); } });
+  const zeroWordReads = items.filter(x => timesRead(x) > 0 && x.status !== 'Dropped' && !itemWords(x)).length;
+  const dropped = items.filter(x => x.status === 'Dropped' && timesRead(x) > 0);
+  const droppedReads = dropped.length, droppedKnown = dropped.filter(x => progressPct(x) !== null).length;
+  const inProgress = items.filter(x => x.status === 'Reading' && progressPct(x) !== null);
+  const inProgressWords = inProgress.reduce((s, x) => s + itemWords(x) * progressPct(x) / 100, 0);
+  const notes = [];
+  if (inProgress.length) notes.push(`${inProgress.length} book${inProgress.length === 1 ? '' : 's'} in progress credit${inProgress.length === 1 ? 's' : ''} ${fmtNum(inProgressWords)} words read so far — in the totals, not in the charts until finished.`);
+  if (undatedEvents > 0) notes.push(`${undatedEvents} read${undatedEvents === 1 ? '' : 's'} (${fmtNum(undatedWords)} words) ${undatedEvents === 1 ? 'has' : 'have'} no date, so ${undatedEvents === 1 ? 'it counts' : 'they count'} in the totals above but not in the chart or calendar — edit the item and set a finish date, or move the read on the calendar.`);
+  if (zeroWordReads > 0) notes.push(`${zeroWordReads} read item${zeroWordReads === 1 ? '' : 's'} ${zeroWordReads === 1 ? 'has' : 'have'} neither a word nor a page count and add${zeroWordReads === 1 ? 's' : ''} nothing to the word totals.`);
+  if (droppedReads > 0) notes.push(`${droppedReads} dropped item${droppedReads === 1 ? '' : 's'} ${droppedReads === 1 ? 'appears' : 'appear'} in the read counts and calendar. ${droppedKnown ? `${droppedKnown} with a known stopping point count only the part you read; ` : ''}${droppedReads - droppedKnown ? `${droppedReads - droppedKnown} without one add no words — set where you stopped on the card to credit them.` : ''}`);
+  if (estWords > 0) notes.push(`About ${Math.round(estWords / totalWords * 100)}% of the word total rests on estimates (imported counts or pages × ${WORDS_PER_PAGE}).`);
+  const noteHtml = notes.map(n => `<p class="stats-note">${n.replace(/^[^\w≈]+\s*/u, '')}</p>`).join('');
 
   const pBtn = (id, lbl) =>
     `<button class="speriod-btn${state.statsPeriod===id?' active':''}" data-speriod="${id}">${lbl}</button>`;
   const mBtn = (id, lbl) =>
     `<button class="smetric-btn${state.statsMetric===id?' active':''}" data-smetric="${id}">${lbl}</button>`;
 
-  // Reading pace — books & fics tracked through the MySpace board (have both a start and finish date).
+  // Reading pace — books & fics tracked through the MySpace board (have both a start and finish
+  // date). Uses the same word figure as everything else (real count, else pages × 250), and the
+  // headline is a *median*: one fic marked Reading and Finished on the same day shows up as
+  // hundreds of thousands of words/day and would make a mean meaningless.
   const pacedReads = state.items
-    .filter(x => (x.type === 'ff' || x.type === 'book') && x.readingStartedAt && x.finishedAt && x.words > 0 && Date.parse(x.finishedAt) >= Date.parse(x.readingStartedAt))
-    .map(x => { const days = daysBetween(x.readingStartedAt, x.finishedAt); return { title: x.title, words: x.words, days, pace: Math.round(x.words / days), end: x.finishedAt }; })
+    .filter(x => (x.type === 'ff' || x.type === 'book') && x.status !== 'Dropped' && x.readingStartedAt && x.finishedAt && itemWords(x) > 0 && Date.parse(x.finishedAt) >= Date.parse(x.readingStartedAt))
+    .map(x => { const days = daysBetween(x.readingStartedAt, x.finishedAt); const w = itemWords(x); return { title: x.title, words: w, est: wordsEstimated(x), days, sameDay: Date.parse(x.finishedAt) - Date.parse(x.readingStartedAt) < 86400000, pace: Math.round(w / days), end: x.finishedAt }; })
     .sort((a, b) => Date.parse(a.end) - Date.parse(b.end));
   let paceHtml = `
       <div class="stats-trend-hdr" style="margin-top:24px">
-        <span class="stats-section-ttl">📖 Reading pace</span>
+        <span class="stats-section-ttl">Reading pace</span>
       </div>
-      <div class="stats-insight"><span class="ins-emoji">🌱</span> Not enough tracked reads yet — drag a book or fic through <b>TBR → Reading → Finished</b> on the MySpace board and its pace will show up here.</div>`;
+      <div class="stats-insight">Not enough tracked reads yet — drag a book or fic through <b>TBR → Reading → Finished</b> on the MySpace board and its pace will show up here.</div>`;
   if (pacedReads.length) {
-    const avg = Math.round(pacedReads.reduce((s, r) => s + r.pace, 0) / pacedReads.length);
+    const typical = Math.round(median(pacedReads.map(r => r.pace)));
     const maxPace = Math.max(...pacedReads.map(r => r.pace), 1);
     const fastest = pacedReads.reduce((b, r) => r.pace > b.pace ? r : b, pacedReads[0]);
     const slowest = pacedReads.reduce((b, r) => r.pace < b.pace ? r : b, pacedReads[0]);
+    const sameDayN = pacedReads.filter(r => r.sameDay).length;
 
-    // Trend: your most recent reads vs the equally-sized batch right before them.
+    // Trend: your most recent reads vs the equally-sized batch right before them (medians).
     let trendTxt = '';
     const windowN = Math.min(5, Math.floor(pacedReads.length / 2));
     if (windowN >= 2) {
-      const recent = pacedReads.slice(-windowN);
-      const older = pacedReads.slice(-windowN * 2, -windowN);
-      const recentAvg = recent.reduce((s, r) => s + r.pace, 0) / recent.length;
-      const olderAvg = older.reduce((s, r) => s + r.pace, 0) / older.length;
-      const chg = olderAvg > 0 ? Math.round((recentAvg - olderAvg) / olderAvg * 100) : 0;
+      const recent = median(pacedReads.slice(-windowN).map(r => r.pace));
+      const older = median(pacedReads.slice(-windowN * 2, -windowN).map(r => r.pace));
+      const chg = older > 0 ? Math.round((recent - older) / older * 100) : 0;
       trendTxt = chg > 5 ? ` &nbsp;·&nbsp; <span class="ins-up">▲ ${chg}% faster</span> than your ${windowN} reads before that`
         : chg < -5 ? ` &nbsp;·&nbsp; <span class="ins-down">▼ ${Math.abs(chg)}% slower</span> than your ${windowN} reads before that`
         : ` &nbsp;·&nbsp; <span class="ins-flat">→ steady pace</span> vs your ${windowN} reads before that`;
@@ -1047,50 +1421,51 @@ function statsViewHtml() {
     const paceBars = pacedReads.map(r => {
       const h = Math.max(Math.sqrt(r.pace / maxPace) * 88, 5);
       const isFastest = r === fastest && fastest.pace !== slowest.pace;
-      return `<div class="chart-col" title="${esc(r.title || '')} — ${fmtNum(r.pace)} words/day (${fmtNum(r.words)}w in ${r.days}d)">
-        <div class="chart-bar-wrap"><span class="chart-bar-val${isFastest ? ' peak' : ''}">${isFastest ? '⚡' : ''}${fmtNum(r.pace)}</span><div class="chart-bar${isFastest ? ' peak' : ''}" style="height:${h}%"></div></div>
+      return `<div class="chart-col" title="${esc(r.title || '')} — ${fmtNum(r.pace)} words/day (${r.est ? '≈' : ''}${fmtNum(r.words)}w in ${r.days}d${r.sameDay ? ', same day' : ''})">
+        <div class="chart-bar-wrap"><span class="chart-bar-val${isFastest ? ' peak' : ''}">${fmtNum(r.pace)}</span><div class="chart-bar${isFastest ? ' peak' : ''}" style="height:${h}%"></div></div>
         <div class="chart-bar-lbl">${fmtDateShort(r.end)}</div>
       </div>`;
     }).join('');
     paceHtml = `
       <div class="stats-trend-hdr" style="margin-top:24px">
-        <span class="stats-section-ttl">📖 Reading pace</span>
+        <span class="stats-section-ttl">Reading pace</span>
         <span class="stats-note" style="margin:0">${pacedReads.length} tracked read${pacedReads.length === 1 ? '' : 's'}</span>
       </div>
-      <div class="stats-insight"><span class="ins-emoji">⚡</span> You read <b>${fmtNum(avg)}</b> words/day on average${trendTxt}</div>
+      <div class="stats-insight">Typical pace <b>${fmtNum(typical)}</b> words/day <span class="ins-sub">(median of your tracked reads)</span>${trendTxt}</div>
       <div class="stats-chart">${paceBars}</div>
       <div class="stats-chart-base"></div>
-      ${fastest.pace !== slowest.pace ? `<p class="stats-note" style="margin-top:6px">⚡ Fastest: <b>${esc(fastest.title || '')}</b> at ${fmtNum(fastest.pace)} words/day &nbsp;·&nbsp; 🐢 Slowest: <b>${esc(slowest.title || '')}</b> at ${fmtNum(slowest.pace)} words/day</p>` : ''}
-      <p class="stats-note" style="margin-top:6px">Pace = word count ÷ days from start to finish. Reads are tracked by dragging books/fics through the <b>MySpace</b> board (TBR → Reading → Finished).</p>`;
+      ${fastest.pace !== slowest.pace ? `<p class="stats-note" style="margin-top:6px">Fastest: <b>${esc(fastest.title || '')}</b> at ${fmtNum(fastest.pace)} words/day &nbsp;·&nbsp; Slowest: <b>${esc(slowest.title || '')}</b> at ${fmtNum(slowest.pace)} words/day</p>` : ''}
+      <p class="stats-note" style="margin-top:6px">Pace = words ÷ days from start to finish (a same-day finish counts as 1 day${sameDayN ? ` — ${sameDayN} of these ${sameDayN === 1 ? 'is' : 'are'} same-day and probably logged after the fact` : ''}). Reads are tracked by dragging through the <b>MySpace</b> board (TBR → Reading → Finished).</p>`;
   }
 
-  // Reading calendar — one card per month of a chosen year, navigable year by year.
-  // Only Finished/Dropped items belong here — TBR/Reading haven't actually been read (yet).
-  const calItems = items.filter(x => x.status === 'Finished' || x.status === 'Dropped');
+  // Reading calendar — one card per month of a chosen year, navigable year by year. Every
+  // dated read event belongs here, whatever the item's status is *now*: a book being re-read
+  // still had its first read, and a dropped one still had the day you gave up on it.
+  const calItems = items;
   const calYear = state.statsCalendarYear ?? getReadingCalendarYears(calItems)[0]?.year ?? new Date().getFullYear();
   const calYearData = getReadingCalendarForYear(calItems, calYear);
   const calPill = (emoji, val) => `<span class="cal-year-pill">${emoji} ${val}</span>`;
   const calendarHtml = `
     <div class="stats-trend-hdr" style="margin-top:24px">
-      <span class="stats-section-ttl">🗓️ Reading calendar</span>
+      <span class="stats-section-ttl">Reading calendar</span>
     </div>
     <div class="cal-year-nav">
-      <button class="cal-year-btn" data-cal-year-nav="prev"${calYearData.hasOlder?'':' disabled'} title="Previous year">‹</button>
+      <button class="cal-year-btn" data-cal-year-nav="prev"${calYearData.hasOlder?'':' disabled'} title="Previous year">${icon('arrowLeft')}</button>
       <div class="cal-year-stats">
         <span class="cal-year-label">${calYear}</span>
-        ${calPill('✍️', calYearData.ff)}
-        ${calPill('📚', calYearData.book)}
-        ${calPill('📝', fmtNum(calYearData.words) + ' words')}
-        ${calPill('⏱', fmtTime(calYearData.words / SPEED))}
+        ${calPill(icon('feather'), calYearData.ff + ' fics')}
+        ${calPill(icon('book'), calYearData.book + ' books')}
+        ${calPill('', fmtNum(calYearData.words) + ' words')}
+        ${calPill(icon('clock'), fmtTime(calYearData.words / SPEED))}
       </div>
-      <button class="cal-year-btn" data-cal-year-nav="next"${calYearData.hasNewer?'':' disabled'} title="Next year">›</button>
+      <button class="cal-year-btn" data-cal-year-nav="next"${calYearData.hasNewer?'':' disabled'} title="Next year"><span class="flip-h">${icon('arrowLeft')}</span></button>
     </div>
     <div class="read-calendar">
       ${calYearData.months.map(m => `
         <div class="cal-month-card" data-cal-drop-year="${calYear}" data-cal-drop-month="${m.month}">
           <div class="cal-month-hdr">
             <span class="cal-month-name">${m.label}</span>
-            <span class="cal-month-stats">${m.ff||m.book ? `✍️${m.ff} · 📚${m.book} · ${fmtNum(m.words)}w` : '—'}</span>
+            <span class="cal-month-stats">${m.ff||m.book ? `${m.ff ? m.ff + ' fic' + (m.ff === 1 ? '' : 's') : ''}${m.ff && m.book ? ' · ' : ''}${m.book ? m.book + ' book' + (m.book === 1 ? '' : 's') : ''} · ${fmtNum(m.words)} words` : '—'}</span>
           </div>
           <div class="cal-month-body">
             ${m.days.length ? m.days.map(([day, its]) => `
@@ -1108,12 +1483,12 @@ function statsViewHtml() {
 
   return `<div id="stats-view">
     <div class="stats-cats">
-      ${tab('all','All')}${tab('books','📚 Books')}${tab('ff','📖 Fanfiction')}${tab('oneshot','📄 One-shots')}
+      ${tab('all','All')}${tab('books','Books')}${tab('ff','Fanfiction')}${tab('oneshot','One-shots')}
     </div>
     <div class="stats-summary">
       <div class="scard"><div class="scard-num">${totalCount}</div><div class="scard-lbl">items</div></div>
-      <div class="scard"><div class="scard-num">${fmtNum(totalWords)}</div><div class="scard-lbl">words read</div></div>
-      <div class="scard"><div class="scard-num">${fmtTime(totalMins)}</div><div class="scard-lbl">reading time*</div></div>
+      <div class="scard"><div class="scard-num">${approx}${fmtNum(totalWords)}</div><div class="scard-lbl">words read</div></div>
+      <div class="scard"><div class="scard-num">${approx}${fmtTime(totalMins)}</div><div class="scard-lbl">reading time*</div></div>
     </div>
     ${breakdownHtml}
     <div class="stats-trend-hdr">
@@ -1127,15 +1502,26 @@ function statsViewHtml() {
     <div class="stats-chart">${bars}</div>
     <div class="stats-chart-base"></div>
     ${noteHtml}
-    <p class="stats-note" style="margin-top:6px">* estimated at 250 words/min; books without word count use 250 words/page</p>
+    <p class="stats-note" style="margin-top:6px">* Reading time assumes ${WORDS_PER_MINUTE} words/min. Each read counts once (re-reads add up); TBR and Reading items add nothing until finished. Bars use a square-root scale so quiet periods stay visible — read the numbers, not the heights.</p>
     ${paceHtml}
     ${calendarHtml}
   </div>`;
 }
 
+// How far through the current chart bucket we are (0–1): day for 'week', 7-day window for
+// 'month', calendar month for 'year', calendar year for 'ever'.
+function currentBucketElapsedFraction(period) {
+  const now = new Date();
+  if (period === 'week') return (now.getHours() * 60 + now.getMinutes()) / 1440;
+  if (period === 'month') return 1; // the last 7-day window always ends today, so it is complete by construction
+  if (period === 'year') { const days = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate(); return (now.getDate() - 1 + now.getHours() / 24) / days; }
+  if (period === 'ever') { const start = new Date(now.getFullYear(), 0, 1), end = new Date(now.getFullYear() + 1, 0, 1); return (now - start) / (end - start); }
+  return 1;
+}
+
 // ── MySpace — reading board ─────────────────────────────────────────────────────
 function mySpaceCard(x) {
-  const [c1, c2] = folderGradient(x.id);
+  const [c1, c2] = coverGradient(x);
   const coverIsUrl = (x.coverIcon || '').startsWith('http');
   const fallback = x.type === 'book' ? '📚' : '✍️';
   const cover = coverIsUrl
@@ -1143,13 +1529,16 @@ function mySpaceCard(x) {
     : `<span class="ms-cover-emoji">${esc(x.coverIcon) || fallback}</span>`;
   const tags = [];
   if (x.status === 'Reading' && x.readingStartedAt) {
-    tags.push(`<span class="ms-badge">▶ ${fmtDateShort(x.readingStartedAt)} · ${daysBetween(x.readingStartedAt, new Date().toISOString())}d</span>`);
+    tags.push(`<span class="ms-badge">${icon('calendar')} ${fmtDateShort(x.readingStartedAt)} · day ${daysBetween(x.readingStartedAt, new Date().toISOString())}</span>`);
   }
-  if (x.words) tags.push(`<span class="ms-wc">${fmtNum(x.words)}w</span>`);
-  if (x.url) tags.push(`<button class="ms-link" data-open-url="${esc(x.url)}" draggable="false" title="Open in browser">🔗</button>`);
-  if (/archiveofourown|fanfiction\.net|transformativeworks/.test(x.url || '')) tags.push(`<button class="ms-refresh" data-ms-refresh="${esc(x.id)}" draggable="false" title="Refresh word count from the link">↻</button>`);
+  if (x.status === 'Reading' && progressPct(x) !== null) tags.push(`<button class="ms-badge ms-progress-chip" data-progress="${esc(x.id)}" draggable="false" title="Update where you are">${icon('pin')} ${esc(progressLabel(x))}</button>`);
+  if (x.words) tags.push(`<span class="ms-wc">${wordsEstimated(x) ? '≈' : ''}${fmtNum(x.words)}w</span>`);
+  else if (x.pages) tags.push(`<span class="ms-wc">${x.pages}p</span>`);
+  if (x.type === 'book' && x.series) tags.push(`<span class="ms-wc" title="Series">${esc(x.series)}</span>`);
+  if (x.url) tags.push(`<button class="ms-link" data-open-url="${esc(x.url)}" draggable="false" title="Open in browser">${icon('external')}</button>`);
+  if (/archiveofourown|fanfiction\.net|transformativeworks/.test(x.url || '')) tags.push(`<button class="ms-refresh" data-ms-refresh="${esc(x.id)}" draggable="false" title="Refresh word count from the link">${icon('refresh')}</button>`);
   return `<div class="ms-card" draggable="true" data-ms-id="${esc(x.id)}" title="${esc(x.title || '')}">
-    <div class="ms-cover" style="background:linear-gradient(135deg,${c1},${c2})">${cover}<button class="ms-cover-edit cover-edit-btn" data-edit-item-icon="${esc(x.id)}" draggable="false" title="Change cover">✏️</button></div>
+    <div class="ms-cover" style="background:linear-gradient(135deg,${c1},${c2})">${cover}<button class="ms-cover-edit cover-edit-btn" data-edit-item-icon="${esc(x.id)}" draggable="false" title="Change cover">${icon('edit')}</button></div>
     <div class="ms-meta">
       <div class="ms-title">${esc(x.title || 'Untitled')}</div>
       <div class="ms-author">${esc(x.author || '')}${x.fandom ? ' · ' + esc(x.fandom) : ''}</div>
@@ -1158,33 +1547,85 @@ function mySpaceCard(x) {
   </div>`;
 }
 
+// ── MySpace: TBR column tools (search · sort · genre/fandom chips) ───────────────
+const MS_SORTS = [
+  ['added',    'Recently added'],
+  ['waiting',  'Longest waiting'],
+  ['shortest', 'Shortest first'],
+  ['longest',  'Longest first'],
+  ['author',   'Author A → Z'],
+  ['series',   'By series / fandom'],
+];
+function msGroupOf(x) { return x.type === 'book' ? (topGenre(x) || 'No genre') : (x.fandom || 'No fandom'); }
+function msApplyTools(items) {
+  let list = items;
+  if (state.msChip) list = list.filter(x => msGroupOf(x) === state.msChip);
+  if (state.msSearch) { const q = norm(state.msSearch); list = list.filter(x => norm(x.title).includes(q) || norm(x.author).includes(q) || norm(x.series).includes(q) || norm(x.fandom).includes(q) || (x.tags || []).some(t => norm(t).includes(q))); }
+  const byAdded = (a, b) => (b._addedAt || 0) - (a._addedAt || 0);
+  const len = x => itemWords(x) || Infinity;
+  const sorters = {
+    added: byAdded,
+    waiting: (a, b) => (a._addedAt || 0) - (b._addedAt || 0),
+    shortest: (a, b) => len(a) - len(b) || byAdded(a, b),
+    longest: (a, b) => (itemWords(b) || 0) - (itemWords(a) || 0) || byAdded(a, b),
+    author: (a, b) => (a.author || '').localeCompare(b.author || '') || (a.title || '').localeCompare(b.title || ''),
+    series: (a, b) => (a.series || a.fandom || '￿').localeCompare(b.series || b.fandom || '￿') || (a.title || '').localeCompare(b.title || ''),
+  };
+  return list.slice().sort(sorters[state.msSort] || byAdded);
+}
+function msToolsHtml(all, shown) {
+  const counts = new Map();
+  all.forEach(x => { const g = msGroupOf(x); counts.set(g, (counts.get(g) || 0) + 1); });
+  const chips = [...counts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 7);
+  const active = state.msChip || state.msSearch;
+  return `<div class="ms-tools">
+      <input type="text" class="ms-search" id="ms-search" placeholder="Filter ${all.length} ${all[0]?.type === 'book' ? 'books' : 'fics'}…" value="${esc(state.msSearch)}" autocomplete="off" spellcheck="false" />
+      <select class="ms-sort" id="ms-sort" title="Sort">${MS_SORTS.map(([k, l]) => `<option value="${k}"${state.msSort === k ? ' selected' : ''}>${l}</option>`).join('')}</select>
+    </div>
+    ${chips.length > 1 ? `<div class="ms-chips">${chips.map(([g, n]) => `<button class="ms-chip${state.msChip === g ? ' on' : ''}" data-ms-chip="${esc(g)}">${esc(g)} <span class="ms-chip-n">${n}</span></button>`).join('')}${active ? `<button class="ms-chip ms-chip-clear" data-ms-chip="">✕ Clear</button>` : ''}</div>` : ''}
+    ${active && shown.length !== all.length ? `<div class="ms-shown">${shown.length} of ${all.length}</div>` : ''}`;
+}
+// Where a book was abandoned — shown in place of the shelf for the "Dropped" zone.
+function msDroppedZoneHtml() {
+  return `<div class="ms-finish ms-dropzone-dropped" data-ms-drop="Dropped">
+      <div class="ms-finish-icon">${icon('xCircle')}</div>
+      <div class="ms-finish-ttl">Dropped</div>
+      <div class="ms-finish-sub">Say where you stopped — only that part counts</div>
+    </div>`;
+}
+
 function mySpaceHtml() {
   const ffs = state.items.filter(x => x.type === 'ff');
-  const tbr = ffs.filter(x => (x.status || 'TBR') === 'TBR');
+  const tbrAll = ffs.filter(x => (x.status || 'TBR') === 'TBR');
+  const tbr = msApplyTools(tbrAll);
   const reading = ffs.filter(x => x.status === 'Reading' && !x.waitingOnChap);
   const waiting = ffs.filter(x => x.status === 'Reading' && x.waitingOnChap);
   const byAdded = (a, b) => (b._addedAt || 0) - (a._addedAt || 0);
   const byStarted = (a, b) => ((Date.parse(b.readingStartedAt) || 0) - (Date.parse(a.readingStartedAt) || 0)) || byAdded(a, b);
-  tbr.sort(byAdded); reading.sort(byStarted); waiting.sort(byStarted);
+  reading.sort(byStarted); waiting.sort(byStarted);
   const body = (items, empty) => items.length ? items.map(mySpaceCard).join('') : `<div class="ms-empty">${empty}</div>`;
   return `<div class="ms-board">
     <div class="ms-col" data-ms-drop="TBR">
-      <div class="ms-col-hdr"><span>📚 To Be Read</span><span class="ms-count">${tbr.length}</span></div>
-      <div class="ms-col-body">${body(tbr, 'Your to-read fics live here')}</div>
+      <div class="ms-col-hdr"><span class="ms-col-hdr-title">${icon('inbox')}<span>To Be Read</span><span class="ms-count">${tbrAll.length}</span></span></div>
+      ${msToolsHtml(tbrAll, tbr)}
+      <div class="ms-col-body">${body(tbr, tbrAll.length ? 'Nothing matches this filter' : 'Your to-read fics live here')}</div>
     </div>
     <div class="ms-col ms-col-reading" data-ms-drop="Reading">
-      <div class="ms-col-hdr"><span>📖 Reading</span><span class="ms-count">${reading.length}</span></div>
+      <div class="ms-col-hdr"><span class="ms-col-hdr-title">${icon('bookOpen')}<span>Reading</span><span class="ms-count">${reading.length}</span></span></div>
       <div class="ms-col-body">${body(reading, 'Drag a fic here when you start reading — the date is logged')}</div>
     </div>
     <div class="ms-col-right">
       <div class="ms-col ms-col-waiting" data-ms-drop="Waiting">
-        <div class="ms-col-hdr"><span>⏳ Waiting on chap</span><span class="ms-count">${waiting.length}</span></div>
+        <div class="ms-col-hdr"><span class="ms-col-hdr-title">${icon('clock')}<span>Waiting on chapters</span><span class="ms-count">${waiting.length}</span></span></div>
         <div class="ms-col-body">${body(waiting, 'WIPs you’re caught up on — waiting for new chapters')}</div>
       </div>
-      <div class="ms-finish" data-ms-drop="Finished">
-        <div class="ms-finish-icon">✅</div>
-        <div class="ms-finish-ttl">Finished</div>
-        <div class="ms-finish-sub">Drop here to mark finished today &amp; log your reading pace</div>
+      <div class="ms-finish-row">
+        <div class="ms-finish" data-ms-drop="Finished">
+          <div class="ms-finish-icon">${icon('checkCircle')}</div>
+          <div class="ms-finish-ttl">Finished</div>
+          <div class="ms-finish-sub">Drop to mark finished today and log your pace</div>
+        </div>
+        ${msDroppedZoneHtml()}
       </div>
     </div>
   </div>`;
@@ -1202,34 +1643,57 @@ const HP_PLANT = `<svg class="plant-svg" viewBox="0 0 60 90">
 </svg>`;
 
 function mySpaceShelfCover(x) {
-  const [c1, c2] = folderGradient(x.id);
+  const [c1, c2] = coverGradient(x);
   const coverIsUrl = (x.coverIcon || '').startsWith('http');
   const cover = coverIsUrl
     ? coverImgHtml('ms-shelf-img', x.coverIcon, '📚')
     : `<span class="ms-shelf-emoji">${esc(x.coverIcon) || '📚'}</span>`;
-  return `<div class="ms-shelf-book" draggable="true" data-ms-id="${esc(x.id)}" title="${esc(x.title || '')}">
-    <div class="ms-shelf-cover" style="background:linear-gradient(135deg,${c1},${c2})">${cover}<button class="ms-cover-edit cover-edit-btn" data-edit-item-icon="${esc(x.id)}" draggable="false" title="Change cover">✏️</button></div>
+  return `<div class="ms-shelf-book" draggable="true" data-ms-id="${esc(x.id)}" title="${esc(x.title || '')}" style="${accentStyle(x)}">
+    <div class="ms-shelf-cover" style="background:linear-gradient(135deg,${c1},${c2})">${cover}<button class="ms-cover-edit cover-edit-btn" data-edit-item-icon="${esc(x.id)}" draggable="false" title="Change cover">${icon('edit')}</button></div>
   </div>`;
 }
 
 function mySpaceShelfCap(x) {
+  const id = esc(x.id);
+  // Books that became "Reading" before start dates were recorded everywhere can have theirs set
+  // by hand — the app never guesses a date it doesn't know.
   const started = x.readingStartedAt
-    ? `<div class="ms-shelf-since">▶ ${fmtDateShort(x.readingStartedAt)} · ${daysBetween(x.readingStartedAt, new Date().toISOString())}d</div>` : '';
+    ? `<span class="ms-shelf-since">${icon('calendar')} ${fmtDateShort(x.readingStartedAt)} · day ${daysBetween(x.readingStartedAt, new Date().toISOString())}</span>`
+    : `<button class="link-btn" data-set-start="${id}" title="When did you start this one? Needed for pace and the finish estimate">${icon('calendar')} Set start date</button>`;
+  const pct = progressPct(x);
+  const progress = pct !== null
+    ? `<button class="ms-progress" data-progress="${id}" title="Update where you are">
+         <span class="ms-progress-track"><span class="ms-progress-fill" style="width:${pct.toFixed(1)}%"></span></span>
+         <span class="ms-progress-lbl">${esc(progressLabel(x))}</span>
+       </button>`
+    : `<button class="ms-progress ms-progress-empty" data-progress="${id}" title="Track your progress to get a finish estimate">${icon('pin')} Where are you up to?</button>`;
+  const est = finishEstimate(x);
+  const eta = est
+    ? `<div class="ms-shelf-eta" title="${est.pace.toLocaleString()} words/day ${esc(est.basis)}${est.estimated ? ' · based on an estimated length' : ''}">${est.daysLeft === 0 ? 'Almost done' : `≈ ${est.daysLeft} day${est.daysLeft === 1 ? '' : 's'} left · done by ${fmtDateShort(est.date.toISOString())}`} <span class="ins-sub">${esc(est.basis)}</span></div>`
+    : '';
+  const stale = isStaleRead(x)
+    ? `<div class="ms-stale">Still reading? It's been ${daysBetween(x.readingStartedAt, new Date().toISOString())} days.
+         <button class="link-btn" data-ms-move="${id}|Finished">Finished it</button> · <button class="link-btn" data-ms-move="${id}|Dropped">Dropped it</button> · <button class="link-btn" data-progress="${id}">Update progress</button></div>`
+    : '';
   return `<div class="ms-shelf-cap">
     <div class="ms-shelf-ttl">${esc(x.title || 'Untitled')}</div>
     <div class="ms-shelf-author">${esc(x.author || '')}</div>
-    ${started}
+    <div class="ms-shelf-meta">${started}</div>
+    ${progress}
+    ${eta}
+    ${stale}
   </div>`;
 }
 
 function mySpaceBooksHtml() {
   const books = state.items.filter(x => x.type === 'book');
-  const tbr = books.filter(x => (x.status || 'TBR') === 'TBR');
+  const tbrAll = books.filter(x => (x.status || 'TBR') === 'TBR');
+  const tbr = msApplyTools(tbrAll);
   const reading = books.filter(x => x.status === 'Reading');
   const byAdded = (a, b) => (b._addedAt || 0) - (a._addedAt || 0);
   const byStarted = (a, b) => ((Date.parse(b.readingStartedAt) || 0) - (Date.parse(a.readingStartedAt) || 0)) || byAdded(a, b);
-  tbr.sort(byAdded); reading.sort(byStarted);
-  const tbrBody = tbr.length ? tbr.map(mySpaceCard).join('') : `<div class="ms-empty">Your to-read books live here</div>`;
+  reading.sort(byStarted);
+  const tbrBody = tbr.length ? tbr.map(mySpaceCard).join('') : `<div class="ms-empty">${tbrAll.length ? 'Nothing matches this filter' : 'Your to-read books live here'}</div>`;
   const shelf = reading.length
     ? `<div class="ms-shelf-scene">
          <div class="ms-plant ms-plant-l">${HP_PLANT}</div>
@@ -1240,24 +1704,31 @@ function mySpaceBooksHtml() {
        <div class="ms-shelf-caps">${reading.map(mySpaceShelfCap).join('')}</div>`
     : `<div class="ms-shelf-scene">
          <div class="ms-plant ms-plant-l">${HP_PLANT}</div>
-         <div class="ms-shelf-empty"><div class="ms-shelf-empty-ico">📖</div><div>Drag a book here when you start reading it</div></div>
+         <div class="ms-shelf-empty"><div class="ms-shelf-empty-ico">${icon('bookOpen')}</div><div>Drag a book here when you start reading it</div></div>
          <div class="ms-plant ms-plant-r">${HP_PLANT}</div>
        </div>
        <div class="ms-shelf-plank"></div>`;
   return `<div class="ms-board ms-board-books">
     <div class="ms-col" data-ms-drop="TBR">
       <div class="ms-col-hdr">
-        <span class="ms-col-hdr-title"><span>📚 To Be Read</span><span class="ms-count">${tbr.length}</span></span>
-        <button class="ms-mood-btn" id="btn-mood-picker" title="What should I read next?">🎲</button>
+        <span class="ms-col-hdr-title">${icon('inbox')}<span>To Be Read</span><span class="ms-count">${tbrAll.length}</span></span>
+        <button class="ms-mood-btn" id="btn-mood-picker" title="What should I read next?">${icon('dice')} <span class="ms-mood-lbl">Pick for me</span></button>
       </div>
+      ${msToolsHtml(tbrAll, tbr)}
       <div class="ms-col-body">${tbrBody}</div>
     </div>
     <div class="ms-col-right">
-      <div class="ms-shelf-panel" data-ms-drop="Reading">${shelf}</div>
-      <div class="ms-finish ms-finish-shelf" data-ms-drop="Finished">
-        <div class="ms-finish-icon">✅</div>
-        <div class="ms-finish-ttl">Finished</div>
-        <div class="ms-finish-sub">Drop here to mark it finished today</div>
+      <div class="ms-shelf-panel" data-ms-drop="Reading">
+        <div class="ms-col-hdr ms-shelf-hdr"><span class="ms-col-hdr-title">${icon('bookOpen')}<span>Reading</span><span class="ms-count">${reading.length}</span></span></div>
+        ${shelf}
+      </div>
+      <div class="ms-finish-row">
+        <div class="ms-finish ms-finish-shelf" data-ms-drop="Finished">
+          <div class="ms-finish-icon">${icon('checkCircle')}</div>
+          <div class="ms-finish-ttl">Finished</div>
+          <div class="ms-finish-sub">Drop to mark it finished today</div>
+        </div>
+        ${msDroppedZoneHtml()}
       </div>
     </div>
   </div>`;
@@ -1277,6 +1748,7 @@ async function refreshWordCount(item) {
       const old = item.words || 0;
       item.words = data.words;
       if (data.hearts) item.hearts = data.hearts;
+      if (data.chaptersPosted) { item.chaptersPosted = data.chaptersPosted; item.chaptersTotal = data.chaptersTotal || null; }
       item._modAt = new Date().toISOString();
       return { ok: true, old, new: data.words };
     }
@@ -1285,98 +1757,216 @@ async function refreshWordCount(item) {
   return { ok: false };
 }
 
+// One board move = one undo entry (the item as it was), on the shared ⌘Z stack and behind the
+// toast's Undo button.
+function pushItemUndo(item) {
+  state.folderUndoStack.push({ type: 'item', id: item.id, data: JSON.stringify(item) });
+  if (state.folderUndoStack.length > FOLDER_UNDO_LIMIT) state.folderUndoStack.shift();
+}
+function undoItemSnapshot(id, data) {
+  const idx = state.items.findIndex(x => x.id === id);
+  const restored = JSON.parse(data);
+  if (idx >= 0) state.items[idx] = restored; else state.items.unshift(restored);
+  saveData(); render();
+}
+// "Finished ✓" toast with a Change-date action: move both the finish date and the read event.
+function finishedToast(item, message) {
+  showToast(message, 'success', { duration: 8000, action: { label: 'Change date', onClick: async () => {
+    const iso = await pickDateDialog({ title: `When did you finish “${item.title}”?`, defaultIso: item.finishedAt });
+    if (!iso) return;
+    const dates = ensureReadDates(item);
+    const idx = dates.lastIndexOf(item.finishedAt);
+    if (idx >= 0) dates[idx] = iso; else if (dates.length) dates[dates.length - 1] = iso; else dates.push(iso);
+    item.readDates = dates.filter(Boolean).sort((a, b) => Date.parse(a) - Date.parse(b)).concat(dates.filter(d => !d));
+    item.readCount = item.readDates.length;
+    item.finishedAt = iso;
+    item._modAt = new Date().toISOString();
+    saveData(); render();
+    showToast(`Finish date set to ${fmtDateShort(iso)} ✓`, 'success');
+  } } });
+}
+
 async function moveMsCard(id, target) {
   const item = state.items.find(x => x.id === id);
   if (!item) return;
   const now = new Date().toISOString();
+  const before = JSON.stringify(item);
+  const undoAction = { label: 'Undo', onClick: () => undoItemSnapshot(id, before) };
   if (target === 'TBR') {
-    item.status = 'TBR'; item.waitingOnChap = false; item.readingStartedAt = null;
-  } else if (target === 'Reading') {
-    item.status = 'Reading'; item.waitingOnChap = false;
-    if (!item.readingStartedAt) item.readingStartedAt = now;
-  } else if (target === 'Waiting') {
-    item.status = 'Reading'; item.waitingOnChap = true;
-    if (!item.readingStartedAt) item.readingStartedAt = now;
-  } else if (target === 'Finished') {
+    if (item.status === 'TBR') return;
+    pushItemUndo(item);
+    item.status = 'TBR'; item.waitingOnChap = false; item.readingStartedAt = null; item.progress = null;
+    item._modAt = now; saveData(); render();
+    showToast(`Back on the pile: “${item.title}”`, 'info', { action: undoAction });
+    return;
+  }
+  if (target === 'Reading' || target === 'Waiting') {
+    const waiting = target === 'Waiting';
+    if (item.status === 'Reading' && !!item.waitingOnChap === waiting) return;
+    pushItemUndo(item);
+    item.status = 'Reading'; item.waitingOnChap = waiting;
+    ensureReadingStart(item, now);
+    item._modAt = now; saveData(); render();
+    showToast(waiting ? `Waiting on chapters: “${item.title}”` : `Started reading “${item.title}” ✓`, 'success', { action: undoAction });
+    return;
+  }
+  if (target === 'Dropped') {
+    // Ask where the reading stopped — that position is what gets credited as read.
+    const p = await progressDialog(item, { title: 'Where did you stop?', hint: 'Only the part you got to counts towards your words read. Skip if you don’t remember.', allowSkip: true });
+    if (p === null) return; // cancelled: nothing changes
+    pushItemUndo(item);
+    if (p !== 'skip') item.progress = { ...p, at: now };
+    item.status = 'Dropped'; item.waitingOnChap = false;
+    if (!(timesRead(item) > 0)) { item.readDates = [now]; item.readCount = 1; } // the day you gave up on it
+    item._modAt = now; saveData(); render();
+    const pct = progressPct(item);
+    showToast(pct === null ? `Dropped “${item.title}” — no words credited` : `Dropped “${item.title}” at ${Math.round(pct)}% — ${fmtNum(wordsPerRead(item))} words credited`, 'info', { action: undoAction });
+    return;
+  }
+  if (target === 'Finished') {
+    if (item.status === 'Finished' && !item.readingStartedAt) return;
+    pushItemUndo(item);
     // Capture the final word count from the source so stats & pace reflect the
     // complete work you actually read (WIP counts grow while you're reading).
     showToast('Marking finished — refreshing word count…', 'loading');
     const res = await refreshWordCount(item);
-    item.status = 'Finished'; item.waitingOnChap = false; item.finishedAt = now;
-    if (!(timesRead(item) > 0)) { item.readDates = [now]; item.readCount = 1; }
+    const startedAt = item.readingStartedAt;
+    item.status = 'Finished'; item.waitingOnChap = false; item.finishedAt = now; item.progress = null;
+    // Log this read: the first one ever, or a re-read whose start (the drag onto Reading) came
+    // after the last recorded read. Before, a re-read finished on the board was never counted.
+    const last = lastReadAt(item);
+    const isNewRead = !(timesRead(item) > 0) || (startedAt && (!last || Date.parse(startedAt) > Date.parse(last)));
+    if (isNewRead) { item.readDates = [...ensureReadDates(item), now]; item.readCount = item.readDates.length; }
     item._modAt = now;
     saveData(); render();
-    if (res && res.ok && res.new !== res.old) showToast(`Finished ✓ — word count updated ${fmtNum(res.old)} → ${fmtNum(res.new)}`, 'success');
-    else if (res && res.ok) showToast('Finished ✓ — word count already current', 'success');
-    else if (res && res.needsLogin) showToast('Finished ✓ — 🔒 locked work; use “🔑 AO3 login” then ↻ to update the count.', 'info');
-    else if (res === null) showToast(item.type === 'book' ? '📚 Finished ✓ — onto the read pile!' : 'Finished ✓ (add the AO3/FF.net link to auto-update word count)', 'info');
-    else showToast('Finished ✓ — couldn’t reach the link to refresh word count', 'info');
-    return;
-  } else return;
-  item._modAt = now;
-  saveData();
-  render();
+    let msg;
+    if (res && res.ok && res.new !== res.old) msg = `Finished ✓ — word count updated ${fmtNum(res.old)} → ${fmtNum(res.new)}`;
+    else if (res && res.ok) msg = 'Finished ✓ — word count already current';
+    else if (res && res.needsLogin) msg = 'Finished ✓ — 🔒 locked work; use “🔑 AO3 login” then ↻ to update the count.';
+    else if (res === null) msg = item.type === 'book' ? '📚 Finished ✓ — onto the read pile!' : 'Finished ✓ (add the AO3/FF.net link to auto-update word count)';
+    else msg = 'Finished ✓ — couldn’t reach the link to refresh word count';
+    finishedToast(item, msg);
+  }
 }
 
-// ── Harry Potter folder mascot: a Pusheen-style Gryffindor cat that floats on a broom and flies across when touched ──
+// ── Harry Potter folder mascot: a Pusheen-style Gryffindor cat on a broom ──────────────
+// Idle: floats on the spot with a soft shadow and an occasional little hop. Touch: takes off in a
+// swooping arc across the window, does a barrel roll at the top, leaves a trail of stars from the
+// broom and lands with a squash-and-stretch bounce. Facing follows the direction of travel.
+let _hpSide = 'right', _hpFacing = 'left';
 function hpCatHtml() {
-  return `<div id="hp-cat" class="hp-cat" title="touch me to fly!">
-    <img class="hp-cat-img" src="hp_cat.png" alt="Gryffindor cat on a broom" draggable="false" />
+  return `<div id="hp-cat" class="hp-cat${_hpFacing === 'right' ? ' facing-right' : ''}" title="Touch me and I’ll fly">
+    <div class="hp-cat-shadow"></div>
+    <div class="hp-cat-body"><img class="hp-cat-img" src="hp_cat.png" alt="Gryffindor cat on a broom" draggable="false" /></div>
   </div>`;
 }
 
 function mountHpCat() {
   const cat = document.getElementById('hp-cat');
   if (!cat) return;
+  const body = cat.querySelector('.hp-cat-body');
   const W = 200;
-  const xFor = side => (side === 'left' ? 20 : Math.max(40, window.innerWidth - W - 30)) + 'px';
-  if (!cat.dataset.side) cat.dataset.side = 'right';
-  cat.style.left = xFor(cat.dataset.side);
+  const reduced = (() => { try { return matchMedia('(prefers-reduced-motion: reduce)').matches; } catch { return false; } })();
+  const xFor = side => side === 'left' ? 20 : Math.max(40, window.innerWidth - W - 30);
+  cat.style.left = xFor(_hpSide) + 'px';
 
   // a fixed layer to host the little star particles
   let layer = document.getElementById('hp-star-layer');
   if (!layer) { layer = document.createElement('div'); layer.id = 'hp-star-layer'; document.body.appendChild(layer); }
   const sparkle = (x, y, big) => {
     const s = document.createElement('div');
-    s.className = 'hp-star';
-    s.textContent = '★';
+    s.className = 'hp-star' + (big ? ' big' : '');
+    s.textContent = Math.random() < 0.15 ? '✦' : '★';
     s.style.left = x + 'px'; s.style.top = y + 'px';
     s.style.fontSize = ((big ? 12 : 8) + Math.random() * 7) + 'px';
-    s.style.setProperty('--dx', ((Math.random() * 2 - 1) * 22).toFixed(0) + 'px');
-    s.style.setProperty('--dy', ((big ? 16 : 8) + Math.random() * 14).toFixed(0) + 'px');
-    s.style.setProperty('--rot', ((Math.random() * 2 - 1) * 70).toFixed(0) + 'deg');
+    s.style.setProperty('--dx', ((Math.random() * 2 - 1) * (big ? 34 : 22)).toFixed(0) + 'px');
+    s.style.setProperty('--dy', ((big ? 18 : 8) + Math.random() * 16).toFixed(0) + 'px');
+    s.style.setProperty('--rot', ((Math.random() * 2 - 1) * 90).toFixed(0) + 'deg');
     layer.appendChild(s);
-    setTimeout(() => s.remove(), 850);
+    setTimeout(() => s.remove(), 900);
   };
+  // the broom's bristles are the trailing end — that's where the magic comes out
+  const broomPoint = () => {
+    const r = cat.getBoundingClientRect();
+    const x = cat.classList.contains('facing-right') ? r.left + r.width * 0.16 : r.right - r.width * 0.16;
+    return { x, y: r.top + r.height * 0.62 };
+  };
+  const burst = (n, big) => { const p = broomPoint(); for (let i = 0; i < n; i++) sparkle(p.x + (Math.random() * 40 - 20), p.y + (Math.random() * 24 - 12), big); };
 
-  // eyes follow the cursor + a trail of yellow stars from the pointer (HP folder only)
+  // a trail of yellow stars follows the pointer while you're in this folder
   if (window._hpMove) document.removeEventListener('mousemove', window._hpMove);
   let lastTrail = 0;
   window._hpMove = e => {
     const c = document.getElementById('hp-cat');
     if (!c) { document.removeEventListener('mousemove', window._hpMove); window._hpMove = null; return; }
     const now = Date.now();
-    if (now - lastTrail > 45) { lastTrail = now; sparkle(e.clientX, e.clientY, false); }
+    if (now - lastTrail > 55) { lastTrail = now; sparkle(e.clientX, e.clientY, false); }
   };
   document.addEventListener('mousemove', window._hpMove);
 
-  // touch → slowly fly across, leaving a star trail from the broom
+  // flight path: a rising arc with a gentle wobble, a barrel roll over the middle, nose-up at
+  // take-off and nose-down into the landing. Rotation is authored for the left-facing image; the
+  // facing flip on the parent mirrors it for free when flying right.
+  const flightFrames = () => {
+    const N = 48, out = [];
+    for (let i = 0; i <= N; i++) {
+      const t = i / N;
+      const lift = Math.sin(Math.PI * t);
+      const y = -(lift * 150) - Math.sin(Math.PI * 4 * t) * 14 * lift;
+      let rot = 12 * Math.cos(Math.PI * t);
+      if (!reduced && t > 0.38 && t < 0.62) { const u = (t - 0.38) / 0.24; rot += 360 * (u * u * (3 - 2 * u)); }
+      const scale = 1 + 0.08 * lift;
+      out.push({ transform: `translateY(${y.toFixed(1)}px) rotate(${rot.toFixed(1)}deg) scale(${scale.toFixed(3)})`, offset: t });
+    }
+    return out;
+  };
+  const land = () => body.animate([
+    { transform: 'scale(1, 1)' }, { transform: 'scale(1.12, 0.86)', offset: 0.35 }, { transform: 'scale(0.97, 1.04)', offset: 0.7 }, { transform: 'scale(1, 1)' },
+  ], { duration: 460, easing: 'ease-out' });
+
+  let flying = false;
   const fly = () => {
-    if (cat.classList.contains('is-flying')) return;
-    const to = cat.dataset.side === 'left' ? 'right' : 'left';
+    if (flying) return;
+    flying = true;
+    const to = _hpSide === 'left' ? 'right' : 'left';
+    _hpFacing = to;
     cat.classList.add('is-flying');
-    cat.classList.toggle('facing-right', to === 'right'); // face the way it's going
-    cat.style.left = xFor(to);
-    cat.dataset.side = to;
-    const trail = setInterval(() => {
-      const r = cat.getBoundingClientRect();
-      const broomX = cat.classList.contains('facing-right') ? r.left + r.width * 0.16 : r.right - r.width * 0.16;
-      sparkle(broomX + (Math.random() * 16 - 8), r.top + r.height * 0.6, true);
-    }, 85);
-    setTimeout(() => { cat.classList.remove('is-flying'); clearInterval(trail); }, 3850);
+    cat.classList.toggle('facing-right', to === 'right');
+    const dist = Math.abs(xFor(to) - xFor(_hpSide));
+    const dur = reduced ? 1200 : Math.round(2600 + dist * 0.9);
+    cat.style.setProperty('--fly-ms', dur + 'ms');
+    burst(reduced ? 0 : 14, true);
+    cat.style.left = xFor(to) + 'px';
+    _hpSide = to;
+    if (!reduced) body.animate(flightFrames(), { duration: dur, easing: 'linear' });
+    const trail = reduced ? null : setInterval(() => { const p = broomPoint(); sparkle(p.x + (Math.random() * 16 - 8), p.y + (Math.random() * 10 - 5), true); }, 60);
+    setTimeout(() => {
+      if (trail) clearInterval(trail);
+      cat.classList.remove('is-flying');
+      if (!reduced) { land(); burst(8, false); }
+      flying = false;
+    }, dur);
   };
   cat.addEventListener('mouseenter', fly);
   cat.addEventListener('click', fly);
+
+  // every so often, a little hop and a puff of stars — a cat that's alive, not a sticker
+  clearTimeout(window._hpHop);
+  const scheduleHop = () => {
+    window._hpHop = setTimeout(() => {
+      const c = document.getElementById('hp-cat');
+      if (!c) return;
+      if (!flying && !reduced) {
+        body.animate([
+          { transform: 'translateY(0) scale(1, 1)' }, { transform: 'translateY(2px) scale(1.06, 0.94)', offset: 0.12 },
+          { transform: 'translateY(-26px) rotate(3deg) scale(0.98, 1.03)', offset: 0.5 }, { transform: 'translateY(0) scale(1.05, 0.95)', offset: 0.86 }, { transform: 'none' },
+        ], { duration: 760, easing: 'cubic-bezier(0.34, 1.2, 0.64, 1)' });
+        setTimeout(() => burst(5, false), 380);
+      }
+      scheduleHop();
+    }, 8000 + Math.random() * 7000);
+  };
+  scheduleHop();
 }
 
 // ── Folder view ───────────────────────────────────────────────────────────────
@@ -1393,11 +1983,18 @@ const FOLDER_DEFAULTS = {
   'ff|Harry Potter - J. K. Rowling|Creature Harry':          { displayName: 'Creature Harry', icon: '🐺' },
 };
 
+// Muted duotones that sit inside the paper-and-sage palette (sage, clay, dusk, plum, ochre,
+// slate, rose, teal) — replacing the saturated rainbow that made the folder grid look like a
+// dashboard. Still hash-stable per folder so a tile keeps its colour.
 const GRADIENTS = [
-  ['#6366f1','#4338ca'], ['#8b5cf6','#7c3aed'], ['#ec4899','#be185d'],
-  ['#f59e0b','#b45309'], ['#10b981','#047857'], ['#3b82f6','#1d4ed8'],
-  ['#ef4444','#b91c1c'], ['#06b6d4','#0e7490'], ['#f97316','#c2410c'],
-  ['#84cc16','#4d7c0f'],
+  ['#7c5cff', '#4b2ee0'], // electric violet
+  ['#ff5fb0', '#c8329a'], // hot pink
+  ['#37c6ff', '#1f7fe0'], // sky → blue
+  ['#c8f04b', '#3fb37a'], // lime → teal
+  ['#ffb648', '#ff5f7e'], // sunset
+  ['#8a5cff', '#ff5fb0'], // violet → pink
+  ['#2fd4c2', '#2a6fe8'], // aqua → blue
+  ['#ff7a59', '#ffd84d'], // coral → yellow
 ];
 
 function loadFolderConfig() {
@@ -1423,6 +2020,11 @@ function pushItemsUndo() {
 function undoFolderChange() {
   const entry = state.folderUndoStack.pop();
   if (entry === undefined) { showToast('Nothing to undo', 'info'); return; }
+  if (entry.type === 'item') {
+    undoItemSnapshot(entry.id, entry.data);
+    showToast('Undid last board move ↩️', 'info');
+    return;
+  }
   if (entry.type === 'items') {
     state.items = JSON.parse(entry.data);
     saveData();
@@ -1434,24 +2036,140 @@ function undoFolderChange() {
   showToast('Undid last folder change ↩️', 'info');
 }
 function getCfg(key) {
-  return { ...(FOLDER_DEFAULTS[key] || {}), ...(state.folderConfig[key] || {}) };
+  let cfg = state.folderConfig[key];
+  // A series is one thing even when its books sit under several genres, so a name/icon set on
+  // "book|Romance|Fourth Wing" should also apply when the same series shows under "To Sort".
+  if (!cfg) {
+    const m = /^book\|[^|]+\|(.+)$/.exec(key);
+    if (m) {
+      const suffix = '|' + m[1];
+      const alt = Object.keys(state.folderConfig).find(k => k.startsWith('book|') && k.endsWith(suffix) && k.split('|').length === 3);
+      if (alt) cfg = state.folderConfig[alt];
+    }
+  }
+  return { ...(FOLDER_DEFAULTS[key] || {}), ...(cfg || {}) };
 }
 function folderGradient(key) {
+  key = String(key || '');
   let h = 5381;
   for (let i = 0; i < key.length; i++) h = ((h << 5) + h) ^ key.charCodeAt(i);
   return GRADIENTS[Math.abs(h) % GRADIENTS.length];
 }
 
+// ── Cover-derived accent colours ────────────────────────────────────────────────
+// Each remote cover is sampled once (fetched via main so the canvas isn't tainted), reduced to
+// one representative colour, and cached in localStorage. Cards, the shelf and the mood picker
+// then use that colour instead of the id-hash gradient — a shelf that echoes the covers on it.
+const COVER_COLORS_KEY = 'coverColors:v1';
+let _coverColors = null;
+function loadCoverColors() {
+  if (_coverColors) return _coverColors;
+  try { _coverColors = JSON.parse(localStorage.getItem(COVER_COLORS_KEY) || '{}'); } catch { _coverColors = {}; }
+  if (!_coverColors || typeof _coverColors !== 'object') _coverColors = {};
+  return _coverColors;
+}
+let _coverColorsSaveTimer = null;
+function saveCoverColors() {
+  clearTimeout(_coverColorsSaveTimer);
+  _coverColorsSaveTimer = setTimeout(() => { try { localStorage.setItem(COVER_COLORS_KEY, JSON.stringify(_coverColors || {})); } catch {} }, 400);
+}
+function coverAccent(item) {
+  const c = loadCoverColors()[item?.coverIcon || ''];
+  return Array.isArray(c) && c.length === 3 ? c : null;
+}
+function accentStyle(item) {
+  const c = coverAccent(item);
+  return c ? `--accent:rgb(${c[0]},${c[1]},${c[2]});` : '';
+}
+// Gradient pair for a cover tile: the sampled colour → a deeper shade of it, or the hash fallback.
+function coverGradient(item) {
+  const c = coverAccent(item);
+  if (!c) return folderGradient(item?.id || item?.title || '');
+  const d = k => Math.round(k * 0.62);
+  return [`rgb(${c[0]},${c[1]},${c[2]})`, `rgb(${d(c[0])},${d(c[1])},${d(c[2])})`];
+}
+
+async function sampleCoverColor(url) {
+  const res = await window.api.fetchImage(url);
+  if (!res || !res.ok) throw new Error(res?.error || 'fetch failed');
+  const blob = new Blob([res.data], { type: res.type || 'image/jpeg' });
+  const bmp = await createImageBitmap(blob);
+  const W = 24, H = 24;
+  const canvas = document.createElement('canvas'); canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  ctx.drawImage(bmp, 0, 0, W, H);
+  bmp.close?.();
+  const { data } = ctx.getImageData(0, 0, W, H);
+  // Saturation-weighted mean of mid-tones, so a white border or a black spine doesn't dominate.
+  let r = 0, g = 0, b = 0, wsum = 0;
+  for (let i = 0; i < data.length; i += 4) {
+    if (data[i + 3] < 128) continue;
+    const R = data[i], G = data[i + 1], B = data[i + 2];
+    const max = Math.max(R, G, B), min = Math.min(R, G, B);
+    const l = (max + min) / 510;
+    const s = max === min ? 0 : (max - min) / (255 - Math.abs(max + min - 255) || 1);
+    const w = 0.12 + s * Math.max(0, 1 - Math.abs(l - 0.5) * 1.7);
+    r += R * w; g += G * w; b += B * w; wsum += w;
+  }
+  if (!wsum) throw new Error('no pixels');
+  let out = [r / wsum, g / wsum, b / wsum].map(v => Math.round(v));
+  // Keep the accent usable on both light and dark surfaces.
+  const lum = (0.299 * out[0] + 0.587 * out[1] + 0.114 * out[2]) / 255;
+  if (lum > 0.78) out = out.map(v => Math.round(v * 0.7));
+  if (lum < 0.12) out = out.map(v => Math.min(255, v + 45));
+  return out;
+}
+
+let _coverQueueRunning = false;
+async function runCoverColorQueue() {
+  if (_coverQueueRunning || !window.api.fetchImage) return;
+  _coverQueueRunning = true;
+  try {
+    const cache = loadCoverColors();
+    const RETRY_MS = 7 * 86400000; // failed URLs are retried weekly, not on every launch
+    const urls = [...new Set(state.items.map(x => x.coverIcon).filter(u => typeof u === 'string' && /^https?:\/\//.test(u)))]
+      .filter(u => { const c = cache[u]; return !c || (typeof c === 'number' && Date.now() - c > RETRY_MS); });
+    if (!urls.length) return;
+    let done = 0;
+    const worker = async () => {
+      while (urls.length) {
+        const url = urls.shift();
+        try { cache[url] = await sampleCoverColor(url); } catch { cache[url] = Date.now(); }
+        if (++done % 6 === 0) { saveCoverColors(); applyCoverAccents(); }
+      }
+    };
+    await Promise.all([worker(), worker(), worker()]);
+    saveCoverColors(); applyCoverAccents();
+  } finally { _coverQueueRunning = false; }
+}
+// Paint newly sampled colours onto whatever is on screen without a full re-render.
+function applyCoverAccents() {
+  const byId = new Map(state.items.map(x => [x.id, x]));
+  document.querySelectorAll('.card[data-id], .ms-shelf-book[data-ms-id]').forEach(el => {
+    const item = byId.get(el.dataset.id || el.dataset.msId);
+    if (!item) return;
+    const c = coverAccent(item);
+    if (!c) return;
+    el.style.setProperty('--accent', `rgb(${c[0]},${c[1]},${c[2]})`);
+    const [c1, c2] = coverGradient(item);
+    const tile = el.querySelector('.card-cover, .ms-shelf-cover');
+    if (!tile) return;
+    tile.style.setProperty('--c1', c1); tile.style.setProperty('--c2', c2);
+    if (tile.classList.contains('ms-shelf-cover')) tile.style.background = `linear-gradient(135deg,${c1},${c2})`;
+  });
+}
+
 // A small square icon for the reading calendar — shows the item's cover if it has one,
 // otherwise a gradient tile with its type emoji, matching folder/MySpace card styling.
 function calItemIconHtml(item, date) {
-  const [c1, c2] = folderGradient(item.id || item.title || '');
+  const [c1, c2] = coverGradient(item);
   const coverIsUrl = (item.coverIcon || '').startsWith('http');
   const fallback = item.type === 'ff' ? '✍️' : '📚';
   const cover = coverIsUrl
     ? coverImgHtml('cal-item-img', item.coverIcon, fallback)
     : `<span class="cal-item-emoji">${esc(item.coverIcon) || fallback}</span>`;
-  return `<div class="cal-item-icon" draggable="true" style="background:linear-gradient(135deg,${c1},${c2})" data-cal-title="${esc(item.title || 'Untitled')}" data-edit="${esc(item.id)}" data-cal-item-id="${esc(item.id)}" data-cal-date="${esc(date || '')}">${cover}</div>`;
+  const status = item.status === 'Dropped' ? ' · dropped' : (item.status === 'TBR' || item.status === 'Reading') ? ` · now ${item.status}` : '';
+  return `<div class="cal-item-icon${item.status === 'Dropped' ? ' cal-item-dropped' : ''}" draggable="true" style="background:linear-gradient(135deg,${c1},${c2})" data-cal-title="${esc((item.title || 'Untitled') + status)}" data-edit="${esc(item.id)}" data-cal-item-id="${esc(item.id)}" data-cal-date="${esc(date || '')}">${cover}</div>`;
 }
 
 function folderCard(navPath, defaultEmoji, rawLabel, count) {
@@ -1464,7 +2182,9 @@ function folderCard(navPath, defaultEmoji, rawLabel, count) {
   const nav = JSON.stringify(navPath).replace(/"/g,'&quot;');
   const editKey = key.replace(/"/g,'&quot;');
   const isUrl = icon.startsWith('http');
-  const iconHtml = isUrl ? coverImgHtml('fc-img', icon, defaultEmoji) : `<span class="fc-emoji">${esc(icon)}</span>`;
+  const iconHtml = isUrl ? coverImgHtml('fc-img', icon, '📁')
+    : icon.startsWith('icon:') ? `<span class="fc-glyph">${window.icon(icon.slice(5))}</span>`
+    : `<span class="fc-emoji">${esc(icon)}</span>`;
   // Draggable so tag/group folders can be dropped onto one another to nest — only real
   // tag-level ff folders qualify (not All/Untagged, not fandom tiles, not book genres).
   const isDraggable = navPath.length === 3 && navPath[0] === 'ff' && !['__all__','__untagged__'].includes(navPath[2]);
@@ -1477,7 +2197,7 @@ function folderCard(navPath, defaultEmoji, rawLabel, count) {
     <div class="fc-thumb" style="--c1:${c1};--c2:${c2}">
       ${iconHtml}
       ${pinned ? '<span class="fc-pin">📌</span>' : ''}
-      <button class="fc-edit-btn" data-edit-folder="${editKey}">✏️ Edit</button>
+      <button class="fc-edit-btn" data-edit-folder="${editKey}">${window.icon('edit')} Edit</button>
     </div>
     <div class="fc-info">
       <div class="fc-name">${esc(label)}</div>
@@ -1488,11 +2208,12 @@ function folderCard(navPath, defaultEmoji, rawLabel, count) {
 
 function addFolderCard(parentPath) {
   const ap = JSON.stringify(parentPath).replace(/"/g,'&quot;');
+  const isSeries = parentPath[0] === 'book' && parentPath.length === 2;
   return `<div class="folder-card folder-card-add" data-add-folder="${ap}">
-    <div class="fc-thumb fc-thumb-add"><span style="font-size:28px;opacity:0.35">＋</span></div>
+    <div class="fc-thumb fc-thumb-add"><span class="fc-add-plus">${icon('plus')}</span></div>
     <div class="fc-info">
-      <div class="fc-name" style="color:#9ca3af">New folder</div>
-      <div class="fc-count" style="color:#d1d5db">Customise</div>
+      <div class="fc-name fc-add-name">${isSeries ? 'New series' : 'New folder'}</div>
+      <div class="fc-count fc-add-sub">Customise</div>
     </div>
   </div>`;
 }
@@ -1772,22 +2493,22 @@ function normalizeGenre(raw) {
 
 function folderCrumbs(crumbs) {
   return `<div class="folder-breadcrumb">
-    <span class="fcrumb" data-folder-go="[]">Home</span>
+    <span class="fcrumb" data-folder-go="[]">${icon('home')} Home</span>
     ${crumbs.map((c,i) => {
       const go = JSON.stringify(c.path).replace(/"/g,'&quot;');
       const last = i === crumbs.length-1;
-      return `<span class="fcrumb-sep">›</span><span class="fcrumb${last?' fcrumb-active':''}" data-folder-go="${go}">${esc(c.label)}</span>`;
+      return `<span class="fcrumb-sep">${icon('chevron')}</span><span class="fcrumb${last?' fcrumb-active':''}" data-folder-go="${go}">${esc(c.label)}</span>`;
     }).join('')}
   </div>`;
 }
 
 const FOLDER_ITEM_FILTERS = [
-  ['favorite', '⭐ Favourite', x => x.favorite],
-  ['TBR',      '📋 TBR',       x => (x.status||'TBR')==='TBR'],
-  ['Reading',  '📖 Reading',   x => x.status==='Reading'],
-  ['Finished', '✅ Finished',  x => x.status==='Finished'],
-  ['Dropped',  '🚫 Dropped',   x => x.status==='Dropped'],
-  ['oneshot',  '📄 One-shot',  x => !!x.oneshot],
+  ['favorite', 'Favourites', x => x.favorite],
+  ['TBR',      'TBR',        x => (x.status||'TBR')==='TBR'],
+  ['Reading',  'Reading',    x => x.status==='Reading'],
+  ['Finished', 'Finished',   x => x.status==='Finished'],
+  ['Dropped',  'Dropped',    x => x.status==='Dropped'],
+  ['oneshot',  'One-shots',  x => !!x.oneshot],
 ];
 
 function folderItemList(items) {
@@ -1805,9 +2526,11 @@ function folderItemList(items) {
   const filteredActive = state.folderSearch || f;
   return `<div class="folder-filter-row">${pills}</div>
     <div class="folder-item-meta">${filtered.length} ${filtered.length===1?'entry':'entries'}${filteredActive&&filtered.length!==items.length?' shown':''}</div>
-    <div id="list">${filtered.length
-      ? filtered.map(cardHtml).join('')
-      : `<div class="empty"><div class="empty-icon">${filteredActive?'🔍':'📭'}</div><p>${filteredActive?'No items match this filter.':'Nothing here yet.'}</p></div>`
+    <div id="list">${(_pendingCards = filtered.length ? filtered : null, filtered.length)
+      ? ''
+      : emptyStateHtml(filteredActive
+          ? { icon: '🔍', title: 'Nothing matches this filter.', sub: 'Try another status, or clear the filter to see everything in this folder.', actions: [{ label: 'Clear filter', action: 'clear-folder-filter', primary: true }] }
+          : { icon: '📭', title: 'Nothing here yet.', sub: state.folderPath[0] === 'book' ? 'Add a book and give it this genre or series, or drag one onto the folder.' : 'Add a fic with this tag and it will show up here.', actions: [{ label: '＋ Add an entry', action: state.folderPath[0] === 'book' ? 'add-book' : 'add-ff', primary: true }] })
     }</div>`;
 }
 
@@ -1829,7 +2552,7 @@ function folderEditModalHtml() {
     <div class="folder-edit-modal">
       <div class="fem-header">
         <span class="fem-title">Edit folder</span>
-        <button class="fem-close" id="fem-close">×</button>
+        <button class="fem-close" id="fem-close">${icon('x')}</button>
       </div>
       <div class="fem-preview-row"><div class="fem-preview-icon" id="fem-preview-icon">${preview}</div></div>
       <div class="fem-body">
@@ -1871,7 +2594,7 @@ function folderCreateModalHtml() {
     <div class="folder-edit-modal">
       <div class="fem-header">
         <span class="fem-title">${isBookSeries ? 'New series' : 'New folder'}</span>
-        <button class="fem-close" id="fcm-close">×</button>
+        <button class="fem-close" id="fcm-close">${icon('x')}</button>
       </div>
       <div class="fem-body">
         <label class="field-label">${isBookSeries ? 'Series name' : 'Name'}</label>
@@ -1896,7 +2619,7 @@ function itemIconModalHtml() {
   const isFf = item.type === 'ff';
   const icon = item.coverIcon || '';
   const isUrl = icon.startsWith('http');
-  const [c1, c2] = folderGradient(item.id);
+  const [c1, c2] = coverGradient(item);
   const preview = isUrl
     ? `<img src="${esc(icon)}" style="width:100%;height:100%;object-fit:cover;border-radius:10px" />`
     : `<span style="font-size:38px;line-height:1">${esc(icon) || (isFf?'✍️':'📚')}</span>`;
@@ -1904,7 +2627,7 @@ function itemIconModalHtml() {
     <div class="folder-edit-modal">
       <div class="fem-header">
         <span class="fem-title">Cover icon</span>
-        <button class="fem-close" id="iim-close">×</button>
+        <button class="fem-close" id="iim-close">${icon('x')}</button>
       </div>
       <div class="fem-preview-row">
         <div class="fem-preview-icon" id="iim-preview-icon" style="--c1:${c1};--c2:${c2};background:linear-gradient(135deg,var(--c1),var(--c2))">${preview}</div>
@@ -1931,7 +2654,7 @@ function calMoveModalHtml() {
     <div class="folder-edit-modal">
       <div class="fem-header">
         <span class="fem-title">Move reading date</span>
-        <button class="fem-close" id="cal-move-close">×</button>
+        <button class="fem-close" id="cal-move-close">${icon('x')}</button>
       </div>
       <div class="fem-body">
         <label class="field-label">New date read for <b>${esc(title)}</b></label>
@@ -1954,7 +2677,7 @@ function moodPickerModalHtml() {
       <div class="folder-edit-modal mood-modal">
         <div class="fem-header">
           <span class="fem-title">What are you in the mood for?</span>
-          <button class="fem-close" id="mood-close">×</button>
+          <button class="fem-close" id="mood-close">${icon('x')}</button>
         </div>
         <div class="mood-grid">
           ${MOODS.map(m => `<button class="mood-tile" data-mood="${m.key}">
@@ -1973,7 +2696,7 @@ function moodPickerModalHtml() {
       <div class="folder-edit-modal mood-modal">
         <div class="fem-header">
           <span class="fem-title">${mood.emoji} ${esc(mood.label)}</span>
-          <button class="fem-close" id="mood-close">×</button>
+          <button class="fem-close" id="mood-close">${icon('x')}</button>
         </div>
         <div class="mood-empty">
           <p>Nothing on your TBR shelf right now — add some books first!</p>
@@ -1985,7 +2708,7 @@ function moodPickerModalHtml() {
     </div>`;
   }
 
-  const [c1, c2] = folderGradient(book.id);
+  const [c1, c2] = coverGradient(book);
   const coverIsUrl = (book.coverIcon || '').startsWith('http');
   const cover = coverIsUrl
     ? coverImgHtml('mood-cover-img', book.coverIcon, '📚')
@@ -1996,7 +2719,7 @@ function moodPickerModalHtml() {
     <div class="folder-edit-modal mood-modal">
       <div class="fem-header">
         <span class="fem-title">${mood.emoji} ${esc(mood.label)}</span>
-        <button class="fem-close" id="mood-close">×</button>
+        <button class="fem-close" id="mood-close">${icon('x')}</button>
       </div>
       ${wasFallback ? `<div class="mood-fallback-note">Nothing on your TBR quite matched this mood — here's a random pick instead.</div>` : ''}
       <div class="mood-result">
@@ -2060,7 +2783,7 @@ function pruneEmptyFolderPath() {
       if (!tag) return inGenre.length;
       // A series folder created ahead of time (empty, via the ＋ tile) is allowed to stay open.
       if (state.folderConfig[`book|${sub}|${tag}`]?.isSeries) return 1;
-      return inGenre.filter(x=>x.series===tag).length;
+      return state.items.filter(x=>x.type==='book'&&x.series===tag).length; // series span genres
     }
     return 1;
   };
@@ -2079,8 +2802,8 @@ function folderViewHtml() {
     const bkN = state.items.filter(x=>x.type==='book').length;
     return `<div id="folder-view">
       <div class="folder-grid folder-grid-root">
-        ${folderCard(['ff'],'📖','Fanfiction',ffN)}
-        ${folderCard(['book'],'📚','Books',bkN)}
+        ${folderCard(['ff'],'icon:feather','Fanfiction',ffN)}
+        ${folderCard(['book'],'icon:book','Books',bkN)}
       </div>
       ${listViewContentHtml()}
     </div>`;
@@ -2093,7 +2816,7 @@ function folderViewHtml() {
       return [['ff',f], fandomEmoji(f), f, n];
     });
     const none = state.items.filter(x=>x.type==='ff'&&!x.fandom);
-    if (none.length) raw.push([['ff','__none__'],'📄','Other',none.length]);
+    if (none.length) raw.push([['ff','__none__'],'icon:folder','Other',none.length]);
     Object.keys(state.folderConfig).filter(k=>state.folderConfig[k].isCustom && k.split('|').length===2 && k.startsWith('ff|')).forEach(k => {
       const cfg = state.folderConfig[k];
       const n = cfg.filterTag ? state.items.filter(x=>x.type==='ff'&&(x.tags||[]).includes(cfg.filterTag)).length : 0;
@@ -2117,10 +2840,10 @@ function folderViewHtml() {
     });
     const groupedTagSet = new Set(groupKeys.flatMap(k=>state.folderConfig[k].groupTags||[]));
     const tagSet = [...new Set(base.flatMap(x=>x.tags||[]))].filter(t=>!groupedTagSet.has(t)).sort();
-    const allEntry = [['ff',sub,'__all__'],'📋','All',base.length];
+    const allEntry = [['ff',sub,'__all__'],'icon:layers','All',base.length];
     const tagEntries = tagSet.map(t => {
       const n = base.filter(x=>(x.tags||[]).includes(t)).length;
-      return [['ff',sub,t],'🏷️',t,n];
+      return [['ff',sub,t],'icon:tag',t,n];
     });
     groupKeys.forEach(k => {
       const cfg = state.folderConfig[k];
@@ -2141,12 +2864,12 @@ function folderViewHtml() {
     const tropes   = sortedCards(filtered.filter(([p,e,l,c]) => !isPairingTag(l,p)));
     const subLbl = getCfg(`ff|${sub}`).displayName || (sub==='__none__'?'Other':sub);
     let gridContent = folderCard(allEntry[0], allEntry[1], allEntry[2], allEntry[3])
-      + (untagged.length ? folderCard(['ff',sub,'__untagged__'], '📄', 'Untagged', untagged.length) : '');
+      + (untagged.length ? folderCard(['ff',sub,'__untagged__'], 'icon:tag', 'Untagged', untagged.length) : '');
     if (pairings.length) {
-      gridContent += `<div class="fv-section-hdr fv-section-full">🚢 Pairings</div>` + pairings.map(([p,e,l,c])=>folderCard(p,e,l,c)).join('');
+      gridContent += `<div class="fv-section-hdr fv-section-full"><span>Pairings</span><span class="fv-section-n">${pairings.length}</span></div>` + pairings.map(([p,e,l,c])=>folderCard(p,e,l,c)).join('');
     }
     if (tropes.length) {
-      gridContent += `<div class="fv-section-hdr fv-section-full">⚡ Tropes & AUs</div>` + tropes.map(([p,e,l,c])=>folderCard(p,e,l,c)).join('');
+      gridContent += `<div class="fv-section-hdr fv-section-full"><span>Tropes &amp; AUs</span><span class="fv-section-n">${tropes.length}</span></div>` + tropes.map(([p,e,l,c])=>folderCard(p,e,l,c)).join('');
     }
     gridContent += addFolderCard(['ff',sub]);
     return `<div id="folder-view">
@@ -2167,7 +2890,7 @@ function folderViewHtml() {
       const childEntries = (customCfg.groupTags||[]).map(t => {
         const n = base.filter(x=>(x.tags||[]).includes(t)).length;
         const flatCfg = getCfg(`ff|${sub}|${t}`);
-        return [['ff',sub,tag,t], flatCfg.icon || '🏷️', flatCfg.displayName || t, n];
+        return [['ff',sub,tag,t], flatCfg.icon || 'icon:tag', flatCfg.displayName || t, n];
       });
       const cards = sortedCards(filterCards(childEntries)).map(([p,e,l,c])=>folderCard(p,e,l,c));
       return `<div id="folder-view">
@@ -2204,7 +2927,7 @@ function folderViewHtml() {
       return [['book',g], genreEmoji(g), g, n];
     });
     const none = state.items.filter(x=>x.type==='book'&&!x.genre);
-    if (none.length) raw.push([['book','__none__'],'📖','Other',none.length]);
+    if (none.length) raw.push([['book','__none__'],'icon:folder','Other',none.length]);
     const cards = sortedCards(filterCards(raw)).map(([p,e,l,c]) => folderCard(p,e,l,c));
     return `<div id="folder-view">
       ${folderCrumbs([{label:'Books',path:['book']}])}
@@ -2230,8 +2953,9 @@ function folderViewHtml() {
     }).map(k=>k.split('|')[2]);
     const seriesNames = [...new Set([...fromItems, ...fromConfig])];
     const seriesEntries = seriesNames.map(name => {
-      const n = items.filter(x=>x.series===name).length;
-      return [['book',sub,name], '📚', name, n];
+      // Whole-series count: a series can span genres, and its folder always shows every book.
+      const n = state.items.filter(x=>x.type==='book'&&x.series===name).length;
+      return [['book',sub,name], 'icon:bookmark', name, n];
     });
     const standalone = items.filter(x=>!x.series);
     // Series folders are always pinned above the standalone list and are never hit by the
@@ -2243,30 +2967,50 @@ function folderViewHtml() {
       ${folderCrumbs([{label:'Books',path:['book']},{label:subLbl,path:['book',sub]}])}
       ${folderControlBar(true)}
       <div class="series-sticky-section">
-        ${seriesEntries.length ? `<div class="fv-section-hdr fv-section-full">📚 Series</div>` : ''}
+        ${seriesEntries.length ? `<div class="fv-section-hdr fv-section-full"><span>Series</span><span class="fv-section-n">${seriesEntries.length}</span></div>` : ''}
         <div class="folder-grid series-grid">${cards.join('')}</div>
       </div>
       ${folderItemList(standalone)}
     </div>`;
   }
 
-  // Books → genre → series → items
+  // Books → genre → series → items. A series is a single grouping across genres: the folder
+  // lists every book in it, and any book filed under a different genre gets a one-click pill
+  // (rendered by cardHtml) to move it in line with the rest of the series.
   if (type==='book' && sub && tag) {
-    const genreItems = sub==='__none__'
-      ? state.items.filter(x=>x.type==='book'&&!x.genre)
-      : state.items.filter(x=>x.type==='book'&&(x.genre||'').split(' / ')[0].trim()===sub);
-    const items = genreItems.filter(x=>x.series===tag);
+    const items = state.items.filter(x=>x.type==='book'&&x.series===tag);
+    const elsewhere = sub==='__none__' ? [] : items.filter(x=>topGenre(x)!==sub);
     const subLbl = getCfg(`book|${sub}`).displayName || (sub==='__none__'?'Other':sub);
     const seriesLbl = getCfg(`book|${sub}|${tag}`).displayName || tag;
+    const crossNote = elsewhere.length
+      ? `<div class="series-cross-note">${elsewhere.length} of these ${items.length} books ${elsewhere.length===1?'is':'are'} filed under another genre — use the amber pill on a card to move it to <b>${esc(subLbl)}</b>.</div>`
+      : '';
     return `<div id="folder-view">
       ${folderCrumbs([{label:'Books',path:['book']},{label:subLbl,path:['book',sub]},{label:seriesLbl,path:['book',sub,tag]}])}
-      <div class="series-unassign-zone" id="series-unassign-zone">↩ Drop a book here to take it out of "${esc(seriesLbl)}"</div>
+      <div class="series-unassign-zone" id="series-unassign-zone">${icon('arrowLeft')} Drop a book here to take it out of “${esc(seriesLbl)}”</div>
+      ${crossNote}
       ${folderControlBar(true)}
       ${folderItemList(items)}
     </div>`;
   }
 
-  return `<div id="folder-view"></div>`;
+  // A path that no longer resolves (folder deleted on the phone, stale remembered view).
+  return `<div id="folder-view">${emptyStateHtml({
+    icon: '🗂️', title: 'This folder isn’t here anymore',
+    sub: 'It may have been renamed or emptied on another device.',
+    actions: [{ label: '← Back to Home', action: 'home', primary: true }],
+  })}</div>`;
+}
+
+// Shared empty-state block with optional call-to-action buttons (handled via data-empty-action).
+function emptyStateHtml({ icon = '📭', title, sub = '', actions = [] }) {
+  const btns = actions.map(a => `<button class="btn ${a.primary ? 'btn-primary' : 'btn-secondary'} btn-sm" data-empty-action="${esc(a.action)}">${esc(a.label)}</button>`).join('');
+  return `<div class="empty">
+    <div class="empty-icon">${icon}</div>
+    <p>${esc(title)}</p>
+    ${sub ? `<div class="empty-sub">${esc(sub)}</div>` : ''}
+    ${btns ? `<div class="empty-actions">${btns}</div>` : ''}
+  </div>`;
 }
 
 // The stat banner + search/filter controls + item list — used standalone in List view,
@@ -2286,7 +3030,6 @@ function listViewContentHtml() {
 
   return `
     <div class="stat-row">
-      <button class="calc-stats-fab" id="btn-stats-fab" title="Stats">🧮</button>
       <div class="stat-pill ${statPillClass('TBR')}" data-stat="TBR">
         <span class="stat-num tbr">${stats.tbr}</span>
         <span class="stat-label">TBR</span>
@@ -2306,37 +3049,37 @@ function listViewContentHtml() {
     </div>
 
     <div class="controls">
-      <input id="search-input" type="text" placeholder="Search title, author, fandom, tag…" value="${esc(state.search)}" autocomplete="off" spellcheck="false" />
-      <select class="filter-select" id="sort-select">
+      <div class="search-wrap">${icon('search', 'search-ico')}<input id="search-input" type="text" placeholder="Search title, author, fandom, tag…" value="${esc(state.search)}" autocomplete="off" spellcheck="false" /></div>
+      <label class="sort-wrap" title="Sort">${icon('sort')}<select class="filter-select sort-select" id="sort-select">
         <option value="added"${state.sortBy==='added'?' selected':''}>Recent (last read/added)</option>
         <option value="title"${state.sortBy==='title'?' selected':''}>A → Z</option>
         <option value="author"${state.sortBy==='author'?' selected':''}>Author A → Z</option>
         <option value="words"${state.sortBy==='words'?' selected':''}>Most words</option>
         <option value="hearts"${state.sortBy==='hearts'?' selected':''}>Most hearts</option>
         <option value="rating"${state.sortBy==='rating'?' selected':''}>My rating</option>
-      </select>
+      </select>${icon('chevron', 'sort-chev')}</label>
     </div>
 
     <div class="filter-bar">
-      <span class="fpill${state.filterFavorite ? ' active-fav' : ''}" data-fav-filter="true">⭐ Favorites</span>
       <span class="fpill${state.filterType==='all'&&state.filterFandom==='all'&&state.filterGenre==='all'&&state.filterSection==='all'?' active':''}" data-type="all">All</span>
       <div class="dd${(state.filterType==='ff'||state.filterType==='oneshot'||state.filterFandom!=='all')?' dd-on':''}">
-        <button class="dd-btn">📖 Fanfiction <span class="dd-chev">▾</span></button>
-        <div class="dd-menu">
-          <div class="dd-item${state.filterType==='ff'?' sel':''}" data-type="ff">All fanfiction</div>
-          <div class="dd-item${state.filterType==='oneshot'?' sel':''}" data-type="oneshot">📄 One-shots</div>
+        <button class="dd-btn" aria-haspopup="menu" aria-expanded="false">${icon('feather')} Fanfiction <span class="dd-chev">${icon('chevron')}</span></button>
+        <div class="dd-menu" role="menu">
+          <div class="dd-item${state.filterType==='ff'?' sel':''}" role="menuitem" tabindex="0" data-type="ff">All fanfiction</div>
+          <div class="dd-item${state.filterType==='oneshot'?' sel':''}" role="menuitem" tabindex="0" data-type="oneshot">One-shots</div>
           ${fandoms.length ? '<div class="dd-sep"></div>' : ''}
-          ${fandoms.map(f => `<div class="dd-item${state.filterFandom===f?' sel':''}" data-fandom="${esc(f)}">${esc(f)}</div>`).join('')}
+          ${fandoms.map(f => `<div class="dd-item${state.filterFandom===f?' sel':''}" role="menuitem" tabindex="0" data-fandom="${esc(f)}">${esc(f)}</div>`).join('')}
         </div>
       </div>
       <div class="dd${(state.filterType==='book'||state.filterGenre!=='all')?' dd-on':''}">
-        <button class="dd-btn">📚 Books <span class="dd-chev">▾</span></button>
-        <div class="dd-menu">
-          <div class="dd-item${state.filterType==='book'?' sel':''}" data-type="book">All books</div>
+        <button class="dd-btn" aria-haspopup="menu" aria-expanded="false">${icon('book')} Books <span class="dd-chev">${icon('chevron')}</span></button>
+        <div class="dd-menu" role="menu">
+          <div class="dd-item${state.filterType==='book'?' sel':''}" role="menuitem" tabindex="0" data-type="book">All books</div>
           ${genres.length ? '<div class="dd-sep"></div>' : ''}
-          ${genres.map(g => `<div class="dd-item${state.filterGenre===g?' sel':''}" data-genre="${esc(g)}">${esc(g)}</div>`).join('')}
+          ${genres.map(g => `<div class="dd-item${state.filterGenre===g?' sel':''}" role="menuitem" tabindex="0" data-genre="${esc(g)}">${esc(g)}</div>`).join('')}
         </div>
       </div>
+      <span class="fpill fpill-fav${state.filterFavorite ? ' active-fav' : ''}" data-fav-filter="true">${icon('star')} Favourites</span>
     </div>
 
     ${state.filterFandom !== 'all' ? (() => {
@@ -2357,11 +3100,11 @@ function listViewContentHtml() {
     <div id="results-meta">${filtered.length} ${filtered.length===1?'entry':'entries'}${state.search ? ` matching "<b>${esc(state.search)}</b>"` : ''}</div>
 
     <div id="list">
-      ${filtered.length === 0 ? `
-        <div class="empty">
-          <div class="empty-icon">📭</div>
-          <p>${state.search ? 'No entries match your search.' : 'No entries yet — add your first one!'}</p>
-        </div>` : filtered.map(cardHtml).join('')}
+      ${(_pendingCards = filtered.length ? filtered : null, filtered.length !== 0) ? '' : (state.search
+            ? emptyStateHtml({ icon: '🔍', title: `No matches for “${state.search}”`, sub: 'Search looks at titles, authors, fandoms, genres, series and tags — accents and case don’t matter.', actions: [{ label: 'Clear search', action: 'clear-search', primary: true }, { label: '＋ Add it as a new entry', action: 'add' }] })
+            : (state.items.length
+                ? emptyStateHtml({ icon: '🗂️', title: 'Nothing matches these filters.', sub: 'Clear the status or type filter to see the whole library.', actions: [{ label: 'Show everything', action: 'clear-search', primary: true }] })
+                : emptyStateHtml({ icon: '📚', title: 'Your library is empty.', sub: 'Paste an AO3 or FF.net link to add a fic with all its details filled in, or add a book and let Auto-fill find the cover and synopsis.', actions: [{ label: '＋ Add a fic', action: 'add-ff', primary: true }, { label: '＋ Add a book', action: 'add-book' }] })))}
     </div>
   `;
 }
@@ -2378,49 +3121,61 @@ function recoveryPanelHtml() {
       <p>The app found <code>${esc(err.path || 'library-data.json')}</code> but it isn't valid JSON, and no readable backup copy was found next to it.</p>
       <p>Nothing has been changed or overwritten. Your entries are still in that file — it most likely just needs the last few characters repaired, or you can restore <code>library-data.json.bak</code> or a dated copy from the <code>backups</code> folder.</p>
       <div class="recovery-actions">
-        <button class="btn btn-primary" id="recovery-open-folder">📁 Open data folder</button>
-        <button class="btn btn-secondary" id="recovery-retry">↻ Try again</button>
+        <button class="btn btn-primary" id="recovery-open-folder">${icon('folder')} Open data folder</button>
+        <button class="btn btn-secondary" id="recovery-retry">${icon('refresh')} Try again</button>
       </div>
     </div>
   </div>`;
 }
 
 // ── Render ────────────────────────────────────────────────────────────────────
+let _lastViewKey = null;
 function render() {
   document.querySelectorAll('.cal-tooltip').forEach(t => t.remove()); // avoid an orphaned tooltip surviving a re-render mid-hover
+  persistUiState();
+  // Replay the card entrance only when the view itself changes (first paint, navigating into a
+  // folder, switching pages) — not on every in-place state change like a star or status click.
+  const viewKey = `${state.view}|${state.viewMode}|${state.folderPath.join('/')}|${state.mySpaceTab}|${state.search}|${state.filterStatus}|${state.filterType}|${state.filterFandom}|${state.filterGenre}|${state.filterTag}|${state.filterFavorite}|${state.folderItemFilter}|${state.folderSearch}`;
+  const sameView = viewKey === _lastViewKey;
+  document.body.classList.toggle('settled', sameView);
+  _lastViewKey = viewKey;
   if (state.loadError) {
     document.getElementById('app').innerHTML = recoveryPanelHtml();
     document.getElementById('recovery-open-folder')?.addEventListener('click', () => window.api.openDataFolder());
     document.getElementById('recovery-retry')?.addEventListener('click', () => location.reload());
     return;
   }
+  // Keep the scroll position across same-view re-renders (delete, undo, add); a new view starts at the top.
   const scrollable = document.getElementById('list') || document.getElementById('stats-view');
-  const scrollTop = scrollable ? scrollable.scrollTop : 0;
+  const scrollTop = sameView && scrollable ? scrollable.scrollTop : 0;
   const folderViewEl = document.getElementById('folder-view');
-  const folderScrollTop = folderViewEl ? folderViewEl.scrollTop : 0;
+  const folderScrollTop = sameView && folderViewEl ? folderViewEl.scrollTop : 0;
   const stats = getStats();
 
   const titlebarHtml = `
     <div id="titlebar">
       <div>
         <div id="titlebar-title">My Library${state.readOnly ? ' <span class="badge badge-Dropped" title="Nothing is being saved to disk">read-only</span>' : ''}</div>
-        <div class="subtitle">${stats.ff} fics · ${stats.books} books · ${stats.totalWords.toLocaleString()} words read</div>
+        <div class="subtitle" title="${stats.hasEstimates ? `About ${Math.round(stats.estimatedWords / stats.totalWords * 100)}% of this figure is estimated (imported counts or pages × ${WORDS_PER_PAGE}). Dropped items add no words.` : 'Words across every finished read'}">${stats.ff} fics · ${stats.books} books · ${stats.hasEstimates ? '≈' : ''}${stats.totalWords.toLocaleString()} words read</div>
       </div>
       <div id="titlebar-actions">
         <div class="dd">
-          <button class="btn btn-secondary btn-sm btn-icon dd-btn">⚙️ Settings <span class="dd-chev">▾</span></button>
-          <div class="dd-menu dd-menu-right">
-            <div class="dd-item" id="btn-export">📊 Export to Excel</div>
-            <div class="dd-item" id="btn-data-folder">📁 Open data folder</div>
-            <div class="dd-item" id="btn-ao3-login">🔑 Log in to AO3</div>
-            <div class="dd-item" id="btn-sync">🔄 Sync — get latest from GitHub</div>
+          <button class="btn btn-ghost btn-sm dd-btn" aria-haspopup="menu" aria-expanded="false">${icon('sliders')} Settings <span class="dd-chev">${icon('chevron')}</span></button>
+          <div class="dd-menu dd-menu-right" role="menu">
+            <div class="dd-item" role="menuitem" tabindex="0" id="btn-export">Export to Excel…</div>
+            <div class="dd-item" role="menuitem" tabindex="0" id="btn-data-folder">Open data folder</div>
+            <div class="dd-item" role="menuitem" tabindex="0" id="btn-ao3-login">Log in to AO3…</div>
+            <div class="dd-item" role="menuitem" tabindex="0" id="btn-sync">Sync from GitHub</div>
             <div class="dd-sep"></div>
-            <div class="dd-item" id="btn-stats">${state.view==='stats'?'📚 Back to Library':'📈 Stats'}</div>
-            <div class="dd-item" id="btn-settings">🎨 Page banners</div>
+            <div class="dd-item" role="menuitem" tabindex="0" id="btn-settings">Page banners…</div>
+            <div class="dd-item" role="menuitem" tabindex="0" id="btn-relink" title="Find linked PDFs/EPUBs that were moved or renamed inside their folder">Relink moved files…</div>
+            <div class="dd-item dd-item-toggle" role="menuitem" tabindex="0" id="btn-density" title="Switch between comfortable and compact cards"><span>Density</span><span class="dd-val">${state.density === 'compact' ? 'Compact' : 'Comfortable'}</span></div>
           </div>
         </div>
-        <button class="btn btn-backup btn-sm btn-icon" id="btn-backup" title="Back up — save all changes to GitHub">☁️ Back up</button>
-        <button class="btn btn-primary btn-sm btn-icon" id="btn-add">＋ Add entry</button>
+        <button class="btn btn-ghost btn-sm${state.view === 'stats' ? ' is-on' : ''}" id="btn-stats" title="${state.view === 'stats' ? 'Back to the library' : 'Reading statistics'}">${icon(state.view === 'stats' ? 'book' : 'chart')} ${state.view === 'stats' ? 'Library' : 'Stats'}</button>
+        <button class="btn btn-ghost btn-sm${state.view !== 'stats' && state.viewMode === 'myspace' ? ' is-on' : ''}" id="btn-view-myspace" title="${state.view !== 'stats' && state.viewMode === 'myspace' ? 'Back to the library' : 'Reading board — TBR, Reading, Finished'}">${icon('layers')} Board</button>
+        <button class="btn btn-ghost btn-sm" id="btn-backup" title="Back up — merge the GitHub copy in, then save everything to GitHub"><span class="btn-ico">${icon('cloud')}</span><span class="btn-lbl">Back up</span></button>
+        <button class="btn btn-primary btn-sm" id="btn-add">${icon('plus')} Add entry</button>
       </div>
     </div>`;
 
@@ -2430,8 +3185,8 @@ function render() {
     <div class="notice-bar" role="alert">
       <span class="notice-icon">🛟</span>
       <span class="notice-msg">Your main library file was missing or unreadable, so this library was restored from <b>${esc(state.recoveredFrom)}</b>. Everything you change from now on is saved normally. If anything looks out of date, check the <b>backups</b> folder.</span>
-      <button class="btn btn-secondary btn-sm" id="notice-open-folder">📁 Open folder</button>
-      <button class="notice-close" id="notice-dismiss" title="Dismiss">×</button>
+      <button class="btn btn-secondary btn-sm" id="notice-open-folder">${icon('folder')} Open folder</button>
+      <button class="notice-close" id="notice-dismiss" title="Dismiss">${icon('x')}</button>
     </div>` : '';
   const titlebarHtmlWithNotice = titlebarHtml + noticeHtml;
 
@@ -2447,7 +3202,8 @@ function render() {
     const inHp = state.folderPath[0] === 'ff' && state.folderPath[1] === 'Harry Potter - J. K. Rowling';
     document.getElementById('app').innerHTML = titlebarHtmlWithNotice + folderViewHtml() + folderEditModalHtml() + folderCreateModalHtml() + itemIconModalHtml() + (state.modalOpen ? modalHtml() : '') + settingsModalHtml() + (inHp ? hpCatHtml() : '');
     const newFolderView = document.getElementById('folder-view');
-    if (newFolderView) newFolderView.scrollTop = folderScrollTop;
+    mountPendingCards(newFolderView, folderScrollTop);
+    if (newFolderView && !folderScrollTop) newFolderView.scrollTop = 0;
     bindEvents();
     if (inHp) mountHpCat();
     return;
@@ -2458,8 +3214,8 @@ function render() {
     document.getElementById('app').innerHTML = titlebarHtmlWithNotice +
       `<div id="myspace-page">
         <div class="ms-tabs">
-          <button class="ms-tab${msTab==='ff'?' active':''}" data-ms-tab="ff">📖 Fanfiction</button>
-          <button class="ms-tab${msTab==='books'?' active':''}" data-ms-tab="books">📚 Books</button>
+          <button class="ms-tab${msTab==='ff'?' active':''}" data-ms-tab="ff">${icon('feather')} Fanfiction</button>
+          <button class="ms-tab${msTab==='books'?' active':''}" data-ms-tab="books">${icon('book')} Books</button>
         </div>
         ${msTab==='books' ? mySpaceBooksHtml() : mySpaceHtml()}
       </div>` +
@@ -2475,9 +3231,435 @@ function render() {
     ${moodPickerModalHtml()}
   `;
 
-  const newListEl = document.getElementById('list');
-  if (newListEl) newListEl.scrollTop = scrollTop;
+  mountPendingCards(document.getElementById('list'), scrollTop);
   bindEvents();
+}
+
+// ── Card list: chunked mounting + per-card patching ─────────────────────────────
+// 958 cards is ~19k DOM nodes; committing and laying them out in one go cost ~1.2 s on every
+// render. Cards are now streamed in chunks (first chunk synchronously, the rest one chunk per
+// frame behind a height spacer so the scrollbar doesn't jump), and single-item changes replace
+// just that card instead of re-rendering the page.
+let _pendingCards = null, _mountToken = 0;
+const CARD_CHUNK = 48;
+function mountPendingCards(scroller, restoreTop) {
+  const items = _pendingCards; _pendingCards = null;
+  const listEl = document.getElementById('list');
+  if (!listEl || !items || !items.length) return;
+  const token = ++_mountToken;
+  let i = 0;
+  const append = () => {
+    const tpl = document.createElement('template');
+    tpl.innerHTML = items.slice(i, i + CARD_CHUNK).map(cardHtml).join('');
+    listEl.appendChild(tpl.content);
+    i = Math.min(items.length, i + CARD_CHUNK);
+  };
+  append();
+  const avg = Math.max(60, listEl.scrollHeight / Math.max(1, i));
+  const spacer = () => { listEl.style.paddingBottom = i < items.length ? `${Math.round(40 + (items.length - i) * avg)}px` : ''; };
+  spacer();
+  if (restoreTop > 0 && scroller) {
+    // Fill up to the saved position so the restored scroll lands on real cards, not the spacer.
+    while (i < items.length && scroller.scrollHeight - (parseFloat(listEl.style.paddingBottom) || 0) < restoreTop + scroller.clientHeight) { append(); spacer(); }
+    scroller.scrollTop = restoreTop;
+  }
+  const more = () => {
+    if (token !== _mountToken || !listEl.isConnected) return;
+    if (i >= items.length) { spacer(); applyCoverAccents(); return; }
+    append(); spacer();
+    requestAnimationFrame(more);
+  };
+  if (i < items.length) requestAnimationFrame(more);
+}
+// Replace the DOM for just these items (used after a star, favourite, status or read change).
+function patchCards(ids) {
+  let stale = false;
+  for (const id of ids) {
+    const el = document.querySelector(`.card[data-id="${CSS.escape(String(id))}"]`);
+    const item = state.items.find(x => x.id === id);
+    if (!el) continue;                       // card not on screen (or not mounted yet) — nothing to patch
+    if (!item) { el.remove(); continue; }
+    const tpl = document.createElement('template');
+    tpl.innerHTML = cardHtml(item).trim();
+    const fresh = tpl.content.firstElementChild;
+    if (fresh) el.replaceWith(fresh); else stale = true;
+  }
+  if (stale) render();
+}
+// Titlebar subtitle and status pills, recomputed without a full render.
+function refreshChrome() {
+  const stats = getStats();
+  const sub = document.querySelector('#titlebar .subtitle');
+  if (sub) sub.textContent = `${stats.ff} fics · ${stats.books} books · ${stats.hasEstimates ? '≈' : ''}${stats.totalWords.toLocaleString()} words read`;
+  const set = (sel, v) => { const n = document.querySelector(sel); if (n) n.textContent = v; };
+  set('.stat-num.tbr', stats.tbr); set('.stat-num.reading', stats.reading); set('.stat-num.finished', stats.finished); set('.stat-num.dropped', stats.dropped);
+}
+// After an item changed: patch in place when the list's membership can't have changed, else re-render.
+function afterItemChange(ids) {
+  const listView = state.view === 'library' && (state.viewMode === 'list' || (state.viewMode === 'folder' && state.folderPath.length === 0));
+  const membershipSensitive = state.filterStatus !== 'all' || state.filterFavorite;
+  if (listView && !membershipSensitive && document.getElementById('list')) { patchCards(ids); refreshChrome(); }
+  else render();
+}
+function updateItem(id, mutate) {
+  const idx = state.items.findIndex(x => x.id === id);
+  if (idx < 0) return null;
+  const now = new Date().toISOString();
+  const next = mutate({ ...state.items[idx] }, now);
+  if (!next) return null;
+  next._modAt = now;
+  state.items[idx] = next;
+  return next;
+}
+function toggleExpand(id) {
+  const prev = state.expandedId;
+  state.expandedId = prev === id ? null : id;
+  if (document.getElementById('list')) patchCards([...new Set([prev, id].filter(Boolean))]); else render();
+}
+function toggleFavourite(id) {
+  if (updateItem(id, x => ({ ...x, favorite: !x.favorite }))) { saveData(); afterItemChange([id]); }
+}
+function rateItem(id, val) {
+  if (!Number.isFinite(val)) return;
+  if (updateItem(id, x => ({ ...x, userRating: x.userRating === val ? 0 : val }))) { saveData(); afterItemChange([id]); }
+}
+function stepReread(id, delta) {
+  const it = updateItem(id, x => {
+    const dates = ensureReadDates(x);
+    if (delta > 0) dates.push(new Date().toISOString());  // "I re-read this" — today
+    else if (dates.length) dates.pop();                    // drop the most recent read (list is chronological)
+    return { ...x, readDates: dates, readCount: dates.length };
+  });
+  if (it) { saveData(); afterItemChange([id]); }
+}
+async function setItemStatus(id, status) {
+  if (!STATUS.includes(status)) return;
+  const current = state.items.find(x => x.id === id);
+  if (!current || current.status === status) return;
+  // Dropping asks where you stopped (skippable) — that position is what gets credited.
+  let dropProgress;
+  if (status === 'Dropped') {
+    dropProgress = await progressDialog(current, { title: 'Where did you stop?', hint: 'Only the part you got to counts towards your words read. Skip if you don’t remember.', allowSkip: true });
+    if (dropProgress === null) return;
+  }
+  const it = updateItem(id, (x, now) => {
+    const update = { ...x, status };
+    if (status === 'Reading') ensureReadingStart(update, now);
+    if (status === 'TBR') { update.readingStartedAt = null; update.progress = null; update.waitingOnChap = false; }
+    if (status === 'Dropped') {
+      if (dropProgress && dropProgress !== 'skip') update.progress = { ...dropProgress, at: now };
+      if (!(timesRead(x) > 0)) { update.readDates = [now]; update.readCount = 1; }
+    }
+    if (status === 'Finished') {
+      update.progress = null;
+      if (!x.finishedAt) update.finishedAt = now;
+      // Finished means "read at least once" — and readDates is what the stats trust. A re-read
+      // started on the board (readingStartedAt after the last read) is a new read too.
+      const last = lastReadAt(x);
+      const isNewRead = !(timesRead(x) > 0) || (x.readingStartedAt && (!last || Date.parse(x.readingStartedAt) > Date.parse(last)));
+      if (isNewRead) {
+        const when = timesRead(x) > 0 ? now : update.finishedAt;
+        update.readDates = [...ensureReadDates(x), when]; update.readCount = update.readDates.length; update.finishedAt = when;
+      }
+    }
+    return update;
+  });
+  if (it) { saveData(); afterItemChange([id]); }
+}
+// Record when a book on the shelf was started (for books that predate automatic start dates).
+async function setStartDateFor(id) {
+  const item = state.items.find(x => x.id === id);
+  if (!item) return;
+  const iso = await pickDateDialog({ title: `When did you start “${item.title}”?`, defaultIso: item.readingStartedAt || item._modAt || null });
+  if (!iso) return;
+  pushItemUndo(item);
+  item.readingStartedAt = iso;
+  item._modAt = new Date().toISOString();
+  saveData(); render();
+  showToast(`Started ${fmtDateShort(iso)} ✓`, 'success');
+}
+// Set (or update) where you are in a book — from the shelf, a card, or the stale-read nudge.
+async function updateProgressFor(id) {
+  const item = state.items.find(x => x.id === id);
+  if (!item) return;
+  const p = await progressDialog(item, { title: item.status === 'Dropped' ? 'Where did you stop?' : 'Where are you up to?' });
+  if (!p || p === 'skip') return;
+  const now = new Date().toISOString();
+  pushItemUndo(item);
+  item.progress = { ...p, at: now };
+  item._modAt = now;
+  saveData();
+  if (state.viewMode === 'myspace' || state.view === 'stats') render(); else afterItemChange([id]);
+  const pct = progressPct(item);
+  if (item.status === 'Reading' && pct !== null && pct >= 100) {
+    showToast('That’s the end — mark it finished?', 'info', { duration: 8000, action: { label: 'Finished ✓', onClick: () => moveMsCard(id, 'Finished') } });
+  }
+}
+function refileToGenre(id, target) {
+  const item = state.items.find(x => x.id === id);
+  if (!item || !target) return;
+  pushItemsUndo();
+  const parts = (item.genre || '').split(' / ').map(s => s.trim()).filter(Boolean);
+  if (parts.length) parts[0] = target; else parts.push(target);
+  item.genre = parts.join(' / ');
+  item._modAt = new Date().toISOString();
+  saveData(); render();
+  showToast(`Moved “${item.title}” to ${target} — ⌘Z to undo`, 'success');
+}
+async function deleteItemFlow(id) {
+  const item = state.items.find(x => x.id === id);
+  if (!item) return;
+  const ok = await confirmDialog({
+    title: 'Delete this entry?',
+    message: `“${item.title || 'Untitled'}” will be removed from your library.`,
+    confirmLabel: 'Delete', danger: true,
+  });
+  if (!ok) return;
+  const idx = state.items.indexOf(item);
+  state.items = state.items.filter(x => x.id !== id);
+  state.deletedIds = { ...state.deletedIds, [id]: new Date().toISOString() };
+  saveData(); render();
+  showToast(`Deleted “${item.title || 'Untitled'}”`, 'info', {
+    duration: 7000,
+    action: { label: 'Undo', onClick: () => {
+      if (state.items.some(x => x.id === id)) return;
+      const restored = [...state.items];
+      restored.splice(Math.min(idx, restored.length), 0, item);
+      state.items = restored;
+      const { [id]: _dropped, ...rest } = state.deletedIds;
+      state.deletedIds = rest;
+      saveData(); render();
+    } },
+  });
+}
+async function openLocalFor(id) {
+  const item = state.items.find(x => x.id === id);
+  if (!item?.localFile) return;
+  if (state.missingFiles[item.localFile]) { relinkLocalFile(item); return; }
+  const res = await window.api.openLocalFile(item.localFile);
+  if (res?.error) {
+    state.missingFiles = { ...state.missingFiles, [item.localFile]: true };
+    patchCards([id]);
+    showToast(res.error, 'error', { duration: 8000, action: { label: 'Locate…', onClick: () => relinkLocalFile(item) } });
+  }
+}
+async function refreshWordsFor(btn) {
+  const item = state.items.find(x => x.id === btn.dataset.refreshWords);
+  if (!item) return;
+  btn.textContent = '…'; btn.disabled = true;
+  showToast('Refreshing word count…', 'loading');
+  const res = await refreshWordCount(item);
+  if (res && res.ok && res.new !== res.old) { saveData(); afterItemChange([item.id]); showToast(`${item.title || 'Fic'}: ${fmtNum(res.old)} → ${fmtNum(res.new)} words`, 'success'); return; }
+  if (res && res.ok) showToast('Word count already up to date ✓', 'success');
+  else if (res && res.needsLogin) showToast('🔒 Locked work — use “🔑 AO3 login” (Settings), then retry.', 'info');
+  else showToast('Couldn’t refresh — check the link.', 'error');
+  btn.innerHTML = icon('refresh'); btn.disabled = false;
+}
+
+// ── Card actions: one delegated listener for the whole app ─────────────────────
+// Cards are mounted in chunks and patched individually, so their handlers can't be bound per
+// element at render time. Every card control is resolved here from the click target, most
+// specific first, so a click on ⭐ never also toggles the card open.
+let _dragItemId = null;
+function initCardDelegation() {
+  document.addEventListener('click', async e => {
+    const t = e.target instanceof Element ? e.target : null;
+    if (!t) return;
+    const hit = sel => t.closest(sel);
+    let el;
+    if ((el = hit('[data-toggle-fav]'))) { e.stopPropagation(); toggleFavourite(el.dataset.toggleFav); return; }
+    if ((el = hit('[data-open-url]'))) { e.stopPropagation(); const res = await window.api.openExternal(el.dataset.openUrl); if (res?.error) showToast(res.error, 'error'); return; }
+    if ((el = hit('[data-open-local]'))) { e.stopPropagation(); openLocalFor(el.dataset.openLocal); return; }
+    if ((el = hit('[data-refresh-words]'))) { e.stopPropagation(); refreshWordsFor(el); return; }
+    if ((el = hit('[data-delete]'))) { e.stopPropagation(); deleteItemFlow(el.dataset.delete); return; }
+    if ((el = hit('[data-edit]'))) { e.stopPropagation(); const item = state.items.find(x => x.id === el.dataset.edit); if (item) { state.editItem = { ...item }; state.modalOpen = true; render(); } return; }
+    if ((el = hit('.cover-edit-btn'))) { e.stopPropagation(); state.editingItemIcon = el.dataset.editItemIcon; render(); return; }
+    if ((el = hit('[data-set-status]'))) { e.stopPropagation(); setItemStatus(el.dataset.id, el.dataset.setStatus); return; }
+    if ((el = hit('[data-reread-delta]'))) { e.stopPropagation(); if (!el.disabled) stepReread(el.dataset.rereadId, parseInt(el.dataset.rereadDelta, 10)); return; }
+    if ((el = hit('.stars:not(.readonly) .star'))) { e.stopPropagation(); rateItem(el.dataset.id, parseInt(el.dataset.val, 10)); return; }
+    if ((el = hit('[data-refile]'))) { e.stopPropagation(); refileToGenre(el.dataset.refile, el.dataset.refileGenre); return; }
+    if ((el = hit('[data-progress]'))) { e.stopPropagation(); updateProgressFor(el.dataset.progress); return; }
+    if ((el = hit('[data-set-start]'))) { e.stopPropagation(); setStartDateFor(el.dataset.setStart); return; }
+    if ((el = hit('[data-ms-move]'))) { e.stopPropagation(); const [id, target] = el.dataset.msMove.split('|'); moveMsCard(id, target); return; }
+    if ((el = hit('[data-expand]'))) { toggleExpand(el.dataset.expand); return; }
+  });
+  // Star hover preview (mouseover/mouseout bubble; mouseenter/leave don't)
+  document.addEventListener('mouseover', e => {
+    const star = e.target instanceof Element && e.target.closest('.stars:not(.readonly) .star');
+    if (!star) return;
+    const val = parseInt(star.dataset.val, 10);
+    star.closest('.stars').querySelectorAll('.star').forEach((s, i) => s.classList.toggle('lit', i < val));
+  });
+  document.addEventListener('mouseout', e => {
+    const star = e.target instanceof Element && e.target.closest('.stars:not(.readonly) .star');
+    if (!star) return;
+    const wrap = star.closest('.stars');
+    if (e.relatedTarget instanceof Node && wrap.contains(e.relatedTarget)) return;
+    const item = state.items.find(x => x.id === star.dataset.id);
+    wrap.querySelectorAll('.star').forEach((s, i) => s.classList.toggle('lit', i < (item?.userRating || 0)));
+  });
+}
+
+// ── Progress dialog: page / chapter / percent ─────────────────────────────────────
+// Resolves to { unit, value, total } · 'skip' (allowSkip only) · null (cancelled).
+function progressDialog(item, { title = 'Where are you up to?', hint = '', allowSkip = false } = {}) {
+  return new Promise(resolve => {
+    document.getElementById('progress-backdrop')?.remove();
+    const cur = item.progress || {};
+    const unit = cur.unit || (item.type === 'book' ? (item.pages ? 'page' : 'percent') : (item.chaptersTotal || item.chaptersPosted ? 'chapter' : 'percent'));
+    const total = cur.total || (unit === 'page' ? item.pages : unit === 'chapter' ? (item.chaptersTotal || item.chaptersPosted) : null) || '';
+    const wrap = document.createElement('div');
+    wrap.id = 'progress-backdrop';
+    wrap.className = 'folder-edit-backdrop confirm-backdrop';
+    wrap.innerHTML = `
+      <div class="folder-edit-modal confirm-modal progress-modal" role="dialog" aria-modal="true">
+        <div class="confirm-body">
+          <div class="confirm-title">${esc(title)}</div>
+          <div class="confirm-msg progress-book">${esc(item.title || 'Untitled')}${item.author ? ` <span class="ins-sub">· ${esc(item.author)}</span>` : ''}</div>
+          ${hint ? `<p class="confirm-msg">${esc(hint)}</p>` : ''}
+          <div class="progress-fields">
+            <select id="pg-unit" class="filter-select">
+              <option value="page"${unit === 'page' ? ' selected' : ''}>Page</option>
+              <option value="chapter"${unit === 'chapter' ? ' selected' : ''}>Chapter</option>
+              <option value="percent"${unit === 'percent' ? ' selected' : ''}>Percent</option>
+            </select>
+            <input type="number" id="pg-value" min="0" step="1" placeholder="${unit === 'percent' ? '0–100' : 'where you are'}" value="${cur.value ?? ''}" />
+            <span class="progress-of" id="pg-of">${unit === 'percent' ? '%' : 'of'}</span>
+            <input type="number" id="pg-total" min="1" step="1" placeholder="${unit === 'page' ? 'pages' : 'chapters'}" value="${esc(total)}"${unit === 'percent' ? ' hidden' : ''} />
+          </div>
+          <div class="progress-quick">${[10, 25, 50, 75, 90].map(q => `<button class="ms-chip" data-pg-quick="${q}">${q}%</button>`).join('')}</div>
+          <div class="field-hint-err" id="pg-err" hidden></div>
+        </div>
+        <div class="modal-footer confirm-footer">
+          ${allowSkip ? `<button class="btn btn-secondary" data-pg="skip" title="Drop it without recording where you stopped">Skip</button>` : ''}
+          <button class="btn btn-secondary" data-pg="cancel">Cancel</button>
+          <button class="btn btn-primary" data-pg="save">Save</button>
+        </div>
+      </div>`;
+    const $ = sel => wrap.querySelector(sel);
+    const syncUnit = () => {
+      const u = $('#pg-unit').value;
+      $('#pg-total').hidden = u === 'percent';
+      $('#pg-of').textContent = u === 'percent' ? '%' : 'of';
+      $('#pg-value').placeholder = u === 'percent' ? '0–100' : 'where you are';
+      if (u !== 'percent' && !$('#pg-total').value) $('#pg-total').value = (u === 'page' ? item.pages : (item.chaptersTotal || item.chaptersPosted)) || '';
+      $('#pg-total').placeholder = u === 'page' ? 'pages' : 'chapters';
+    };
+    const finish = result => { document.removeEventListener('keydown', onKey, true); wrap.classList.add('confirm-out'); setTimeout(() => wrap.remove(), 160); resolve(result); };
+    const save = () => {
+      const u = $('#pg-unit').value;
+      const value = parseFloat($('#pg-value').value);
+      const totalV = u === 'percent' ? 100 : parseFloat($('#pg-total').value);
+      const err = $('#pg-err');
+      if (!(value >= 0)) { err.textContent = 'Enter where you are.'; err.hidden = false; $('#pg-value').classList.add('field-invalid'); return; }
+      if (!(totalV > 0)) { err.textContent = u === 'page' ? 'How many pages does it have?' : 'How many chapters does it have?'; err.hidden = false; $('#pg-total').classList.add('field-invalid'); return; }
+      if (value > totalV) { err.textContent = `That’s past the end (${totalV}).`; err.hidden = false; $('#pg-value').classList.add('field-invalid'); return; }
+      finish({ unit: u, value: Math.round(value), total: u === 'percent' ? null : Math.round(totalV) });
+    };
+    const onKey = e => {
+      if (e.key === 'Escape') { e.stopPropagation(); e.preventDefault(); finish(null); }
+      else if (e.key === 'Enter') { e.stopPropagation(); e.preventDefault(); save(); }
+    };
+    document.addEventListener('keydown', onKey, true);
+    $('#pg-unit').addEventListener('change', syncUnit);
+    wrap.querySelectorAll('[data-pg-quick]').forEach(b => b.addEventListener('click', () => { $('#pg-unit').value = 'percent'; syncUnit(); $('#pg-value').value = b.dataset.pgQuick; }));
+    wrap.querySelectorAll('[data-pg]').forEach(b => b.addEventListener('click', () => { const k = b.dataset.pg; if (k === 'save') save(); else finish(k === 'skip' ? 'skip' : null); }));
+    wrap.addEventListener('click', e => { if (e.target === wrap) finish(null); });
+    document.body.appendChild(wrap);
+    $('#pg-value').focus(); $('#pg-value').select();
+  });
+}
+
+// ── Date dialog (used by "Change date" on the Finished toast) ────────────────────
+function pickDateDialog({ title = 'Pick a date', defaultIso = null } = {}) {
+  return new Promise(resolve => {
+    document.getElementById('date-backdrop')?.remove();
+    const wrap = document.createElement('div');
+    wrap.id = 'date-backdrop';
+    wrap.className = 'folder-edit-backdrop confirm-backdrop';
+    wrap.innerHTML = `
+      <div class="folder-edit-modal confirm-modal" role="dialog" aria-modal="true">
+        <div class="confirm-body">
+          <div class="confirm-title">${esc(title)}</div>
+          <input type="date" id="pd-date" value="${toDateInputValue(defaultIso || new Date().toISOString())}" max="${toDateInputValue(new Date().toISOString())}" style="margin-top:12px" />
+        </div>
+        <div class="modal-footer confirm-footer">
+          <button class="btn btn-secondary" data-pd="cancel">Cancel</button>
+          <button class="btn btn-primary" data-pd="save">Save</button>
+        </div>
+      </div>`;
+    const finish = v => { document.removeEventListener('keydown', onKey, true); wrap.classList.add('confirm-out'); setTimeout(() => wrap.remove(), 160); resolve(v); };
+    const save = () => { const v = wrap.querySelector('#pd-date').value; finish(v ? new Date(v + 'T12:00:00').toISOString() : null); };
+    const onKey = e => { if (e.key === 'Escape') { e.stopPropagation(); e.preventDefault(); finish(null); } else if (e.key === 'Enter') { e.stopPropagation(); e.preventDefault(); save(); } };
+    document.addEventListener('keydown', onKey, true);
+    wrap.querySelectorAll('[data-pd]').forEach(b => b.addEventListener('click', () => b.dataset.pd === 'save' ? save() : finish(null)));
+    wrap.addEventListener('click', e => { if (e.target === wrap) finish(null); });
+    document.body.appendChild(wrap);
+    wrap.querySelector('#pd-date').focus();
+  });
+  // Book cards dragged onto series folders / the unassign zone (drop targets bind per render).
+  document.addEventListener('dragstart', e => {
+    const el = e.target instanceof Element && e.target.closest('[data-drag-item-id]');
+    if (!el) return;
+    _dragItemId = el.dataset.dragItemId;
+    e.dataTransfer.effectAllowed = 'move';
+    try { e.dataTransfer.setData('text/plain', _dragItemId); } catch {}
+    el.classList.add('card-dragging');
+  });
+  document.addEventListener('dragend', e => {
+    const el = e.target instanceof Element && e.target.closest('[data-drag-item-id]');
+    if (!el) return;
+    el.classList.remove('card-dragging');
+    document.querySelectorAll('.fc-drop-hover, .series-unassign-hover').forEach(x => x.classList.remove('fc-drop-hover', 'series-unassign-hover'));
+    _dragItemId = null;
+  });
+}
+
+// Click-to-open menus with full keyboard support. Bound once at the document level so they
+// survive every re-render: ↓/↑ move, Enter/Space choose, Esc closes, click-outside closes.
+function initDropdowns() {
+  const closeAll = except => document.querySelectorAll('.dd.dd-open').forEach(d => {
+    if (d === except) return;
+    d.classList.remove('dd-open');
+    d.querySelector('.dd-btn')?.setAttribute('aria-expanded', 'false');
+  });
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('.dd-btn');
+    if (btn) {
+      const dd = btn.closest('.dd');
+      const open = !dd.classList.contains('dd-open');
+      closeAll(dd);
+      dd.classList.toggle('dd-open', open);
+      btn.setAttribute('aria-expanded', String(open));
+      if (open) {
+        const first = dd.querySelector('.dd-item.sel, .dd-item');
+        first?.focus({ preventScroll: true });
+        if (document.activeElement !== first) setTimeout(() => first?.focus({ preventScroll: true }), 0);
+      }
+      return;
+    }
+    // A menu item's own handler has already run by the time this bubbles up; just close.
+    if (e.target.closest('.dd-item') || !e.target.closest('.dd')) closeAll();
+  });
+  document.addEventListener('keydown', e => {
+    const dd = e.target.closest?.('.dd') || (e.key === 'Escape' ? document.querySelector('.dd.dd-open') : null);
+    if (!dd) return;
+    const items = [...dd.querySelectorAll('.dd-item')];
+    const i = items.indexOf(document.activeElement);
+    if (e.key === 'Escape') {
+      if (!dd.classList.contains('dd-open')) return;
+      e.stopPropagation(); closeAll(); dd.querySelector('.dd-btn')?.focus();
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (!dd.classList.contains('dd-open')) dd.querySelector('.dd-btn')?.click();
+      else items[(i + 1) % items.length]?.focus();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault(); items[(i - 1 + items.length) % items.length]?.focus();
+    } else if ((e.key === 'Enter' || e.key === ' ') && i >= 0) {
+      e.preventDefault(); items[i].click();
+    } else if (e.key === 'Home' && items.length) { e.preventDefault(); items[0].focus(); }
+    else if (e.key === 'End' && items.length) { e.preventDefault(); items[items.length - 1].focus(); }
+  });
 }
 
 
@@ -2505,6 +3687,8 @@ function snapshotModalForm() {
   const fin     = v('m-finished'); if (fin    !== null) patch.finishedAt = fin ? new Date(fin + 'T12:00:00').toISOString() : null;
   const lit = document.querySelectorAll('#star-picker span.lit').length;
   if (document.getElementById('star-picker')) patch.userRating = lit;
+  const pgv = v('m-prog-value');
+  if (pgv !== null) patch.progress = readProgressFields(base);
   // An emptied number field means "clear it", not "keep the old value".
   const ws = v('m-words');     if (ws !== null) patch.words  = ws.trim()  ? (parseInt(ws)  || null) : null;
   const hs = v('m-hearts');    if (hs !== null) patch.hearts = hs.trim()  ? (parseInt(hs)  || null) : null;
@@ -2540,8 +3724,27 @@ function bindDebouncedSearch(inputId, apply) {
   });
 }
 
+// The edit form's Progress fields → a progress object (or null when empty), keeping the timestamp
+// of an unchanged position.
+function readProgressFields(base) {
+  const unit = document.getElementById('m-prog-unit')?.value || 'page';
+  const value = parseFloat(document.getElementById('m-prog-value')?.value);
+  const totalRaw = parseFloat(document.getElementById('m-prog-total')?.value);
+  if (!(value >= 0)) return null;
+  const total = unit === 'percent' ? null : (totalRaw > 0 ? Math.round(totalRaw) : null);
+  const prev = base?.progress;
+  const same = prev && prev.unit === unit && prev.value === Math.round(value) && (prev.total || null) === total;
+  return { unit, value: Math.round(value), total, at: same ? prev.at : new Date().toISOString() };
+}
+
 function bindEvents() {
   // Search
+  document.getElementById('m-prog-unit')?.addEventListener('change', e => {
+    const pct = e.target.value === 'percent';
+    const total = document.getElementById('m-prog-total'); const of = document.querySelector('.modal .progress-of');
+    if (total) total.hidden = pct; if (of) of.textContent = pct ? '%' : 'of';
+  });
+  if (document.getElementById('m-prog-unit')?.value === 'percent') { const t = document.getElementById('m-prog-total'); if (t) t.hidden = true; }
   document.getElementById('notice-dismiss')?.addEventListener('click', () => { state.recoveredFrom = null; render(); });
   document.getElementById('notice-open-folder')?.addEventListener('click', () => window.api.openDataFolder());
 
@@ -2558,7 +3761,6 @@ function bindEvents() {
     render();
   };
   document.getElementById('btn-stats')?.addEventListener('click', toggleStatsView);
-  document.getElementById('btn-stats-fab')?.addEventListener('click', toggleStatsView);
 
   // View mode toggle (list / folder)
   document.getElementById('btn-view-list')?.addEventListener('click', () => {
@@ -2568,12 +3770,13 @@ function bindEvents() {
     state.viewMode = 'folder'; render();
   });
   document.getElementById('btn-view-myspace')?.addEventListener('click', () => {
-    state.viewMode = 'myspace'; state.view = 'library'; render();
+    const onBoard = state.view !== 'stats' && state.viewMode === 'myspace';
+    state.viewMode = onBoard ? 'folder' : 'myspace'; state.view = 'library'; render();
   });
 
   // ── MySpace: Fanfiction / Books tab switch ──
   document.querySelectorAll('[data-ms-tab]').forEach(btn => {
-    btn.addEventListener('click', () => { state.mySpaceTab = btn.dataset.msTab; render(); });
+    btn.addEventListener('click', () => { state.mySpaceTab = btn.dataset.msTab; state.msChip = null; state.msSearch = ''; render(); });
   });
 
   // ── MySpace board: drag & drop ──
@@ -2590,8 +3793,8 @@ function bindEvents() {
       document.querySelectorAll('.ms-drop-over').forEach(z => z.classList.remove('ms-drop-over'));
       setTimeout(() => { _msDragged = false; }, 0);
     });
-    c.addEventListener('click', () => {
-      if (_msDragged) return;
+    c.addEventListener('click', e => {
+      if (_msDragged || (e.target instanceof Element && e.target.closest('button'))) return;
       const item = state.items.find(x => x.id === c.dataset.msId);
       if (item) { state.editItem = { ...item }; state.modalOpen = true; render(); }
     });
@@ -2605,9 +3808,9 @@ function bindEvents() {
       showToast('Refreshing word count…', 'loading');
       const res = await refreshWordCount(item);
       if (res && res.ok && res.new !== res.old) { saveData(); render(); showToast(`Word count updated ${fmtNum(res.old)} → ${fmtNum(res.new)}`, 'success'); }
-      else if (res && res.ok) { showToast('Already up to date ✓', 'success'); btn.textContent = '↻'; btn.disabled = false; }
-      else if (res && res.needsLogin) { showToast('🔒 Locked work — use “🔑 AO3 login” (top bar), then retry.', 'info'); btn.textContent = '↻'; btn.disabled = false; }
-      else { showToast('Couldn’t refresh — check the link', 'error'); btn.textContent = '↻'; btn.disabled = false; }
+      else if (res && res.ok) { showToast('Already up to date ✓', 'success'); btn.innerHTML = icon('refresh'); btn.disabled = false; }
+      else if (res && res.needsLogin) { showToast('🔒 Locked work — use “🔑 AO3 login” (top bar), then retry.', 'info'); btn.innerHTML = icon('refresh'); btn.disabled = false; }
+      else { showToast('Couldn’t refresh — check the link', 'error'); btn.innerHTML = icon('refresh'); btn.disabled = false; }
     });
   });
   document.querySelectorAll('#myspace-page [data-ms-drop]').forEach(zone => {
@@ -2624,6 +3827,15 @@ function bindEvents() {
 
   // Folder search & sort
   bindDebouncedSearch('folder-search', v => { state.folderSearch = v; });
+
+  // MySpace TBR column tools
+  bindDebouncedSearch('ms-search', v => { state.msSearch = v; });
+  document.getElementById('ms-sort')?.addEventListener('change', e => { state.msSort = e.target.value; render(); });
+  document.querySelectorAll('[data-ms-chip]').forEach(b => b.addEventListener('click', () => {
+    const g = b.dataset.msChip;
+    if (!g) { state.msChip = null; state.msSearch = ''; } else state.msChip = state.msChip === g ? null : g;
+    render();
+  }));
   const folderSortEl = document.getElementById('folder-sort');
   if (folderSortEl) folderSortEl.addEventListener('change', e => { state.folderSortBy = e.target.value; render(); });
 
@@ -2698,20 +3910,7 @@ function bindEvents() {
   // Drag a book card onto a series folder (joins the series) or onto the "take out of series"
   // zone inside a series view (clears it) — mirrors the folder-merge drag above but for items.
   {
-    let dragItemId = null;
-    document.querySelectorAll('[data-drag-item-id]').forEach(el => {
-      el.addEventListener('dragstart', e => {
-        dragItemId = el.dataset.dragItemId;
-        e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('text/plain', dragItemId);
-        el.classList.add('card-dragging');
-      });
-      el.addEventListener('dragend', () => {
-        el.classList.remove('card-dragging');
-        document.querySelectorAll('.fc-drop-hover, .series-unassign-hover').forEach(x => x.classList.remove('fc-drop-hover', 'series-unassign-hover'));
-        dragItemId = null;
-      });
-    });
+    // dragstart/dragend for book cards are delegated in initCardDelegation(); only drop targets bind here.
 
     const setSeries = (itemId, seriesName) => {
       const item = state.items.find(x => x.id === itemId);
@@ -2726,7 +3925,7 @@ function bindEvents() {
 
     document.querySelectorAll('[data-drop-series-name]').forEach(el => {
       el.addEventListener('dragover', e => {
-        if (!dragItemId) return;
+        if (!_dragItemId) return;
         e.preventDefault();
         e.dataTransfer.dropEffect = 'move';
         el.classList.add('fc-drop-hover');
@@ -2735,7 +3934,7 @@ function bindEvents() {
       el.addEventListener('drop', e => {
         e.preventDefault();
         el.classList.remove('fc-drop-hover');
-        const id = dragItemId || e.dataTransfer.getData('text/plain');
+        const id = _dragItemId || e.dataTransfer.getData('text/plain');
         setSeries(id, el.dataset.dropSeriesName);
       });
     });
@@ -2743,7 +3942,7 @@ function bindEvents() {
     const unassignZone = document.getElementById('series-unassign-zone');
     if (unassignZone) {
       unassignZone.addEventListener('dragover', e => {
-        if (!dragItemId) return;
+        if (!_dragItemId) return;
         e.preventDefault();
         e.dataTransfer.dropEffect = 'move';
         unassignZone.classList.add('series-unassign-hover');
@@ -2752,7 +3951,7 @@ function bindEvents() {
       unassignZone.addEventListener('drop', e => {
         e.preventDefault();
         unassignZone.classList.remove('series-unassign-hover');
-        const id = dragItemId || e.dataTransfer.getData('text/plain');
+        const id = _dragItemId || e.dataTransfer.getData('text/plain');
         setSeries(id, null);
       });
     }
@@ -2864,14 +4063,6 @@ function bindEvents() {
     });
   }
 
-  // Item icon (cover) edit
-  document.querySelectorAll('.cover-edit-btn').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      state.editingItemIcon = btn.dataset.editItemIcon;
-      render();
-    });
-  });
   const iimClose = document.getElementById('iim-close');
   const iimCancel = document.getElementById('iim-cancel');
   const iimSave = document.getElementById('iim-save');
@@ -2928,7 +4119,7 @@ function bindEvents() {
       const items = (cat === 'books' ? state.items.filter(x => x.type === 'book')
         : cat === 'ff' ? state.items.filter(x => x.type === 'ff' && !x.oneshot)
         : cat === 'oneshot' ? state.items.filter(x => x.type === 'ff' && x.oneshot)
-        : state.items).filter(x => x.status === 'Finished' || x.status === 'Dropped');
+        : state.items);
       const current = state.statsCalendarYear ?? getReadingCalendarYears(items)[0]?.year ?? new Date().getFullYear();
       state.statsCalendarYear = current + (el.dataset.calYearNav === 'next' ? 1 : -1);
       render();
@@ -3070,11 +4261,15 @@ function bindEvents() {
   document.getElementById('mood-start-reading')?.addEventListener('click', () => {
     const item = state.items.find(x => x.id === state.moodPickerBookId);
     if (item) {
-      item.status = 'Reading';
-      item._modAt = new Date().toISOString();
+      const now = new Date().toISOString();
+      pushItemUndo(item);
+      item.status = 'Reading'; item.waitingOnChap = false;
+      ensureReadingStart(item, now);
+      item._modAt = now;
       saveData();
     }
     moodClose();
+    if (item) showToast(`Started reading “${item.title}” ✓`, 'success');
   });
 
   // Add button
@@ -3116,7 +4311,7 @@ function bindEvents() {
           showToast(old && old !== data.words ? `Word count ${fmtNum(old)} → ${fmtNum(data.words)} — remember to Save` : 'Word count already up to date ✓', 'success');
         } else showToast('Couldn’t refresh — check the link.', 'error');
       } catch (e) { showToast('Couldn’t refresh — check the link.', 'error'); }
-      refreshWordsBtn.disabled = false; refreshWordsBtn.textContent = '↻';
+      refreshWordsBtn.disabled = false; refreshWordsBtn.innerHTML = icon('refresh');
     });
   }
 
@@ -3140,15 +4335,6 @@ function bindEvents() {
     el.addEventListener('click', () => { state.filterFavorite = !state.filterFavorite; render(); });
   });
 
-  // Favorite toggle on card
-  document.querySelectorAll('[data-toggle-fav]').forEach(el => {
-    el.addEventListener('click', e => {
-      e.stopPropagation();
-      const id = el.dataset.toggleFav;
-      state.items = state.items.map(x => x.id === id ? { ...x, favorite: !x.favorite, _modAt: new Date().toISOString() } : x);
-      saveData(); render();
-    });
-  });
 
   // Filter pills
   document.querySelectorAll('[data-type]').forEach(el => {
@@ -3186,160 +4372,35 @@ function bindEvents() {
     });
   });
 
-  // Card expand
-  document.querySelectorAll('[data-expand]').forEach(el => {
-    el.addEventListener('click', () => {
-      const id = el.dataset.expand;
-      state.expandedId = state.expandedId === id ? null : id;
-      render();
-    });
-  });
 
-  // Edit
-  document.querySelectorAll('[data-edit]').forEach(el => {
-    el.addEventListener('click', e => {
-      e.stopPropagation();
-      const item = state.items.find(x => x.id === el.dataset.edit);
-      if (item) { state.editItem = { ...item }; state.modalOpen = true; render(); }
-    });
-  });
 
-  // Delete — confirm in-app, then remove with a 7-second Undo (the tombstone is dropped again
-  // on undo so a later sync can't treat the restored entry as deleted).
-  document.querySelectorAll('[data-delete]').forEach(el => {
-    el.addEventListener('click', async e => {
-      e.stopPropagation();
-      const id = el.dataset.delete;
-      const item = state.items.find(x => x.id === id);
-      if (!item) return;
-      const ok = await confirmDialog({
-        title: 'Delete this entry?',
-        message: `“${item.title || 'Untitled'}” will be removed from your library.`,
-        confirmLabel: 'Delete', danger: true,
-      });
-      if (!ok) return;
-      const idx = state.items.indexOf(item);
-      state.items = state.items.filter(x => x.id !== id);
-      state.deletedIds = { ...state.deletedIds, [id]: new Date().toISOString() };
-      saveData(); render();
-      showToast(`Deleted “${item.title || 'Untitled'}”`, 'info', {
-        duration: 7000,
-        action: { label: 'Undo', onClick: () => {
-          if (state.items.some(x => x.id === id)) return;
-          const restored = [...state.items];
-          restored.splice(Math.min(idx, restored.length), 0, item);
-          state.items = restored;
-          const { [id]: _dropped, ...rest } = state.deletedIds;
-          state.deletedIds = rest;
-          saveData(); render();
-        } },
-      });
-    });
-  });
 
-  // Open URL
-  document.querySelectorAll('[data-open-url]').forEach(el => {
-    el.addEventListener('click', async e => {
-      e.stopPropagation();
-      const res = await window.api.openExternal(el.dataset.openUrl);
-      if (res?.error) showToast(res.error, 'error');
-    });
-  });
-
-  // Open the book's linked local PDF/EPUB in whatever app the OS has set as default
-  document.querySelectorAll('[data-open-local]').forEach(el => {
-    el.addEventListener('click', async e => {
-      e.stopPropagation();
-      const item = state.items.find(x => x.id === el.dataset.openLocal);
-      if (!item?.localFile) return;
-      const res = await window.api.openLocalFile(item.localFile);
-      if (res?.error) showToast(res.error, 'error');
-    });
-  });
-
-  // Refresh word count from the link (list & folder cards)
-  document.querySelectorAll('[data-refresh-words]').forEach(btn => {
-    btn.addEventListener('click', async e => {
-      e.stopPropagation();
-      const item = state.items.find(x => x.id === btn.dataset.refreshWords);
-      if (!item) return;
-      btn.textContent = '…'; btn.disabled = true;
-      showToast('Refreshing word count…', 'loading');
-      const res = await refreshWordCount(item);
-      if (res && res.ok && res.new !== res.old) { saveData(); render(); showToast(`${item.title || 'Fic'}: ${fmtNum(res.old)} → ${fmtNum(res.new)} words`, 'success'); }
-      else if (res && res.ok) { showToast('Word count already up to date ✓', 'success'); btn.textContent = '↻'; btn.disabled = false; }
-      else if (res && res.needsLogin) { showToast('🔒 Locked work — use “🔑 AO3 login” (top bar), then retry.', 'info'); btn.textContent = '↻'; btn.disabled = false; }
-      else { showToast('Couldn’t refresh — check the link.', 'error'); btn.textContent = '↻'; btn.disabled = false; }
-    });
-  });
-
-  // Status change in expanded card
-  document.querySelectorAll('[data-set-status]').forEach(el => {
-    el.addEventListener('click', e => {
-      e.stopPropagation();
-      const id = el.dataset.id;
-      const status = el.dataset.setStatus;
-      state.items = state.items.map(x => {
-        if (x.id !== id) return x;
-        const now = new Date().toISOString();
-        const update = { ...x, status, _modAt: now };
-        if (status === 'Finished') {
-          if (!x.finishedAt) update.finishedAt = now;
-          // Finished means "read at least once" — and readDates is what the stats trust, so an
-          // empty list must be filled in, not just readCount bumped (which left "Read 0 times").
-          if (!(timesRead(x) > 0)) { update.readDates = [update.finishedAt]; update.readCount = 1; }
-        }
-        return update;
-      });
-      saveData(); render();
-    });
-  });
-
-  // Re-read count stepper (＋ / －)
-  document.querySelectorAll('[data-reread-delta]').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      const id = btn.dataset.rereadId;
-      const delta = parseInt(btn.dataset.rereadDelta, 10);
-      state.items = state.items.map(x => {
-        if (x.id !== id) return x;
-        const dates = ensureReadDates(x);
-        if (delta > 0) dates.push(new Date().toISOString());  // record "I re-read this" with today's date
-        else dates.pop();                                     // remove the most recent read
-        return { ...x, readDates: dates, readCount: dates.length, _modAt: new Date().toISOString() };
-      });
-      saveData(); render();
-    });
-  });
-
-  // Inline star rating (expanded card)
-  document.querySelectorAll('.stars:not(.readonly) .star').forEach(star => {
-    star.addEventListener('click', e => {
-      e.stopPropagation();
-      const val = parseInt(star.dataset.val);
-      const id = star.dataset.id;
-      state.items = state.items.map(x => {
-        if (x.id !== id) return x;
-        return { ...x, userRating: x.userRating === val ? 0 : val, _modAt: new Date().toISOString() };
-      });
-      saveData(); render();
-    });
-    star.addEventListener('mouseenter', () => {
-      const val = parseInt(star.dataset.val);
-      star.closest('.stars').querySelectorAll('.star').forEach((s,i) => {
-        s.classList.toggle('lit', i < val);
-      });
-    });
-    star.addEventListener('mouseleave', () => {
-      const id = star.dataset.id;
-      const item = state.items.find(x => x.id === id);
-      if (item) {
-        star.closest('.stars').querySelectorAll('.star').forEach((s,i) => {
-          s.classList.toggle('lit', i < (item.userRating||0));
-        });
+  // Empty-state call-to-action buttons
+  document.querySelectorAll('[data-empty-action]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const a = btn.dataset.emptyAction;
+      if (a === 'clear-search') { state.search = ''; state.filterStatus = 'all'; state.filterType = 'all'; state.filterFandom = 'all'; state.filterGenre = 'all'; state.filterSection = 'all'; state.filterTag = 'all'; state.filterFavorite = false; render(); return; }
+      if (a === 'clear-folder-filter') { state.folderItemFilter = null; state.folderSearch = ''; render(); return; }
+      if (a === 'home') { state.folderPath = []; render(); return; }
+      if (a === 'add' || a === 'add-ff' || a === 'add-book') {
+        state.editItem = a === 'add-book' ? { type: 'book' } : (a === 'add-ff' ? { type: 'ff' } : null);
+        if (a === 'add' && state.search) state.editItem = { type: 'ff', title: state.search };
+        state.modalOpen = true; render();
+        setTimeout(() => document.getElementById(a === 'add-book' ? 'm-title' : 'm-url')?.focus(), 60);
       }
     });
   });
+
+  // Density toggle (Settings menu)
+  document.getElementById('btn-relink')?.addEventListener('click', () => relinkMovedFiles());
+  document.getElementById('btn-density')?.addEventListener('click', () => {
+    state.density = state.density === 'compact' ? 'comfortable' : 'compact';
+    try { localStorage.setItem('density:v2', state.density); } catch {}
+    document.body.dataset.density = state.density;
+    render();
+    showToast(state.density === 'compact' ? 'Compact cards' : 'Comfortable cards', 'info', { duration: 1800 });
+  });
+
 
   // ── Settings: per-page banner customization (bound on every render) ──
   document.getElementById('btn-settings')?.addEventListener('click', () => { state.settingsOpen = true; render(); });
@@ -3500,17 +4561,27 @@ function bindEvents() {
   const genreFolderNames = [...new Set(state.items.filter(x => x.type === 'book' && x.genre).map(x => x.genre.split(' / ')[0].trim()))].sort((a,b)=>a.localeCompare(b));
   attachAutocomplete('m-genre', 'sug-genre', genreFolderNames);
 
-  // Duplicate title warning (live, on blur)
+  // Title: required-field validation as you leave the field, plus a live duplicate warning.
   const titleEl = document.getElementById('m-title');
   const dupeWarnEl = document.getElementById('dupe-warning');
-  if (titleEl && dupeWarnEl && !state.editItem?.id) {
+  if (titleEl && dupeWarnEl) {
+    const isNew = !state.editItem?.id;
     titleEl.addEventListener('blur', () => {
-      const t = titleEl.value.trim().toLowerCase();
-      if (!t) { dupeWarnEl.textContent = ''; return; }
-      const dupe = state.items.find(x => x.title.toLowerCase().trim() === t);
+      const raw = titleEl.value.trim();
+      if (!raw) {
+        titleEl.classList.add('field-invalid');
+        dupeWarnEl.textContent = 'A title is required.'; dupeWarnEl.className = 'field-hint-err';
+        return;
+      }
+      titleEl.classList.remove('field-invalid'); dupeWarnEl.className = 'dupe-warn';
+      if (!isNew) { dupeWarnEl.textContent = ''; return; }
+      const dupe = state.items.find(x => norm(x.title) === norm(raw));
       dupeWarnEl.textContent = dupe
         ? `⚠️ Already in library: "${dupe.title}" (${dupe.type === 'ff' ? 'FF' : 'Book'}, ${dupe.status})`
         : '';
+    });
+    titleEl.addEventListener('input', () => {
+      if (titleEl.value.trim()) { titleEl.classList.remove('field-invalid'); if (dupeWarnEl.className === 'field-hint-err') { dupeWarnEl.textContent = ''; dupeWarnEl.className = 'dupe-warn'; } }
     });
   }
 
@@ -3558,7 +4629,7 @@ function bindEvents() {
       } catch(e) {
         if (msgEl) { msgEl.textContent = 'Not found — fill in manually.'; msgEl.className = 'fetch-msg err'; }
       }
-      bookFetchBtn.disabled = false; bookFetchBtn.textContent = 'Auto-fill ✦';
+      bookFetchBtn.disabled = false; bookFetchBtn.textContent = 'Auto-fill';
     });
   }
 
@@ -3602,7 +4673,7 @@ function bindEvents() {
         const data = isAO3 ? await window.api.fetchAO3(url) : await window.api.fetchFFNet(url);
         if (data && data.needsLogin) {
           if (msgEl) { msgEl.innerHTML = '🔒 Locked work — click <b>🔑 AO3</b> in the top bar to log in, then Auto-fill again.'; msgEl.className = 'fetch-msg err'; }
-          fetchBtn.disabled = false; fetchBtn.textContent = 'Auto-fill ✦';
+          fetchBtn.disabled = false; fetchBtn.textContent = 'Auto-fill';
           return;
         }
         if (data.error) throw new Error(data.error);
@@ -3617,6 +4688,8 @@ function bindEvents() {
           pairing: data.pairing || state.editItem?.pairing || '',
           tags: data.tags?.length ? data.tags : (state.editItem?.tags || []),
           description: data.description || state.editItem?.description || '',
+          chaptersPosted: data.chaptersPosted || state.editItem?.chaptersPosted || null,
+          chaptersTotal: data.chaptersTotal || state.editItem?.chaptersTotal || null,
           url,
         };
         render();
@@ -3624,7 +4697,7 @@ function bindEvents() {
         if (newMsgEl) { newMsgEl.textContent = `✓ Details fetched!${data.description ? ' Summary included.' : ''}`; newMsgEl.className = 'fetch-msg ok'; }
       } catch(e) {
         if (msgEl) { msgEl.textContent = 'Could not fetch — fill in manually.'; msgEl.className='fetch-msg err'; }
-        fetchBtn.disabled = false; fetchBtn.textContent = 'Auto-fill ✦';
+        fetchBtn.disabled = false; fetchBtn.textContent = 'Auto-fill';
       }
     });
   }
@@ -3732,9 +4805,13 @@ function bindEvents() {
       finishedAt,
       readCount,
       readDates,
+      progress: status === 'Finished' || status === 'TBR' ? null : readProgressFields(state.editItem),
       _addedAt: state.editItem?._addedAt ?? nextAddedAt(),
       _modAt: new Date().toISOString(),
     };
+    // Any route into "Reading" stamps the start date; leaving it for TBR clears it.
+    if (status === 'Reading') ensureReadingStart(item, item._modAt);
+    if (status === 'TBR') item.readingStartedAt = null;
 
     const idx = state.items.findIndex(x => x.id === item.id);
     if (idx >= 0) state.items[idx] = item;
@@ -3832,11 +4909,12 @@ async function handleSync() {
       const merged = mergeLibrary(state.items, state.folderConfig, res.data.items, res.data.folderConfig, state.deletedIds, res.data.deletedIds);
       // Safety: never lose data for any reason other than an explicit, tracked deletion.
       if (merged.items.length >= Math.max(state.items.length, (res.data.items||[]).length) - merged.removedByTombstone) {
-        state.items = merged.items;
-        state.folderConfig = merged.folderConfig;
+        state.items = merged.items.map(normalizeItem);
+        state.folderConfig = normalizeFolderConfig(merged.folderConfig);
         state.deletedIds = merged.deletedIds;
         localStorage.setItem('folderConfig', JSON.stringify(state.folderConfig));
         await saveData();
+        await refreshFileStatus();
       }
     }
     render();
@@ -3849,8 +4927,13 @@ async function handleSync() {
 
 async function handleBackup() {
   if (state.readOnly) { showToast('Read-only mode — fix the data file first, then back up.', 'error'); return; }
-  const btn = document.getElementById('btn-backup');
-  if (btn) { btn.disabled = true; btn.textContent = '⏳ Backing up…'; }
+  // Busy state is a class (spinner ring + label swap), so the button keeps its size and place.
+  const setBusy = busy => {
+    const b = document.getElementById('btn-backup'); if (!b) return;
+    b.classList.toggle('is-busy', busy); b.setAttribute('aria-busy', String(busy));
+    const lbl = b.querySelector('.btn-lbl'); if (lbl) lbl.textContent = busy ? 'Backing up…' : 'Back up';
+  };
+  setBusy(true);
   showToast('Saving to GitHub…', 'loading');
 
   try {
@@ -3858,21 +4941,14 @@ async function handleBackup() {
     // push rejected as "remote ahead" was resolved with `-X ours`, which threw away the phone's
     // entries wholesale. Deletions are safe to merge now thanks to the tombstones in deletedIds.
     const pulled = await syncFromCloud();
-    if (pulled) render();
+    if (pulled) { await refreshFileStatus(); render(); setBusy(true); }
     const result = await window.api.gitBackup();
     document.getElementById('toast')?.remove();
-    if (result.ok) {
-      showToast(result.message, 'success');
-      if (btn) { btn.disabled = false; btn.innerHTML = '☁️ Back up'; }
-    } else {
-      showToast(result.error, 'error');
-      if (btn) { btn.disabled = false; btn.innerHTML = '☁️ Back up'; }
-    }
+    showToast(result.ok ? result.message : result.error, result.ok ? 'success' : 'error');
   } catch(e) {
     document.getElementById('toast')?.remove();
     showToast('Backup failed: ' + e.message, 'error');
-    if (btn) { btn.disabled = false; btn.innerHTML = '☁️ Back up'; }
-  }
+  } finally { setBusy(false); }
 }
 
 // ── Excel export ──────────────────────────────────────────────────────────────
@@ -3989,8 +5065,14 @@ function attachCoverFallback() {
 
 (async () => {
   attachCoverFallback();
+  initDropdowns();
+  initCardDelegation();
+  restoreUiState();
+  // Re-derive banner ink when the system switches between light and dark.
+  try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => applyBanner()); } catch {}
   state.items = await loadData();
   state.bannerConfig = loadBannerConfig();
+  await refreshFileStatus();
   // The JSON file is the source of truth for folder config (it's what syncs to the phone).
   // localStorage only matters for libraries from before folderConfig lived in the file: pick it
   // up once, persist it, and from then on it's just a mirror.
@@ -4003,6 +5085,9 @@ function attachCoverFallback() {
   render();
   if (state.loadError) return; // recovery mode — never sync or auto-group over a broken file
   // Pull any changes made on the phone (or elsewhere) and merge them in, then re-render.
-  if (await syncFromCloud()) render();
+  if (await syncFromCloud()) { await refreshFileStatus(); render(); }
+  relinkMovedFiles({ silent: true }); // self-healing links: files moved into sub-folders are found again
   if (autoGroupSimilarTags()) render();
+  // Sample cover colours in the background once the UI is settled; cached after the first run.
+  setTimeout(runCoverColorQueue, 1500);
 })();

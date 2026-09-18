@@ -3,6 +3,7 @@ const path = require('path')
 const fs = require('fs')
 const fsp = fs.promises
 const { execFile } = require('child_process')
+const { relinkMissing } = require('./relink')
 
 const USER_DATA = app.getPath('userData')
 const DATA_PATH = path.join(USER_DATA, 'library-data.json')
@@ -33,7 +34,10 @@ function createWindow() {
     minWidth: 900,
     minHeight: 600,
     titleBarStyle: 'hiddenInset',
-    backgroundColor: '#fafaf9',
+    // Native frosted titlebar: the page keeps html/body/#app transparent and paints every
+    // content region itself, so only the titlebar strip shows the vibrancy material through.
+    vibrancy: 'under-window',
+    visualEffectState: 'active',
     show: false,
     icon,
     webPreferences: {
@@ -266,13 +270,76 @@ ipcMain.handle('files:open-local', async (_, filePath) => {
 
 // Manual override for books the auto-matcher couldn't confidently link — lets the user pick
 // any file directly instead.
-ipcMain.handle('files:pick-local', async () => {
+ipcMain.handle('files:pick-local', async (_, defaultPath) => {
   const { filePaths } = await dialog.showOpenDialog({
     title: 'Link a book file',
+    defaultPath: typeof defaultPath === 'string' && defaultPath ? defaultPath : undefined,
     properties: ['openFile'],
-    filters: [{ name: 'Ebook', extensions: ['pdf', 'epub'] }],
+    filters: [{ name: 'Ebook', extensions: ['pdf', 'epub', 'mobi', 'azw3'] }],
   })
   return filePaths?.[0] || null
+})
+
+// Batch existence check for every linked ebook, so cards can show a "file not found" state
+// up front instead of only failing when the 📖 button is pressed.
+ipcMain.handle('files:check', (_, paths) => {
+  const out = {}
+  for (const p of Array.isArray(paths) ? paths : []) {
+    if (typeof p === 'string' && p) out[p] = fs.existsSync(p)
+  }
+  return out
+})
+
+// Find a moved ebook by file name in the places books usually end up. Bounded walk (depth and
+// entry count) so a huge home folder can't stall the app; hidden dirs and package internals skipped.
+ipcMain.handle('files:locate', (_, fileName) => {
+  if (typeof fileName !== 'string' || !fileName) return []
+  const home = app.getPath('home')
+  const roots = ['Downloads', 'Documents', 'Desktop', 'Books', 'Library/Mobile Documents/com~apple~CloudDocs']
+    .map(d => path.join(home, d)).filter(d => fs.existsSync(d))
+  const target = fileName.toLowerCase()
+  const hits = []
+  let budget = 25000
+  const walk = (dir, depth) => {
+    if (depth > 4 || budget <= 0) return
+    let entries = []
+    try { entries = fs.readdirSync(dir, { withFileTypes: true }) } catch { return }
+    for (const e of entries) {
+      if (--budget <= 0) return
+      if (e.name.startsWith('.') || e.name === 'node_modules') continue
+      const full = path.join(dir, e.name)
+      if (e.isDirectory()) { if (!/\.(app|photoslibrary|bundle)$/i.test(e.name)) walk(full, depth + 1) }
+      else if (e.name.toLowerCase() === target) hits.push(full)
+      if (hits.length >= 5) return
+    }
+  }
+  for (const r of roots) { walk(r, 0); if (hits.length >= 5) break }
+  return hits
+})
+
+// Bulk, automatic relink for files that were reorganised into sub-folders or renamed to
+// "Author - Title.ext". Searches only under the nearest folder that still exists for each missing
+// path (never the whole disk) — matching rules live in relink.js.
+ipcMain.handle('files:relink', (_, items) => {
+  try { return relinkMissing(items, { home: app.getPath('home') }) }
+  catch (e) { return { relinked: [], ambiguous: [], notFound: [], error: String((e && e.message) || e) } }
+})
+
+// CORS-free image fetch for the cover-colour sampler: the renderer can't read pixels from a
+// cross-origin <img>, but a blob it received over IPC is same-origin. Capped at 3 MB.
+ipcMain.handle('net:fetch-image', async (_, url) => {
+  try {
+    if (typeof url !== 'string' || !/^https?:\/\//i.test(url)) return { error: 'not a web url' }
+    const resp = await withTimeout(getFetchSession().fetch(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36', 'Accept': 'image/avif,image/webp,image/*,*/*;q=0.8' },
+    }), 12000, 'image')
+    if (!resp.ok) return { error: `HTTP ${resp.status}` }
+    const type = resp.headers.get('content-type') || 'image/jpeg'
+    if (!/^image\//i.test(type)) return { error: 'not an image' }
+    const buf = Buffer.from(await resp.arrayBuffer())
+    if (buf.length > 3 * 1024 * 1024) return { error: 'too large' }
+    return { ok: true, type, data: buf }
+  } catch (e) { return { error: e.message } }
 })
 
 // ── Electron-native fetch (uses Chromium TLS — bypasses Cloudflare JA3 checks) ─
@@ -370,6 +437,13 @@ ipcMain.handle('ao3:fetch', async (_, url) => {
     const pairing = dec(firstTag(getSection('relationship')))
     const tags = allTags(getSection('freeform')).slice(0, 6).map(dec)
 
+    // "Chapters: 12/20" (or "5/?" for an open-ended WIP) → posted count + planned total, which the
+    // progress tracker uses as the default "of" for fics.
+    const chaptersText = stripTags(getSection('chapters') || '')
+    const chMatch = chaptersText.match(/(\d+)\s*\/\s*(\d+|\?)/)
+    const chaptersPosted = chMatch ? parseInt(chMatch[1], 10) || null : null
+    const chaptersTotal = chMatch && chMatch[2] !== '?' ? parseInt(chMatch[2], 10) || null : null
+
     // The author's own "Summary:" blurb — front matter they wrote specifically to preview the
     // fic, same idea as a book's back-cover synopsis. Paragraphs are <p> tags inside the
     // blockquote; keep the breaks between them instead of squashing everything onto one line.
@@ -378,7 +452,7 @@ ipcMain.handle('ao3:fetch', async (_, url) => {
       ? decodeHtmlEntities(summaryBlock[1].replace(/<\/p>\s*<p[^>]*>/gi, '\n\n').replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]+>/g, '')).trim()
       : null
 
-    return { title, author, fandom: fandoms[0] || null, words, hearts: kudos, rating, pairing, tags, description }
+    return { title, author, fandom: fandoms[0] || null, words, hearts: kudos, rating, pairing, tags, description, chaptersPosted, chaptersTotal }
   } catch(e) { return { error: e.message } }
 })
 

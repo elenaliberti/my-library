@@ -15,6 +15,10 @@ contextBridge.exposeInMainWorld('api', {
   pullData:       ()      => ipcRenderer.invoke('git:pull-data'),
   fetchBook:      (q)     => ipcRenderer.invoke('books:fetch', q),
   openLocalFile:  (path)  => ipcRenderer.invoke('files:open-local', path),
-  pickLocalFile:  ()      => ipcRenderer.invoke('files:pick-local'),
+  pickLocalFile:  (defaultPath) => ipcRenderer.invoke('files:pick-local', defaultPath),
+  checkFiles:     (paths) => ipcRenderer.invoke('files:check', paths),
+  locateFile:     (name)  => ipcRenderer.invoke('files:locate', name),
+  relinkFiles:    (items) => ipcRenderer.invoke('files:relink', items),
+  fetchImage:     (url)   => ipcRenderer.invoke('net:fetch-image', url),
   getBookDescription: (title, author) => ipcRenderer.invoke('books:description', { title, author }),
 })

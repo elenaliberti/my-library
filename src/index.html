@@ -13,7 +13,19 @@
 </head>
 <body>
   <div id="app">
-    <div id="loading">Loading your library…</div>
+    <!-- Skeleton first paint: the real UI replaces this the moment the library is parsed. -->
+    <div id="loading" aria-busy="true" aria-label="Loading your library">
+      <div class="sk-bar"></div>
+      <div class="sk-banner"></div>
+      <div class="sk-list">
+        <div class="sk-card"><div class="sk-cover"></div><div style="flex:1"><div class="sk-line w60"></div><div class="sk-line w35"></div><div class="sk-line w80"></div></div></div>
+        <div class="sk-card"><div class="sk-cover"></div><div style="flex:1"><div class="sk-line w60"></div><div class="sk-line w35"></div><div class="sk-line w80"></div></div></div>
+        <div class="sk-card"><div class="sk-cover"></div><div style="flex:1"><div class="sk-line w60"></div><div class="sk-line w35"></div><div class="sk-line w80"></div></div></div>
+        <div class="sk-card"><div class="sk-cover"></div><div style="flex:1"><div class="sk-line w60"></div><div class="sk-line w35"></div><div class="sk-line w80"></div></div></div>
+        <div class="sk-card"><div class="sk-cover"></div><div style="flex:1"><div class="sk-line w60"></div><div class="sk-line w35"></div><div class="sk-line w80"></div></div></div>
+        <div class="sk-card"><div class="sk-cover"></div><div style="flex:1"><div class="sk-line w60"></div><div class="sk-line w35"></div><div class="sk-line w80"></div></div></div>
+      </div>
+    </div>
   </div>
   <script src="data.js"></script>
   <script src="app.js"></script>

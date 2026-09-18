@@ -56,31 +56,62 @@ Legend: **Fixed** = implemented in this pass · **Open** = recommendation only.
 - **A second, different token sits in `.claude/settings.local.json`** (line 55, inside a recorded `curl` permission). It isn't committed, but it's plaintext on disk — revoke it at github.com → Settings → Developer settings and delete that line.
 - Electron 28 is ~3 years old. Upgrading to a current Electron is a separate task (test the AO3 fetch session, `sandbox`, and `session.fetch` afterwards).
 
-## 5. Edge cases worth knowing about (behaviour, not bugs)
+## 5. Edge cases — resolved in 1.2.0
 
-- Tombstones expire after 365 days on both apps; an item deleted over a year ago that still exists on a stale device would come back.
-- Series folders are scoped per genre: "Billionaire Romance" spans Romance and "To Sort", so it appears as two folders with split counts.
-- 3 linked ebook files no longer exist on disk (the 📖 button shows a toast). A visual "broken link" hint on the card would be a nice follow-up.
-- 2 TBR books carry read dates (re-reads in progress) — correct, just noting stats count them.
+| Was | Now |
+|-----|-----|
+| Tombstones expired after 365 days, so a long-offline device could resurrect a deleted entry. | Tombstones are permanent on both apps (≈70 bytes each; malformed stamps are dropped). |
+| Series folders were scoped per genre — "Billionaire Romance" appeared twice with split counts. | A series folder lists every book in the series wherever it's filed; counts agree; name/icon config is shared across genres; a mis-filed book shows a *Move to genre* pill (⌘Z undoes). |
+| 3 linked ebooks no longer existed; the 📖 button only failed on click. | Every link is checked at launch. Missing files show a ⚠️ on the card and in the edit form; clicking searches Downloads/Documents/Desktop/Books/iCloud by file name and relinks, or opens a picker pointed at the best guess. |
+| TBR/Reading/Dropped items with read history counted in stats silently. | They show *↻ read before* / *↻ re-reading* so the history is visible and intentional. |
 
-## 6. Making the UI feel more expensive
+## 6. UI — all ten recommendations implemented in 1.2.0
 
-Done in this pass (CSS-only, palette unchanged):
-- Elevation scale (`--shadow-1…4`) with warm-tinted shadows; cards, pills, folders and modals share it.
-- Motion: cards settle in with a short stagger, expanded card lifts, modals fade-and-settle with a blurred backdrop, toast springs in and eases out, buttons have consistent hover-lift / press physics. `prefers-reduced-motion` respected.
-- Real keyboard focus rings (visible on Tab, silent on click); tabular numerals in stats and counts.
-- Native `alert()`/`confirm()` replaced by an in-app dialog with Enter/Esc; toasts wrap, carry actions (Undo), and live in CSS.
-- Covers lazy-load and fade in; failures fall back to the emoji tile instead of a broken image.
-- Window opens only once painted (no white flash) and remembers its size/position.
+1. **Typography & spacing** — one serif weight token, tabular numerals everywhere, 4-pt spacing scale (`--s1…--s6`).
+2. **Click-to-open menus** — `initDropdowns()`: click toggles, ↓/↑ move, Enter/Space choose, Esc closes and returns focus, click-outside closes; `aria-expanded`/`role=menu`.
+3. **Skeleton first paint** in `index.html`; Back up shows a spinner ring with the label swapped to "Backing up…".
+4. **Vibrancy titlebar** — `vibrancy: 'under-window'` in main; `html/body/#app` transparent, every content region paints `--bg`, titlebar is translucent with backdrop blur.
+5. **Dark mode** — every colour is a semantic token; `prefers-color-scheme: dark` swaps them; `darkModeSupport: true`. Custom banner colours derive a contrast-safe ink per theme.
+6. **Cover-derived colour** — `runCoverColorQueue()` fetches each cover via main (no canvas taint), samples a saturation-weighted mean, caches in `localStorage`; cards get a hairline accent and tinted cover tile, the shelf a matching glow.
+7. **Empty states with actions** — clear search, add fic/book (pre-filled from the search), clear folder filter, back home; unknown folder paths get their own state.
+8. **Inline validation** — title marks invalid on blur with a hint, clears on input; duplicate warning is accent-insensitive.
+9. **Serif fallback** — `'Playfair Display', ui-serif, 'New York'…` so offline never shows Georgia. Bundling Playfair locally is a 4-file download (~120 KB) — say the word and it goes in `assets/fonts/`.
+10. **Density toggle** (Settings → Density) and the last view/sort/tab/folder are remembered across launches.
 
-Recommended next (in rough order of impact):
-1. **Typography rhythm** — pick one serif weight for titles (600), tighten letter-spacing on numerals, and use a 4-pt spacing scale everywhere (the folder grid and card metadata currently mix 3/5/7/9 px gaps).
-2. **Click-to-open dropdowns** (Fanfiction / Books / Settings) instead of hover-only menus, with arrow-key navigation. Hover menus feel web-ish and vanish when the cursor drifts.
-3. **Skeleton shimmer** on first paint instead of "Loading your library…" text, and a subtle progress state on the Back up button (spinner glyph, not a text swap).
-4. **Native vibrancy titlebar** (`vibrancy: 'sidebar'` + translucent `#titlebar`) — the single biggest "Mac-native" cue.
-5. **Dark mode** — tokens are already in `:root`; add a `prefers-color-scheme: dark` block and flip `darkModeSupport` in `package.json`.
-6. **Cover-driven colour** — extract the dominant colour from a book's cover for its card accent (canvas sampling of the lazy-loaded image) instead of the id-hash gradient.
-7. **Empty states with a call to action** ("Paste an AO3 link to add your first fic") and an illustrated 404 for folders.
-8. **Inline validation** on the form (title required marker turns red as you leave the field) rather than only on Save.
-9. Bundle Playfair Display locally so the serif never flashes to Georgia when offline.
-10. Card density toggle (comfortable / compact) and remember the user's last view in `localStorage`.
+## 7. Final audit before publishing (1.2.0)
+
+### Calculations — verified against an independent recomputation in Node
+| Figure | Rule now | Check |
+|--------|----------|-------|
+| Words read (titlebar, stats, phone) | Σ over items of `readWords × timesRead`; `readWords` = real count, else pages × 250, **0 for Dropped**; TBR/Reading add nothing | 72,298,081 in app == 72,298,081 recomputed (was 80.7 M with dropped fics counted) |
+| Estimated share | items flagged `_wordsEstimated` or page-derived | 18,955,750 == recomputed; shown as ≈ and as a footnote |
+| Breakdown % | largest-remainder | 39 + 61 + 0 = 100 |
+| Trend | current bucket vs previous, or last two complete buckets when < 50 % elapsed; label states which | "▼ 82% vs previous month (so far)" on 18 Sep |
+| Reading pace | median of words ÷ days, dropped excluded, same-day = 1 day and flagged | 8,680 words/day (mean was 113 K because of a same-day entry) |
+| Last read / re-read stepper | max date; list kept chronological | "Harry Potter e la pietra filosofale" → 2016-12-14 (was 2012) |
+| Legacy re-reads | one dated copy, the rest undated (counted, not charted) | 6 items collapsed; footnote reports undated reads and their words |
+| Calendar vs chart | identical event set (all dated reads, any status) | 2026: 49 icons, 4 marked dropped |
+| Re-read via board / status buttons | new read logged when `readingStartedAt` is after the last read | TBR → Reading → Finished on a finished book → 2 reads |
+
+### Demo run (harness, 958 live records, 40 flows) — all passed, zero console errors
+Add/edit/delete/undo, tags, stars, favourites, status, re-read stepper, MySpace drag TBR → Reading → Finished, series create/drag/⌘Z, folder rename/pin, stats toggles, calendar year nav and drag-to-move, mood picker, banner colour → ink contrast, export, sync, Escape layering, ⌘F, narrow viewport (no horizontal overflow at 565 px), dark mode, compact density.
+
+### Performance fix found by the demo
+Every re-render in list view committed ~19,000 DOM nodes and forced layout: **1.2 s per click**. Cards now stream in 48-card chunks (first chunk synchronous, rest one per frame behind a height spacer), single-item changes patch only that card, and card actions use one delegated listener. Measured: full list render 64 ms JS / 142 ms to paint; star/favourite/status/expand 2 ms.
+
+### Left as is, deliberately
+- "Recent" sort keeps unread items above read ones, so a fic added *and* finished today lands after the TBR pile. It is the documented intent of that sort.
+- Two books have a finish date earlier than their board start date (edited by hand); they are excluded from pace and flagged in the footnote logic, not silently "fixed".
+- 218 read items have neither words nor pages and add 0 to totals. The stats footnote says so; filling them in is a data task, not a code one.
+
+## 8. 1.3.0 — reading progress, board tools, undo
+
+- **Start-date gap fixed**: `ensureReadingStart()` runs on every path into Reading (status buttons, edit form, mood picker, board, phone). The screenshot case (a shelf book with no "started" chip) can no longer happen. Going back to TBR clears the start.
+- **Progress model** `{unit: page|chapter|percent, value, total, at}` on items. Drives the shelf progress bar, the finish estimate (this book's pace once real progress exists, else the library median), the card's "Currently at / Stopped at" row, and the edit form's Progress fields. AO3 fetch now records `chaptersPosted/chaptersTotal` so fics default to chapters.
+- **Where did you stop?** A new Dropped zone on the board and the card's Dropped status both ask for the position (skippable). `wordsPerRead()` credits a dropped item the fraction reached; `creditedWords()` adds the in-progress fraction for Reading items. Verified in the harness: dropped at ch. 98/120 credits exactly 98/120 of the length; unknown stop credits 0; the stats footnotes report both.
+- **Board undo**: every move pushes an `{type:'item'}` snapshot onto the ⌘Z stack and offers Undo in its toast; "Finished ✓" offers **Change date**, which moves both the finish date and the read event.
+- **TBR tools**: debounced filter, six sort orders, genre/fandom chips with counts, "n of N" indicator; state survives re-renders, resets when switching tabs.
+- **Stale reads** (60 days on the shelf, 30 without a touch) get Finished · Dropped · Update progress inline.
+- Verified: 11 harness flows including drag-to-Dropped with dialog, undo in toast and via ⌘Z, change-date dialog, progress dialog from shelf/card/form, and phone-side credit rules in Node.
+
+> **1.4.0 (18 Sep 2026):** the visual language itself was redesigned after the 1.2/1.3 polish still read as a hobby project — warm paper palette, stroke-SVG icon set replacing all emoji chrome, typographic status strip instead of the green band, hover-revealed card actions, dot status badges, muted duotone folder tiles, segmented stats controls, 1120 px reading width, and a visible Board button. See CHANGELOG 1.4.0.
