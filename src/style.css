@@ -186,7 +186,8 @@ b, strong { font-weight: 600; }
   position: relative; z-index: 7;
 }
 #titlebar-title { font-family: var(--font-serif); font-size: 18px; font-weight: var(--serif-weight); letter-spacing: -0.012em; color: var(--text); display: flex; align-items: center; gap: var(--s2); line-height: 1.2; }
-#titlebar .subtitle { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; font-variant-numeric: tabular-nums; }
+#titlebar > div:first-child { min-width: 0; flex: 1; }
+#titlebar .subtitle { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 #titlebar-actions { -webkit-app-region: no-drag; display: flex; gap: var(--s1); align-items: center; }
 
 /* ── Buttons ── */
@@ -205,6 +206,14 @@ b, strong { font-weight: 600; }
 .btn-danger:hover { background: var(--red-ink); }
 .btn-sm { padding: 7px 12px; font-size: 13px; }
 .btn-backup { color: var(--text-2); }
+/* Tinted titlebar buttons: Stats in sky, Board in lilac — same pastel family as Add entry */
+.btn-tint { border-color: transparent; color: var(--text); }
+.btn-tint-sky { background: color-mix(in srgb, var(--mist) 60%, var(--surface)); }
+.btn-tint-sky:hover, .btn-tint-sky.is-on { background: var(--mist); }
+.btn-tint-lilac { background: color-mix(in srgb, var(--lilac) 55%, var(--surface)); }
+.btn-tint-lilac:hover, .btn-tint-lilac.is-on { background: var(--lilac); }
+.btn-tint.is-on { box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--text) 22%, transparent), var(--shadow-1); }
+@media (prefers-color-scheme: dark) { .btn-tint { color: #fff; } }
 .btn-icon { gap: 7px; }
 .btn.is-busy { pointer-events: none; }
 .btn.is-busy .btn-ico { display: none; }
@@ -808,23 +817,6 @@ textarea { min-height: 80px; resize: vertical; line-height: 1.5; }
 .banner-swatch { width: 22px; height: 22px; border-radius: 6px; cursor: pointer; border: 1px solid rgba(0,0,0,0.12); transition: transform 0.1s; }
 .banner-swatch:hover { transform: scale(1.15); }
 
-/* ── Harry Potter folder mascot ── */
-.hp-cat { position: fixed; bottom: 30px; width: 200px; cursor: pointer; z-index: 60; transition: left var(--fly-ms, 3.4s) cubic-bezier(0.42, 0.02, 0.28, 1); will-change: left; }
-.hp-cat.facing-right { transform: scaleX(-1); }
-.hp-cat-body { position: relative; transform-origin: 50% 62%; will-change: transform; }
-.hp-cat-img { width: 100%; height: auto; display: block; transform-origin: center; animation: hpcat-float 4s ease-in-out infinite; -webkit-user-drag: none; user-select: none; filter: drop-shadow(0 6px 8px rgba(31,28,24,0.16)); }
-@keyframes hpcat-float { 0%,100% { transform: translateY(0) rotate(-1.2deg); } 50% { transform: translateY(-8px) rotate(1.2deg); } }
-.hp-cat.is-flying .hp-cat-img { animation: hpcat-flap 0.55s ease-in-out infinite; }
-@keyframes hpcat-flap { 0%,100% { transform: translateY(0) rotate(-2.5deg); } 50% { transform: translateY(-9px) rotate(2.5deg); } }
-.hp-cat-shadow { position: absolute; left: 16%; right: 16%; bottom: -12px; height: 18px; border-radius: 50%; background: radial-gradient(ellipse at center, rgba(0,0,0,0.26) 0%, rgba(0,0,0,0) 70%); animation: hpcat-shadow 4s ease-in-out infinite; transition: opacity 0.4s; pointer-events: none; }
-@keyframes hpcat-shadow { 0%,100% { transform: scaleX(1); opacity: 1; } 50% { transform: scaleX(0.86); opacity: 0.7; } }
-.hp-cat.is-flying .hp-cat-shadow { opacity: 0; }
-#hp-star-layer { position: fixed; inset: 0; pointer-events: none; z-index: 59; }
-.hp-star { position: fixed; transform: translate(-50%, -50%); color: #f4c945; text-shadow: 0 0 5px rgba(244,201,69,0.7); pointer-events: none; will-change: transform, opacity; animation: hp-star-fade 0.85s ease-out forwards; }
-.hp-star.big { text-shadow: 0 0 8px rgba(244,201,69,0.9), 0 0 2px #fff; }
-@keyframes hp-star-fade { 0% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0); } 100% { opacity: 0; transform: translate(calc(-50% + var(--dx,0px)), calc(-50% + var(--dy,14px))) scale(0.25) rotate(var(--rot,40deg)); } }
-
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
-  .hp-cat { transition: none; }
 }

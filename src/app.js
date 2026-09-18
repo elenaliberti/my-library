@@ -1849,125 +1849,6 @@ async function moveMsCard(id, target) {
   }
 }
 
-// ── Harry Potter folder mascot: a Pusheen-style Gryffindor cat on a broom ──────────────
-// Idle: floats on the spot with a soft shadow and an occasional little hop. Touch: takes off in a
-// swooping arc across the window, does a barrel roll at the top, leaves a trail of stars from the
-// broom and lands with a squash-and-stretch bounce. Facing follows the direction of travel.
-let _hpSide = 'right', _hpFacing = 'left';
-function hpCatHtml() {
-  return `<div id="hp-cat" class="hp-cat${_hpFacing === 'right' ? ' facing-right' : ''}" title="Touch me and I’ll fly">
-    <div class="hp-cat-shadow"></div>
-    <div class="hp-cat-body"><img class="hp-cat-img" src="hp_cat.png" alt="Gryffindor cat on a broom" draggable="false" /></div>
-  </div>`;
-}
-
-function mountHpCat() {
-  const cat = document.getElementById('hp-cat');
-  if (!cat) return;
-  const body = cat.querySelector('.hp-cat-body');
-  const W = 200;
-  const reduced = (() => { try { return matchMedia('(prefers-reduced-motion: reduce)').matches; } catch { return false; } })();
-  const xFor = side => side === 'left' ? 20 : Math.max(40, window.innerWidth - W - 30);
-  cat.style.left = xFor(_hpSide) + 'px';
-
-  // a fixed layer to host the little star particles
-  let layer = document.getElementById('hp-star-layer');
-  if (!layer) { layer = document.createElement('div'); layer.id = 'hp-star-layer'; document.body.appendChild(layer); }
-  const sparkle = (x, y, big) => {
-    const s = document.createElement('div');
-    s.className = 'hp-star' + (big ? ' big' : '');
-    s.textContent = Math.random() < 0.15 ? '✦' : '★';
-    s.style.left = x + 'px'; s.style.top = y + 'px';
-    s.style.fontSize = ((big ? 12 : 8) + Math.random() * 7) + 'px';
-    s.style.setProperty('--dx', ((Math.random() * 2 - 1) * (big ? 34 : 22)).toFixed(0) + 'px');
-    s.style.setProperty('--dy', ((big ? 18 : 8) + Math.random() * 16).toFixed(0) + 'px');
-    s.style.setProperty('--rot', ((Math.random() * 2 - 1) * 90).toFixed(0) + 'deg');
-    layer.appendChild(s);
-    setTimeout(() => s.remove(), 900);
-  };
-  // the broom's bristles are the trailing end — that's where the magic comes out
-  const broomPoint = () => {
-    const r = cat.getBoundingClientRect();
-    const x = cat.classList.contains('facing-right') ? r.left + r.width * 0.16 : r.right - r.width * 0.16;
-    return { x, y: r.top + r.height * 0.62 };
-  };
-  const burst = (n, big) => { const p = broomPoint(); for (let i = 0; i < n; i++) sparkle(p.x + (Math.random() * 40 - 20), p.y + (Math.random() * 24 - 12), big); };
-
-  // a trail of yellow stars follows the pointer while you're in this folder
-  if (window._hpMove) document.removeEventListener('mousemove', window._hpMove);
-  let lastTrail = 0;
-  window._hpMove = e => {
-    const c = document.getElementById('hp-cat');
-    if (!c) { document.removeEventListener('mousemove', window._hpMove); window._hpMove = null; return; }
-    const now = Date.now();
-    if (now - lastTrail > 55) { lastTrail = now; sparkle(e.clientX, e.clientY, false); }
-  };
-  document.addEventListener('mousemove', window._hpMove);
-
-  // flight path: a rising arc with a gentle wobble, a barrel roll over the middle, nose-up at
-  // take-off and nose-down into the landing. Rotation is authored for the left-facing image; the
-  // facing flip on the parent mirrors it for free when flying right.
-  const flightFrames = () => {
-    const N = 48, out = [];
-    for (let i = 0; i <= N; i++) {
-      const t = i / N;
-      const lift = Math.sin(Math.PI * t);
-      const y = -(lift * 150) - Math.sin(Math.PI * 4 * t) * 14 * lift;
-      let rot = 12 * Math.cos(Math.PI * t);
-      if (!reduced && t > 0.38 && t < 0.62) { const u = (t - 0.38) / 0.24; rot += 360 * (u * u * (3 - 2 * u)); }
-      const scale = 1 + 0.08 * lift;
-      out.push({ transform: `translateY(${y.toFixed(1)}px) rotate(${rot.toFixed(1)}deg) scale(${scale.toFixed(3)})`, offset: t });
-    }
-    return out;
-  };
-  const land = () => body.animate([
-    { transform: 'scale(1, 1)' }, { transform: 'scale(1.12, 0.86)', offset: 0.35 }, { transform: 'scale(0.97, 1.04)', offset: 0.7 }, { transform: 'scale(1, 1)' },
-  ], { duration: 460, easing: 'ease-out' });
-
-  let flying = false;
-  const fly = () => {
-    if (flying) return;
-    flying = true;
-    const to = _hpSide === 'left' ? 'right' : 'left';
-    _hpFacing = to;
-    cat.classList.add('is-flying');
-    cat.classList.toggle('facing-right', to === 'right');
-    const dist = Math.abs(xFor(to) - xFor(_hpSide));
-    const dur = reduced ? 1200 : Math.round(2600 + dist * 0.9);
-    cat.style.setProperty('--fly-ms', dur + 'ms');
-    burst(reduced ? 0 : 14, true);
-    cat.style.left = xFor(to) + 'px';
-    _hpSide = to;
-    if (!reduced) body.animate(flightFrames(), { duration: dur, easing: 'linear' });
-    const trail = reduced ? null : setInterval(() => { const p = broomPoint(); sparkle(p.x + (Math.random() * 16 - 8), p.y + (Math.random() * 10 - 5), true); }, 60);
-    setTimeout(() => {
-      if (trail) clearInterval(trail);
-      cat.classList.remove('is-flying');
-      if (!reduced) { land(); burst(8, false); }
-      flying = false;
-    }, dur);
-  };
-  cat.addEventListener('mouseenter', fly);
-  cat.addEventListener('click', fly);
-
-  // every so often, a little hop and a puff of stars — a cat that's alive, not a sticker
-  clearTimeout(window._hpHop);
-  const scheduleHop = () => {
-    window._hpHop = setTimeout(() => {
-      const c = document.getElementById('hp-cat');
-      if (!c) return;
-      if (!flying && !reduced) {
-        body.animate([
-          { transform: 'translateY(0) scale(1, 1)' }, { transform: 'translateY(2px) scale(1.06, 0.94)', offset: 0.12 },
-          { transform: 'translateY(-26px) rotate(3deg) scale(0.98, 1.03)', offset: 0.5 }, { transform: 'translateY(0) scale(1.05, 0.95)', offset: 0.86 }, { transform: 'none' },
-        ], { duration: 760, easing: 'cubic-bezier(0.34, 1.2, 0.64, 1)' });
-        setTimeout(() => burst(5, false), 380);
-      }
-      scheduleHop();
-    }, 8000 + Math.random() * 7000);
-  };
-  scheduleHop();
-}
 
 // ── Folder view ───────────────────────────────────────────────────────────────
 const FOLDER_DEFAULTS = {
@@ -3130,6 +3011,19 @@ function recoveryPanelHtml() {
 
 // ── Render ────────────────────────────────────────────────────────────────────
 let _lastViewKey = null;
+// viewKey → last scrollTop, so leaving a view and coming back lands where you were.
+const _scrollMemory = new Map();
+// "Back" = the new view is an ancestor of the one just left: a shallower folder path, the library
+// after Stats, or the folders after the board. Filters/search changes are not "back".
+function isBackNavigation(prevKey, nextKey) {
+  if (!prevKey || prevKey === nextKey) return false;
+  const p = prevKey.split('|'), n = nextKey.split('|');
+  const [pView, pMode, pPath] = p, [nView, nMode, nPath] = n;
+  if (pView === 'stats' && nView !== 'stats') return true;
+  if (pMode === 'myspace' && nMode === 'folder') return true;
+  if (pMode === 'folder' && nMode === 'folder' && pPath !== nPath && (nPath === '' || pPath.startsWith(nPath + '/'))) return true;
+  return false;
+}
 function render() {
   document.querySelectorAll('.cal-tooltip').forEach(t => t.remove()); // avoid an orphaned tooltip surviving a re-render mid-hover
   persistUiState();
@@ -3137,6 +3031,7 @@ function render() {
   // folder, switching pages) — not on every in-place state change like a star or status click.
   const viewKey = `${state.view}|${state.viewMode}|${state.folderPath.join('/')}|${state.mySpaceTab}|${state.search}|${state.filterStatus}|${state.filterType}|${state.filterFandom}|${state.filterGenre}|${state.filterTag}|${state.filterFavorite}|${state.folderItemFilter}|${state.folderSearch}`;
   const sameView = viewKey === _lastViewKey;
+  const prevKey = _lastViewKey;
   document.body.classList.toggle('settled', sameView);
   _lastViewKey = viewKey;
   if (state.loadError) {
@@ -3145,11 +3040,14 @@ function render() {
     document.getElementById('recovery-retry')?.addEventListener('click', () => location.reload());
     return;
   }
-  // Keep the scroll position across same-view re-renders (delete, undo, add); a new view starts at the top.
-  const scrollable = document.getElementById('list') || document.getElementById('stats-view');
-  const scrollTop = sameView && scrollable ? scrollable.scrollTop : 0;
-  const folderViewEl = document.getElementById('folder-view');
-  const folderScrollTop = sameView && folderViewEl ? folderViewEl.scrollTop : 0;
+  // Scroll memory. Same-view re-renders (delete, undo, add, status change) keep their position.
+  // Going *back* — out of a folder, out of Stats, off the board — returns to where you were in
+  // the view you left. Going forward into a new view starts at the top.
+  const curScroller = document.getElementById('folder-view') || document.getElementById('list') || document.getElementById('stats-view') || document.getElementById('myspace-page');
+  if (prevKey && curScroller) _scrollMemory.set(prevKey, curScroller.scrollTop);
+  const scrollTop = sameView ? (curScroller ? curScroller.scrollTop : 0)
+    : (isBackNavigation(prevKey, viewKey) ? (_scrollMemory.get(viewKey) || 0) : 0);
+  const folderScrollTop = scrollTop;
   const stats = getStats();
 
   const titlebarHtml = `
@@ -3172,8 +3070,8 @@ function render() {
             <div class="dd-item dd-item-toggle" role="menuitem" tabindex="0" id="btn-density" title="Switch between comfortable and compact cards"><span>Density</span><span class="dd-val">${state.density === 'compact' ? 'Compact' : 'Comfortable'}</span></div>
           </div>
         </div>
-        <button class="btn btn-ghost btn-sm${state.view === 'stats' ? ' is-on' : ''}" id="btn-stats" title="${state.view === 'stats' ? 'Back to the library' : 'Reading statistics'}">${icon(state.view === 'stats' ? 'book' : 'chart')} ${state.view === 'stats' ? 'Library' : 'Stats'}</button>
-        <button class="btn btn-ghost btn-sm${state.view !== 'stats' && state.viewMode === 'myspace' ? ' is-on' : ''}" id="btn-view-myspace" title="${state.view !== 'stats' && state.viewMode === 'myspace' ? 'Back to the library' : 'Reading board — TBR, Reading, Finished'}">${icon('layers')} Board</button>
+        <button class="btn btn-tint btn-tint-sky btn-sm${state.view === 'stats' ? ' is-on' : ''}" id="btn-stats" title="${state.view === 'stats' ? 'Back to the library' : 'Reading statistics'}">${icon(state.view === 'stats' ? 'book' : 'chart')} ${state.view === 'stats' ? 'Library' : 'Stats'}</button>
+        <button class="btn btn-tint btn-tint-lilac btn-sm${state.view !== 'stats' && state.viewMode === 'myspace' ? ' is-on' : ''}" id="btn-view-myspace" title="${state.view !== 'stats' && state.viewMode === 'myspace' ? 'Back to the library' : 'Reading board — TBR, Reading, Finished'}">${icon('layers')} Board</button>
         <button class="btn btn-ghost btn-sm" id="btn-backup" title="Back up — merge the GitHub copy in, then save everything to GitHub"><span class="btn-ico">${icon('cloud')}</span><span class="btn-lbl">Back up</span></button>
         <button class="btn btn-primary btn-sm" id="btn-add">${icon('plus')} Add entry</button>
       </div>
@@ -3199,13 +3097,11 @@ function render() {
   }
 
   if (state.viewMode === 'folder') {
-    const inHp = state.folderPath[0] === 'ff' && state.folderPath[1] === 'Harry Potter - J. K. Rowling';
-    document.getElementById('app').innerHTML = titlebarHtmlWithNotice + folderViewHtml() + folderEditModalHtml() + folderCreateModalHtml() + itemIconModalHtml() + (state.modalOpen ? modalHtml() : '') + settingsModalHtml() + (inHp ? hpCatHtml() : '');
+    document.getElementById('app').innerHTML = titlebarHtmlWithNotice + folderViewHtml() + folderEditModalHtml() + folderCreateModalHtml() + itemIconModalHtml() + (state.modalOpen ? modalHtml() : '') + settingsModalHtml();
     const newFolderView = document.getElementById('folder-view');
     mountPendingCards(newFolderView, folderScrollTop);
-    if (newFolderView && !folderScrollTop) newFolderView.scrollTop = 0;
+    if (newFolderView) newFolderView.scrollTop = folderScrollTop;
     bindEvents();
-    if (inHp) mountHpCat();
     return;
   }
 
@@ -3220,6 +3116,8 @@ function render() {
         ${msTab==='books' ? mySpaceBooksHtml() : mySpaceHtml()}
       </div>` +
       (state.modalOpen ? modalHtml() : '') + itemIconModalHtml() + settingsModalHtml() + moodPickerModalHtml();
+    const msPage = document.getElementById('myspace-page');
+    if (msPage && scrollTop) msPage.scrollTop = scrollTop;
     bindEvents();
     return;
   }
@@ -5006,13 +4904,15 @@ window.addEventListener('keydown', e => {
 let _navSwipeAt = 0;
 let _swipeAccumX = 0;
 let _swipeResetTimer = null;
+let _swipeArmed = true;         // false from the moment a swipe navigates until the trackpad goes quiet
 const SWIPE_THRESHOLD = 45;
 const SWIPE_COOLDOWN = 650;
-const SWIPE_IDLE_RESET = 120;
+const SWIPE_IDLE_RESET = 160;
 
 function fireSwipe(action) {
   _navSwipeAt = Date.now();
   _swipeAccumX = 0;
+  _swipeArmed = false;
   action();
 }
 
@@ -5024,10 +4924,12 @@ window.addEventListener('wheel', e => {
 
   _swipeAccumX += e.deltaX;
   clearTimeout(_swipeResetTimer);
-  _swipeResetTimer = setTimeout(() => { _swipeAccumX = 0; }, SWIPE_IDLE_RESET);
-
-  const now = Date.now();
-  if (now - _navSwipeAt < SWIPE_COOLDOWN) return;                        // one step per swipe
+  // The gesture is over once the trackpad has been quiet for a moment — only then may the next
+  // swipe navigate. Momentum after a flick keeps sending wheel events for a second or more, which
+  // used to fire "back" two or three times in a row and land on the home screen.
+  _swipeResetTimer = setTimeout(() => { _swipeAccumX = 0; _swipeArmed = true; }, SWIPE_IDLE_RESET);
+  if (!_swipeArmed) return;                                              // one step per gesture
+  if (Date.now() - _navSwipeAt < SWIPE_COOLDOWN) return;
 
   if (state.view === 'stats') {
     if (_swipeAccumX < -SWIPE_THRESHOLD) fireSwipe(() => { state.view = 'library'; render(); });

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.7.0 — 18 Sep 2026
+- **Going back lands where you were.** Leaving a folder, Stats or the board and coming back restores the scroll position of the view you return to; a same-view change (status, favourite, delete) never moves the page; going forward into a new view still starts at the top.
+- **One swipe, one step.** A trackpad flick used to fire "back" two or three times through its momentum and drop you on the home screen. A gesture now navigates once and re-arms only after the trackpad goes quiet.
+- **Stats and Board buttons** are tinted sky and lilac, in the same pastel family as Add entry.
+- The Harry Potter cat mascot has been removed.
+
 ## 1.6.0 — 18 Sep 2026
 
 ### Palette
