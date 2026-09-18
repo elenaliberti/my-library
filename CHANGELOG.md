@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.7.1 — 18 Sep 2026
+- **Pastels move to green / blue / orange.** Same gradient intensity, new hues: the titlebar wash and the Add entry button run mint → sky → peach, Board is mint and Stats is peach. The accent is a clear blue instead of periwinkle, peaks and the stat-card rule end in orange, and the folder-tile duotones follow (teal, orange, sky, lime, sunset, green-blue, aqua, coral). Status colours unchanged.
+
 ## 1.7.0 — 18 Sep 2026
 - **Going back lands where you were.** Leaving a folder, Stats or the board and coming back restores the scroll position of the view you return to; a same-view change (status, favourite, delete) never moves the page; going forward into a new view still starts at the top.
 - **One swipe, one step.** A trackpad flick used to fire "back" two or three times through its momentum and drop you on the home screen. A gesture now navigates once and re-arms only after the trackpad goes quiet.

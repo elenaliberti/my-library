@@ -1,6 +1,6 @@
 {
   "name": "my-library",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Personal reading tracker for fanfiction and books",
   "main": "main.js",
   "scripts": {

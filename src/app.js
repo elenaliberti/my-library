@@ -208,7 +208,7 @@ const BANNER_PAGES = [
   { key: 'myspace', label: 'MySpace' },
   { key: 'stats',   label: 'Stats' },
 ];
-const BANNER_PRESETS = ['#7d6cf0', '#c4b5ff', '#f7b8dd', '#c9e6ff', '#2fd4c2', '#c8f04b', '#ffb648', '#ff7a59'];
+const BANNER_PRESETS = ['#3f8fd2', '#b9ebd0', '#c5e3ff', '#ffd2ad', '#3ec9a7', '#c8f04b', '#ffb648', '#ff7a59'];
 
 function loadBannerConfig() { try { return JSON.parse(localStorage.getItem('bannerConfig') || '{}'); } catch { return {}; } }
 function saveBannerConfig() { try { localStorage.setItem('bannerConfig', JSON.stringify(state.bannerConfig)); } catch (e) {} }
@@ -1868,12 +1868,12 @@ const FOLDER_DEFAULTS = {
 // slate, rose, teal) — replacing the saturated rainbow that made the folder grid look like a
 // dashboard. Still hash-stable per folder so a tile keeps its colour.
 const GRADIENTS = [
-  ['#7c5cff', '#4b2ee0'], // electric violet
-  ['#ff5fb0', '#c8329a'], // hot pink
-  ['#37c6ff', '#1f7fe0'], // sky → blue
+  ['#3ec9a7', '#1f8f7a'], // teal green
+  ['#ff9f5a', '#e0662e'], // orange
+  ['#4fb3e8', '#1f6fd0'], // sky → blue
   ['#c8f04b', '#3fb37a'], // lime → teal
-  ['#ffb648', '#ff5f7e'], // sunset
-  ['#8a5cff', '#ff5fb0'], // violet → pink
+  ['#ffb648', '#ff7a59'], // sunset
+  ['#6fd3a6', '#3b8fd6'], // green → blue
   ['#2fd4c2', '#2a6fe8'], // aqua → blue
   ['#ff7a59', '#ffd84d'], // coral → yellow
 ];
@@ -3070,8 +3070,8 @@ function render() {
             <div class="dd-item dd-item-toggle" role="menuitem" tabindex="0" id="btn-density" title="Switch between comfortable and compact cards"><span>Density</span><span class="dd-val">${state.density === 'compact' ? 'Compact' : 'Comfortable'}</span></div>
           </div>
         </div>
-        <button class="btn btn-tint btn-tint-sky btn-sm${state.view === 'stats' ? ' is-on' : ''}" id="btn-stats" title="${state.view === 'stats' ? 'Back to the library' : 'Reading statistics'}">${icon(state.view === 'stats' ? 'book' : 'chart')} ${state.view === 'stats' ? 'Library' : 'Stats'}</button>
-        <button class="btn btn-tint btn-tint-lilac btn-sm${state.view !== 'stats' && state.viewMode === 'myspace' ? ' is-on' : ''}" id="btn-view-myspace" title="${state.view !== 'stats' && state.viewMode === 'myspace' ? 'Back to the library' : 'Reading board — TBR, Reading, Finished'}">${icon('layers')} Board</button>
+        <button class="btn btn-tint btn-tint-peach btn-sm${state.view === 'stats' ? ' is-on' : ''}" id="btn-stats" title="${state.view === 'stats' ? 'Back to the library' : 'Reading statistics'}">${icon(state.view === 'stats' ? 'book' : 'chart')} ${state.view === 'stats' ? 'Library' : 'Stats'}</button>
+        <button class="btn btn-tint btn-tint-mint btn-sm${state.view !== 'stats' && state.viewMode === 'myspace' ? ' is-on' : ''}" id="btn-view-myspace" title="${state.view !== 'stats' && state.viewMode === 'myspace' ? 'Back to the library' : 'Reading board — TBR, Reading, Finished'}">${icon('layers')} Board</button>
         <button class="btn btn-ghost btn-sm" id="btn-backup" title="Back up — merge the GitHub copy in, then save everything to GitHub"><span class="btn-ico">${icon('cloud')}</span><span class="btn-lbl">Back up</span></button>
         <button class="btn btn-primary btn-sm" id="btn-add">${icon('plus')} Add entry</button>
       </div>

@@ -11,22 +11,23 @@
 
   /* Accent (legacy name "purple" kept — it IS purple now: electric violet, the single primary
      accent; applyBanner() may override it per page from a custom banner colour). */
-  --purple: #7d6cf0;
+  --purple: #3f8fd2;
   --purple-light: color-mix(in srgb, var(--purple) 14%, var(--surface));
   --purple-dark: color-mix(in srgb, var(--purple) 72%, black);
   --accent-soft: color-mix(in srgb, var(--purple) 40%, var(--surface));
-  --accent-2: #f08ad2;       /* orchid pink — peaks, gradients, the second half of the primary button */
-  --lilac: #c4b5ff;          /* pastel lilac — the primary button and the titlebar wash */
-  --blush: #f7b8dd;          /* pastel pink */
-  --mist: #c9e6ff;           /* pastel sky */
+  --accent-2: #ff9f5a;       /* orange — peaks, gradients, the far end of the stat-card rule */
+  --leaf: #3ec9a7;           /* teal-green — the third series colour in the breakdown */
+  --mint: #b9ebd0;           /* pastel green — primary button start, Board button, titlebar wash */
+  --peach: #ffd2ad;          /* pastel orange — primary button end, titlebar wash */
+  --mist: #c5e3ff;           /* pastel blue — Stats button, titlebar wash */
   --pop: #c8f04b;            /* lime — one playful highlight, used sparingly */
-  --sky: #37c6ff;
+  --sky: #4fb3e8;
 
   /* Banner system: with no custom banner the header strips are lavender-white; with one
      (#app.has-banner) they take the banner as fill with white text. Ink is for labels. */
   --banner-bar: var(--bg);
-  --banner-fill: #7d6cf0;
-  --banner-ink: #5b4bd6;
+  --banner-fill: #3f8fd2;
+  --banner-ink: #2b6fb0;
 
   /* Surfaces & text — pure white, indigo ink. Colour comes from the accents, never the paper. */
   --bg: #ffffff;
@@ -90,16 +91,17 @@
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
-    --purple: #a99bff;
+    --purple: #7cbcf0;
     --purple-dark: color-mix(in srgb, var(--purple) 80%, white);
-    --accent-2: #f39ad9;
-    --lilac: #7f6fd6;
-    --blush: #c97aa8;
-    --mist: #6f9fd0;
+    --accent-2: #ffb27a;
+    --leaf: #5fd6b8;
+    --mint: #4f9d7a;
+    --peach: #c9834f;
+    --mist: #5f93c8;
     --pop: #d4ff5c;
-    --sky: #5cd3ff;
-    --banner-fill: #7d6cf0;
-    --banner-ink: #c3b6ff;
+    --sky: #7fcbf2;
+    --banner-fill: #3f8fd2;
+    --banner-ink: #a9cff0;
     --bg: #0f0d1a;
     --bg-subtle: #14111f;
     --surface: #181428;
@@ -158,7 +160,7 @@ b, strong { font-weight: 600; }
 
 /* ── Skeleton first paint ── */
 #loading { flex: 1; display: flex; flex-direction: column; background: var(--bg); }
-.sk-bar { height: 62px; background: linear-gradient(100deg, color-mix(in srgb, var(--lilac) 38%, transparent), color-mix(in srgb, var(--blush) 30%, transparent) 48%, color-mix(in srgb, var(--mist) 38%, transparent)), var(--bg); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.sk-bar { height: 62px; background: linear-gradient(100deg, color-mix(in srgb, var(--mint) 42%, transparent), color-mix(in srgb, var(--mist) 40%, transparent) 50%, color-mix(in srgb, var(--peach) 42%, transparent)), var(--bg); border-bottom: 1px solid var(--border); flex-shrink: 0; }
 .sk-banner { height: 68px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
 .sk-list { padding: var(--s5) var(--gutter); display: flex; flex-direction: column; gap: var(--s3); }
 .sk-card { display: flex; gap: var(--s4); padding: var(--s4) var(--s5); border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--card); }
@@ -177,10 +179,10 @@ b, strong { font-weight: 600; }
 #titlebar {
   -webkit-app-region: drag;
   background:
-    linear-gradient(100deg, color-mix(in srgb, var(--lilac) 38%, transparent) 0%, color-mix(in srgb, var(--blush) 30%, transparent) 48%, color-mix(in srgb, var(--mist) 38%, transparent) 100%),
+    linear-gradient(100deg, color-mix(in srgb, var(--mint) 42%, transparent) 0%, color-mix(in srgb, var(--mist) 40%, transparent) 50%, color-mix(in srgb, var(--peach) 42%, transparent) 100%),
     color-mix(in srgb, var(--bg) 78%, transparent);
   backdrop-filter: blur(18px) saturate(1.3); -webkit-backdrop-filter: blur(18px) saturate(1.3);
-  border-bottom: 1px solid color-mix(in srgb, var(--lilac) 45%, var(--border));
+  border-bottom: 1px solid color-mix(in srgb, var(--mint) 45%, var(--border));
   padding: 13px var(--gutter) 13px calc(var(--gutter) + 56px);
   display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;
   position: relative; z-index: 7;
@@ -194,8 +196,8 @@ b, strong { font-weight: 600; }
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 8px 16px; border-radius: var(--radius); border: 1px solid transparent; font-size: 13.5px; font-weight: 600; cursor: pointer; letter-spacing: 0.005em; transition: background 0.15s, color 0.15s, box-shadow 0.15s, transform 0.12s var(--ease-out), border-color 0.15s; position: relative; white-space: nowrap; }
 .btn:active { transform: translateY(0.5px) scale(0.99); }
 .btn:disabled { opacity: 0.55; cursor: default; transform: none; }
-.btn-primary { background: linear-gradient(135deg, var(--lilac) 0%, var(--blush) 100%); color: #1a1530; border-color: transparent; box-shadow: 0 6px 16px -8px color-mix(in srgb, var(--lilac) 80%, transparent), 0 1px 2px rgba(40,25,100,0.08); }
-.btn-primary:hover { filter: saturate(1.15) brightness(1.02); box-shadow: 0 10px 22px -8px color-mix(in srgb, var(--blush) 80%, transparent), var(--shadow-2); }
+.btn-primary { background: linear-gradient(135deg, var(--mint) 0%, var(--mist) 50%, var(--peach) 100%); color: #1a1530; border-color: transparent; box-shadow: 0 6px 16px -8px color-mix(in srgb, var(--mint) 80%, transparent), 0 1px 2px rgba(40,25,100,0.08); }
+.btn-primary:hover { filter: saturate(1.15) brightness(1.02); box-shadow: 0 10px 22px -8px color-mix(in srgb, var(--peach) 80%, transparent), var(--shadow-2); }
 @media (prefers-color-scheme: dark) { .btn-primary { color: #fff; } }
 .btn-secondary { background: var(--surface); color: var(--text-2); border-color: var(--border-strong); }
 .btn-secondary:hover { background: var(--surface-2); border-color: var(--text-faint); }
@@ -206,12 +208,12 @@ b, strong { font-weight: 600; }
 .btn-danger:hover { background: var(--red-ink); }
 .btn-sm { padding: 7px 12px; font-size: 13px; }
 .btn-backup { color: var(--text-2); }
-/* Tinted titlebar buttons: Stats in sky, Board in lilac — same pastel family as Add entry */
+/* Tinted titlebar buttons: Board in mint, Stats in peach — the same pastel family as Add entry */
 .btn-tint { border-color: transparent; color: var(--text); }
-.btn-tint-sky { background: color-mix(in srgb, var(--mist) 60%, var(--surface)); }
-.btn-tint-sky:hover, .btn-tint-sky.is-on { background: var(--mist); }
-.btn-tint-lilac { background: color-mix(in srgb, var(--lilac) 55%, var(--surface)); }
-.btn-tint-lilac:hover, .btn-tint-lilac.is-on { background: var(--lilac); }
+.btn-tint-peach { background: color-mix(in srgb, var(--peach) 62%, var(--surface)); }
+.btn-tint-peach:hover, .btn-tint-peach.is-on { background: var(--peach); }
+.btn-tint-mint { background: color-mix(in srgb, var(--mint) 60%, var(--surface)); }
+.btn-tint-mint:hover, .btn-tint-mint.is-on { background: var(--mint); }
 .btn-tint.is-on { box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--text) 22%, transparent), var(--shadow-1); }
 @media (prefers-color-scheme: dark) { .btn-tint { color: #fff; } }
 .btn-icon { gap: 7px; }
@@ -563,12 +565,12 @@ textarea { min-height: 80px; resize: vertical; line-height: 1.5; }
 .stats-breakdown { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px 20px; display: flex; flex-direction: column; gap: 10px; }
 .bdrow { display: flex; align-items: center; gap: 10px; font-size: 13.5px; }
 .bddot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-.bddot.green  { background: var(--sky); } .bddot.purple { background: var(--purple); } .bddot.amber  { background: var(--accent-2); }
+.bddot.green  { background: var(--leaf); } .bddot.purple { background: var(--purple); } .bddot.amber  { background: var(--accent-2); }
 .bdlabel { flex: 1; color: var(--text-2); font-weight: 600; }
 .bdstat  { color: var(--text-muted); font-size: 12.5px; font-variant-numeric: tabular-nums; }
 .bdpct   { color: var(--text); font-size: 13px; font-weight: 600; min-width: 40px; text-align: right; font-variant-numeric: tabular-nums; }
 .bdbar   { display: flex; height: 6px; border-radius: 999px; overflow: hidden; margin-top: 4px; background: var(--surface-2); gap: 2px; }
-.bdseg.green  { background: var(--sky); } .bdseg.purple { background: var(--purple); } .bdseg.amber  { background: var(--accent-2); }
+.bdseg.green  { background: var(--leaf); } .bdseg.purple { background: var(--purple); } .bdseg.amber  { background: var(--accent-2); }
 .stats-trend-hdr { display: flex; justify-content: space-between; align-items: center; gap: var(--s3); flex-wrap: wrap; }
 .stats-section-ttl { display: inline-flex; align-items: center; gap: var(--s3); color: var(--banner-ink); }
 .stats-ctrls { display: flex; gap: var(--s2); flex-wrap: wrap; }
