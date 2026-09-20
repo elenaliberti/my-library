@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.7.2 — 20 Sep 2026
+
+### Fixes
+- **Buttons that opened a dialog did nothing.** Page banners, a card's Edit, Change cover and a folder's Edit all built their dialog but a stray naming clash (`icon`) threw before it could show, so the click looked dead. All four open correctly now, and a render that throws surfaces a message instead of silently leaving the page half-drawn with dead buttons.
+- **Adding an entry no longer glitches.** The Add form used to rebuild the whole page — all ~960 cards behind it — on every change (type toggle, tag, auto-fill, picking a file), which flickered and jumped. It now re-renders only itself and keeps its scroll and focus; on Save the list is updated in place. It also stayed labelled "Add new entry" but the moment you changed anything it silently flipped into "Edit entry" and hid the Fanfiction/Book toggle; it now stays in Add mode until saved.
+
 ## 1.7.1 — 18 Sep 2026
 - **Pastels move to green / blue / orange.** Same gradient intensity, new hues: the titlebar wash and the Add entry button run mint → sky → peach, Board is mint and Stats is peach. The accent is a clear blue instead of periwinkle, peaks and the stat-card rule end in orange, and the folder-tile duotones follow (teal, orange, sky, lime, sunset, green-blue, aqua, coral). Status colours unchanged.
 

@@ -272,12 +272,12 @@ function settingsModalHtml() {
   if (!state.settingsOpen) return '';
   const rows = BANNER_PAGES.map(p => {
     const val = state.bannerConfig[p.key] || '';
-    const prev = resolveBanner(val) || '#7d9d6a';
+    const prev = resolveBanner(val) || 'var(--surface-2)';
     return `
       <label class="field-label" style="margin-top:14px">${p.label}</label>
       <div class="banner-edit">
         <span class="banner-prev" data-banner-prev="${p.key}" style="background:${prev}"></span>
-        <input type="text" class="banner-in" data-banner="${p.key}" value="${esc(val)}" placeholder="#7d9d6a  or  https://image…" autocomplete="off" />
+        <input type="text" class="banner-in" data-banner="${p.key}" value="${esc(val)}" placeholder="#3f8fd2  or  https://image…" autocomplete="off" />
         <button class="btn btn-secondary btn-sm" data-banner-reset="${p.key}">Reset</button>
       </div>
       <div class="banner-presets">${BANNER_PRESETS.map(c => `<span class="banner-swatch" data-banner-set="${p.key}|${c}" style="background:${c}" title="${c}"></span>`).join('')}</div>`;
@@ -286,7 +286,7 @@ function settingsModalHtml() {
     <div class="folder-edit-modal" style="width:470px">
       <div class="fem-header"><span class="fem-title">Page banners</span><button class="fem-close" id="settings-close">${icon('x')}</button></div>
       <div class="fem-body" style="padding-bottom:14px; max-height:70vh; overflow-y:auto">
-        <p class="fem-hint" style="display:block; margin-bottom:2px">Give each page's banner a colour (<b>#hex</b>) or a background <b>image URL</b> — like a book cover. Leave blank for the default sage.</p>
+        <p class="fem-hint" style="display:block; margin-bottom:2px">Give each page's banner a colour (<b>#hex</b>) or a background <b>image URL</b> — like a book cover. Leave blank for no banner sage.</p>
         ${rows}
       </div>
       <div class="modal-footer" style="padding:0 22px 18px"><button class="btn btn-primary" id="settings-done">Done</button></div>
@@ -1096,7 +1096,11 @@ function cardHtml(item) {
 // ── Modal HTML ────────────────────────────────────────────────────────────────
 function modalHtml() {
   const item = state.editItem || {};
-  const isEdit = !!state.editItem;
+  // "Edit" means we're changing an entry that already exists in the library — not merely that
+  // the scratch object is non-null. The Add form writes into state.editItem as you fill it in
+  // (type, tags, auto-fill), so keying off truthiness alone would flip a half-typed new entry
+  // into "Edit entry" mode and hide the Fanfiction/Book toggle. Key off a real, saved id instead.
+  const isEdit = !!(state.editItem && state.editItem.id && state.items.some(x => x.id === state.editItem.id));
   const type = item.type || 'ff';
   const isFf = type === 'ff';
 
@@ -2423,12 +2427,12 @@ function folderEditModalHtml() {
   const tail = parts[parts.length-1];
   const rawLabel = tail.startsWith('custom_') ? '' : (tail==='__none__'?'Other':(tail==='__all__'?'All':(tail==='__untagged__'?'Untagged':tail)));
   const label = cfg.displayName || rawLabel;
-  const icon = cfg.icon || '';
+  const iconVal = cfg.icon || '';
   const pinned = cfg.pinned || false;
-  const isUrl = icon.startsWith('http');
+  const isUrl = iconVal.startsWith('http');
   const preview = isUrl
-    ? `<img src="${esc(icon)}" style="width:100%;height:100%;object-fit:cover;border-radius:12px" />`
-    : `<span style="font-size:38px;line-height:1">${esc(icon) || '📁'}</span>`;
+    ? `<img src="${esc(iconVal)}" style="width:100%;height:100%;object-fit:cover;border-radius:12px" />`
+    : `<span style="font-size:38px;line-height:1">${esc(iconVal) || '📁'}</span>`;
   return `<div class="folder-edit-backdrop" id="folder-edit-backdrop">
     <div class="folder-edit-modal">
       <div class="fem-header">
@@ -2440,7 +2444,7 @@ function folderEditModalHtml() {
         <label class="field-label">Name</label>
         <input type="text" id="fem-name" value="${esc(label)}" placeholder="Folder name…" />
         <label class="field-label" style="margin-top:12px">Icon <span class="fem-hint">(emoji or image URL — paste from anywhere)</span></label>
-        <input type="text" id="fem-icon" value="${esc(icon)}" placeholder="⚡  or  https://…" />
+        <input type="text" id="fem-icon" value="${esc(iconVal)}" placeholder="⚡  or  https://…" />
         ${parts.length === 3 && parts[0] === 'ff' ? `
         <label class="field-label" style="margin-top:12px">Section</label>
         <select id="fem-section" class="filter-select" style="width:100%;margin-top:4px">
@@ -2498,12 +2502,12 @@ function itemIconModalHtml() {
   const item = state.items.find(x => x.id === state.editingItemIcon);
   if (!item) return '';
   const isFf = item.type === 'ff';
-  const icon = item.coverIcon || '';
-  const isUrl = icon.startsWith('http');
+  const iconVal = item.coverIcon || '';
+  const isUrl = iconVal.startsWith('http');
   const [c1, c2] = coverGradient(item);
   const preview = isUrl
-    ? `<img src="${esc(icon)}" style="width:100%;height:100%;object-fit:cover;border-radius:10px" />`
-    : `<span style="font-size:38px;line-height:1">${esc(icon) || (isFf?'✍️':'📚')}</span>`;
+    ? `<img src="${esc(iconVal)}" style="width:100%;height:100%;object-fit:cover;border-radius:10px" />`
+    : `<span style="font-size:38px;line-height:1">${esc(iconVal) || (isFf?'✍️':'📚')}</span>`;
   return `<div class="folder-edit-backdrop" id="item-icon-backdrop">
     <div class="folder-edit-modal">
       <div class="fem-header">
@@ -2515,8 +2519,8 @@ function itemIconModalHtml() {
       </div>
       <div class="fem-body">
         <label class="field-label">Icon <span class="fem-hint">(emoji or image URL — paste from anywhere)</span></label>
-        <input type="text" id="iim-icon" value="${esc(icon)}" placeholder="📚  or  https://…" />
-        ${icon ? `<button class="btn btn-secondary btn-sm" id="iim-clear" style="margin-top:8px;width:100%">Reset to default</button>` : ''}
+        <input type="text" id="iim-icon" value="${esc(iconVal)}" placeholder="📚  or  https://…" />
+        ${iconVal ? `<button class="btn btn-secondary btn-sm" id="iim-clear" style="margin-top:8px;width:100%">Reset to default</button>` : ''}
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" id="iim-cancel">Cancel</button>
@@ -3636,13 +3640,6 @@ function readProgressFields(base) {
 }
 
 function bindEvents() {
-  // Search
-  document.getElementById('m-prog-unit')?.addEventListener('change', e => {
-    const pct = e.target.value === 'percent';
-    const total = document.getElementById('m-prog-total'); const of = document.querySelector('.modal .progress-of');
-    if (total) total.hidden = pct; if (of) of.textContent = pct ? '%' : 'of';
-  });
-  if (document.getElementById('m-prog-unit')?.value === 'percent') { const t = document.getElementById('m-prog-total'); if (t) t.hidden = true; }
   document.getElementById('notice-dismiss')?.addEventListener('click', () => { state.recoveredFrom = null; render(); });
   document.getElementById('notice-open-folder')?.addEventListener('click', () => window.api.openDataFolder());
 
@@ -4331,8 +4328,20 @@ function bindEvents() {
   });
   applyBanner();
 
-  // ── Modal events ────────────────────────────────────────────────────────────
+  bindModalEvents();
+}
+
+// ── Add / edit form ─────────────────────────────────────────────────────────────
+// Handlers for the form only, so the form can be re-rendered on its own (see rerenderModal)
+// without touching — or rebuilding — the page behind it.
+function bindModalEvents() {
   if (!state.modalOpen) return;
+  document.getElementById('m-prog-unit')?.addEventListener('change', e => {
+    const pct = e.target.value === 'percent';
+    const total = document.getElementById('m-prog-total'); const of = document.querySelector('.modal .progress-of');
+    if (total) total.hidden = pct; if (of) of.textContent = pct ? '%' : 'of';
+  });
+  if (document.getElementById('m-prog-unit')?.value === 'percent') { const t = document.getElementById('m-prog-total'); if (t) t.hidden = true; }
 
   const close = () => { state.modalOpen = false; state.editItem = null; render(); };
   document.getElementById('modal-close')?.addEventListener('click', close);
@@ -4346,7 +4355,7 @@ function bindEvents() {
     btn.addEventListener('click', () => {
       snapshotModalForm();
       state.editItem = { ...(state.editItem||{}), type: btn.dataset.typeBtn };
-      render();
+      rerenderModal();
     });
   });
 
@@ -4355,7 +4364,7 @@ function bindEvents() {
     btn.addEventListener('click', () => {
       snapshotModalForm();
       state.editItem = { ...(state.editItem||{}), oneshot: btn.dataset.oneshotBtn === 'true' };
-      render();
+      rerenderModal();
     });
   });
 
@@ -4398,7 +4407,7 @@ function bindEvents() {
       const tag = btn.dataset.tag;
       snapshotModalForm();
       state.editItem = { ...(state.editItem||{}), tags: (state.editItem?.tags||[]).filter(t=>t!==tag) };
-      render();
+      rerenderModal();
     });
   });
 
@@ -4413,7 +4422,7 @@ function bindEvents() {
     if (!existing.includes(t)) {
       snapshotModalForm();
       state.editItem = { ...(state.editItem||{}), tags: [...existing, t] };
-      render();
+      rerenderModal('m-tag-input');
     } else if (tagInput) { tagInput.value = ''; }
   };
   const addTag = () => addTagValue(tagInput?.value);
@@ -4537,15 +4546,17 @@ function bindEvents() {
     pickLocalBtn.addEventListener('click', async () => {
       const picked = await window.api.pickLocalFile();
       if (!picked) return;
+      snapshotModalForm();
       state.editItem = { ...(state.editItem || {}), localFile: picked };
-      render();
+      rerenderModal();
     });
   }
   const clearLocalBtn = document.getElementById('btn-clear-localfile');
   if (clearLocalBtn) {
     clearLocalBtn.addEventListener('click', () => {
+      snapshotModalForm();
       state.editItem = { ...(state.editItem || {}), localFile: undefined };
-      render();
+      rerenderModal();
     });
   }
 
@@ -4590,7 +4601,7 @@ function bindEvents() {
           chaptersTotal: data.chaptersTotal || state.editItem?.chaptersTotal || null,
           url,
         };
-        render();
+        rerenderModal();
         const newMsgEl = document.getElementById('fetch-msg');
         if (newMsgEl) { newMsgEl.textContent = `✓ Details fetched!${data.description ? ' Summary included.' : ''}`; newMsgEl.className = 'fetch-msg ok'; }
       } catch(e) {
@@ -4716,9 +4727,66 @@ function bindEvents() {
     else state.items.unshift(item);
 
     state.modalOpen = false; state.editItem = null;
-    saveData(); render();
+    saveData();
+    closeFormAndShow(item, idx >= 0);
     showToast(idx >= 0 ? 'Changes saved ✓' : `Added “${item.title}” ✓`, 'success', { duration: 2500 });
   });
+}
+
+// Re-render only the add/edit form — after a type or format toggle, a tag added or removed, a
+// picked file or an auto-fill — instead of the whole page. The list behind it stays put, the
+// form keeps its scroll position and focus, and nothing flickers.
+function rerenderModal(focusId) {
+  const old = document.getElementById('modal-backdrop');
+  if (!old || !state.modalOpen) { render(); return; }
+  const box = old.querySelector('.modal');
+  const scrollTop = box ? box.scrollTop : 0;
+  const active = document.activeElement;
+  const keepFocus = focusId || (active && old.contains(active) ? active.id : null);
+  const tpl = document.createElement('template');
+  tpl.innerHTML = modalHtml().trim();
+  const fresh = tpl.content.firstElementChild;
+  if (!fresh) { render(); return; }
+  fresh.style.animation = 'none';
+  const freshBox = fresh.querySelector('.modal');
+  if (freshBox) freshBox.style.animation = 'none';
+  old.replaceWith(fresh);
+  if (freshBox) freshBox.scrollTop = scrollTop;
+  bindModalEvents();
+  if (keepFocus) document.getElementById(keepFocus)?.focus({ preventScroll: true });
+}
+
+// After Save: drop the form and update the list in place — an edited card is patched where it
+// is, a new entry is slotted into its sorted position — so the page doesn't rebuild and jump.
+// Anything the in-place path can't express (a different view, the item filtered out) falls back
+// to a full render.
+function closeFormAndShow(item, existed) {
+  const listEl = document.getElementById('list');
+  const listView = state.view === 'library' && (state.viewMode === 'list' || (state.viewMode === 'folder' && state.folderPath.length === 0));
+  if (!listEl || !listView) { render(); return; }
+  document.getElementById('modal-backdrop')?.remove();
+  const visible = getFiltered();
+  const pos = visible.findIndex(x => x.id === item.id);
+  const existingEl = listEl.querySelector(`.card[data-id="${CSS.escape(String(item.id))}"]`);
+  if (pos < 0) { if (existingEl) existingEl.remove(); refreshChrome(); refreshResultsMeta(visible.length); return; }
+  if (existingEl && existed) { patchCards([item.id]); refreshChrome(); return; }
+  const tpl = document.createElement('template');
+  tpl.innerHTML = cardHtml(item).trim();
+  const fresh = tpl.content.firstElementChild;
+  if (!fresh) { render(); return; }
+  fresh.style.animation = 'none';
+  const cards = listEl.querySelectorAll('.card');
+  const before = pos < cards.length ? cards[pos] : null;
+  if (before) listEl.insertBefore(fresh, before); else if (pos <= cards.length) listEl.appendChild(fresh); else { render(); return; }
+  // a brand-new entry in a list that was empty: clear the empty-state
+  listEl.querySelector('.empty')?.remove();
+  fresh.scrollIntoView({ block: 'nearest' });
+  refreshChrome(); refreshResultsMeta(visible.length);
+  applyCoverAccents();
+}
+function refreshResultsMeta(n) {
+  const el = document.getElementById('results-meta');
+  if (el) el.innerHTML = `${n} ${n === 1 ? 'entry' : 'entries'}${state.search ? ` matching "<b>${esc(state.search)}</b>"` : ''}`;
 }
 
 // ── Toast notifications ───────────────────────────────────────────────────────
@@ -4964,6 +5032,15 @@ function attachCoverFallback() {
     if (e.target instanceof HTMLImageElement && e.target.classList.contains('cover-img')) e.target.classList.add('is-loaded');
   }, true);
 }
+
+// A thrown error inside a render used to leave the page half-drawn with every button dead and
+// no clue why. Surface it: log it and say so, so it gets reported instead of shrugged at.
+window.addEventListener('error', e => {
+  try { if (e?.error) showToast(`Something went wrong: ${String(e.error.message || e.message).slice(0, 120)}`, 'error', { duration: 8000 }); } catch {}
+});
+window.addEventListener('unhandledrejection', e => {
+  try { showToast(`Something went wrong: ${String(e.reason?.message || e.reason).slice(0, 120)}`, 'error', { duration: 8000 }); } catch {}
+});
 
 (async () => {
   attachCoverFallback();
