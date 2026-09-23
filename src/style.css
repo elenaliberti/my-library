@@ -88,51 +88,7 @@
   --card-pad-y: 18px; --card-pad-x: 20px; --card-gap: 12px; --card-title: 16px; --card-cover-w: 56px; --card-cover-h: 80px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-    --purple: #7cbcf0;
-    --purple-dark: color-mix(in srgb, var(--purple) 80%, white);
-    --accent-2: #ffb27a;
-    --leaf: #5fd6b8;
-    --mint: #4f9d7a;
-    --peach: #c9834f;
-    --mist: #5f93c8;
-    --pop: #d4ff5c;
-    --sky: #7fcbf2;
-    --banner-fill: #3f8fd2;
-    --banner-ink: #a9cff0;
-    --bg: #0f0d1a;
-    --bg-subtle: #14111f;
-    --surface: #181428;
-    --surface-2: #221c36;
-    --card: #181428;
-    --card-border: #2b2544;
-    --border: #2b2544;
-    --border-strong: #3a3259;
-    --text: #efeaff;
-    --text-2: #d3ccf0;
-    --text-3: #aea6cf;
-    --text-muted: #857daa;
-    --text-faint: #625b85;
-    --text-ghost: #3b3556;
-    --overlay: rgba(5,3,14,0.66);
-    --tooltip-bg: #0a0814;
-    --toast-bg: rgba(34,28,54,0.95);
-    --toast-ok: rgba(24,66,38,0.95);
-    --toast-err: rgba(100,34,30,0.95);
-    --green: #6fae7c; --green-light: rgba(111,174,124,0.14); --green-border: rgba(111,174,124,0.35); --green-ink: #9fd3a9; --green-ink-2: #86c293;
-    --amber: #d9a14a; --amber-light: rgba(217,161,74,0.14); --amber-border: rgba(217,161,74,0.38); --amber-ink: #f0c67a; --amber-deep: #e5b35c;
-    --red: #d0655e;   --red-light: rgba(208,101,94,0.14);   --red-border: rgba(208,101,94,0.38);   --red-ink: #f1a29c;
-    --tbr: #7fb1ba; --tbr-bg: rgba(127,177,186,0.14); --tbr-ink: #a9d3da; --tbr-border: rgba(127,177,186,0.4);
-    --on-status: #0f0d1a;
-    --gray-800: #e6e0f6;
-    --shadow-1: 0 1px 2px rgba(0,0,0,0.4), 0 1px 3px rgba(0,0,0,0.3);
-    --shadow-2: 0 2px 6px rgba(0,0,0,0.4), 0 12px 28px -10px rgba(0,0,0,0.55);
-    --shadow-3: 0 16px 40px -12px rgba(0,0,0,0.7), 0 2px 8px rgba(0,0,0,0.4);
-    --shadow-4: 0 30px 80px -20px rgba(0,0,0,0.85), 0 6px 18px rgba(0,0,0,0.5);
-  }
-}
+/* Dark mode is intentionally not supported — the app is always light (see main.js nativeTheme). */
 
 body[data-density="compact"] { --card-pad-y: 10px; --card-pad-x: 14px; --card-gap: 6px; --card-title: 14.5px; --card-cover-w: 40px; --card-cover-h: 56px; }
 body[data-density="compact"] .card-tags { display: none; }
@@ -198,7 +154,6 @@ b, strong { font-weight: 600; }
 .btn:disabled { opacity: 0.55; cursor: default; transform: none; }
 .btn-primary { background: linear-gradient(135deg, var(--mint) 0%, var(--mist) 50%, var(--peach) 100%); color: #1a1530; border-color: transparent; box-shadow: 0 6px 16px -8px color-mix(in srgb, var(--mint) 80%, transparent), 0 1px 2px rgba(40,25,100,0.08); }
 .btn-primary:hover { filter: saturate(1.15) brightness(1.02); box-shadow: 0 10px 22px -8px color-mix(in srgb, var(--peach) 80%, transparent), var(--shadow-2); }
-@media (prefers-color-scheme: dark) { .btn-primary { color: #fff; } }
 .btn-secondary { background: var(--surface); color: var(--text-2); border-color: var(--border-strong); }
 .btn-secondary:hover { background: var(--surface-2); border-color: var(--text-faint); }
 .btn-ghost { background: transparent; color: var(--text-2); }
@@ -215,7 +170,6 @@ b, strong { font-weight: 600; }
 .btn-tint-mint { background: color-mix(in srgb, var(--mint) 60%, var(--surface)); }
 .btn-tint-mint:hover, .btn-tint-mint.is-on { background: var(--mint); }
 .btn-tint.is-on { box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--text) 22%, transparent), var(--shadow-1); }
-@media (prefers-color-scheme: dark) { .btn-tint { color: #fff; } }
 .btn-icon { gap: 7px; }
 .btn.is-busy { pointer-events: none; }
 .btn.is-busy .btn-ico { display: none; }

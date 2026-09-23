@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.7.3 — 23 Sep 2026
+- **Always light.** The app no longer follows the Mac's Dark Mode — it stays on the light theme at all times. Every dark-theme style was removed and Electron's appearance is pinned to light, so the titlebar, menus and form controls stay light too.
+
 ## 1.7.2 — 20 Sep 2026
 
 ### Fixes
